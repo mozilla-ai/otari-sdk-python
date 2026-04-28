@@ -270,10 +270,12 @@ class OtariClient:
             params: dict[str, Any] = {"model": model, "input": input, **kwargs}
             if stream is not None:
                 params["stream"] = stream
-            return await self.openai.responses.create(**params)
+            result: Response | AsyncStream[ResponseStreamEvent] = await self.openai.responses.create(**params)
         except Exception as exc:
             self._handle_error(exc)
             raise
+        else:
+            return result
 
     # -- Embeddings ---------------------------------------------------------
 
@@ -532,7 +534,8 @@ class OtariClient:
         if not response.is_success:
             await self._handle_batch_error(response)
 
-        return response.json()
+        result: dict[str, Any] = response.json()
+        return result
 
     async def _handle_batch_error(self, response: httpx.Response) -> None:
         """Map batch HTTP errors to typed SDK errors."""
