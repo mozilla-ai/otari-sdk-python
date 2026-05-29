@@ -34,19 +34,28 @@ class OtariClientOptions(TypedDict, total=False):
 
     Auth resolution order (mirrors the TypeScript SDK / Python GatewayProvider):
       1. Explicit ``platform_token`` -> platform mode (Bearer token in Authorization header)
-      2. ``GATEWAY_PLATFORM_TOKEN`` env var (when no ``api_key``) -> platform mode
+      2. ``OTARI_AI_TOKEN`` (or legacy ``GATEWAY_PLATFORM_TOKEN``) env var
+         (when no ``api_key``) -> platform mode
       3. ``api_key`` or ``GATEWAY_API_KEY`` env var -> non-platform mode (``Otari-Key`` header)
       4. No credentials -> non-platform mode, no auth header
+
+    In platform mode, ``api_base`` defaults to the hosted gateway at
+    ``https://api.otari.ai`` when neither the option nor ``GATEWAY_API_BASE``
+    is set.
     """
 
     api_base: str
-    """Base URL of the gateway (e.g. ``"http://localhost:8000"``)."""
+    """Base URL of the gateway (e.g. ``"http://localhost:8000"``).
+
+    Defaults to ``https://api.otari.ai`` in platform mode."""
 
     api_key: str
     """API key for non-platform mode. Sent via ``Otari-Key: Bearer <key>``."""
 
     platform_token: str
-    """Platform token for platform mode. Sent as Bearer in the Authorization header."""
+    """Platform token for platform mode. Sent as Bearer in the Authorization header.
+
+    Falls back to ``OTARI_AI_TOKEN`` (or legacy ``GATEWAY_PLATFORM_TOKEN``)."""
 
     default_headers: dict[str, str]
     """Additional default headers to send with every request."""

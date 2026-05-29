@@ -96,6 +96,55 @@ class TestPlatformMode:
         assert client.platform_mode is False
 
 
+class TestHostedDefault:
+    """Hosted-gateway default + OTARI_AI_TOKEN precedence (parity with TS SDK)."""
+
+    @staticmethod
+    def _clear_env(monkeypatch: pytest.MonkeyPatch) -> None:
+        for name in ("GATEWAY_API_BASE", "OTARI_AI_TOKEN", "GATEWAY_PLATFORM_TOKEN"):
+            monkeypatch.delenv(name, raising=False)
+
+    def test_platform_token_uses_hosted_default_base(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        self._clear_env(monkeypatch)
+        client = OtariClient(platform_token="tk_x")  # noqa: S106
+        assert client.platform_mode is True
+        assert str(client.openai.base_url).rstrip("/") == "https://api.otari.ai/v1"
+
+    def test_otari_ai_token_env_uses_hosted_default(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        self._clear_env(monkeypatch)
+        monkeypatch.setenv("OTARI_AI_TOKEN", "tk_env")
+        client = OtariClient()
+        assert client.platform_mode is True
+        assert str(client.openai.base_url).rstrip("/") == "https://api.otari.ai/v1"
+
+    def test_api_key_only_no_base_still_raises(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        self._clear_env(monkeypatch)
+        with pytest.raises(ValueError, match="api_base is required"):
+            OtariClient(api_key="k")
+
+    def test_legacy_platform_token_env_uses_hosted_default(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        self._clear_env(monkeypatch)
+        monkeypatch.setenv("GATEWAY_PLATFORM_TOKEN", "tk_legacy")
+        client = OtariClient()
+        assert client.platform_mode is True
+        assert str(client.openai.base_url).rstrip("/") == "https://api.otari.ai/v1"
+
+    def test_canonical_token_takes_precedence_over_legacy(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        self._clear_env(monkeypatch)
+        monkeypatch.setenv("OTARI_AI_TOKEN", "tk_canonical")
+        monkeypatch.setenv("GATEWAY_PLATFORM_TOKEN", "tk_legacy")
+        client = OtariClient()
+        assert client.platform_mode is True
+        assert client.openai.api_key == "tk_canonical"
+        assert client._auth_headers["Authorization"] == "Bearer tk_canonical"
+
+    def test_explicit_api_base_overrides_hosted_default(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        self._clear_env(monkeypatch)
+        client = OtariClient(api_base="http://localhost:8000", platform_token="tk_x")  # noqa: S106
+        assert client.platform_mode is True
+        assert str(client.openai.base_url).rstrip("/") == "http://localhost:8000/v1"
+
+
 class TestNonPlatformMode:
     def test_is_default_without_platform_token(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.delenv("GATEWAY_PLATFORM_TOKEN", raising=False)

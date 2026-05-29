@@ -21,12 +21,13 @@ Communicate with any LLM provider through the gateway using a single, typed inte
 
 ## Quickstart
 
+Generate an API token at [otari.ai/organization-settings/api-tokens](https://otari.ai/organization-settings/api-tokens), then add a provider key (e.g. OpenAI) at [otari.ai/organization-settings/provider-keys](https://otari.ai/organization-settings/provider-keys) so the gateway can route requests to that provider. Then use the client:
+
 ```python
 from otari import OtariClient
 
 client = OtariClient(
-    api_base="http://localhost:8000",
-    platform_token="your-token-here",
+    platform_token="tk_your_api_token",
 )
 
 response = await client.completion(
@@ -37,7 +38,24 @@ response = await client.completion(
 print(response.choices[0].message.content)
 ```
 
-**That's it!** Change the model string to switch between LLM providers through the gateway.
+**That's it!** With no `api_base`, the client defaults to the hosted gateway at `https://api.otari.ai`. Change the model string to switch between LLM providers through the gateway.
+
+Prefer to keep secrets out of code? Set `OTARI_AI_TOKEN` in your environment and `OtariClient()` picks up the token automatically.
+
+## Self-hosting the gateway
+
+Prefer to run the gateway yourself instead of using the hosted otari.ai? Follow the setup in the [otari gateway repo](https://github.com/mozilla-ai/otari), then point the SDK at it:
+
+```python
+client = OtariClient(
+    api_base="http://localhost:8000",  # or wherever you host the gateway
+    api_key="your-gateway-api-key",
+)
+```
+
+The SDK sends `api_key` via the custom `Otari-Key: Bearer …` header. Env: `GATEWAY_API_BASE` + `GATEWAY_API_KEY`.
+
+Make sure your gateway has provider keys configured (e.g. OpenAI) so it can route requests upstream — see the [otari gateway repo](https://github.com/mozilla-ai/otari) for setup.
 
 ## Installation
 
@@ -54,12 +72,18 @@ pip install otari
 
 ### Setting Up Credentials
 
-Set environment variables for your gateway:
+For the hosted gateway, set your platform token (no `api_base` needed — it defaults to `https://api.otari.ai`):
+
+```bash
+export OTARI_AI_TOKEN="tk_your_api_token"
+```
+
+`GATEWAY_PLATFORM_TOKEN` is kept as a legacy alias for `OTARI_AI_TOKEN`; the canonical name takes precedence when both are set.
+
+For a self-hosted gateway, set the base URL and an API key instead:
 
 ```bash
 export GATEWAY_API_BASE="http://localhost:8000"
-export GATEWAY_PLATFORM_TOKEN="your-token-here"
-# or for non-platform mode:
 export GATEWAY_API_KEY="your-key-here"
 ```
 
@@ -100,18 +124,17 @@ The client supports two authentication modes, matching the TypeScript SDK:
 
 #### Platform Mode (Recommended)
 
-Uses a Bearer token in the standard Authorization header. On the hosted platform, generate an API token at [otari.ai/organization-settings/api-tokens](https://otari.ai/organization-settings/api-tokens) and add a provider key (e.g. OpenAI) at [otari.ai/organization-settings/provider-keys](https://otari.ai/organization-settings/provider-keys) so the gateway can route requests to that provider:
+Uses a Bearer token in the standard Authorization header. On the hosted platform, generate an API token at [otari.ai/organization-settings/api-tokens](https://otari.ai/organization-settings/api-tokens) and add a provider key (e.g. OpenAI) at [otari.ai/organization-settings/provider-keys](https://otari.ai/organization-settings/provider-keys) so the gateway can route requests to that provider. With no `api_base`, the client defaults to the hosted gateway at `https://api.otari.ai`:
 
 ```python
 client = OtariClient(
-    api_base="http://localhost:8000",
     platform_token="tk_your_api_token",
 )
 ```
 
-#### Non-Platform Mode
+#### Non-Platform Mode (Self-Hosted)
 
-Sends the API key via a custom `Otari-Key` header:
+Sends the API key via a custom `Otari-Key` header. This targets a self-hosted gateway, so an explicit `api_base` is required:
 
 ```python
 client = OtariClient(
@@ -125,7 +148,9 @@ client = OtariClient(
 When no explicit credentials are provided, the client reads from environment variables:
 
 ```python
-# Uses GATEWAY_API_BASE, GATEWAY_PLATFORM_TOKEN, or GATEWAY_API_KEY
+# Platform mode: OTARI_AI_TOKEN (or legacy GATEWAY_PLATFORM_TOKEN),
+# defaulting to the hosted gateway.
+# Self-hosted: GATEWAY_API_BASE + GATEWAY_API_KEY.
 client = OtariClient()
 ```
 
