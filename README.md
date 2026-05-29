@@ -1,7 +1,5 @@
 <p align="center">
-  <picture>
-    <img src="https://raw.githubusercontent.com/mozilla-ai/otari/refs/heads/main/docs/public/images/otari-logo-mark.png" width="20%" alt="Project logo"/>
-  </picture>
+  <img src="assets/otari-logo.svg" width="320" alt="otari logo"/>
 </p>
 
 <div align="center">
@@ -102,12 +100,12 @@ The client supports two authentication modes, matching the TypeScript SDK:
 
 #### Platform Mode (Recommended)
 
-Uses a Bearer token in the standard Authorization header:
+Uses a Bearer token in the standard Authorization header. On the hosted platform, generate an API token at [otari.ai/organization-settings/api-tokens](https://otari.ai/organization-settings/api-tokens) and add a provider key (e.g. OpenAI) at [otari.ai/organization-settings/provider-keys](https://otari.ai/organization-settings/provider-keys) so the gateway can route requests to that provider:
 
 ```python
 client = OtariClient(
     api_base="http://localhost:8000",
-    platform_token="tk_your_platform_token",
+    platform_token="tk_your_api_token",
 )
 ```
 
@@ -210,7 +208,7 @@ except RateLimitError as e:
 | 400 (capability) | `UnsupportedCapabilityError` | Selected provider does not support the requested capability |
 | 401, 403 | `AuthenticationError` | Invalid or missing credentials |
 | 402 | `InsufficientFundsError` | Budget or credits exhausted |
-| 404 | `ModelNotFoundError` | Model not found or unavailable |
+| 404 | `ModelNotFoundError` | Model not found, or no provider key configured for the requested provider. The exception's `message` carries the gateway's detail. |
 | 429 | `RateLimitError` | Rate limit exceeded (includes `retry_after`) |
 | 502 | `UpstreamProviderError` | Upstream provider unreachable |
 | 504 | `GatewayTimeoutError` | Gateway timed out waiting for provider |
