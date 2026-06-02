@@ -442,7 +442,7 @@ class TestMethodDelegation:
         ]
 
         mock_page = MagicMock()
-        mock_page.__iter__ = lambda _self: iter(mock_models)
+        mock_page.__iter__.return_value = iter(mock_models)
         client.openai.models.list = MagicMock(return_value=mock_page)  # type: ignore[method-assign]
 
         result = client.list_models()

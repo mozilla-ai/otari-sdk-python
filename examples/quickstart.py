@@ -1,15 +1,16 @@
-"""Quick smoke test for the otari Python SDK (synchronous client)."""
+"""Quick smoke test for the otari Python SDK (synchronous client).
 
-import os
+Reads credentials from the SDK's documented environment variables:
+``GATEWAY_API_BASE`` (optional; defaults to the hosted gateway in platform
+mode) and ``OTARI_AI_TOKEN`` (or the legacy ``GATEWAY_PLATFORM_TOKEN``).
+"""
 
 from otari import OtariClient, OtariError
 
 
 def main() -> None:
-    client = OtariClient(
-        api_base=os.environ.get("OTARI_API_BASE", "http://localhost:8100"),
-        platform_token=os.environ["OTARI_PLATFORM_TOKEN"],
-    )
+    # Credentials are picked up from GATEWAY_API_BASE / OTARI_AI_TOKEN.
+    client = OtariClient()
 
     with client:
         # -- Chat completion --

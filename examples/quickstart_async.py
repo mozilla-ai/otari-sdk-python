@@ -1,16 +1,18 @@
-"""Quick smoke test for the otari Python SDK (asynchronous client)."""
+"""Quick smoke test for the otari Python SDK (asynchronous client).
+
+Reads credentials from the SDK's documented environment variables:
+``GATEWAY_API_BASE`` (optional; defaults to the hosted gateway in platform
+mode) and ``OTARI_AI_TOKEN`` (or the legacy ``GATEWAY_PLATFORM_TOKEN``).
+"""
 
 import asyncio
-import os
 
 from otari import AsyncOtariClient, OtariError
 
 
 async def main() -> None:
-    client = AsyncOtariClient(
-        api_base=os.environ.get("OTARI_API_BASE", "http://localhost:8100"),
-        platform_token=os.environ["OTARI_PLATFORM_TOKEN"],
-    )
+    # Credentials are picked up from GATEWAY_API_BASE / OTARI_AI_TOKEN.
+    client = AsyncOtariClient()
 
     async with client:
         # -- Chat completion --
