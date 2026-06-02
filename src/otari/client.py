@@ -68,9 +68,13 @@ GATEWAY_HEADER_NAME = "Otari-Key"
 # provider does not support a moderation request.
 _UNSUPPORTED_MODERATION_RE = re.compile(r"does not support (?:multimodal )?moderation")
 
+_DEFAULT_PLATFORM_API_BASE = "https://api.otari.ai"
+
 _ENV_API_BASE = "GATEWAY_API_BASE"
 _ENV_API_KEY = "GATEWAY_API_KEY"
-_ENV_PLATFORM_TOKEN = "GATEWAY_PLATFORM_TOKEN"  # noqa: S105
+# Matches the gateway server's own alias chain (OTARI_AI_TOKEN preferred).
+_ENV_PLATFORM_TOKEN = "OTARI_AI_TOKEN"  # noqa: S105
+_ENV_PLATFORM_TOKEN_LEGACY = "GATEWAY_PLATFORM_TOKEN"  # noqa: S105
 
 _STATUS_TO_ERROR: dict[int, type[AuthenticationError] | type[ModelNotFoundError]] = {
     401: AuthenticationError,
@@ -92,11 +96,14 @@ class OtariClient:
 
     Args:
         api_base: Base URL of the gateway (e.g. ``"http://localhost:8000"``).
-            Falls back to the ``GATEWAY_API_BASE`` environment variable.
+            Falls back to the ``GATEWAY_API_BASE`` environment variable. In
+            platform mode it defaults to the hosted gateway at
+            ``https://api.otari.ai`` when neither is supplied.
         api_key: API key for non-platform mode.
             Falls back to ``GATEWAY_API_KEY`` env var.
         platform_token: Platform token for platform mode.
-            Falls back to ``GATEWAY_PLATFORM_TOKEN`` env var.
+            Falls back to the canonical ``OTARI_AI_TOKEN`` env var (or the
+            legacy ``GATEWAY_PLATFORM_TOKEN`` alias).
         default_headers: Additional default headers to send with every request.
         openai_options: Extra keyword arguments forwarded to the underlying
             ``AsyncOpenAI`` constructor.
@@ -130,7 +137,28 @@ class OtariClient:
         default_headers: dict[str, str] | None = None,
         openai_options: dict[str, Any] | None = None,
     ) -> None:
-        raw_base = api_base or os.environ.get(_ENV_API_BASE)
+        # Canonical OTARI_AI_TOKEN wins over the legacy GATEWAY_PLATFORM_TOKEN.
+        resolved_platform_token = (
+            platform_token
+            or os.environ.get(_ENV_PLATFORM_TOKEN)
+            or os.environ.get(_ENV_PLATFORM_TOKEN_LEGACY)
+        )
+        resolved_api_key = api_key or os.environ.get(_ENV_API_KEY, "")
+
+        # Platform mode activates when a platform token is available and the
+        # caller hasn't explicitly passed an api_key (which forces non-platform
+        # mode). Mirrors the TS SDK's `!options.apiKey` check.
+        will_use_platform_mode = bool(resolved_platform_token) and not api_key
+
+        # In platform mode, fall back to the hosted otari.ai gateway so that
+        # ``OtariClient(platform_token=...)`` works with no further setup. For
+        # self-hosted gateways the caller must supply api_base — we have no way
+        # to know where they've hosted it.
+        raw_base = (
+            api_base
+            or os.environ.get(_ENV_API_BASE)
+            or (_DEFAULT_PLATFORM_API_BASE if will_use_platform_mode else None)
+        )
 
         if not raw_base:
             msg = (
@@ -146,15 +174,13 @@ class OtariClient:
 
         self._base_url = api_base_url
 
-        resolved_platform_token = platform_token or os.environ.get(_ENV_PLATFORM_TOKEN)
-        resolved_api_key = api_key or os.environ.get(_ENV_API_KEY, "")
-
         headers: dict[str, str] = {**(default_headers or {})}
         extra_kwargs: dict[str, Any] = {**(openai_options or {})}
 
         # Auth resolution (same logic as TS SDK / Python GatewayProvider):
         # 1. Explicit platform_token -> platform mode
-        # 2. GATEWAY_PLATFORM_TOKEN env + no api_key option -> platform mode
+        # 2. OTARI_AI_TOKEN (or legacy GATEWAY_PLATFORM_TOKEN) env + no api_key
+        #    option -> platform mode
         # 3. Otherwise -> non-platform mode
         if resolved_platform_token and not api_key:
             self.platform_mode = True
