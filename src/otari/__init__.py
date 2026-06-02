@@ -18,6 +18,7 @@ Example::
 
 from importlib.metadata import PackageNotFoundError, version
 
+from otari.async_client import AsyncOtariClient
 from otari.client import OtariClient
 from otari.errors import (
     AuthenticationError,
@@ -31,6 +32,7 @@ from otari.errors import (
     UpstreamProviderError,
 )
 from otari.types import (
+    AsyncStream,
     BatchRequestItem,
     BatchResult,
     BatchResultError,
@@ -56,6 +58,8 @@ except PackageNotFoundError:
 
 
 __all__ = [
+    "AsyncOtariClient",
+    "AsyncStream",
     "AuthenticationError",
     "BatchNotCompleteError",
     "BatchRequestItem",

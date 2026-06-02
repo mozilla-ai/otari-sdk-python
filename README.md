@@ -30,7 +30,7 @@ client = OtariClient(
     platform_token="tk_your_api_token",
 )
 
-response = await client.completion(
+response = client.completion(
     model="openai:gpt-4o-mini",
     messages=[{"role": "user", "content": "Hello!"}],
 )
@@ -39,6 +39,8 @@ print(response.choices[0].message.content)
 ```
 
 **That's it!** With no `api_base`, the client defaults to the hosted gateway at `https://api.otari.ai`. Change the model string to switch between LLM providers through the gateway.
+
+Prefer async? Use `AsyncOtariClient`, which exposes the same API with `await` (see [Async usage](#async-usage)).
 
 Prefer to keep secrets out of code? Set `OTARI_AI_TOKEN` in your environment and `OtariClient()` picks up the token automatically.
 
@@ -118,6 +120,8 @@ Prefer a hosted experience? The [otari platform](https://otari.ai/) provides a m
 
 ## Usage
 
+> **Migrating from a previous version?** `OtariClient` is now **synchronous** — call its methods directly (no `await`). For asynchronous code, switch to `AsyncOtariClient`, which keeps the previous `await`-based API. See [Async usage](#async-usage).
+
 ### Authentication Modes
 
 The client supports two authentication modes, matching the TypeScript SDK:
@@ -157,7 +161,7 @@ client = OtariClient()
 ### Chat Completions
 
 ```python
-response = await client.completion(
+response = client.completion(
     model="openai:gpt-4o-mini",
     messages=[{"role": "user", "content": "Hello!"}],
 )
@@ -168,13 +172,13 @@ print(response.choices[0].message.content)
 ### Streaming
 
 ```python
-stream = await client.completion(
+stream = client.completion(
     model="openai:gpt-4o-mini",
     messages=[{"role": "user", "content": "Tell me a story."}],
     stream=True,
 )
 
-async for chunk in stream:
+for chunk in stream:
     content = chunk.choices[0].delta.content
     if content:
         print(content, end="", flush=True)
@@ -183,7 +187,7 @@ async for chunk in stream:
 ### Responses API
 
 ```python
-response = await client.response(
+response = client.response(
     model="openai:gpt-4o-mini",
     input="Summarize this in one sentence.",
 )
@@ -194,7 +198,7 @@ print(response.output_text)
 ### Embeddings
 
 ```python
-result = await client.embedding(
+result = client.embedding(
     model="openai:text-embedding-3-small",
     input="Hello world",
 )
@@ -205,9 +209,41 @@ print(result.data[0].embedding)
 ### Listing Models
 
 ```python
-models = await client.list_models()
+models = client.list_models()
 for model in models:
     print(model.id)
+```
+
+### Async usage
+
+Every method on `OtariClient` has an asynchronous counterpart on `AsyncOtariClient`. It accepts the same constructor arguments and exposes the same methods, but they are coroutines you `await` (and streams are async iterables):
+
+```python
+import asyncio
+
+from otari import AsyncOtariClient
+
+
+async def main() -> None:
+    async with AsyncOtariClient(platform_token="tk_your_api_token") as client:
+        response = await client.completion(
+            model="openai:gpt-4o-mini",
+            messages=[{"role": "user", "content": "Hello!"}],
+        )
+        print(response.choices[0].message.content)
+
+        stream = await client.completion(
+            model="openai:gpt-4o-mini",
+            messages=[{"role": "user", "content": "Tell me a story."}],
+            stream=True,
+        )
+        async for chunk in stream:
+            content = chunk.choices[0].delta.content
+            if content:
+                print(content, end="", flush=True)
+
+
+asyncio.run(main())
 ```
 
 ### Error Handling
@@ -218,7 +254,7 @@ In platform mode, HTTP errors are mapped to typed exceptions:
 from otari import OtariClient, AuthenticationError, RateLimitError
 
 try:
-    response = await client.completion(
+    response = client.completion(
         model="openai:gpt-4o-mini",
         messages=[{"role": "user", "content": "Hello!"}],
     )
@@ -242,10 +278,20 @@ except RateLimitError as e:
 
 ### Context Manager
 
-The client supports async context manager for automatic cleanup:
+The client supports a context manager for automatic cleanup:
 
 ```python
-async with OtariClient(api_base="http://localhost:8000") as client:
+with OtariClient(api_base="http://localhost:8000") as client:
+    response = client.completion(
+        model="openai:gpt-4o-mini",
+        messages=[{"role": "user", "content": "Hello!"}],
+    )
+```
+
+`AsyncOtariClient` supports the async equivalent:
+
+```python
+async with AsyncOtariClient(api_base="http://localhost:8000") as client:
     response = await client.completion(
         model="openai:gpt-4o-mini",
         messages=[{"role": "user", "content": "Hello!"}],
@@ -257,7 +303,7 @@ async with OtariClient(api_base="http://localhost:8000") as client:
 - **Simple, unified interface** - Single client for all providers through the gateway, switch models with just a string change
 - **Developer friendly** - Full type hints for better IDE support and clear, actionable error messages
 - **Leverages the OpenAI SDK** - Built on the official OpenAI Python SDK for maximum compatibility
-- **Async-first** - Built on `AsyncOpenAI` for modern async Python applications
+- **Sync and async** - Use the synchronous `OtariClient` or the asynchronous `AsyncOtariClient`, both with the same typed interface
 - **Stays framework-agnostic** so it can be used across different projects and use cases
 - **Battle-tested** - Powers our own production tools ([any-agent](https://github.com/mozilla-ai/any-agent))
 
