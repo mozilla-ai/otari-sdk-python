@@ -1,4 +1,4 @@
-"""Tests for the synchronous OtariClient.
+"""Tests for AsyncOtariClient.
 
 Mirrors the TypeScript SDK's ``client.test.ts`` covering constructor,
 auth modes, error mapping, and method delegation.
@@ -6,13 +6,13 @@ auth modes, error mapping, and method delegation.
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock
+from unittest.mock import AsyncMock, MagicMock
 
 import httpx
 import openai
 import pytest
 
-from otari.client import OtariClient
+from otari.async_client import AsyncOtariClient
 from otari.errors import (
     AuthenticationError,
     BatchNotCompleteError,
@@ -55,29 +55,29 @@ class TestConstructor:
     def test_throws_when_api_base_missing(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.delenv("GATEWAY_API_BASE", raising=False)
         with pytest.raises(ValueError, match="api_base is required"):
-            OtariClient()
+            AsyncOtariClient()
 
     def test_uses_api_base_from_options(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000")
+        client = AsyncOtariClient(api_base="http://localhost:8000")
         assert str(client.openai.base_url).rstrip("/") == "http://localhost:8000/v1"
 
     def test_does_not_double_append_v1(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000/v1")
+        client = AsyncOtariClient(api_base="http://localhost:8000/v1")
         assert str(client.openai.base_url).rstrip("/") == "http://localhost:8000/v1"
 
     def test_strips_trailing_slash(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000/")
+        client = AsyncOtariClient(api_base="http://localhost:8000/")
         assert str(client.openai.base_url).rstrip("/") == "http://localhost:8000/v1"
 
     def test_falls_back_to_env_var(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv("GATEWAY_API_BASE", "http://env-gateway:9000")
-        client = OtariClient()
+        client = AsyncOtariClient()
         assert str(client.openai.base_url).rstrip("/") == "http://env-gateway:9000/v1"
 
 
 class TestPlatformMode:
     def test_activates_with_explicit_token(self) -> None:
-        client = OtariClient(
+        client = AsyncOtariClient(
             api_base="http://localhost:8000",
             platform_token="tk_test123",  # noqa: S106
         )
@@ -86,13 +86,13 @@ class TestPlatformMode:
 
     def test_activates_via_env_when_no_api_key(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv("GATEWAY_PLATFORM_TOKEN", "tk_env_token")
-        client = OtariClient(api_base="http://localhost:8000")
+        client = AsyncOtariClient(api_base="http://localhost:8000")
         assert client.platform_mode is True
         assert client.openai.api_key == "tk_env_token"
 
     def test_does_not_activate_when_api_key_provided(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv("GATEWAY_PLATFORM_TOKEN", "tk_env_token")
-        client = OtariClient(api_base="http://localhost:8000", api_key="my-key")
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="my-key")
         assert client.platform_mode is False
 
 
@@ -106,26 +106,26 @@ class TestHostedDefault:
 
     def test_platform_token_uses_hosted_default_base(self, monkeypatch: pytest.MonkeyPatch) -> None:
         self._clear_env(monkeypatch)
-        client = OtariClient(platform_token="tk_x")  # noqa: S106
+        client = AsyncOtariClient(platform_token="tk_x")  # noqa: S106
         assert client.platform_mode is True
         assert str(client.openai.base_url).rstrip("/") == "https://api.otari.ai/v1"
 
     def test_otari_ai_token_env_uses_hosted_default(self, monkeypatch: pytest.MonkeyPatch) -> None:
         self._clear_env(monkeypatch)
         monkeypatch.setenv("OTARI_AI_TOKEN", "tk_env")
-        client = OtariClient()
+        client = AsyncOtariClient()
         assert client.platform_mode is True
         assert str(client.openai.base_url).rstrip("/") == "https://api.otari.ai/v1"
 
     def test_api_key_only_no_base_still_raises(self, monkeypatch: pytest.MonkeyPatch) -> None:
         self._clear_env(monkeypatch)
         with pytest.raises(ValueError, match="api_base is required"):
-            OtariClient(api_key="k")
+            AsyncOtariClient(api_key="k")
 
     def test_legacy_platform_token_env_uses_hosted_default(self, monkeypatch: pytest.MonkeyPatch) -> None:
         self._clear_env(monkeypatch)
         monkeypatch.setenv("GATEWAY_PLATFORM_TOKEN", "tk_legacy")
-        client = OtariClient()
+        client = AsyncOtariClient()
         assert client.platform_mode is True
         assert str(client.openai.base_url).rstrip("/") == "https://api.otari.ai/v1"
 
@@ -133,14 +133,14 @@ class TestHostedDefault:
         self._clear_env(monkeypatch)
         monkeypatch.setenv("OTARI_AI_TOKEN", "tk_canonical")
         monkeypatch.setenv("GATEWAY_PLATFORM_TOKEN", "tk_legacy")
-        client = OtariClient()
+        client = AsyncOtariClient()
         assert client.platform_mode is True
         assert client.openai.api_key == "tk_canonical"
         assert client._auth_headers["Authorization"] == "Bearer tk_canonical"
 
     def test_explicit_api_base_overrides_hosted_default(self, monkeypatch: pytest.MonkeyPatch) -> None:
         self._clear_env(monkeypatch)
-        client = OtariClient(api_base="http://localhost:8000", platform_token="tk_x")  # noqa: S106
+        client = AsyncOtariClient(api_base="http://localhost:8000", platform_token="tk_x")  # noqa: S106
         assert client.platform_mode is True
         assert str(client.openai.base_url).rstrip("/") == "http://localhost:8000/v1"
 
@@ -148,17 +148,17 @@ class TestHostedDefault:
 class TestNonPlatformMode:
     def test_is_default_without_platform_token(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.delenv("GATEWAY_PLATFORM_TOKEN", raising=False)
-        client = OtariClient(api_base="http://localhost:8000")
+        client = AsyncOtariClient(api_base="http://localhost:8000")
         assert client.platform_mode is False
 
     def test_falls_back_to_api_key_env(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv("GATEWAY_API_KEY", "env-key")
         monkeypatch.delenv("GATEWAY_PLATFORM_TOKEN", raising=False)
-        client = OtariClient(api_base="http://localhost:8000")
+        client = AsyncOtariClient(api_base="http://localhost:8000")
         assert client.platform_mode is False
 
     def test_forwards_default_headers(self) -> None:
-        client = OtariClient(
+        client = AsyncOtariClient(
             api_base="http://localhost:8000",
             default_headers={"X-Custom": "value"},
         )
@@ -172,120 +172,131 @@ class TestNonPlatformMode:
 
 class TestErrorHandlingPlatformMode:
     @pytest.fixture
-    def client(self) -> OtariClient:
-        return OtariClient(
+    def client(self) -> AsyncOtariClient:
+        return AsyncOtariClient(
             api_base="http://localhost:8000",
             platform_token="tk_test",  # noqa: S106
         )
 
-    def test_maps_401_to_authentication_error(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_maps_401_to_authentication_error(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(401, "Unauthorized"),
         )
         with pytest.raises(AuthenticationError):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_maps_403_to_authentication_error(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_maps_403_to_authentication_error(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(403, "Forbidden"),
         )
         with pytest.raises(AuthenticationError):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_maps_404_to_model_not_found(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_maps_404_to_model_not_found(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(404, "Not Found"),
         )
         with pytest.raises(ModelNotFoundError):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_maps_402_to_insufficient_funds(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_maps_402_to_insufficient_funds(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(402, "Payment Required"),
         )
         with pytest.raises(InsufficientFundsError):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_maps_429_to_rate_limit_with_retry_after(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_maps_429_to_rate_limit_with_retry_after(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(429, "Too Many Requests", {"retry-after": "60"}),
         )
         with pytest.raises(RateLimitError) as exc_info:
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
         assert exc_info.value.retry_after == "60"
 
-    def test_maps_502_to_upstream_provider_error(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_maps_502_to_upstream_provider_error(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(502, "Bad Gateway"),
         )
         with pytest.raises(UpstreamProviderError):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_maps_504_to_gateway_timeout(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_maps_504_to_gateway_timeout(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(504, "Gateway Timeout"),
         )
         with pytest.raises(GatewayTimeoutError):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_includes_correlation_id_in_message(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_includes_correlation_id_in_message(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(401, "Unauthorized", {"x-correlation-id": "abc-123"}),
         )
         with pytest.raises(AuthenticationError, match="correlation_id=abc-123"):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_passes_through_unrecognized_status(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_passes_through_unrecognized_status(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(418, "I'm a teapot"),
         )
         with pytest.raises(openai.APIStatusError):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_passes_through_non_api_error(self, client: OtariClient) -> None:
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_passes_through_non_api_error(self, client: AsyncOtariClient) -> None:
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=TypeError("network failure"),
         )
         with pytest.raises(TypeError, match="network failure"):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_stores_original_error(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_stores_original_error(self, client: AsyncOtariClient) -> None:
         api_err = _make_api_error(401, "Unauthorized")
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=api_err,
         )
         with pytest.raises(AuthenticationError) as exc_info:
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
@@ -300,25 +311,27 @@ class TestErrorHandlingPlatformMode:
 
 
 class TestErrorHandlingNonPlatformMode:
-    def test_does_not_map_errors(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000", api_key="my-key")
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_does_not_map_errors(self) -> None:
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="my-key")
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(401, "Unauthorized"),
         )
         # In non-platform mode, the raw APIStatusError should pass through.
         with pytest.raises(openai.APIStatusError):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
 
-    def test_error_is_not_otari_error(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000", api_key="my-key")
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_error_is_not_otari_error(self) -> None:
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="my-key")
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(401, "Unauthorized"),
         )
         with pytest.raises(openai.APIStatusError) as exc_info:
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
@@ -331,52 +344,56 @@ class TestErrorHandlingNonPlatformMode:
 
 
 class TestUnsupportedCapabilityError:
-    def test_surfaces_in_platform_mode(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000", platform_token="tk_test")  # noqa: S106
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_surfaces_in_platform_mode(self) -> None:
+        client = AsyncOtariClient(api_base="http://localhost:8000", platform_token="tk_test")  # noqa: S106
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(400, "Provider anthropic does not support moderation"),
         )
         with pytest.raises(UnsupportedCapabilityError) as exc_info:
-            client.completion(
+            await client.completion(
                 model="anthropic:claude-3",
                 messages=[{"role": "user", "content": "hi"}],
             )
         assert exc_info.value.capability == "moderation"
         assert exc_info.value.provider == "anthropic"
 
-    def test_surfaces_in_non_platform_mode(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000", api_key="my-key")
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_surfaces_in_non_platform_mode(self) -> None:
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="my-key")
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(400, "Provider anthropic does not support moderation"),
         )
         with pytest.raises(UnsupportedCapabilityError) as exc_info:
-            client.completion(
+            await client.completion(
                 model="anthropic:claude-3",
                 messages=[{"role": "user", "content": "hi"}],
             )
         assert exc_info.value.capability == "moderation"
 
-    def test_multimodal_moderation(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000", platform_token="tk_test")  # noqa: S106
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_multimodal_moderation(self) -> None:
+        client = AsyncOtariClient(api_base="http://localhost:8000", platform_token="tk_test")  # noqa: S106
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(
                 400, "Provider openai does not support multimodal moderation for this model"
             ),
         )
         with pytest.raises(UnsupportedCapabilityError) as exc_info:
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
         assert exc_info.value.capability == "multimodal_moderation"
 
-    def test_unrelated_400_passes_through_in_non_platform(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000", api_key="my-key")
-        client.openai.chat.completions.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_unrelated_400_passes_through_in_non_platform(self) -> None:
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="my-key")
+        client.openai.chat.completions.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(400, "Invalid request parameters"),
         )
         with pytest.raises(openai.APIStatusError):
-            client.completion(
+            await client.completion(
                 model="openai:gpt-4o-mini",
                 messages=[{"role": "user", "content": "hi"}],
             )
@@ -389,19 +406,20 @@ class TestUnsupportedCapabilityError:
 
 class TestMethodDelegation:
     @pytest.fixture
-    def client(self) -> OtariClient:
-        return OtariClient(
+    def client(self) -> AsyncOtariClient:
+        return AsyncOtariClient(
             api_base="http://localhost:8000",
             platform_token="tk_test",  # noqa: S106
         )
 
-    def test_completion_delegates(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_completion_delegates(self, client: AsyncOtariClient) -> None:
         mock_response = MagicMock()
         mock_response.id = "chatcmpl-123"
         mock_response.choices = []
-        client.openai.chat.completions.create = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client.openai.chat.completions.create = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        result = client.completion(
+        result = await client.completion(
             model="openai:gpt-4o-mini",
             messages=[{"role": "user", "content": "hi"}],
         )
@@ -411,11 +429,12 @@ class TestMethodDelegation:
             messages=[{"role": "user", "content": "hi"}],
         )
 
-    def test_embedding_delegates(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_embedding_delegates(self, client: AsyncOtariClient) -> None:
         mock_response = MagicMock()
-        client.openai.embeddings.create = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client.openai.embeddings.create = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        result = client.embedding(
+        result = await client.embedding(
             model="openai:text-embedding-3-small",
             input="hello",
         )
@@ -425,49 +444,59 @@ class TestMethodDelegation:
             input="hello",
         )
 
-    def test_response_delegates(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_response_delegates(self, client: AsyncOtariClient) -> None:
         mock_response = MagicMock()
-        client.openai.responses.create = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client.openai.responses.create = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        result = client.response(
+        result = await client.response(
             model="openai:gpt-4o-mini",
             input="hello",
         )
         assert result is mock_response
 
-    def test_list_models_delegates(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_list_models_delegates(self, client: AsyncOtariClient) -> None:
         mock_models = [
             MagicMock(id="model-1"),
             MagicMock(id="model-2"),
         ]
 
         mock_page = MagicMock()
-        mock_page.__iter__ = lambda _self: iter(mock_models)
-        client.openai.models.list = MagicMock(return_value=mock_page)  # type: ignore[method-assign]
 
-        result = client.list_models()
+        async def _aiter(_self: object) -> None:
+            for m in mock_models:
+                yield m
+
+        mock_page.__aiter__ = _aiter
+        client.openai.models.list = AsyncMock(return_value=mock_page)  # type: ignore[method-assign]
+
+        result = await client.list_models()
         assert result == mock_models
 
-    def test_error_mapping_on_embedding(self, client: OtariClient) -> None:
-        client.openai.embeddings.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_error_mapping_on_embedding(self, client: AsyncOtariClient) -> None:
+        client.openai.embeddings.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(401, "Unauthorized"),
         )
         with pytest.raises(AuthenticationError):
-            client.embedding(model="openai:text-embedding-3-small", input="hello")
+            await client.embedding(model="openai:text-embedding-3-small", input="hello")
 
-    def test_error_mapping_on_response(self, client: OtariClient) -> None:
-        client.openai.responses.create = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_error_mapping_on_response(self, client: AsyncOtariClient) -> None:
+        client.openai.responses.create = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(429, "Rate limited"),
         )
         with pytest.raises(RateLimitError):
-            client.response(model="openai:gpt-4o-mini", input="hello")
+            await client.response(model="openai:gpt-4o-mini", input="hello")
 
-    def test_error_mapping_on_list_models(self, client: OtariClient) -> None:
-        client.openai.models.list = MagicMock(  # type: ignore[method-assign]
+    @pytest.mark.asyncio
+    async def test_error_mapping_on_list_models(self, client: AsyncOtariClient) -> None:
+        client.openai.models.list = AsyncMock(  # type: ignore[method-assign]
             side_effect=_make_api_error(502, "Bad Gateway"),
         )
         with pytest.raises(UpstreamProviderError):
-            client.list_models()
+            await client.list_models()
 
 
 # ---------------------------------------------------------------------------
@@ -477,56 +506,61 @@ class TestMethodDelegation:
 
 class TestBatchOperations:
     @pytest.fixture
-    def client(self) -> OtariClient:
-        return OtariClient(
+    def client(self) -> AsyncOtariClient:
+        return AsyncOtariClient(
             api_base="http://localhost:8000",
             platform_token="tk_test",  # noqa: S106
         )
 
-    def test_create_batch(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_create_batch(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             200,
             json={"id": "batch-123", "status": "created", "provider": "openai"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        result = client.create_batch({
+        result = await client.create_batch({
             "model": "openai:gpt-4o-mini",
             "requests": [{"custom_id": "r1", "body": {"messages": []}}],
         })
         assert result["id"] == "batch-123"
 
-    def test_retrieve_batch(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_retrieve_batch(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             200,
             json={"id": "batch-123", "status": "completed"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        result = client.retrieve_batch("batch-123", "openai")
+        result = await client.retrieve_batch("batch-123", "openai")
         assert result["status"] == "completed"
 
-    def test_cancel_batch(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_cancel_batch(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             200,
             json={"id": "batch-123", "status": "cancelled"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        result = client.cancel_batch("batch-123", "openai")
+        result = await client.cancel_batch("batch-123", "openai")
         assert result["status"] == "cancelled"
 
-    def test_list_batches(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_list_batches(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             200,
             json={"data": [{"id": "b1"}, {"id": "b2"}]},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        result = client.list_batches("openai")
+        result = await client.list_batches("openai")
         assert len(result) == 2
 
-    def test_retrieve_batch_results(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_retrieve_batch_results(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             200,
             json={
@@ -536,9 +570,9 @@ class TestBatchOperations:
                 ]
             },
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        result = client.retrieve_batch_results("batch-123", "openai")
+        result = await client.retrieve_batch_results("batch-123", "openai")
         assert len(result.results) == 2
         assert result.results[0].custom_id == "r1"
         assert result.results[1].error is not None
@@ -546,124 +580,133 @@ class TestBatchOperations:
 
 class TestBatchErrorHandling:
     @pytest.fixture
-    def client(self) -> OtariClient:
-        return OtariClient(
+    def client(self) -> AsyncOtariClient:
+        return AsyncOtariClient(
             api_base="http://localhost:8000",
             platform_token="tk_test",  # noqa: S106
         )
 
-    def test_409_maps_to_batch_not_complete(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_409_maps_to_batch_not_complete(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             409,
             json={"detail": "Batch 'batch-123' is not complete (status: in_progress)"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
         with pytest.raises(BatchNotCompleteError) as exc_info:
-            client.retrieve_batch_results("batch-123", "openai")
+            await client.retrieve_batch_results("batch-123", "openai")
         assert exc_info.value.batch_id == "batch-123"
         assert exc_info.value.batch_status == "in_progress"
 
-    def test_404_suggests_upgrade(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_404_suggests_upgrade(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             404,
             json={"detail": "Not supported"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
         with pytest.raises(OtariError, match="Upgrade your gateway"):
-            client.create_batch({
+            await client.create_batch({
                 "model": "openai:gpt-4o-mini",
                 "requests": [],
             })
 
-    def test_404_passes_through_not_found(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_404_passes_through_not_found(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             404,
             json={"detail": "Batch not found"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
         with pytest.raises(OtariError, match="not found"):
-            client.retrieve_batch("batch-xyz", "openai")
+            await client.retrieve_batch("batch-xyz", "openai")
 
-    def test_401_maps_to_authentication_error(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_401_maps_to_authentication_error(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             401,
             json={"detail": "Invalid key"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
         with pytest.raises(AuthenticationError):
-            client.create_batch({
+            await client.create_batch({
                 "model": "openai:gpt-4o-mini",
                 "requests": [],
             })
 
-    def test_429_maps_to_rate_limit(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_429_maps_to_rate_limit(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             429,
             headers={"retry-after": "30"},
             json={"detail": "Rate limited"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
         with pytest.raises(RateLimitError) as exc_info:
-            client.create_batch({
+            await client.create_batch({
                 "model": "openai:gpt-4o-mini",
                 "requests": [],
             })
         assert exc_info.value.retry_after == "30"
 
-    def test_502_maps_to_upstream_error(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_502_maps_to_upstream_error(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             502,
             json={"detail": "Bad Gateway"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
         with pytest.raises(UpstreamProviderError):
-            client.create_batch({
+            await client.create_batch({
                 "model": "openai:gpt-4o-mini",
                 "requests": [],
             })
 
-    def test_504_maps_to_gateway_timeout(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_504_maps_to_gateway_timeout(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             504,
             json={"detail": "Gateway Timeout"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
         with pytest.raises(GatewayTimeoutError):
-            client.create_batch({
+            await client.create_batch({
                 "model": "openai:gpt-4o-mini",
                 "requests": [],
             })
 
-    def test_correlation_id_in_batch_error(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_correlation_id_in_batch_error(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             401,
             headers={"x-correlation-id": "corr-456"},
             json={"detail": "Invalid key"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
         with pytest.raises(AuthenticationError, match="correlation_id=corr-456"):
-            client.create_batch({
+            await client.create_batch({
                 "model": "openai:gpt-4o-mini",
                 "requests": [],
             })
 
-    def test_unknown_status_maps_to_otari_error(self, client: OtariClient) -> None:
+    @pytest.mark.asyncio
+    async def test_unknown_status_maps_to_otari_error(self, client: AsyncOtariClient) -> None:
         mock_response = httpx.Response(
             418,
             json={"detail": "I'm a teapot"},
         )
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
         with pytest.raises(OtariError):
-            client.create_batch({
+            await client.create_batch({
                 "model": "openai:gpt-4o-mini",
                 "requests": [],
             })
@@ -675,12 +718,13 @@ class TestBatchErrorHandling:
 
 
 class TestBatchAuthModes:
-    def test_non_platform_sends_otari_key(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000", api_key="my-key")
+    @pytest.mark.asyncio
+    async def test_non_platform_sends_otari_key(self) -> None:
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="my-key")
         mock_response = httpx.Response(200, json={"id": "b1", "provider": "openai"})
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        client.create_batch({
+        await client.create_batch({
             "model": "openai:gpt-4o-mini",
             "requests": [],
         })
@@ -689,12 +733,13 @@ class TestBatchAuthModes:
         assert headers.get("Otari-Key") == "Bearer my-key"
         assert "Authorization" not in headers
 
-    def test_platform_sends_authorization(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000", platform_token="tk_123")  # noqa: S106
+    @pytest.mark.asyncio
+    async def test_platform_sends_authorization(self) -> None:
+        client = AsyncOtariClient(api_base="http://localhost:8000", platform_token="tk_123")  # noqa: S106
         mock_response = httpx.Response(200, json={"id": "b1", "provider": "openai"})
-        client._http.request = MagicMock(return_value=mock_response)  # type: ignore[method-assign]
+        client._http.request = AsyncMock(return_value=mock_response)  # type: ignore[method-assign]
 
-        client.create_batch({
+        await client.create_batch({
             "model": "openai:gpt-4o-mini",
             "requests": [],
         })
@@ -710,6 +755,7 @@ class TestBatchAuthModes:
 
 
 class TestContextManager:
-    def test_context_manager(self) -> None:
-        with OtariClient(api_base="http://localhost:8000") as client:
+    @pytest.mark.asyncio
+    async def test_async_context_manager(self) -> None:
+        async with AsyncOtariClient(api_base="http://localhost:8000") as client:
             assert client.platform_mode is False

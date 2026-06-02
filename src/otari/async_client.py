@@ -1,19 +1,19 @@
-"""OtariClient: synchronous Python client for the otari gateway.
+"""AsyncOtariClient: asynchronous Python client for the otari gateway.
 
-Wraps the OpenAI Python SDK (``OpenAI``), adding gateway-specific auth handling
-and error mapping for platform mode. For an asynchronous client, see
-:class:`~otari.async_client.AsyncOtariClient`.
+Wraps the OpenAI Python SDK (``AsyncOpenAI``), adding gateway-specific auth
+handling and error mapping for platform mode. Extracted from the
+``GatewayProvider`` in `any-llm <https://github.com/mozilla-ai/any-llm>`_.
 
 Example::
 
-    from otari import OtariClient
+    from otari import AsyncOtariClient
 
-    client = OtariClient(
+    client = AsyncOtariClient(
         api_base="http://localhost:8000",
         platform_token="tk_xxx",
     )
 
-    response = client.completion(
+    response = await client.completion(
         model="openai:gpt-4o-mini",
         messages=[{"role": "user", "content": "Hello!"}],
     )
@@ -25,12 +25,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, overload
 
 import httpx
-from openai import OpenAI
+from openai import AsyncOpenAI
 
 from otari._base import _BaseOtariClient, _url_encode
 
 if TYPE_CHECKING:
-    from openai import Stream
+    from openai import AsyncStream
     from openai.types import CreateEmbeddingResponse, Model
     from openai.types.chat import (
         ChatCompletion,
@@ -48,8 +48,8 @@ if TYPE_CHECKING:
     )
 
 
-class OtariClient(_BaseOtariClient):
-    """Synchronous client for the otari gateway.
+class AsyncOtariClient(_BaseOtariClient):
+    """Asynchronous client for the otari gateway.
 
     Supports two authentication modes (mirroring the TypeScript SDK and
     the Python ``GatewayProvider``):
@@ -58,8 +58,6 @@ class OtariClient(_BaseOtariClient):
       header. Errors are mapped to typed otari exceptions.
     - **Non-platform mode**: An API key is sent via a custom ``Otari-Key``
       header. Errors from the OpenAI SDK pass through unmodified.
-
-    For asynchronous usage, see :class:`~otari.async_client.AsyncOtariClient`.
 
     Args:
         api_base: Base URL of the gateway (e.g. ``"http://localhost:8000"``).
@@ -73,23 +71,23 @@ class OtariClient(_BaseOtariClient):
             legacy ``GATEWAY_PLATFORM_TOKEN`` alias).
         default_headers: Additional default headers to send with every request.
         openai_options: Extra keyword arguments forwarded to the underlying
-            ``OpenAI`` constructor.
+            ``AsyncOpenAI`` constructor.
 
     Example::
 
-        client = OtariClient(
+        client = AsyncOtariClient(
             api_base="http://localhost:8000",
             platform_token="tk_xxx",
         )
 
-        response = client.completion(
+        response = await client.completion(
             model="openai:gpt-4o-mini",
             messages=[{"role": "user", "content": "Hello!"}],
         )
         print(response.choices[0].message.content)
     """
 
-    openai: OpenAI
+    openai: AsyncOpenAI
     """The underlying OpenAI client instance."""
 
     def __init__(
@@ -108,19 +106,19 @@ class OtariClient(_BaseOtariClient):
             default_headers=default_headers,
             openai_options=openai_options,
         )
-        self.openai = OpenAI(
+        self.openai = AsyncOpenAI(
             api_key=self._openai_api_key,
             base_url=self._openai_base_url,
             default_headers=self._openai_default_headers,
             **self._openai_extra_kwargs,
         )
         # httpx client for raw HTTP calls (batch, etc.)
-        self._http = httpx.Client()
+        self._http = httpx.AsyncClient()
 
     # -- Chat completions ---------------------------------------------------
 
     @overload
-    def completion(
+    async def completion(
         self,
         *,
         model: str,
@@ -130,16 +128,16 @@ class OtariClient(_BaseOtariClient):
     ) -> ChatCompletion: ...
 
     @overload
-    def completion(
+    async def completion(
         self,
         *,
         model: str,
         messages: list[dict[str, Any]],
         stream: bool = ...,
         **kwargs: Any,
-    ) -> ChatCompletion | Stream[ChatCompletionChunk]: ...
+    ) -> ChatCompletion | AsyncStream[ChatCompletionChunk]: ...
 
-    def completion(
+    async def completion(
         self,
         *,
         model: str,
@@ -149,7 +147,7 @@ class OtariClient(_BaseOtariClient):
     ) -> Any:
         """Create a chat completion.
 
-        When ``stream=True`` is set, returns an iterable of chunks.
+        When ``stream=True`` is set, returns an async iterable of chunks.
 
         Args:
             model: Model identifier (e.g. ``"openai:gpt-4o-mini"``).
@@ -158,27 +156,27 @@ class OtariClient(_BaseOtariClient):
             **kwargs: Additional parameters forwarded to the OpenAI API.
 
         Returns:
-            A ``ChatCompletion`` or a stream of ``ChatCompletionChunk``.
+            A ``ChatCompletion`` or an async stream of ``ChatCompletionChunk``.
         """
         try:
             params: dict[str, Any] = {"model": model, "messages": messages, **kwargs}
             if stream is not None:
                 params["stream"] = stream
-            return self.openai.chat.completions.create(**params)
+            return await self.openai.chat.completions.create(**params)
         except Exception as exc:
             self._handle_error(exc)
             raise
 
     # -- Responses API ------------------------------------------------------
 
-    def response(
+    async def response(
         self,
         *,
         model: str,
         input: Any,  # noqa: A002
         stream: bool | None = None,
         **kwargs: Any,
-    ) -> Response | Stream[ResponseStreamEvent]:
+    ) -> Response | AsyncStream[ResponseStreamEvent]:
         """Create a response using the OpenAI Responses API.
 
         Args:
@@ -188,13 +186,13 @@ class OtariClient(_BaseOtariClient):
             **kwargs: Additional parameters forwarded to the OpenAI API.
 
         Returns:
-            A ``Response`` or a stream of ``ResponseStreamEvent``.
+            A ``Response`` or an async stream of ``ResponseStreamEvent``.
         """
         try:
             params: dict[str, Any] = {"model": model, "input": input, **kwargs}
             if stream is not None:
                 params["stream"] = stream
-            result: Response | Stream[ResponseStreamEvent] = self.openai.responses.create(**params)
+            result: Response | AsyncStream[ResponseStreamEvent] = await self.openai.responses.create(**params)
         except Exception as exc:
             self._handle_error(exc)
             raise
@@ -203,7 +201,7 @@ class OtariClient(_BaseOtariClient):
 
     # -- Embeddings ---------------------------------------------------------
 
-    def embedding(
+    async def embedding(
         self,
         *,
         model: str,
@@ -221,30 +219,30 @@ class OtariClient(_BaseOtariClient):
             An ``CreateEmbeddingResponse``.
         """
         try:
-            return self.openai.embeddings.create(model=model, input=input, **kwargs)
+            return await self.openai.embeddings.create(model=model, input=input, **kwargs)
         except Exception as exc:
             self._handle_error(exc)
             raise
 
     # -- Models -------------------------------------------------------------
 
-    def list_models(self) -> list[Model]:
+    async def list_models(self) -> list[Model]:
         """List available models from the gateway.
 
         Returns:
             A list of ``Model`` objects.
         """
         try:
-            page = self.openai.models.list()
+            page = await self.openai.models.list()
         except Exception as exc:
             self._handle_error(exc)
             raise
         else:
-            return list(page)
+            return [model async for model in page]
 
     # -- Batch operations ---------------------------------------------------
 
-    def create_batch(self, params: CreateBatchParams) -> dict[str, Any]:
+    async def create_batch(self, params: CreateBatchParams) -> dict[str, Any]:
         """Create a batch job.
 
         Args:
@@ -253,9 +251,9 @@ class OtariClient(_BaseOtariClient):
         Returns:
             The created batch object.
         """
-        return self._batch_request("POST", "/batches", body=dict(params))
+        return await self._batch_request("POST", "/batches", body=dict(params))
 
-    def retrieve_batch(self, batch_id: str, provider: str) -> dict[str, Any]:
+    async def retrieve_batch(self, batch_id: str, provider: str) -> dict[str, Any]:
         """Retrieve the status of a batch job.
 
         Args:
@@ -266,12 +264,12 @@ class OtariClient(_BaseOtariClient):
             The batch object with current status.
         """
         encoded_id = httpx.URL(f"/batches/{batch_id}").raw_path.decode()
-        return self._batch_request(
+        return await self._batch_request(
             "GET",
             f"{encoded_id}?provider={_url_encode(provider)}",
         )
 
-    def cancel_batch(self, batch_id: str, provider: str) -> dict[str, Any]:
+    async def cancel_batch(self, batch_id: str, provider: str) -> dict[str, Any]:
         """Cancel a batch job.
 
         Args:
@@ -282,12 +280,12 @@ class OtariClient(_BaseOtariClient):
             The batch object with updated status.
         """
         encoded_id = httpx.URL(f"/batches/{batch_id}").raw_path.decode()
-        return self._batch_request(
+        return await self._batch_request(
             "POST",
             f"{encoded_id}/cancel?provider={_url_encode(provider)}",
         )
 
-    def list_batches(
+    async def list_batches(
         self,
         provider: str,
         options: ListBatchesOptions | None = None,
@@ -308,11 +306,11 @@ class OtariClient(_BaseOtariClient):
             if "limit" in options:
                 params_parts.append(f"limit={options['limit']}")
         query = "&".join(params_parts)
-        response = self._batch_request("GET", f"/batches?{query}")
+        response = await self._batch_request("GET", f"/batches?{query}")
         data: list[dict[str, Any]] = response.get("data", [])
         return data
 
-    def retrieve_batch_results(
+    async def retrieve_batch_results(
         self,
         batch_id: str,
         provider: str,
@@ -333,7 +331,7 @@ class OtariClient(_BaseOtariClient):
         from otari.types import BatchResultItem  # noqa: PLC0415
 
         encoded_id = httpx.URL(f"/batches/{batch_id}").raw_path.decode()
-        data = self._batch_request(
+        data = await self._batch_request(
             "GET",
             f"{encoded_id}/results?provider={_url_encode(provider)}",
         )
@@ -349,7 +347,7 @@ class OtariClient(_BaseOtariClient):
 
     # -- Batch HTTP helpers -------------------------------------------------
 
-    def _batch_request(
+    async def _batch_request(
         self,
         method: str,
         path: str,
@@ -362,7 +360,7 @@ class OtariClient(_BaseOtariClient):
         use direct HTTP because the gateway batch API has a custom JSON format.
         """
         url = f"{self._base_url}{path}"
-        response = self._http.request(
+        response = await self._http.request(
             method,
             url,
             headers=self._build_batch_headers(),
@@ -377,13 +375,13 @@ class OtariClient(_BaseOtariClient):
 
     # -- Cleanup ------------------------------------------------------------
 
-    def close(self) -> None:
+    async def close(self) -> None:
         """Close the underlying HTTP clients."""
-        self._http.close()
-        self.openai.close()
+        await self._http.aclose()
+        await self.openai.close()
 
-    def __enter__(self) -> OtariClient:
+    async def __aenter__(self) -> AsyncOtariClient:
         return self
 
-    def __exit__(self, *args: Any) -> None:
-        self.close()
+    async def __aexit__(self, *args: Any) -> None:
+        await self.close()

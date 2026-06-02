@@ -14,6 +14,7 @@ from typing import Any, TypedDict
 # The TC002 / PLC0414 warnings are intentionally suppressed because these
 # imports exist solely for re-export.
 # ---------------------------------------------------------------------------
+from openai import AsyncStream as AsyncStream  # noqa: PLC0414
 from openai import Stream as Stream  # noqa: PLC0414
 from openai.types import CreateEmbeddingResponse as CreateEmbeddingResponse  # noqa: PLC0414
 from openai.types import EmbeddingCreateParams as EmbeddingCreateParams  # noqa: PLC0414
