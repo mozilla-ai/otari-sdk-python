@@ -22,12 +22,15 @@ Example::
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, Any, overload
 
 import httpx
 from openai import OpenAI
 
 from otari._base import _BaseOtariClient, _url_encode
+from otari.control_plane import ControlPlane
+from otari.errors import OtariError
 
 if TYPE_CHECKING:
     from openai import Stream
@@ -98,6 +101,7 @@ class OtariClient(_BaseOtariClient):
         *,
         api_key: str | None = None,
         platform_token: str | None = None,
+        admin_key: str | None = None,
         default_headers: dict[str, str] | None = None,
         openai_options: dict[str, Any] | None = None,
     ) -> None:
@@ -105,6 +109,7 @@ class OtariClient(_BaseOtariClient):
             api_base,
             api_key=api_key,
             platform_token=platform_token,
+            admin_key=admin_key,
             default_headers=default_headers,
             openai_options=openai_options,
         )
@@ -116,6 +121,22 @@ class OtariClient(_BaseOtariClient):
         )
         # httpx client for raw HTTP calls (batch, etc.)
         self._http = httpx.Client()
+
+    @cached_property
+    def control_plane(self) -> ControlPlane:
+        """Typed client for the management endpoints (keys, users, budgets, pricing, usage).
+
+        Requires an admin credential: pass ``admin_key`` (the gateway master key),
+        set ``GATEWAY_ADMIN_KEY``, or use ``platform_token`` (which doubles as the
+        control-plane bearer in platform mode).
+        """
+        if not self._admin_token:
+            msg = (
+                "control-plane management requires an admin credential; pass "
+                "admin_key=... (the gateway master key) or use platform_token=..."
+            )
+            raise OtariError(msg)
+        return ControlPlane(self._gateway_root_url, self._admin_token)
 
     # -- Chat completions ---------------------------------------------------
 

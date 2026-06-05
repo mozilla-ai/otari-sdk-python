@@ -24,6 +24,10 @@ classifiers = [
 dependencies = [
     "openai>=1.99.3",
     "httpx>=0.25.0",
+    # Runtime deps of the generated control-plane client (otari._control_plane).
+    "urllib3>=2.1.0",
+    "python-dateutil>=2.8.2",
+    "pydantic>=2.0.0",
 ]
 
 [project.urls]
@@ -50,6 +54,8 @@ asyncio_mode = "auto"
 [tool.ruff]
 target-version = "py311"
 line-length = 120
+# Generated control-plane client (OpenAPI Generator output) is not hand-linted.
+extend-exclude = ["src/otari/_control_plane"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "S", "B", "A", "C4", "DTZ", "T10", "ISC", "ICN", "PIE", "PT", "RSE", "RET", "SIM", "TID", "TCH", "ARG", "PLC", "PLE", "PLW", "TRY", "FLY", "PERF", "RUF"]
@@ -63,3 +69,10 @@ python_version = "3.11"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
+# Generated control-plane client (OpenAPI Generator output) is not type-checked here.
+exclude = ["src/otari/_control_plane/"]
+
+[[tool.mypy.overrides]]
+module = ["otari._control_plane.*"]
+ignore_errors = true
+ignore_missing_imports = true

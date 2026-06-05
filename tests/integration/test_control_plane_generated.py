@@ -1,20 +1,18 @@
-"""Integration tests for the generated control-plane client against a live gateway.
+"""Integration tests for the control-plane surface against a live gateway.
 
-These drive the generated control-plane client through a full CRUD lifecycle for
-every management endpoint (keys, users, budgets, pricing, usage). They start a
-real gateway on SQLite with a master key, so no provider credentials or database
-server are needed: control-plane endpoints never call an LLM provider.
+These drive ``OtariClient.control_plane`` through a full CRUD lifecycle for every
+management endpoint (keys, users, budgets, pricing, usage), exercising the manual
+wiring (Bearer auth + the generated client) end to end. They start a real gateway
+on SQLite with a master key, so no provider credentials or database server are
+needed: control-plane endpoints never call an LLM provider.
 
 Run requirements:
 - The ``gateway`` console script on PATH (set ``OTARI_GATEWAY_CMD`` to override),
   e.g. ``pip install otari-gateway`` in CI.
-- The generated client importable (this preview imports it from
-  ``src/otari/_generated``; once it is wired into the public client, import from
-  there instead).
 
 Auth note, verified against the gateway: management endpoints authenticate via
 ``Authorization: Bearer <master_key>``, NOT the ``Otari-Key`` virtual-key header
-used for inference.
+used for inference. ``OtariClient`` sends the former when given ``admin_key``.
 """
 
 from __future__ import annotations
@@ -23,7 +21,6 @@ import contextlib
 import os
 import socket
 import subprocess
-import sys
 import tempfile
 import time
 import urllib.error
@@ -33,30 +30,19 @@ from pathlib import Path
 
 import pytest
 
+from otari import OtariClient
+from otari._control_plane.exceptions import NotFoundException
+from otari._control_plane.models.create_budget_request import CreateBudgetRequest
+from otari._control_plane.models.create_key_request import CreateKeyRequest
+from otari._control_plane.models.create_user_request import CreateUserRequest
+from otari._control_plane.models.set_pricing_request import SetPricingRequest
+from otari._control_plane.models.update_budget_request import UpdateBudgetRequest
+from otari._control_plane.models.update_key_request import UpdateKeyRequest
+from otari._control_plane.models.update_user_request import UpdateUserRequest
+
 pytestmark = pytest.mark.integration
 
 MASTER_KEY = "itest-master-key"
-
-# Preview: import the generated client from where the codegen PR drops it.
-_GENERATED = Path(__file__).resolve().parents[2] / "src" / "otari" / "_generated"
-if _GENERATED.is_dir():
-    sys.path.insert(0, str(_GENERATED))
-
-ocp = pytest.importorskip("otari_control_plane", reason="generated control-plane client not present")
-
-from otari_control_plane.api.budgets_api import BudgetsApi  # noqa: E402
-from otari_control_plane.api.keys_api import KeysApi  # noqa: E402
-from otari_control_plane.api.pricing_api import PricingApi  # noqa: E402
-from otari_control_plane.api.usage_api import UsageApi  # noqa: E402
-from otari_control_plane.api.users_api import UsersApi  # noqa: E402
-from otari_control_plane.exceptions import NotFoundException  # noqa: E402
-from otari_control_plane.models.create_budget_request import CreateBudgetRequest  # noqa: E402
-from otari_control_plane.models.create_key_request import CreateKeyRequest  # noqa: E402
-from otari_control_plane.models.create_user_request import CreateUserRequest  # noqa: E402
-from otari_control_plane.models.set_pricing_request import SetPricingRequest  # noqa: E402
-from otari_control_plane.models.update_budget_request import UpdateBudgetRequest  # noqa: E402
-from otari_control_plane.models.update_key_request import UpdateKeyRequest  # noqa: E402
-from otari_control_plane.models.update_user_request import UpdateUserRequest  # noqa: E402
 
 
 def _free_port() -> int:
@@ -104,16 +90,16 @@ def gateway_url() -> Iterator[str]:
 
 
 @pytest.fixture
-def api_client(gateway_url: str) -> Iterator[object]:
-    config = ocp.Configuration(host=gateway_url)
-    # Management endpoints use Bearer auth with the master key (not Otari-Key).
-    with ocp.ApiClient(config) as client:
-        client.set_default_header("Authorization", f"Bearer {MASTER_KEY}")
-        yield client
+def client(gateway_url: str) -> Iterator[OtariClient]:
+    otari = OtariClient(api_base=gateway_url, admin_key=MASTER_KEY)
+    try:
+        yield otari
+    finally:
+        otari.control_plane.close()
 
 
-def test_budgets_lifecycle(api_client: object) -> None:
-    api = BudgetsApi(api_client)
+def test_budgets_lifecycle(client: OtariClient) -> None:
+    api = client.control_plane.budgets
     created = api.create_budget_v1_budgets_post(CreateBudgetRequest(max_budget=100.0, budget_duration_sec=3600))
     assert created.budget_id
     assert created.max_budget == 100.0
@@ -130,8 +116,8 @@ def test_budgets_lifecycle(api_client: object) -> None:
         api.get_budget_v1_budgets_budget_id_get(bid)
 
 
-def test_users_lifecycle(api_client: object) -> None:
-    api = UsersApi(api_client)
+def test_users_lifecycle(client: OtariClient) -> None:
+    api = client.control_plane.users
     created = api.create_user_v1_users_post(CreateUserRequest(user_id="itest-user", alias="Alice"))
     assert created.user_id == "itest-user"
     assert created.alias == "Alice"
@@ -142,7 +128,6 @@ def test_users_lifecycle(api_client: object) -> None:
     updated = api.update_user_v1_users_user_id_patch("itest-user", UpdateUserRequest(alias="Alice2"))
     assert updated.alias == "Alice2"
 
-    # usage sub-resource is readable for a known user
     api.get_user_usage_v1_users_user_id_usage_get("itest-user")
 
     api.delete_user_v1_users_user_id_delete("itest-user")
@@ -150,8 +135,8 @@ def test_users_lifecycle(api_client: object) -> None:
         api.get_user_v1_users_user_id_get("itest-user")
 
 
-def test_keys_lifecycle_returns_secret_on_create(api_client: object) -> None:
-    api = KeysApi(api_client)
+def test_keys_lifecycle_returns_secret_on_create(client: OtariClient) -> None:
+    api = client.control_plane.keys
     created = api.create_key_v1_keys_post(CreateKeyRequest(key_name="itest-key"))
     assert created.id
     # The one-time key value must be present on create (manually-created surface).
@@ -169,8 +154,8 @@ def test_keys_lifecycle_returns_secret_on_create(api_client: object) -> None:
         api.get_key_v1_keys_key_id_get(kid)
 
 
-def test_pricing_lifecycle(api_client: object) -> None:
-    api = PricingApi(api_client)
+def test_pricing_lifecycle(client: OtariClient) -> None:
+    api = client.control_plane.pricing
     model_key = "openai:itest-model"
     created = api.set_pricing_v1_pricing_post(
         SetPricingRequest(model_key=model_key, input_price_per_million=1.0, output_price_per_million=2.0)
@@ -179,7 +164,6 @@ def test_pricing_lifecycle(api_client: object) -> None:
 
     assert any(p.model_key == model_key for p in api.list_pricing_v1_pricing_get())
     assert api.get_pricing_v1_pricing_model_key_get(model_key).model_key == model_key
-    # history is populated after at least one set
     assert api.get_pricing_history_v1_pricing_model_key_history_get(model_key) is not None
 
     api.delete_pricing_v1_pricing_model_key_delete(model_key)
@@ -187,7 +171,14 @@ def test_pricing_lifecycle(api_client: object) -> None:
         api.get_pricing_v1_pricing_model_key_get(model_key)
 
 
-def test_usage_is_readable(api_client: object) -> None:
-    api = UsageApi(api_client)
-    # Fresh gateway: usage list is readable (and empty), proving the typed GET works.
-    assert api.list_usage_v1_usage_get() is not None
+def test_usage_is_readable(client: OtariClient) -> None:
+    # Fresh gateway: usage list is readable, proving the typed GET works through the client.
+    assert client.control_plane.usage.list_usage_v1_usage_get() is not None
+
+
+def test_control_plane_requires_admin_credential(gateway_url: str) -> None:
+    from otari import OtariError
+
+    no_admin = OtariClient(api_base=gateway_url, api_key="some-virtual-key")
+    with pytest.raises(OtariError):
+        _ = no_admin.control_plane

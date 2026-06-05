@@ -46,6 +46,8 @@ _ENV_API_KEY = "GATEWAY_API_KEY"
 # Matches the gateway server's own alias chain (OTARI_AI_TOKEN preferred).
 _ENV_PLATFORM_TOKEN = "OTARI_AI_TOKEN"  # noqa: S105
 _ENV_PLATFORM_TOKEN_LEGACY = "GATEWAY_PLATFORM_TOKEN"  # noqa: S105
+# Admin/master credential for the control-plane (management) endpoints.
+_ENV_ADMIN_KEY = "GATEWAY_ADMIN_KEY"
 
 _STATUS_TO_ERROR: dict[int, type[AuthenticationError] | type[ModelNotFoundError]] = {
     401: AuthenticationError,
@@ -72,6 +74,7 @@ class _BaseOtariClient:
         *,
         api_key: str | None = None,
         platform_token: str | None = None,
+        admin_key: str | None = None,
         default_headers: dict[str, str] | None = None,
         openai_options: dict[str, Any] | None = None,
     ) -> None:
@@ -148,6 +151,17 @@ class _BaseOtariClient:
             self._auth_headers[GATEWAY_HEADER_NAME] = f"Bearer {resolved_api_key}"
         if default_headers:
             self._auth_headers.update(default_headers)
+
+        # Control-plane (management) auth. Those endpoints expect
+        # ``Authorization: Bearer <admin/master key>``. In platform mode the
+        # platform token already serves as that bearer; for a self-hosted
+        # gateway the caller passes the master key as ``admin_key`` (or via
+        # ``GATEWAY_ADMIN_KEY``). The control-plane client targets the gateway
+        # root (the generated paths already include the ``/v1`` prefix).
+        self._gateway_root_url = api_base_url.removesuffix("/v1")
+        self._admin_token: str | None = (
+            admin_key or os.environ.get(_ENV_ADMIN_KEY) or resolved_platform_token
+        )
 
     # -- Error handling -----------------------------------------------------
 

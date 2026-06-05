@@ -20,6 +20,7 @@ from importlib.metadata import PackageNotFoundError, version
 
 from otari.async_client import AsyncOtariClient
 from otari.client import OtariClient
+from otari.control_plane import ControlPlane
 from otari.errors import (
     AuthenticationError,
     BatchNotCompleteError,
@@ -69,6 +70,7 @@ __all__ = [
     "ChatCompletion",
     "ChatCompletionChunk",
     "ChatCompletionMessageParam",
+    "ControlPlane",
     "CreateBatchParams",
     "CreateEmbeddingResponse",
     "EmbeddingCreateParams",
