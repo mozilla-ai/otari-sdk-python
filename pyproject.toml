@@ -50,6 +50,9 @@ packages = ["src/otari"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+markers = [
+    "integration: tests that require a running gateway (skipped if none is available)",
+]
 
 [tool.ruff]
 target-version = "py311"
@@ -60,6 +63,11 @@ extend-exclude = ["src/otari/_control_plane"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "S", "B", "A", "C4", "DTZ", "T10", "ISC", "ICN", "PIE", "PT", "RSE", "RET", "SIM", "TID", "TCH", "ARG", "PLC", "PLE", "PLW", "TRY", "FLY", "PERF", "RUF"]
 ignore = ["S101", "TRY003", "PLW0603"]
+
+[tool.ruff.lint.per-file-ignores]
+# Integration tests spawn the gateway subprocess and poll it over HTTP; the
+# subprocess/URL/temp-file audit rules don't apply to that test harness.
+"tests/integration/*" = ["S603", "S310", "SIM115", "SIM117", "PLC0415", "TC003"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["otari"]

@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import contextlib
 import os
+import shutil
 import socket
 import subprocess
 import tempfile
@@ -26,7 +27,6 @@ import time
 import urllib.error
 import urllib.request
 from collections.abc import Iterator
-from pathlib import Path
 
 import pytest
 
@@ -65,6 +65,8 @@ def _wait_healthy(base_url: str, timeout: float = 30.0) -> None:
 @pytest.fixture(scope="module")
 def gateway_url() -> Iterator[str]:
     cmd = os.environ.get("OTARI_GATEWAY_CMD", "gateway").split()
+    if shutil.which(cmd[0]) is None:
+        pytest.skip(f"gateway command '{cmd[0]}' not found; set OTARI_GATEWAY_CMD (e.g. pip install the gateway)")
     port = _free_port()
     db_path = tempfile.NamedTemporaryFile(suffix=".db", delete=False).name
     proc = subprocess.Popen(
