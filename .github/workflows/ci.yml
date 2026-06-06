@@ -35,3 +35,9 @@ jobs:
       - name: Test
         # Integration tests skip automatically when no gateway is on PATH.
         run: uv run pytest
+
+      - name: Endpoint-coverage drift gate
+        # Fetches the canonical gateway OpenAPI spec and fails if it exposes an
+        # endpoint absent from sdk-endpoints.txt ([covered] or [excluded]).
+        # Network is available in CI, so this must not skip here.
+        run: uv run pytest tests/unit/test_endpoint_coverage.py -v
