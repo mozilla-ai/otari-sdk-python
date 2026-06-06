@@ -1,7 +1,8 @@
 """Typed client for the gateway control-plane (management) endpoints.
 
-Wraps the generated :mod:`otari._control_plane` client. The control-plane
-endpoints (API keys, users, budgets, pricing, usage) authenticate with
+Wraps the OpenAPI-generated :mod:`otari._client` core (the same core that backs
+the inference path under Option C). The control-plane endpoints (API keys,
+users, budgets, pricing, usage) authenticate with
 ``Authorization: Bearer <admin/master key>``, which is distinct from the
 ``Otari-Key`` virtual key used for inference. Obtain an instance via
 :attr:`otari.OtariClient.control_plane`.
@@ -12,12 +13,12 @@ from __future__ import annotations
 from functools import cached_property
 from typing import Any, cast
 
-from otari import _control_plane as _cp
-from otari._control_plane.api.budgets_api import BudgetsApi
-from otari._control_plane.api.keys_api import KeysApi
-from otari._control_plane.api.pricing_api import PricingApi
-from otari._control_plane.api.usage_api import UsageApi
-from otari._control_plane.api.users_api import UsersApi
+from otari import _client as _cp
+from otari._client.api.budgets_api import BudgetsApi
+from otari._client.api.keys_api import KeysApi
+from otari._client.api.pricing_api import PricingApi
+from otari._client.api.usage_api import UsageApi
+from otari._client.api.users_api import UsersApi
 
 
 class ControlPlane:

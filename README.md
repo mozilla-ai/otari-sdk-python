@@ -195,6 +195,21 @@ response = client.response(
 print(response.output_text)
 ```
 
+### Messages API (Anthropic-shaped)
+
+The gateway's `/messages` endpoint (Anthropic message shape) is exposed via
+`message(...)`. Set `stream=True` to iterate raw message-stream event dicts.
+
+```python
+message = client.message(
+    model="anthropic:claude-3-5-sonnet",
+    messages=[{"role": "user", "content": "Hello!"}],
+    max_tokens=256,
+)
+
+print(message.content)
+```
+
 ### Embeddings
 
 ```python

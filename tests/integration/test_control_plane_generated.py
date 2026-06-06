@@ -31,14 +31,14 @@ from collections.abc import Iterator
 import pytest
 
 from otari import OtariClient
-from otari._control_plane.exceptions import NotFoundException
-from otari._control_plane.models.create_budget_request import CreateBudgetRequest
-from otari._control_plane.models.create_key_request import CreateKeyRequest
-from otari._control_plane.models.create_user_request import CreateUserRequest
-from otari._control_plane.models.set_pricing_request import SetPricingRequest
-from otari._control_plane.models.update_budget_request import UpdateBudgetRequest
-from otari._control_plane.models.update_key_request import UpdateKeyRequest
-from otari._control_plane.models.update_user_request import UpdateUserRequest
+from otari._client.exceptions import NotFoundException
+from otari._client.models.create_budget_request import CreateBudgetRequest
+from otari._client.models.create_key_request import CreateKeyRequest
+from otari._client.models.create_user_request import CreateUserRequest
+from otari._client.models.set_pricing_request import SetPricingRequest
+from otari._client.models.update_budget_request import UpdateBudgetRequest
+from otari._client.models.update_key_request import UpdateKeyRequest
+from otari._client.models.update_user_request import UpdateUserRequest
 
 pytestmark = pytest.mark.integration
 

@@ -4,19 +4,24 @@ Holds everything that does not depend on whether the underlying transport is
 synchronous or asynchronous: auth-mode resolution, base-URL normalization,
 header building, and error mapping. The concrete clients
 (:class:`~otari.client.OtariClient` and
-:class:`~otari.async_client.AsyncOtariClient`) construct their own OpenAI and
-httpx clients and implement the I/O methods on top of this base.
+:class:`~otari.async_client.AsyncOtariClient`) construct their own generated
+``_client`` and httpx clients and implement the I/O methods on top of this base.
+
+Option C: the inference path is a thin shell over the OpenAPI-generated core in
+:mod:`otari._client` (typed models + per-endpoint API classes). The generated
+``ApiException`` is the single error type all generated calls raise; this module
+maps it to the typed otari exception hierarchy in :mod:`otari.errors`.
 """
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import urllib.parse
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Protocol, TypeVar, cast
 
-import openai
-
+from otari._client.exceptions import ApiException
 from otari.errors import (
     AuthenticationError,
     BatchNotCompleteError,
@@ -49,20 +54,14 @@ _ENV_PLATFORM_TOKEN_LEGACY = "GATEWAY_PLATFORM_TOKEN"  # noqa: S105
 # Admin/master credential for the control-plane (management) endpoints.
 _ENV_ADMIN_KEY = "GATEWAY_ADMIN_KEY"
 
-_STATUS_TO_ERROR: dict[int, type[AuthenticationError] | type[ModelNotFoundError]] = {
-    401: AuthenticationError,
-    403: AuthenticationError,
-    404: ModelNotFoundError,
-}
-
 
 class _BaseOtariClient:
     """Transport-agnostic base for the otari gateway clients.
 
-    Subclasses are responsible for constructing the underlying OpenAI client
-    (``OpenAI`` or ``AsyncOpenAI``) and the httpx client (``httpx.Client`` or
-    ``httpx.AsyncClient``) using the resolved configuration attributes set up
-    here.
+    Subclasses are responsible for constructing the generated ``_client``
+    ``ApiClient`` (seeded with the default headers assembled here) and an httpx
+    client (``httpx.Client`` or ``httpx.AsyncClient``) for the SSE streaming
+    shim, using the resolved configuration attributes set up here.
     """
 
     platform_mode: bool
@@ -76,7 +75,6 @@ class _BaseOtariClient:
         platform_token: str | None = None,
         admin_key: str | None = None,
         default_headers: dict[str, str] | None = None,
-        openai_options: dict[str, Any] | None = None,
     ) -> None:
         # Canonical OTARI_AI_TOKEN wins over the legacy GATEWAY_PLATFORM_TOKEN.
         resolved_platform_token = (
@@ -114,217 +112,201 @@ class _BaseOtariClient:
         api_base_url = cleaned if cleaned.endswith("/v1") else f"{cleaned}/v1"
 
         self._base_url = api_base_url
+        # The generated core's operation paths already include the ``/v1``
+        # prefix, so the generated ``Configuration.host`` is the gateway root.
+        self._gateway_root_url = api_base_url.removesuffix("/v1")
 
         headers: dict[str, str] = {**(default_headers or {})}
 
         # Auth resolution (same logic as TS SDK / Python GatewayProvider):
-        # 1. Explicit platform_token -> platform mode
+        # 1. Explicit platform_token -> platform mode (Bearer Authorization)
         # 2. OTARI_AI_TOKEN (or legacy GATEWAY_PLATFORM_TOKEN) env + no api_key
         #    option -> platform mode
-        # 3. Otherwise -> non-platform mode
+        # 3. Otherwise -> non-platform mode (Otari-Key header)
         if resolved_platform_token and not api_key:
             self.platform_mode = True
             self._platform_token: str | None = resolved_platform_token
             self._api_key: str | None = None
-            # In platform mode the OpenAI client carries the Bearer token.
-            self._openai_api_key = resolved_platform_token
+            headers["Authorization"] = f"Bearer {resolved_platform_token}"
         else:
             self.platform_mode = False
             self._platform_token = None
             self._api_key = resolved_api_key or None
             if resolved_api_key:
                 headers[GATEWAY_HEADER_NAME] = f"Bearer {resolved_api_key}"
-            # In non-platform mode we still need to pass *some* API key to the
-            # OpenAI client (it validates the field).
-            self._openai_api_key = resolved_api_key or "unused"
 
-        # Configuration the concrete client uses to build its OpenAI client.
-        self._openai_base_url = api_base_url
-        self._openai_default_headers = headers or None
-        self._openai_extra_kwargs: dict[str, Any] = {**(openai_options or {})}
-
-        # Store auth headers for batch/raw HTTP calls.
-        self._auth_headers: dict[str, str] = {}
-        if resolved_platform_token and not api_key:
-            self._auth_headers["Authorization"] = f"Bearer {resolved_platform_token}"
-        elif resolved_api_key:
-            self._auth_headers[GATEWAY_HEADER_NAME] = f"Bearer {resolved_api_key}"
-        if default_headers:
-            self._auth_headers.update(default_headers)
+        # Default headers fed into the generated ApiClient and the streaming
+        # shim's httpx requests. Includes the auth header for the active mode.
+        self._default_headers: dict[str, str] = headers
 
         # Control-plane (management) auth. Those endpoints expect
-        # ``Authorization: Bearer <admin/master key>``. In platform mode the
+        # ``Authorization: Bearer <admin/master key>``, distinct from the
+        # ``Otari-Key`` virtual key used for inference. In platform mode the
         # platform token already serves as that bearer; for a self-hosted
         # gateway the caller passes the master key as ``admin_key`` (or via
-        # ``GATEWAY_ADMIN_KEY``). The control-plane client targets the gateway
-        # root (the generated paths already include the ``/v1`` prefix).
-        self._gateway_root_url = api_base_url.removesuffix("/v1")
+        # ``GATEWAY_ADMIN_KEY``).
         self._admin_token: str | None = (
             admin_key or os.environ.get(_ENV_ADMIN_KEY) or resolved_platform_token
         )
 
     # -- Error handling -----------------------------------------------------
 
-    def _handle_error(self, error: Exception) -> None:
-        """Convert ``openai.APIStatusError`` to typed otari exceptions.
+    def _map_api_exception(self, error: ApiException) -> OtariError:
+        """Map a generated ``ApiException`` to a typed otari exception.
 
-        Most mappings only apply in platform mode; in non-platform mode the
-        original error propagates unchanged. The one exception is
-        :class:`UnsupportedCapabilityError`, which surfaces in both modes.
+        ``ApiException`` carries ``.status`` (int) and ``.body`` (the raw JSON
+        string the gateway returned) plus ``.headers``. The gateway encodes the
+        human-readable reason under the ``detail`` key (FastAPI convention).
+
+        Most status mappings only apply in platform mode; in non-platform mode
+        the generic :class:`OtariError` is raised so the caller still gets a
+        single SDK exception type. The one cross-mode case is
+        :class:`UnsupportedCapabilityError`, surfaced in both modes.
         """
-        if not isinstance(error, openai.APIStatusError):
-            return
+        status = error.status if isinstance(error.status, int) else 0
+        headers = error.headers or {}
+        detail = self._extract_detail(error)
+        correlation_id = _header_get(headers, "x-correlation-id")
+        retry_after = _header_get(headers, "retry-after")
 
-        status = error.status_code
-        headers = error.response.headers
-        correlation_id = headers.get("x-correlation-id")
-        retry_after = headers.get("retry-after")
-
-        detail = str(getattr(error, "message", str(error)))
-        if correlation_id:
-            detail = f"{detail} (correlation_id={correlation_id})"
+        full = f"{detail} (correlation_id={correlation_id})" if correlation_id else detail
 
         # Unsupported-capability is surfaced regardless of mode.
         if status == 400 and _UNSUPPORTED_MODERATION_RE.search(detail):
             provider = _parse_unsupported_provider(detail)
             capability = "multimodal_moderation" if "multimodal" in detail else "moderation"
-            raise UnsupportedCapabilityError(
-                detail,
+            return UnsupportedCapabilityError(
+                full,
                 status_code=status,
                 original_error=error,
                 provider_name=PROVIDER_NAME,
                 provider=provider,
                 capability=capability,
-            ) from error
+            )
 
-        # The rest of the mappings only apply in platform mode.
-        if not self.platform_mode:
-            return
-
-        if (error_cls := _STATUS_TO_ERROR.get(status)) is not None:
-            raise error_cls(
-                detail,
-                status_code=status,
-                original_error=error,
-                provider_name=PROVIDER_NAME,
-            ) from error
-
+        if status in (401, 403):
+            return AuthenticationError(
+                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+            )
         if status == 402:
-            raise InsufficientFundsError(
-                detail,
+            return InsufficientFundsError(
+                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+            )
+        if status == 404:
+            return ModelNotFoundError(
+                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+            )
+        if status == 409:
+            return BatchNotCompleteError(
+                full,
                 status_code=status,
                 original_error=error,
                 provider_name=PROVIDER_NAME,
-            ) from error
-
+                batch_id=_extract_batch_id(detail),
+                batch_status=_extract_status(detail),
+            )
         if status == 429:
-            raise RateLimitError(
-                detail,
+            return RateLimitError(
+                full,
                 status_code=status,
                 original_error=error,
                 provider_name=PROVIDER_NAME,
                 retry_after=retry_after,
-            ) from error
-
-        if status == 502:
-            raise UpstreamProviderError(
-                detail,
-                status_code=status,
-                original_error=error,
-                provider_name=PROVIDER_NAME,
-            ) from error
-
+            )
         if status == 504:
-            raise GatewayTimeoutError(
-                detail,
-                status_code=status,
-                original_error=error,
-                provider_name=PROVIDER_NAME,
-            ) from error
+            return GatewayTimeoutError(
+                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+            )
+        # 502 and any other 5xx are upstream-provider failures.
+        if status == 502 or 500 <= status < 600:
+            return UpstreamProviderError(
+                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+            )
 
-        # Unrecognized status: let the original error propagate.
+        return OtariError(
+            full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+        )
 
-    def _build_batch_headers(self) -> dict[str, str]:
-        """Build the headers used for raw batch HTTP requests."""
-        return {
-            "Content-Type": "application/json",
-            **self._auth_headers,
-        }
+    @staticmethod
+    def _extract_detail(error: ApiException) -> str:
+        """Pull the gateway's human-readable detail from an ``ApiException`` body."""
+        body = error.body
+        if isinstance(body, (bytes, bytearray)):
+            body = body.decode("utf-8", "replace")
+        if isinstance(body, str) and body:
+            try:
+                parsed = json.loads(body)
+            except (ValueError, TypeError):
+                return body
+            if isinstance(parsed, dict):
+                detail = parsed.get("detail") or parsed.get("message") or parsed.get("error")
+                if isinstance(detail, str):
+                    return detail
+                if detail is not None:
+                    return str(detail)
+            return body
+        return error.reason or "An error occurred"
 
-    def _map_batch_error(self, response: httpx.Response) -> None:
-        """Map a failed batch HTTP response to a typed SDK error.
+    def _map_streaming_response(self, response: httpx.Response, body: bytes) -> OtariError:
+        """Map a failed raw streaming response to a typed otari exception.
 
-        ``response.json()`` is read synchronously, so this works for both the
-        sync and async clients (the async client has already received the full
-        body by the time it calls this).
+        The SSE shim issues raw httpx requests, so it never goes through the
+        generated client and never raises ``ApiException``. To keep one mapping
+        path, adapt the failed response into an ``ApiException`` and reuse
+        :meth:`_map_api_exception`.
         """
-        try:
-            data = response.json()
-            detail = data.get("detail", response.reason_phrase)
-        except Exception:
-            detail = response.reason_phrase or ""
-
-        message = detail if isinstance(detail, str) else (response.reason_phrase or "")
-        correlation_id = response.headers.get("x-correlation-id")
-        full_message = f"{message} (correlation_id={correlation_id})" if correlation_id else message
-
-        status = response.status_code
-
-        if status in (401, 403):
-            raise AuthenticationError(
-                full_message,
-                status_code=status,
-                provider_name=PROVIDER_NAME,
-            )
-
-        if status == 404:
-            msg = (
-                full_message
-                if "not found" in full_message.lower()
-                else f"This gateway does not support batch operations. Upgrade your gateway. ({full_message})"
-            )
-            raise OtariError(msg, status_code=404, provider_name=PROVIDER_NAME)
-
-        if status == 409:
-            raise BatchNotCompleteError(
-                full_message,
-                status_code=409,
-                provider_name=PROVIDER_NAME,
-                batch_id=_extract_batch_id(message),
-                batch_status=_extract_status(message),
-            )
-
-        if status == 422:
-            raise OtariError(full_message, status_code=422, provider_name=PROVIDER_NAME)
-
-        if status == 429:
-            raise RateLimitError(
-                full_message,
-                status_code=429,
-                provider_name=PROVIDER_NAME,
-                retry_after=response.headers.get("retry-after"),
-            )
-
-        if status == 502:
-            raise UpstreamProviderError(
-                full_message,
-                status_code=502,
-                provider_name=PROVIDER_NAME,
-            )
-
-        if status == 504:
-            raise GatewayTimeoutError(
-                full_message,
-                status_code=504,
-                provider_name=PROVIDER_NAME,
-            )
-
-        raise OtariError(full_message, status_code=status, provider_name=PROVIDER_NAME)
+        exc = ApiException(
+            status=response.status_code,
+            reason=response.reason_phrase,
+            body=body.decode("utf-8", "replace"),
+        )
+        exc.headers = dict(response.headers)
+        return self._map_api_exception(exc)
 
 
 # ---------------------------------------------------------------------------
 # Module-level helpers
 # ---------------------------------------------------------------------------
+
+
+class _FromDict(Protocol):
+    """Structural type for the generated request models' ``from_dict`` classmethod."""
+
+    @classmethod
+    def from_dict(cls, obj: dict[str, Any] | None) -> Any: ...
+
+
+_M = TypeVar("_M", bound=_FromDict)
+
+
+def build_request(model: type[_M], body: dict[str, Any]) -> _M:
+    """Build a generated request model from ``body``, narrowing the ``Optional``.
+
+    The generated ``from_dict`` is typed ``-> Optional[Self]`` (it returns ``None``
+    only for ``None`` input); we always pass a real dict, so the result is never
+    ``None``. This wrapper keeps that fact in one place instead of scattering
+    ``# type: ignore`` across every ergonomic method.
+    """
+    return cast("_M", model.from_dict(body))
+
+
+def _header_get(headers: Any, name: str) -> str | None:
+    """Case-insensitively read a header from a dict or HTTPHeaderDict."""
+    if headers is None:
+        return None
+    getter = getattr(headers, "get", None)
+    if getter is not None:
+        value = getter(name)
+        if value is not None:
+            return str(value)
+    lowered = name.lower()
+    try:
+        for key, value in dict(headers).items():
+            if str(key).lower() == lowered:
+                return str(value)
+    except (TypeError, ValueError):
+        return None
+    return None
 
 
 def _parse_unsupported_provider(detail: str) -> str:

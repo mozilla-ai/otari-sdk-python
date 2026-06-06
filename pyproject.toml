@@ -22,9 +22,9 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "openai>=1.99.3",
+    # Streaming shim (raw SSE over httpx); the generated core cannot stream.
     "httpx>=0.25.0",
-    # Runtime deps of the generated control-plane client (otari._control_plane).
+    # Runtime deps of the OpenAPI-generated core (otari._client).
     "urllib3>=2.1.0",
     "python-dateutil>=2.8.2",
     "pydantic>=2.0.0",
@@ -40,6 +40,7 @@ Issues = "https://github.com/mozilla-ai/otari-sdk-python/issues"
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.24",
+    "respx>=0.21",
     "ruff>=0.8",
     "mypy>=1.13",
 ]
@@ -57,8 +58,8 @@ markers = [
 [tool.ruff]
 target-version = "py311"
 line-length = 120
-# Generated control-plane client (OpenAPI Generator output) is not hand-linted.
-extend-exclude = ["src/otari/_control_plane"]
+# Generated core client (OpenAPI Generator output) is not hand-linted.
+extend-exclude = ["src/otari/_client"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "S", "B", "A", "C4", "DTZ", "T10", "ISC", "ICN", "PIE", "PT", "RSE", "RET", "SIM", "TID", "TCH", "ARG", "PLC", "PLE", "PLW", "TRY", "FLY", "PERF", "RUF"]
@@ -77,10 +78,10 @@ python_version = "3.11"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
-# Generated control-plane client (OpenAPI Generator output) is not type-checked here.
-exclude = ["src/otari/_control_plane/"]
+# Generated core client (OpenAPI Generator output) is not type-checked here.
+exclude = ["src/otari/_client/"]
 
 [[tool.mypy.overrides]]
-module = ["otari._control_plane.*"]
+module = ["otari._client.*"]
 ignore_errors = true
 ignore_missing_imports = true
