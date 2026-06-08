@@ -2,9 +2,10 @@
 
 These drive ``OtariClient.control_plane`` through a full CRUD lifecycle for every
 management endpoint (keys, users, budgets, pricing, usage), exercising the manual
-wiring (Bearer auth + the generated client) end to end. They start a real gateway
-on SQLite with a master key, so no provider credentials or database server are
-needed: control-plane endpoints never call an LLM provider.
+wiring (Bearer auth + the generated client) end to end via the ergonomic aliases
+(``keys.create(...)`` etc.), plus the ``raw`` escape hatch. They start a real
+gateway on SQLite with a master key, so no provider credentials or database
+server are needed: control-plane endpoints never call an LLM provider.
 
 Run requirements:
 - The ``gateway`` console script on PATH (set ``OTARI_GATEWAY_CMD`` to override),
@@ -101,81 +102,90 @@ def client(gateway_url: str) -> Iterator[OtariClient]:
 
 
 def test_budgets_lifecycle(client: OtariClient) -> None:
-    api = client.control_plane.budgets
-    created = api.create_budget_v1_budgets_post(CreateBudgetRequest(max_budget=100.0, budget_duration_sec=3600))
+    budgets = client.control_plane.budgets
+    created = budgets.create(CreateBudgetRequest(max_budget=100.0, budget_duration_sec=3600))
     assert created.budget_id
     assert created.max_budget == 100.0
     bid = created.budget_id
 
-    assert any(b.budget_id == bid for b in api.list_budgets_v1_budgets_get())
-    assert api.get_budget_v1_budgets_budget_id_get(bid).budget_id == bid
+    assert any(b.budget_id == bid for b in budgets.list())
+    assert budgets.get(bid).budget_id == bid
 
-    updated = api.update_budget_v1_budgets_budget_id_patch(bid, UpdateBudgetRequest(max_budget=250.0))
+    updated = budgets.update(bid, UpdateBudgetRequest(max_budget=250.0))
     assert updated.max_budget == 250.0
 
-    api.delete_budget_v1_budgets_budget_id_delete(bid)
+    budgets.delete(bid)
     with pytest.raises(NotFoundException):
-        api.get_budget_v1_budgets_budget_id_get(bid)
+        budgets.get(bid)
 
 
 def test_users_lifecycle(client: OtariClient) -> None:
-    api = client.control_plane.users
-    created = api.create_user_v1_users_post(CreateUserRequest(user_id="itest-user", alias="Alice"))
+    users = client.control_plane.users
+    created = users.create(CreateUserRequest(user_id="itest-user", alias="Alice"))
     assert created.user_id == "itest-user"
     assert created.alias == "Alice"
 
-    assert any(u.user_id == "itest-user" for u in api.list_users_v1_users_get())
-    assert api.get_user_v1_users_user_id_get("itest-user").user_id == "itest-user"
+    assert any(u.user_id == "itest-user" for u in users.list())
+    assert users.get("itest-user").user_id == "itest-user"
 
-    updated = api.update_user_v1_users_user_id_patch("itest-user", UpdateUserRequest(alias="Alice2"))
+    updated = users.update("itest-user", UpdateUserRequest(alias="Alice2"))
     assert updated.alias == "Alice2"
 
-    api.get_user_usage_v1_users_user_id_usage_get("itest-user")
+    users.get_usage("itest-user")
 
-    api.delete_user_v1_users_user_id_delete("itest-user")
+    users.delete("itest-user")
     with pytest.raises(NotFoundException):
-        api.get_user_v1_users_user_id_get("itest-user")
+        users.get("itest-user")
 
 
 def test_keys_lifecycle_returns_secret_on_create(client: OtariClient) -> None:
-    api = client.control_plane.keys
-    created = api.create_key_v1_keys_post(CreateKeyRequest(key_name="itest-key"))
+    keys = client.control_plane.keys
+    created = keys.create(CreateKeyRequest(key_name="itest-key"))
     assert created.id
     # The one-time key value must be present on create (manually-created surface).
     assert getattr(created, "key", None), "create_key must return the key secret"
     kid = created.id
 
-    assert any(k.id == kid for k in api.list_keys_v1_keys_get())
-    assert api.get_key_v1_keys_key_id_get(kid).id == kid
+    assert any(k.id == kid for k in keys.list())
+    assert keys.get(kid).id == kid
 
-    updated = api.update_key_v1_keys_key_id_patch(kid, UpdateKeyRequest(key_name="itest-key-renamed"))
+    updated = keys.update(kid, UpdateKeyRequest(key_name="itest-key-renamed"))
     assert updated.key_name == "itest-key-renamed"
 
-    api.delete_key_v1_keys_key_id_delete(kid)
+    keys.delete(kid)
     with pytest.raises(NotFoundException):
-        api.get_key_v1_keys_key_id_get(kid)
+        keys.get(kid)
 
 
 def test_pricing_lifecycle(client: OtariClient) -> None:
-    api = client.control_plane.pricing
+    pricing = client.control_plane.pricing
     model_key = "openai:itest-model"
-    created = api.set_pricing_v1_pricing_post(
+    created = pricing.set(
         SetPricingRequest(model_key=model_key, input_price_per_million=1.0, output_price_per_million=2.0)
     )
     assert created.model_key == model_key
 
-    assert any(p.model_key == model_key for p in api.list_pricing_v1_pricing_get())
-    assert api.get_pricing_v1_pricing_model_key_get(model_key).model_key == model_key
-    assert api.get_pricing_history_v1_pricing_model_key_history_get(model_key) is not None
+    assert any(p.model_key == model_key for p in pricing.list())
+    assert pricing.get(model_key).model_key == model_key
+    assert pricing.get_history(model_key) is not None
 
-    api.delete_pricing_v1_pricing_model_key_delete(model_key)
+    pricing.delete(model_key)
     with pytest.raises(NotFoundException):
-        api.get_pricing_v1_pricing_model_key_get(model_key)
+        pricing.get(model_key)
 
 
 def test_usage_is_readable(client: OtariClient) -> None:
     # Fresh gateway: usage list is readable, proving the typed GET works through the client.
-    assert client.control_plane.usage.list_usage_v1_usage_get() is not None
+    assert client.control_plane.usage.list() is not None
+
+
+def test_raw_escape_hatch_reaches_generated_methods(client: OtariClient) -> None:
+    # The generator-derived methods stay reachable via ``raw`` as an escape hatch.
+    keys = client.control_plane.keys
+    created = keys.raw.create_key_v1_keys_post(CreateKeyRequest(key_name="itest-raw-key"))
+    assert created.id
+    assert any(k.id == created.id for k in keys.raw.list_keys_v1_keys_get())
+    keys.raw.delete_key_v1_keys_key_id_delete(created.id)
 
 
 def test_control_plane_requires_admin_credential(gateway_url: str) -> None:
