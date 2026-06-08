@@ -24,7 +24,6 @@ from otari._client.models.cc_chat_completion_message_tool_calls_inner import CCC
 from otari._client.models.cc_chat_completion_token_logprob import CCChatCompletionTokenLogprob
 from otari._client.models.cc_choice import CCChoice
 from otari._client.models.cc_choice_logprobs import CCChoiceLogprobs
-from otari._client.models.cc_completion_tokens_details import CCCompletionTokensDetails
 from otari._client.models.cc_completion_usage import CCCompletionUsage
 from otari._client.models.cc_custom import CCCustom
 from otari._client.models.cc_function import CCFunction
@@ -42,8 +41,6 @@ from otari._client.models.cck_prompt_tokens_details import CCKPromptTokensDetail
 from otari._client.models.cck_reasoning import CCKReasoning
 from otari._client.models.cck_top_logprob import CCKTopLogprob
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails
-from otari._client.models.cc_reasoning import CCReasoning
-from otari._client.models.cc_top_logprob import CCTopLogprob
 from otari._client.models.caller import Caller
 from otari._client.models.chat_completion import ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk

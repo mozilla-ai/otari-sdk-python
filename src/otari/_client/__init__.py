@@ -54,7 +54,6 @@ __all__ = [
     "CCChatCompletionTokenLogprob",
     "CCChoice",
     "CCChoiceLogprobs",
-    "CCCompletionTokensDetails",
     "CCCompletionUsage",
     "CCCustom",
     "CCFunction",
@@ -72,8 +71,6 @@ __all__ = [
     "CCKReasoning",
     "CCKTopLogprob",
     "CCPromptTokensDetails",
-    "CCReasoning",
-    "CCTopLogprob",
     "Caller",
     "ChatCompletion",
     "ChatCompletionChunk",
@@ -247,7 +244,6 @@ from otari._client.models.cc_chat_completion_message_tool_calls_inner import CCC
 from otari._client.models.cc_chat_completion_token_logprob import CCChatCompletionTokenLogprob as CCChatCompletionTokenLogprob
 from otari._client.models.cc_choice import CCChoice as CCChoice
 from otari._client.models.cc_choice_logprobs import CCChoiceLogprobs as CCChoiceLogprobs
-from otari._client.models.cc_completion_tokens_details import CCCompletionTokensDetails as CCCompletionTokensDetails
 from otari._client.models.cc_completion_usage import CCCompletionUsage as CCCompletionUsage
 from otari._client.models.cc_custom import CCCustom as CCCustom
 from otari._client.models.cc_function import CCFunction as CCFunction
@@ -265,8 +261,6 @@ from otari._client.models.cck_prompt_tokens_details import CCKPromptTokensDetail
 from otari._client.models.cck_reasoning import CCKReasoning as CCKReasoning
 from otari._client.models.cck_top_logprob import CCKTopLogprob as CCKTopLogprob
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails as CCPromptTokensDetails
-from otari._client.models.cc_reasoning import CCReasoning as CCReasoning
-from otari._client.models.cc_top_logprob import CCTopLogprob as CCTopLogprob
 from otari._client.models.caller import Caller as Caller
 from otari._client.models.chat_completion import ChatCompletion as ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk as ChatCompletionChunk
