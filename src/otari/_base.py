@@ -7,7 +7,7 @@ header building, and error mapping. The concrete clients
 :class:`~otari.async_client.AsyncOtariClient`) construct their own generated
 ``_client`` and httpx clients and implement the I/O methods on top of this base.
 
-Option C: the inference path is a thin shell over the OpenAPI-generated core in
+The inference path is a thin shell over the OpenAPI-generated core in
 :mod:`otari._client` (typed models + per-endpoint API classes). The generated
 ``ApiException`` is the single error type all generated calls raise; this module
 maps it to the typed otari exception hierarchy in :mod:`otari.errors`.
