@@ -9,7 +9,7 @@ Example::
         platform_token="your-token-here",
     )
 
-    response = await client.completion(
+    response = client.completion(
         model="openai:gpt-4o-mini",
         messages=[{"role": "user", "content": "Hello!"}],
     )
@@ -20,6 +20,7 @@ from importlib.metadata import PackageNotFoundError, version
 
 from otari.async_client import AsyncOtariClient
 from otari.client import OtariClient
+from otari.control_plane import ControlPlane
 from otari.errors import (
     AuthenticationError,
     BatchNotCompleteError,
@@ -32,23 +33,20 @@ from otari.errors import (
     UpstreamProviderError,
 )
 from otari.types import (
-    AsyncStream,
     BatchRequestItem,
     BatchResult,
     BatchResultError,
     BatchResultItem,
     ChatCompletion,
     ChatCompletionChunk,
-    ChatCompletionMessageParam,
     CreateBatchParams,
     CreateEmbeddingResponse,
-    EmbeddingCreateParams,
     ListBatchesOptions,
-    Model,
+    MessageResponse,
+    ModelObject,
+    ModerationResponse,
     OtariClientOptions,
-    Response,
-    ResponseStreamEvent,
-    Stream,
+    RerankResponse,
 )
 
 try:
@@ -59,7 +57,6 @@ except PackageNotFoundError:
 
 __all__ = [
     "AsyncOtariClient",
-    "AsyncStream",
     "AuthenticationError",
     "BatchNotCompleteError",
     "BatchRequestItem",
@@ -68,22 +65,21 @@ __all__ = [
     "BatchResultItem",
     "ChatCompletion",
     "ChatCompletionChunk",
-    "ChatCompletionMessageParam",
+    "ControlPlane",
     "CreateBatchParams",
     "CreateEmbeddingResponse",
-    "EmbeddingCreateParams",
     "GatewayTimeoutError",
     "InsufficientFundsError",
     "ListBatchesOptions",
-    "Model",
+    "MessageResponse",
     "ModelNotFoundError",
+    "ModelObject",
+    "ModerationResponse",
     "OtariClient",
     "OtariClientOptions",
     "OtariError",
     "RateLimitError",
-    "Response",
-    "ResponseStreamEvent",
-    "Stream",
+    "RerankResponse",
     "UnsupportedCapabilityError",
     "UpstreamProviderError",
 ]

@@ -22,8 +22,12 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "openai>=1.99.3",
+    # Streaming shim (raw SSE over httpx); the generated core cannot stream.
     "httpx>=0.25.0",
+    # Runtime deps of the OpenAPI-generated core (otari._client).
+    "urllib3>=2.1.0",
+    "python-dateutil>=2.8.2",
+    "pydantic>=2.0.0",
 ]
 
 [project.urls]
@@ -36,6 +40,7 @@ Issues = "https://github.com/mozilla-ai/otari-sdk-python/issues"
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.24",
+    "respx>=0.21",
     "ruff>=0.8",
     "mypy>=1.13",
 ]
@@ -46,14 +51,24 @@ packages = ["src/otari"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+markers = [
+    "integration: tests that require a running gateway (skipped if none is available)",
+]
 
 [tool.ruff]
 target-version = "py311"
 line-length = 120
+# Generated core client (OpenAPI Generator output) is not hand-linted.
+extend-exclude = ["src/otari/_client"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "S", "B", "A", "C4", "DTZ", "T10", "ISC", "ICN", "PIE", "PT", "RSE", "RET", "SIM", "TID", "TCH", "ARG", "PLC", "PLE", "PLW", "TRY", "FLY", "PERF", "RUF"]
 ignore = ["S101", "TRY003", "PLW0603"]
+
+[tool.ruff.lint.per-file-ignores]
+# Integration tests spawn the gateway subprocess and poll it over HTTP; the
+# subprocess/URL/temp-file audit rules don't apply to that test harness.
+"tests/integration/*" = ["S603", "S310", "SIM115", "SIM117", "PLC0415", "TC003"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["otari"]
@@ -63,3 +78,10 @@ python_version = "3.11"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
+# Generated core client (OpenAPI Generator output) is not type-checked here.
+exclude = ["src/otari/_client/"]
+
+[[tool.mypy.overrides]]
+module = ["otari._client.*"]
+ignore_errors = true
+ignore_missing_imports = true

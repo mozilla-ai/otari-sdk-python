@@ -1,8 +1,12 @@
 """OtariClient: synchronous Python client for the otari gateway.
 
-Wraps the OpenAI Python SDK (``OpenAI``), adding gateway-specific auth handling
-and error mapping for platform mode. For an asynchronous client, see
-:class:`~otari.async_client.AsyncOtariClient`.
+Option C: a thin, ergonomic shell over the OpenAPI-generated core in
+:mod:`otari._client`. Non-streaming calls go through the generated typed API
+classes (returning typed models such as ``ChatCompletion``); streaming calls go
+through the hand-written SSE shim in :mod:`otari._streaming`; generated
+``ApiException``\\s are mapped to the typed errors in :mod:`otari.errors`.
+
+For an asynchronous client, see :class:`~otari.async_client.AsyncOtariClient`.
 
 Example::
 
@@ -22,25 +26,41 @@ Example::
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, overload
+from functools import cached_property
+from typing import TYPE_CHECKING, Any, cast, overload
 
 import httpx
-from openai import OpenAI
 
-from otari._base import _BaseOtariClient, _url_encode
+from otari._base import _BaseOtariClient, build_request
+from otari._client import ApiClient, Configuration
+from otari._client.api.batches_api import BatchesApi
+from otari._client.api.chat_api import ChatApi
+from otari._client.api.embeddings_api import EmbeddingsApi
+from otari._client.api.messages_api import MessagesApi
+from otari._client.api.models_api import ModelsApi
+from otari._client.api.moderations_api import ModerationsApi
+from otari._client.api.rerank_api import RerankApi
+from otari._client.api.responses_api import ResponsesApi
+from otari._client.exceptions import ApiException
+from otari._client.models.chat_completion_request import ChatCompletionRequest
+from otari._client.models.create_batch_request import CreateBatchRequest
+from otari._client.models.embedding_request import EmbeddingRequest
+from otari._client.models.messages_request import MessagesRequest
+from otari._client.models.moderation_request import ModerationRequest
+from otari._client.models.rerank_request import RerankRequest
+from otari._streaming import iter_sse
+from otari.control_plane import ControlPlane
+from otari.errors import OtariError
 
 if TYPE_CHECKING:
-    from openai import Stream
-    from openai.types import CreateEmbeddingResponse, Model
-    from openai.types.chat import (
-        ChatCompletion,
-        ChatCompletionChunk,
-    )
-    from openai.types.responses import (
-        Response,
-        ResponseStreamEvent,
-    )
+    from collections.abc import Callable, Iterator
 
+    from otari._client.models.chat_completion import ChatCompletion
+    from otari._client.models.chat_completion_chunk import ChatCompletionChunk
+    from otari._client.models.create_embedding_response import CreateEmbeddingResponse
+    from otari._client.models.model_object import ModelObject
+    from otari._client.models.moderation_response import ModerationResponse
+    from otari._client.models.rerank_response import RerankResponse
     from otari.types import (
         BatchResult,
         CreateBatchParams,
@@ -51,46 +71,29 @@ if TYPE_CHECKING:
 class OtariClient(_BaseOtariClient):
     """Synchronous client for the otari gateway.
 
-    Supports two authentication modes (mirroring the TypeScript SDK and
-    the Python ``GatewayProvider``):
+    Supports two authentication modes (mirroring the TypeScript SDK and the
+    Python ``GatewayProvider``):
 
-    - **Platform mode**: A Bearer token is sent in the standard Authorization
-      header. Errors are mapped to typed otari exceptions.
-    - **Non-platform mode**: An API key is sent via a custom ``Otari-Key``
-      header. Errors from the OpenAI SDK pass through unmodified.
+    - **Platform mode**: a Bearer token is sent in the standard ``Authorization``
+      header (activated by ``platform_token`` / ``OTARI_AI_TOKEN``).
+    - **Non-platform mode**: an API key is sent via the custom ``Otari-Key``
+      header (``api_key`` / ``GATEWAY_API_KEY``).
 
-    For asynchronous usage, see :class:`~otari.async_client.AsyncOtariClient`.
+    In both modes, gateway errors are mapped to the typed exceptions in
+    :mod:`otari.errors`.
 
     Args:
         api_base: Base URL of the gateway (e.g. ``"http://localhost:8000"``).
-            Falls back to the ``GATEWAY_API_BASE`` environment variable. In
-            platform mode it defaults to the hosted gateway at
-            ``https://api.otari.ai`` when neither is supplied.
-        api_key: API key for non-platform mode.
-            Falls back to ``GATEWAY_API_KEY`` env var.
-        platform_token: Platform token for platform mode.
-            Falls back to the canonical ``OTARI_AI_TOKEN`` env var (or the
-            legacy ``GATEWAY_PLATFORM_TOKEN`` alias).
-        default_headers: Additional default headers to send with every request.
-        openai_options: Extra keyword arguments forwarded to the underlying
-            ``OpenAI`` constructor.
-
-    Example::
-
-        client = OtariClient(
-            api_base="http://localhost:8000",
-            platform_token="tk_xxx",
-        )
-
-        response = client.completion(
-            model="openai:gpt-4o-mini",
-            messages=[{"role": "user", "content": "Hello!"}],
-        )
-        print(response.choices[0].message.content)
+            Falls back to ``GATEWAY_API_BASE``. In platform mode it defaults to
+            the hosted gateway at ``https://api.otari.ai`` when neither is set.
+        api_key: API key for non-platform mode. Falls back to ``GATEWAY_API_KEY``.
+        platform_token: Platform token for platform mode. Falls back to the
+            canonical ``OTARI_AI_TOKEN`` (or legacy ``GATEWAY_PLATFORM_TOKEN``).
+        admin_key: Master/admin key for the control-plane endpoints. Falls back
+            to ``GATEWAY_ADMIN_KEY`` (or the platform token in platform mode).
+        default_headers: Additional default headers sent with every request.
+        timeout: Per-request timeout (seconds) for the streaming shim.
     """
-
-    openai: OpenAI
-    """The underlying OpenAI client instance."""
 
     def __init__(
         self,
@@ -98,24 +101,52 @@ class OtariClient(_BaseOtariClient):
         *,
         api_key: str | None = None,
         platform_token: str | None = None,
+        admin_key: str | None = None,
         default_headers: dict[str, str] | None = None,
-        openai_options: dict[str, Any] | None = None,
+        timeout: float | None = None,
     ) -> None:
         super().__init__(
             api_base,
             api_key=api_key,
             platform_token=platform_token,
+            admin_key=admin_key,
             default_headers=default_headers,
-            openai_options=openai_options,
         )
-        self.openai = OpenAI(
-            api_key=self._openai_api_key,
-            base_url=self._openai_base_url,
-            default_headers=self._openai_default_headers,
-            **self._openai_extra_kwargs,
-        )
-        # httpx client for raw HTTP calls (batch, etc.)
-        self._http = httpx.Client()
+        self._timeout = timeout
+        config = Configuration(host=self._gateway_root_url)
+        self._api = ApiClient(config)
+        # set_default_header is generated (untyped); seed the per-mode auth header.
+        api_any = cast("Any", self._api)
+        for name, value in self._default_headers.items():
+            api_any.set_default_header(name, value)
+        # Raw httpx client used only for the SSE streaming shim (the generated
+        # core buffers and cannot stream).
+        self._http = httpx.Client(timeout=timeout)
+
+        self._chat = ChatApi(self._api)
+        self._responses = ResponsesApi(self._api)
+        self._embeddings = EmbeddingsApi(self._api)
+        self._moderations = ModerationsApi(self._api)
+        self._rerank = RerankApi(self._api)
+        self._messages = MessagesApi(self._api)
+        self._models = ModelsApi(self._api)
+        self._batches = BatchesApi(self._api)
+
+    @cached_property
+    def control_plane(self) -> ControlPlane:
+        """Typed client for the management endpoints (keys, users, budgets, pricing, usage).
+
+        Requires an admin credential: pass ``admin_key`` (the gateway master key),
+        set ``GATEWAY_ADMIN_KEY``, or use ``platform_token`` (which doubles as the
+        control-plane bearer in platform mode).
+        """
+        if not self._admin_token:
+            msg = (
+                "control-plane management requires an admin credential; pass "
+                "admin_key=... (the gateway master key) or use platform_token=..."
+            )
+            raise OtariError(msg)
+        return ControlPlane(self._gateway_root_url, self._admin_token)
 
     # -- Chat completions ---------------------------------------------------
 
@@ -135,9 +166,9 @@ class OtariClient(_BaseOtariClient):
         *,
         model: str,
         messages: list[dict[str, Any]],
-        stream: bool = ...,
+        stream: bool,
         **kwargs: Any,
-    ) -> ChatCompletion | Stream[ChatCompletionChunk]: ...
+    ) -> ChatCompletion | Iterator[ChatCompletionChunk]: ...
 
     def completion(
         self,
@@ -149,25 +180,24 @@ class OtariClient(_BaseOtariClient):
     ) -> Any:
         """Create a chat completion.
 
-        When ``stream=True`` is set, returns an iterable of chunks.
+        When ``stream=True``, returns an iterator of typed
+        :class:`~otari._client.models.chat_completion_chunk.ChatCompletionChunk`.
+        Otherwise returns a typed
+        :class:`~otari._client.models.chat_completion.ChatCompletion`.
 
         Args:
             model: Model identifier (e.g. ``"openai:gpt-4o-mini"``).
             messages: List of message dicts with ``role`` and ``content``.
             stream: Whether to stream the response.
-            **kwargs: Additional parameters forwarded to the OpenAI API.
-
-        Returns:
-            A ``ChatCompletion`` or a stream of ``ChatCompletionChunk``.
+            **kwargs: Additional parameters modeled by the gateway chat schema
+                (e.g. ``temperature``, ``tools``, ``guardrails``).
         """
-        try:
-            params: dict[str, Any] = {"model": model, "messages": messages, **kwargs}
-            if stream is not None:
-                params["stream"] = stream
-            return self.openai.chat.completions.create(**params)
-        except Exception as exc:
-            self._handle_error(exc)
-            raise
+        body = {"model": model, "messages": messages, **kwargs}
+        if stream:
+            body["stream"] = True
+            return self._stream("/chat/completions", body, "chat")
+        request = build_request(ChatCompletionRequest, body)
+        return self._call(lambda: self._chat.chat_completions_v1_chat_completions_post(request))
 
     # -- Responses API ------------------------------------------------------
 
@@ -178,28 +208,51 @@ class OtariClient(_BaseOtariClient):
         input: Any,  # noqa: A002
         stream: bool | None = None,
         **kwargs: Any,
-    ) -> Response | Stream[ResponseStreamEvent]:
-        """Create a response using the OpenAI Responses API.
+    ) -> Any:
+        """Create a response via the OpenAI-style Responses API.
+
+        When ``stream=True``, returns an iterator of raw response-stream event
+        dicts (the gateway's responses event stream has no single typed chunk
+        model). Otherwise returns the parsed response object.
+        """
+        body = {"model": model, "input": input, **kwargs}
+        if stream:
+            body["stream"] = True
+            return self._stream("/responses", body, "responses")
+        return self._call(lambda: self._responses.create_response_v1_responses_post(body))  # type: ignore[arg-type]
+
+    # -- Messages API (Anthropic-shaped /messages) --------------------------
+
+    def message(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        stream: bool | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        """Create an Anthropic-style message via the gateway ``/messages`` endpoint.
+
+        This endpoint has no OpenAI-SDK seam and was previously missing from the
+        SDK. When ``stream=True``, returns an iterator of raw message-stream
+        event dicts (no single typed chunk model exists). Otherwise returns a
+        typed :class:`~otari._client.models.message_response.MessageResponse`.
 
         Args:
-            model: Model identifier (e.g. ``"openai:gpt-4o-mini"``).
-            input: The input for the response.
+            model: Model identifier (e.g. ``"anthropic:claude-3-5-sonnet"``).
+            messages: Anthropic-style message list.
+            max_tokens: Maximum tokens to generate (required by ``/messages``).
             stream: Whether to stream the response.
-            **kwargs: Additional parameters forwarded to the OpenAI API.
-
-        Returns:
-            A ``Response`` or a stream of ``ResponseStreamEvent``.
+            **kwargs: Additional ``/messages`` parameters (``system``,
+                ``temperature``, ``tools``, ``thinking``, ...).
         """
-        try:
-            params: dict[str, Any] = {"model": model, "input": input, **kwargs}
-            if stream is not None:
-                params["stream"] = stream
-            result: Response | Stream[ResponseStreamEvent] = self.openai.responses.create(**params)
-        except Exception as exc:
-            self._handle_error(exc)
-            raise
-        else:
-            return result
+        body = {"model": model, "messages": messages, "max_tokens": max_tokens, **kwargs}
+        if stream:
+            body["stream"] = True
+            return self._stream("/messages", body, "messages")
+        request = build_request(MessagesRequest, body)
+        return self._call(lambda: self._messages.create_message_v1_messages_post(request))
 
     # -- Embeddings ---------------------------------------------------------
 
@@ -210,177 +263,143 @@ class OtariClient(_BaseOtariClient):
         input: str | list[str],  # noqa: A002
         **kwargs: Any,
     ) -> CreateEmbeddingResponse:
-        """Create embeddings for the given input.
+        """Create embeddings for the given input."""
+        request = build_request(EmbeddingRequest, {"model": model, "input": input, **kwargs})
+        result = self._call(lambda: self._embeddings.create_embedding_v1_embeddings_post(request))
+        return cast("CreateEmbeddingResponse", result)
 
-        Args:
-            model: Model identifier (e.g. ``"openai:text-embedding-3-small"``).
-            input: Text or list of texts to embed.
-            **kwargs: Additional parameters forwarded to the OpenAI API.
+    # -- Moderations --------------------------------------------------------
 
-        Returns:
-            An ``CreateEmbeddingResponse``.
-        """
-        try:
-            return self.openai.embeddings.create(model=model, input=input, **kwargs)
-        except Exception as exc:
-            self._handle_error(exc)
-            raise
+    def moderation(
+        self,
+        *,
+        model: str,
+        input: str | list[str],  # noqa: A002
+        **kwargs: Any,
+    ) -> ModerationResponse:
+        """Classify text against the gateway moderation endpoint."""
+        request = build_request(ModerationRequest, {"model": model, "input": input, **kwargs})
+        result = self._call(lambda: self._moderations.create_moderation_v1_moderations_post(request))
+        return cast("ModerationResponse", result)
+
+    # -- Rerank -------------------------------------------------------------
+
+    def rerank(
+        self,
+        *,
+        model: str,
+        query: str,
+        documents: list[str],
+        **kwargs: Any,
+    ) -> RerankResponse:
+        """Rerank ``documents`` by relevance to ``query``."""
+        request = build_request(
+            RerankRequest, {"model": model, "query": query, "documents": documents, **kwargs}
+        )
+        result = self._call(lambda: self._rerank.create_rerank_v1_rerank_post(request))
+        return cast("RerankResponse", result)
 
     # -- Models -------------------------------------------------------------
 
-    def list_models(self) -> list[Model]:
-        """List available models from the gateway.
-
-        Returns:
-            A list of ``Model`` objects.
-        """
-        try:
-            page = self.openai.models.list()
-        except Exception as exc:
-            self._handle_error(exc)
-            raise
-        else:
-            return list(page)
+    def list_models(self) -> list[ModelObject]:
+        """List available models from the gateway."""
+        result = self._call(self._models.list_models_v1_models_get)
+        return list(result.data)
 
     # -- Batch operations ---------------------------------------------------
 
-    def create_batch(self, params: CreateBatchParams) -> dict[str, Any]:
-        """Create a batch job.
+    def create_batch(self, params: CreateBatchParams) -> Any:
+        """Create a batch job."""
+        request = build_request(CreateBatchRequest, dict(params))
+        return self._call(lambda: self._batches.create_batch_v1_batches_post(request))
 
-        Args:
-            params: Batch creation parameters including model and requests array.
-
-        Returns:
-            The created batch object.
-        """
-        return self._batch_request("POST", "/batches", body=dict(params))
-
-    def retrieve_batch(self, batch_id: str, provider: str) -> dict[str, Any]:
-        """Retrieve the status of a batch job.
-
-        Args:
-            batch_id: The ID of the batch to retrieve.
-            provider: The provider name (e.g. ``"openai"``).
-
-        Returns:
-            The batch object with current status.
-        """
-        encoded_id = httpx.URL(f"/batches/{batch_id}").raw_path.decode()
-        return self._batch_request(
-            "GET",
-            f"{encoded_id}?provider={_url_encode(provider)}",
+    def retrieve_batch(self, batch_id: str, provider: str) -> Any:
+        """Retrieve the status of a batch job."""
+        return self._call(
+            lambda: self._batches.retrieve_batch_v1_batches_batch_id_get(batch_id, provider)
         )
 
-    def cancel_batch(self, batch_id: str, provider: str) -> dict[str, Any]:
-        """Cancel a batch job.
-
-        Args:
-            batch_id: The ID of the batch to cancel.
-            provider: The provider name (e.g. ``"openai"``).
-
-        Returns:
-            The batch object with updated status.
-        """
-        encoded_id = httpx.URL(f"/batches/{batch_id}").raw_path.decode()
-        return self._batch_request(
-            "POST",
-            f"{encoded_id}/cancel?provider={_url_encode(provider)}",
+    def cancel_batch(self, batch_id: str, provider: str) -> Any:
+        """Cancel a batch job."""
+        return self._call(
+            lambda: self._batches.cancel_batch_v1_batches_batch_id_cancel_post(batch_id, provider)
         )
 
     def list_batches(
         self,
         provider: str,
         options: ListBatchesOptions | None = None,
-    ) -> list[dict[str, Any]]:
-        """List batch jobs for a provider.
+    ) -> list[Any]:
+        """List batch jobs for a provider."""
+        options = options or {}
+        result = self._call(
+            lambda: self._batches.list_batches_v1_batches_get(
+                provider,
+                after=options.get("after"),
+                limit=options.get("limit"),
+            )
+        )
+        data = result.get("data", []) if isinstance(result, dict) else []
+        return list(data)
 
-        Args:
-            provider: The provider name (e.g. ``"openai"``).
-            options: Optional pagination parameters.
-
-        Returns:
-            List of batch objects.
-        """
-        params_parts = [f"provider={_url_encode(provider)}"]
-        if options:
-            if "after" in options:
-                params_parts.append(f"after={_url_encode(options['after'])}")
-            if "limit" in options:
-                params_parts.append(f"limit={options['limit']}")
-        query = "&".join(params_parts)
-        response = self._batch_request("GET", f"/batches?{query}")
-        data: list[dict[str, Any]] = response.get("data", [])
-        return data
-
-    def retrieve_batch_results(
-        self,
-        batch_id: str,
-        provider: str,
-    ) -> BatchResult:
+    def retrieve_batch_results(self, batch_id: str, provider: str) -> BatchResult:
         """Retrieve the results of a completed batch job.
 
-        Args:
-            batch_id: The ID of the batch.
-            provider: The provider name (e.g. ``"openai"``).
-
-        Returns:
-            The batch results containing per-request outcomes.
-
         Raises:
-            BatchNotCompleteError: If the batch is not yet complete.
+            BatchNotCompleteError: If the batch is not yet complete (HTTP 409).
         """
         from otari.types import BatchResult as BatchResultType  # noqa: PLC0415
         from otari.types import BatchResultItem  # noqa: PLC0415
 
-        encoded_id = httpx.URL(f"/batches/{batch_id}").raw_path.decode()
-        data = self._batch_request(
-            "GET",
-            f"{encoded_id}/results?provider={_url_encode(provider)}",
+        data = self._call(
+            lambda: self._batches.retrieve_batch_results_v1_batches_batch_id_results_get(
+                batch_id, provider
+            )
         )
+        results = data.get("results", []) if isinstance(data, dict) else []
         items = [
             BatchResultItem(
                 custom_id=entry["custom_id"],
                 result=entry.get("result"),
                 error=entry.get("error"),
             )
-            for entry in data.get("results", [])
+            for entry in results
         ]
         return BatchResultType(results=items)
 
-    # -- Batch HTTP helpers -------------------------------------------------
+    # -- Internal helpers ---------------------------------------------------
 
-    def _batch_request(
-        self,
-        method: str,
-        path: str,
-        *,
-        body: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
-        """Make a direct HTTP request for batch operations.
+    def _call(self, fn: Callable[[], Any]) -> Any:
+        """Run a generated call, mapping its ``ApiException`` to a typed error."""
+        try:
+            return fn()
+        except ApiException as exc:
+            raise self._map_api_exception(exc) from exc
 
-        Unlike completion/embedding which use ``self.openai``, batch methods
-        use direct HTTP because the gateway batch API has a custom JSON format.
+    def _stream(self, path: str, body: dict[str, Any], kind: Any) -> Iterator[Any]:
+        """Open a raw streaming POST and yield parsed SSE chunks.
+
+        The generated core buffers responses, so streaming is hand-written here:
+        a raw httpx streaming request parsed by :mod:`otari._streaming`.
         """
         url = f"{self._base_url}{path}"
-        response = self._http.request(
-            method,
-            url,
-            headers=self._build_batch_headers(),
-            json=body if body is not None else None,
-        )
-
-        if not response.is_success:
-            self._map_batch_error(response)
-
-        result: dict[str, Any] = response.json()
-        return result
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "text/event-stream",
+            **self._default_headers,
+        }
+        with self._http.stream("POST", url, json=body, headers=headers) as response:
+            if response.status_code >= 400:
+                raw = response.read()
+                raise self._map_streaming_response(response, raw)
+            yield from iter_sse(response, kind)
 
     # -- Cleanup ------------------------------------------------------------
 
     def close(self) -> None:
         """Close the underlying HTTP clients."""
         self._http.close()
-        self.openai.close()
+        cast("Any", self._api).__exit__(None, None, None)
 
     def __enter__(self) -> OtariClient:
         return self

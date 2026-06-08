@@ -1,6 +1,8 @@
 """Configuration and type re-exports for the otari gateway client.
 
-Re-exports OpenAI SDK types so consumers don't need to import ``openai`` directly.
+Re-exports the OpenAPI-generated response/chunk models from
+:mod:`otari._client` so consumers can name them without reaching into the
+generated package, plus the SDK's own batch/option types.
 """
 
 from __future__ import annotations
@@ -9,21 +11,18 @@ from dataclasses import dataclass, field
 from typing import Any, TypedDict
 
 # ---------------------------------------------------------------------------
-# Re-export OpenAI types that callers interact with directly.
-# These use explicit `as` aliases to make the re-exports public per PEP 484.
-# The TC002 / PLC0414 warnings are intentionally suppressed because these
-# imports exist solely for re-export.
+# Re-export the generated models that callers interact with directly.
+# Explicit ``as`` aliases make these public re-exports per PEP 484.
 # ---------------------------------------------------------------------------
-from openai import AsyncStream as AsyncStream  # noqa: PLC0414
-from openai import Stream as Stream  # noqa: PLC0414
-from openai.types import CreateEmbeddingResponse as CreateEmbeddingResponse  # noqa: PLC0414
-from openai.types import EmbeddingCreateParams as EmbeddingCreateParams  # noqa: PLC0414
-from openai.types import Model as Model  # noqa: PLC0414
-from openai.types.chat import ChatCompletion as ChatCompletion  # noqa: PLC0414, TC002
-from openai.types.chat import ChatCompletionChunk as ChatCompletionChunk  # noqa: PLC0414
-from openai.types.chat import ChatCompletionMessageParam as ChatCompletionMessageParam  # noqa: PLC0414
-from openai.types.responses import Response as Response  # noqa: PLC0414
-from openai.types.responses import ResponseStreamEvent as ResponseStreamEvent  # noqa: PLC0414
+from otari._client.models.chat_completion import ChatCompletion as ChatCompletion  # noqa: PLC0414
+from otari._client.models.chat_completion_chunk import ChatCompletionChunk as ChatCompletionChunk  # noqa: PLC0414
+from otari._client.models.create_embedding_response import (
+    CreateEmbeddingResponse as CreateEmbeddingResponse,  # noqa: PLC0414
+)
+from otari._client.models.message_response import MessageResponse as MessageResponse  # noqa: PLC0414
+from otari._client.models.model_object import ModelObject as ModelObject  # noqa: PLC0414
+from otari._client.models.moderation_response import ModerationResponse as ModerationResponse  # noqa: PLC0414
+from otari._client.models.rerank_response import RerankResponse as RerankResponse  # noqa: PLC0414
 
 # ---------------------------------------------------------------------------
 # Client options
@@ -34,7 +33,7 @@ class OtariClientOptions(TypedDict, total=False):
     """Options for constructing an :class:`~otari.client.OtariClient`.
 
     Auth resolution order (mirrors the TypeScript SDK / Python GatewayProvider):
-      1. Explicit ``platform_token`` -> platform mode (Bearer token in Authorization header)
+      1. Explicit ``platform_token`` -> platform mode (Bearer in Authorization header)
       2. ``OTARI_AI_TOKEN`` (or legacy ``GATEWAY_PLATFORM_TOKEN``) env var
          (when no ``api_key``) -> platform mode
       3. ``api_key`` or ``GATEWAY_API_KEY`` env var -> non-platform mode (``Otari-Key`` header)
@@ -46,23 +45,19 @@ class OtariClientOptions(TypedDict, total=False):
     """
 
     api_base: str
-    """Base URL of the gateway (e.g. ``"http://localhost:8000"``).
-
-    Defaults to ``https://api.otari.ai`` in platform mode."""
+    """Base URL of the gateway (defaults to ``https://api.otari.ai`` in platform mode)."""
 
     api_key: str
     """API key for non-platform mode. Sent via ``Otari-Key: Bearer <key>``."""
 
     platform_token: str
-    """Platform token for platform mode. Sent as Bearer in the Authorization header.
+    """Platform token for platform mode. Sent as Bearer in the Authorization header."""
 
-    Falls back to ``OTARI_AI_TOKEN`` (or legacy ``GATEWAY_PLATFORM_TOKEN``)."""
+    admin_key: str
+    """Master/admin key for the control-plane endpoints."""
 
     default_headers: dict[str, str]
     """Additional default headers to send with every request."""
-
-    openai_options: dict[str, Any]
-    """Extra options forwarded to the underlying ``AsyncOpenAI`` constructor."""
 
 
 # ---------------------------------------------------------------------------
@@ -105,7 +100,7 @@ class BatchResultItem:
     """Result of a single request within a batch."""
 
     custom_id: str
-    result: ChatCompletion | None = None
+    result: dict[str, Any] | None = None
     error: BatchResultError | None = None
 
 
