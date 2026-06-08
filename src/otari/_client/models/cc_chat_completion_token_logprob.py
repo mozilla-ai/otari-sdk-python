@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from otari._client.models.cc_top_logprob import CCTopLogprob
+from otari._client.models.cck_top_logprob import CCKTopLogprob
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,7 +31,7 @@ class CCChatCompletionTokenLogprob(BaseModel):
     token: StrictStr
     bytes: Optional[List[StrictInt]] = None
     logprob: Union[StrictFloat, StrictInt]
-    top_logprobs: List[CCTopLogprob]
+    top_logprobs: List[CCKTopLogprob]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["token", "bytes", "logprob", "top_logprobs"]
 
@@ -108,7 +108,7 @@ class CCChatCompletionTokenLogprob(BaseModel):
             "token": obj.get("token"),
             "bytes": obj.get("bytes"),
             "logprob": obj.get("logprob"),
-            "top_logprobs": [CCTopLogprob.from_dict(_item) for _item in obj["top_logprobs"]] if obj.get("top_logprobs") is not None else None
+            "top_logprobs": [CCKTopLogprob.from_dict(_item) for _item in obj["top_logprobs"]] if obj.get("top_logprobs") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

@@ -15,8 +15,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import StrictFloat, StrictInt, StrictStr
-from typing import Any, Optional, Union
+from pydantic import StrictBytes, StrictFloat, StrictInt, StrictStr
+from typing import Any, Optional, Tuple, Union
 from otari._client.models.audio_speech_request import AudioSpeechRequest
 
 from otari._client.api_client import ApiClient, RequestSerialized
@@ -322,7 +322,7 @@ class AudioApi:
     @validate_call
     def create_transcription_v1_audio_transcriptions_post(
         self,
-        file: StrictStr,
+        file: Union[StrictBytes, StrictStr, Tuple[StrictStr, StrictBytes]],
         model: StrictStr,
         language: Optional[StrictStr] = None,
         prompt: Optional[StrictStr] = None,
@@ -347,7 +347,7 @@ class AudioApi:
         OpenAI-compatible audio transcription endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
 
         :param file: (required)
-        :type file: str
+        :type file: bytes
         :param model: (required)
         :type model: str
         :param language:
@@ -414,7 +414,7 @@ class AudioApi:
     @validate_call
     def create_transcription_v1_audio_transcriptions_post_with_http_info(
         self,
-        file: StrictStr,
+        file: Union[StrictBytes, StrictStr, Tuple[StrictStr, StrictBytes]],
         model: StrictStr,
         language: Optional[StrictStr] = None,
         prompt: Optional[StrictStr] = None,
@@ -439,7 +439,7 @@ class AudioApi:
         OpenAI-compatible audio transcription endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
 
         :param file: (required)
-        :type file: str
+        :type file: bytes
         :param model: (required)
         :type model: str
         :param language:
@@ -506,7 +506,7 @@ class AudioApi:
     @validate_call
     def create_transcription_v1_audio_transcriptions_post_without_preload_content(
         self,
-        file: StrictStr,
+        file: Union[StrictBytes, StrictStr, Tuple[StrictStr, StrictBytes]],
         model: StrictStr,
         language: Optional[StrictStr] = None,
         prompt: Optional[StrictStr] = None,
@@ -531,7 +531,7 @@ class AudioApi:
         OpenAI-compatible audio transcription endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
 
         :param file: (required)
-        :type file: str
+        :type file: bytes
         :param model: (required)
         :type model: str
         :param language:
@@ -625,7 +625,7 @@ class AudioApi:
         # process the header parameters
         # process the form parameters
         if file is not None:
-            _form_params.append(('file', file))
+            _files['file'] = file
         if language is not None:
             _form_params.append(('language', language))
         if model is not None:

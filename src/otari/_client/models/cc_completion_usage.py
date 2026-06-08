@@ -19,8 +19,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.cc_completion_tokens_details import CCCompletionTokensDetails
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails
+from otari._client.models.cck_completion_tokens_details import CCKCompletionTokensDetails
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,7 +32,7 @@ class CCCompletionUsage(BaseModel):
     completion_tokens: StrictInt
     prompt_tokens: StrictInt
     total_tokens: StrictInt
-    completion_tokens_details: Optional[CCCompletionTokensDetails] = None
+    completion_tokens_details: Optional[CCKCompletionTokensDetails] = None
     prompt_tokens_details: Optional[CCPromptTokensDetails] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["completion_tokens", "prompt_tokens", "total_tokens", "completion_tokens_details", "prompt_tokens_details"]
@@ -114,7 +114,7 @@ class CCCompletionUsage(BaseModel):
             "completion_tokens": obj.get("completion_tokens"),
             "prompt_tokens": obj.get("prompt_tokens"),
             "total_tokens": obj.get("total_tokens"),
-            "completion_tokens_details": CCCompletionTokensDetails.from_dict(obj["completion_tokens_details"]) if obj.get("completion_tokens_details") is not None else None,
+            "completion_tokens_details": CCKCompletionTokensDetails.from_dict(obj["completion_tokens_details"]) if obj.get("completion_tokens_details") is not None else None,
             "prompt_tokens_details": CCPromptTokensDetails.from_dict(obj["prompt_tokens_details"]) if obj.get("prompt_tokens_details") is not None else None
         })
         # store additional fields in additional_properties

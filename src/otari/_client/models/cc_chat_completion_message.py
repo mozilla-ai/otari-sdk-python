@@ -22,7 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.cc_chat_completion_audio import CCChatCompletionAudio
 from otari._client.models.cc_chat_completion_message_tool_calls_inner import CCChatCompletionMessageToolCallsInner
 from otari._client.models.cc_function_call import CCFunctionCall
-from otari._client.models.cc_reasoning import CCReasoning
+from otari._client.models.cck_reasoning import CCKReasoning
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -38,7 +38,7 @@ class CCChatCompletionMessage(BaseModel):
     audio: Optional[CCChatCompletionAudio] = None
     function_call: Optional[CCFunctionCall] = None
     tool_calls: Optional[List[CCChatCompletionMessageToolCallsInner]] = None
-    reasoning: Optional[CCReasoning] = None
+    reasoning: Optional[CCKReasoning] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["content", "refusal", "role", "annotations", "audio", "function_call", "tool_calls", "reasoning"]
 
@@ -165,7 +165,7 @@ class CCChatCompletionMessage(BaseModel):
             "audio": CCChatCompletionAudio.from_dict(obj["audio"]) if obj.get("audio") is not None else None,
             "function_call": CCFunctionCall.from_dict(obj["function_call"]) if obj.get("function_call") is not None else None,
             "tool_calls": [CCChatCompletionMessageToolCallsInner.from_dict(_item) for _item in obj["tool_calls"]] if obj.get("tool_calls") is not None else None,
-            "reasoning": CCReasoning.from_dict(obj["reasoning"]) if obj.get("reasoning") is not None else None
+            "reasoning": CCKReasoning.from_dict(obj["reasoning"]) if obj.get("reasoning") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
