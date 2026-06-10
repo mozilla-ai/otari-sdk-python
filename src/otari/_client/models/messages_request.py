@@ -23,7 +23,7 @@ from typing_extensions import Annotated
 from uuid import UUID
 from otari._client.models.guardrail_config import GuardrailConfig
 from otari._client.models.mcp_server_config import McpServerConfig
-from otari._client.models.system import System
+from otari._client.models.system1 import System1
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -38,12 +38,12 @@ class MessagesRequest(BaseModel):
     max_tool_iterations: Optional[Annotated[int, Field(le=25, strict=True, ge=1)]] = None
     mcp_server_ids: Optional[List[UUID]] = None
     mcp_servers: Optional[List[McpServerConfig]] = None
-    messages: Annotated[List[Optional[Dict[str, Any]]], Field(min_length=1)]
+    messages: Annotated[List[Dict[str, Any]], Field(min_length=1)]
     metadata: Optional[Dict[str, Any]] = None
     model: StrictStr
     stop_sequences: Optional[List[StrictStr]] = None
     stream: Optional[StrictBool] = False
-    system: Optional[System] = None
+    system: Optional[System1] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     thinking: Optional[Dict[str, Any]] = None
     tool_choice: Optional[Dict[str, Any]] = None
@@ -207,7 +207,7 @@ class MessagesRequest(BaseModel):
             "model": obj.get("model"),
             "stop_sequences": obj.get("stop_sequences"),
             "stream": obj.get("stream") if obj.get("stream") is not None else False,
-            "system": System.from_dict(obj["system"]) if obj.get("system") is not None else None,
+            "system": System1.from_dict(obj["system"]) if obj.get("system") is not None else None,
             "temperature": obj.get("temperature"),
             "thinking": obj.get("thinking"),
             "tool_choice": obj.get("tool_choice"),

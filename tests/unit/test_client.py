@@ -64,6 +64,8 @@ MESSAGE_RESPONSE: dict[str, Any] = {
     "usage": {"input_tokens": 1, "output_tokens": 1},
 }
 
+COUNT_TOKENS_RESPONSE: dict[str, Any] = {"input_tokens": 42}
+
 MODERATION_RESPONSE: dict[str, Any] = {
     "id": "modr-1",
     "model": "openai:omni-moderation-latest",
@@ -212,6 +214,19 @@ class TestMessage:
         body = mock.last.json_body
         assert body["max_tokens"] == 64
         assert body["model"] == "anthropic:claude-3-5-sonnet"
+
+    def test_count_tokens_returns_typed_response(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=COUNT_TOKENS_RESPONSE)
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+        result = client.count_tokens(
+            model="anthropic:claude-3-5-sonnet",
+            messages=[{"role": "user", "content": "Hi"}],
+        )
+        assert result.input_tokens == 42
+        assert mock.last.url.endswith("/v1/messages/count_tokens")
+        body = mock.last.json_body
+        assert body["model"] == "anthropic:claude-3-5-sonnet"
+        assert "max_tokens" not in body
 
 
 class TestModeration:
