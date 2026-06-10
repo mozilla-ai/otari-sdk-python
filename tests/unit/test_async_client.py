@@ -1,4 +1,4 @@
-"""Tests for the asynchronous AsyncOtariClient (Option C: generated-core shell).
+"""Tests for the asynchronous AsyncOtariClient (generated-core shell).
 
 The async client dispatches the (synchronous) generated calls off-thread via
 ``asyncio.to_thread`` and streams natively over ``httpx.AsyncClient``. Non-
@@ -28,6 +28,7 @@ from otari.errors import (
 )
 from tests.unit.test_client import (
     CHAT_RESPONSE,
+    COUNT_TOKENS_RESPONSE,
     EMBEDDING_RESPONSE,
     MESSAGE_RESPONSE,
     MODELS_RESPONSE,
@@ -86,6 +87,15 @@ class TestInference:
         )
         assert result.id == "msg-1"
         assert mock.last.url.endswith("/v1/messages")
+
+    async def test_count_tokens_returns_typed(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=COUNT_TOKENS_RESPONSE)
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+        result = await client.count_tokens(
+            model="anthropic:claude", messages=[{"role": "user", "content": "Hi"}]
+        )
+        assert result.input_tokens == 42
+        assert mock.last.url.endswith("/v1/messages/count_tokens")
 
     async def test_list_models_returns_typed(self, mock_rest: Any) -> None:
         mock_rest(status=200, body=MODELS_RESPONSE)

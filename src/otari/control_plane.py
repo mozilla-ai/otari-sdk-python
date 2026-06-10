@@ -1,17 +1,25 @@
 """Typed client for the gateway control-plane (management) endpoints.
 
 Wraps the OpenAPI-generated :mod:`otari._client` core (the same core that backs
-the inference path under Option C). The control-plane endpoints (API keys,
+the inference path). The control-plane endpoints (API keys,
 users, budgets, pricing, usage) authenticate with
 ``Authorization: Bearer <admin/master key>``, which is distinct from the
 ``Otari-Key`` virtual key used for inference. Obtain an instance via
 :attr:`otari.OtariClient.control_plane`.
+
+Each resource accessor (``keys``, ``users``, ``budgets``, ``pricing``,
+``usage``) exposes ergonomic aliases (``create``, ``get``, ``list``,
+``update``, ``delete``, ...) that delegate to the generator-derived methods.
+The raw generated API object stays reachable via the ``raw`` attribute on each
+resource (for example
+``client.control_plane.keys.raw.create_key_v1_keys_post(...)``), so the full
+generated surface remains available as an escape hatch.
 """
 
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from otari import _client as _cp
 from otari._client.api.budgets_api import BudgetsApi
@@ -20,13 +28,167 @@ from otari._client.api.pricing_api import PricingApi
 from otari._client.api.usage_api import UsageApi
 from otari._client.api.users_api import UsersApi
 
+if TYPE_CHECKING:
+    from datetime import datetime
+
+    from otari._client import (
+        BudgetResponse,
+        CreateBudgetRequest,
+        CreateKeyRequest,
+        CreateKeyResponse,
+        CreateUserRequest,
+        KeyInfo,
+        PricingResponse,
+        SetPricingRequest,
+        UpdateBudgetRequest,
+        UpdateKeyRequest,
+        UpdateUserRequest,
+        UsageEntry,
+        UsageLogResponse,
+        UserResponse,
+    )
+
+
+class KeysResource:
+    """Ergonomic accessors for the API-keys management endpoints.
+
+    Aliases delegate to the generated :class:`KeysApi`, which stays reachable
+    via :attr:`raw` for the full generated surface.
+    """
+
+    def __init__(self, api: KeysApi) -> None:
+        self.raw = api
+
+    def create(self, request: CreateKeyRequest, **kwargs: Any) -> CreateKeyResponse:
+        return self.raw.create_key_v1_keys_post(request, **kwargs)
+
+    def get(self, key_id: str, **kwargs: Any) -> KeyInfo:
+        return self.raw.get_key_v1_keys_key_id_get(key_id, **kwargs)
+
+    def list(self, skip: int | None = None, limit: int | None = None, **kwargs: Any) -> list[KeyInfo]:
+        return self.raw.list_keys_v1_keys_get(skip, limit, **kwargs)
+
+    def update(self, key_id: str, request: UpdateKeyRequest, **kwargs: Any) -> KeyInfo:
+        return self.raw.update_key_v1_keys_key_id_patch(key_id, request, **kwargs)
+
+    def delete(self, key_id: str, **kwargs: Any) -> None:
+        self.raw.delete_key_v1_keys_key_id_delete(key_id, **kwargs)
+
+
+class UsersResource:
+    """Ergonomic accessors for the users management endpoints.
+
+    Aliases delegate to the generated :class:`UsersApi`, which stays reachable
+    via :attr:`raw` for the full generated surface.
+    """
+
+    def __init__(self, api: UsersApi) -> None:
+        self.raw = api
+
+    def create(self, request: CreateUserRequest, **kwargs: Any) -> UserResponse:
+        return self.raw.create_user_v1_users_post(request, **kwargs)
+
+    def get(self, user_id: str, **kwargs: Any) -> UserResponse:
+        return self.raw.get_user_v1_users_user_id_get(user_id, **kwargs)
+
+    def update(self, user_id: str, request: UpdateUserRequest, **kwargs: Any) -> UserResponse:
+        return self.raw.update_user_v1_users_user_id_patch(user_id, request, **kwargs)
+
+    def delete(self, user_id: str, **kwargs: Any) -> None:
+        self.raw.delete_user_v1_users_user_id_delete(user_id, **kwargs)
+
+    def get_usage(self, user_id: str, **kwargs: Any) -> list[UsageLogResponse]:
+        return self.raw.get_user_usage_v1_users_user_id_usage_get(user_id, **kwargs)
+
+    # Defined last: a method named ``list`` shadows the ``list`` builtin for any
+    # ``list[...]`` annotation that follows it in this class body.
+    def list(self, skip: int | None = None, limit: int | None = None, **kwargs: Any) -> list[UserResponse]:
+        return self.raw.list_users_v1_users_get(skip, limit, **kwargs)
+
+
+class BudgetsResource:
+    """Ergonomic accessors for the budgets management endpoints.
+
+    Aliases delegate to the generated :class:`BudgetsApi`, which stays reachable
+    via :attr:`raw` for the full generated surface.
+    """
+
+    def __init__(self, api: BudgetsApi) -> None:
+        self.raw = api
+
+    def create(self, request: CreateBudgetRequest, **kwargs: Any) -> BudgetResponse:
+        return self.raw.create_budget_v1_budgets_post(request, **kwargs)
+
+    def get(self, budget_id: str, **kwargs: Any) -> BudgetResponse:
+        return self.raw.get_budget_v1_budgets_budget_id_get(budget_id, **kwargs)
+
+    def list(self, skip: int | None = None, limit: int | None = None, **kwargs: Any) -> list[BudgetResponse]:
+        return self.raw.list_budgets_v1_budgets_get(skip, limit, **kwargs)
+
+    def update(self, budget_id: str, request: UpdateBudgetRequest, **kwargs: Any) -> BudgetResponse:
+        return self.raw.update_budget_v1_budgets_budget_id_patch(budget_id, request, **kwargs)
+
+    def delete(self, budget_id: str, **kwargs: Any) -> None:
+        self.raw.delete_budget_v1_budgets_budget_id_delete(budget_id, **kwargs)
+
+
+class PricingResource:
+    """Ergonomic accessors for the model-pricing management endpoints.
+
+    Aliases delegate to the generated :class:`PricingApi`, which stays reachable
+    via :attr:`raw` for the full generated surface.
+    """
+
+    def __init__(self, api: PricingApi) -> None:
+        self.raw = api
+
+    def get(self, model_key: str, **kwargs: Any) -> PricingResponse:
+        return self.raw.get_pricing_v1_pricing_model_key_get(model_key, **kwargs)
+
+    def set(self, request: SetPricingRequest, **kwargs: Any) -> PricingResponse:
+        return self.raw.set_pricing_v1_pricing_post(request, **kwargs)
+
+    def delete(self, model_key: str, **kwargs: Any) -> None:
+        self.raw.delete_pricing_v1_pricing_model_key_delete(model_key, **kwargs)
+
+    def get_history(self, model_key: str, **kwargs: Any) -> list[PricingResponse]:
+        return self.raw.get_pricing_history_v1_pricing_model_key_history_get(model_key, **kwargs)
+
+    # Defined last: a method named ``list`` shadows the ``list`` builtin for any
+    # ``list[...]`` annotation that follows it in this class body.
+    def list(self, skip: int | None = None, limit: int | None = None, **kwargs: Any) -> list[PricingResponse]:
+        return self.raw.list_pricing_v1_pricing_get(skip, limit, **kwargs)
+
+
+class UsageResource:
+    """Ergonomic accessors for the usage-log management endpoints.
+
+    Aliases delegate to the generated :class:`UsageApi`, which stays reachable
+    via :attr:`raw` for the full generated surface.
+    """
+
+    def __init__(self, api: UsageApi) -> None:
+        self.raw = api
+
+    def list(
+        self,
+        start_date: datetime | None = None,
+        end_date: datetime | None = None,
+        user_id: str | None = None,
+        skip: int | None = None,
+        limit: int | None = None,
+        **kwargs: Any,
+    ) -> list[UsageEntry]:
+        return self.raw.list_usage_v1_usage_get(start_date, end_date, user_id, skip, limit, **kwargs)
+
 
 class ControlPlane:
     """Accessors for the gateway management endpoints, sharing one authenticated client.
 
-    Method names on the underlying API objects are generator-derived (for
-    example ``keys.create_key_v1_keys_post(...)``); friendlier aliases are a
-    planned follow-up.
+    Each accessor returns a resource wrapper exposing ergonomic aliases (for
+    example ``keys.create(...)``, ``users.list(...)``, ``budgets.get(...)``).
+    The generator-derived methods stay reachable via the ``raw`` attribute on
+    each resource (for example ``keys.raw.create_key_v1_keys_post(...)``).
     """
 
     def __init__(self, base_url: str, bearer_token: str) -> None:
@@ -37,24 +199,24 @@ class ControlPlane:
         self._api_client.set_default_header("Authorization", f"Bearer {bearer_token}")
 
     @cached_property
-    def keys(self) -> KeysApi:
-        return KeysApi(self._api_client)
+    def keys(self) -> KeysResource:
+        return KeysResource(KeysApi(self._api_client))
 
     @cached_property
-    def users(self) -> UsersApi:
-        return UsersApi(self._api_client)
+    def users(self) -> UsersResource:
+        return UsersResource(UsersApi(self._api_client))
 
     @cached_property
-    def budgets(self) -> BudgetsApi:
-        return BudgetsApi(self._api_client)
+    def budgets(self) -> BudgetsResource:
+        return BudgetsResource(BudgetsApi(self._api_client))
 
     @cached_property
-    def pricing(self) -> PricingApi:
-        return PricingApi(self._api_client)
+    def pricing(self) -> PricingResource:
+        return PricingResource(PricingApi(self._api_client))
 
     @cached_property
-    def usage(self) -> UsageApi:
-        return UsageApi(self._api_client)
+    def usage(self) -> UsageResource:
+        return UsageResource(UsageApi(self._api_client))
 
     def close(self) -> None:
         self._api_client.__exit__(None, None, None)

@@ -1,6 +1,6 @@
 """AsyncOtariClient: asynchronous Python client for the otari gateway.
 
-Option C: a thin async shell over the OpenAPI-generated core in
+A thin async shell over the OpenAPI-generated core in
 :mod:`otari._client`. The generated core is synchronous (urllib3-based), so
 non-streaming calls are dispatched to a worker thread via ``asyncio.to_thread``;
 streaming is natively async over ``httpx.AsyncClient`` and the SSE shim in
@@ -43,6 +43,7 @@ from otari._client.api.rerank_api import RerankApi
 from otari._client.api.responses_api import ResponsesApi
 from otari._client.exceptions import ApiException
 from otari._client.models.chat_completion_request import ChatCompletionRequest
+from otari._client.models.count_tokens_request import CountTokensRequest
 from otari._client.models.create_batch_request import CreateBatchRequest
 from otari._client.models.embedding_request import EmbeddingRequest
 from otari._client.models.messages_request import MessagesRequest
@@ -57,6 +58,7 @@ if TYPE_CHECKING:
 
     from otari._client.models.chat_completion import ChatCompletion
     from otari._client.models.chat_completion_chunk import ChatCompletionChunk
+    from otari._client.models.count_tokens_response import CountTokensResponse
     from otari._client.models.create_embedding_response import CreateEmbeddingResponse
     from otari._client.models.model_object import ModelObject
     from otari._client.models.moderation_response import ModerationResponse
@@ -230,6 +232,25 @@ class AsyncOtariClient(_BaseOtariClient):
             return self._stream("/messages", body, "messages")
         request = build_request(MessagesRequest, body)
         return await self._call(lambda: self._messages.create_message_v1_messages_post(request))
+
+    async def count_tokens(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        **kwargs: Any,
+    ) -> CountTokensResponse:
+        """Count input tokens for an Anthropic-style message request.
+
+        Calls the gateway ``/v1/messages/count_tokens`` endpoint, which counts
+        the tokens a ``/messages`` request would consume without generating a
+        response. Returns a typed ``CountTokensResponse``.
+        """
+        request = build_request(CountTokensRequest, {"model": model, "messages": messages, **kwargs})
+        result = await self._call(
+            lambda: self._messages.count_message_tokens_v1_messages_count_tokens_post(request)
+        )
+        return cast("CountTokensResponse", result)
 
     # -- Embeddings ---------------------------------------------------------
 

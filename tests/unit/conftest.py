@@ -1,6 +1,6 @@
 """Shared test helpers for mocking the generated core's transport.
 
-Option C wires the SDK over the OpenAPI-generated core (:mod:`otari._client`),
+The SDK is a thin shell over the OpenAPI-generated core (:mod:`otari._client`),
 whose non-streaming calls go through ``RESTClientObject.request`` (urllib3) and
 whose streaming path is a hand-written raw httpx request. These helpers mock both
 seams without a live gateway:
