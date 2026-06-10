@@ -1,4 +1,4 @@
-"""Tests for the synchronous OtariClient (Option C: generated-core shell).
+"""Tests for the synchronous OtariClient (generated-core shell).
 
 Covers constructor / auth-mode wiring, request shaping, typed response parsing,
 generated ``ApiException`` -> typed error mapping, and the hand-written SSE

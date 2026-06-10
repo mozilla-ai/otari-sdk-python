@@ -1,6 +1,6 @@
 """AsyncOtariClient: asynchronous Python client for the otari gateway.
 
-Option C: a thin async shell over the OpenAPI-generated core in
+A thin async shell over the OpenAPI-generated core in
 :mod:`otari._client`. The generated core is synchronous (urllib3-based), so
 non-streaming calls are dispatched to a worker thread via ``asyncio.to_thread``;
 streaming is natively async over ``httpx.AsyncClient`` and the SSE shim in

@@ -4,7 +4,7 @@
 
 <div align="center">
 
-# otari (Python)
+# Otari Python Client SDK
 
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)
 [![PyPI](https://img.shields.io/pypi/v/otari)](https://pypi.org/project/otari/)
@@ -12,14 +12,20 @@
     <img src="https://img.shields.io/static/v1?label=Chat%20on&message=Discord&color=blue&logo=Discord&style=flat-square" alt="Discord">
 </a>
 
-**Python client for [otari-gateway](https://github.com/mozilla-ai/otari).**
-Communicate with any LLM provider through the gateway using a single, typed interface.
+**Python client for [otari](https://github.com/mozilla-ai/otari), the open-source core that powers [otari.ai](https://otari.ai).**
+Communicate with any LLM provider through otari using a single, typed interface.
 
 [TypeScript SDK](https://github.com/mozilla-ai/otari-sdk-ts) | [Documentation](https://mozilla-ai.github.io/otari/) | [Platform (Beta)](https://otari.ai/)
 
 </div>
 
+> New to otari? The [otari repo](https://github.com/mozilla-ai/otari) explains what it is and why you’d use it.
+
 ## Quickstart
+
+```bash
+pip install otari
+```
 
 Generate an API token at [otari.ai/organization-settings/api-tokens](https://otari.ai/organization-settings/api-tokens), then add a provider key (e.g. OpenAI) at [otari.ai/organization-settings/provider-keys](https://otari.ai/organization-settings/provider-keys) so the gateway can route requests to that provider. Then use the client:
 
@@ -38,33 +44,14 @@ response = client.completion(
 print(response.choices[0].message.content)
 ```
 
-**That's it!** With no `api_base`, the client defaults to the hosted gateway at `https://api.otari.ai`. Change the model string to switch between LLM providers through the gateway.
-
-Prefer async? Use `AsyncOtariClient`, which exposes the same API with `await` (see [Async usage](#async-usage)).
-
-Prefer to keep secrets out of code? Set `OTARI_AI_TOKEN` in your environment and `OtariClient()` picks up the token automatically.
-
-## Self-hosting the gateway
-
-Prefer to run the gateway yourself instead of using the hosted otari.ai? Follow the setup in the [otari gateway repo](https://github.com/mozilla-ai/otari), then point the SDK at it:
-
-```python
-client = OtariClient(
-    api_base="http://localhost:8000",  # or wherever you host the gateway
-    api_key="your-gateway-api-key",
-)
-```
-
-The SDK sends `api_key` via the custom `Otari-Key: Bearer …` header. Env: `GATEWAY_API_BASE` + `GATEWAY_API_KEY`.
-
-Make sure your gateway has provider keys configured (e.g. OpenAI) so it can route requests upstream — see the [otari gateway repo](https://github.com/mozilla-ai/otari) for setup.
+With no `api_base`, the client defaults to the hosted gateway at `https://api.otari.ai`. Change the model string to switch between LLM providers through the gateway.
 
 ## Installation
 
 ### Requirements
 
 - Python 3.11 or newer
-- A running [otari-gateway](https://mozilla-ai.github.io/otari/gateway/overview/) instance
+- A running [otari](https://mozilla-ai.github.io/otari/gateway/overview/) instance (or the hosted gateway at [otari.ai](https://otari.ai/))
 
 ### Install
 
@@ -72,9 +59,9 @@ Make sure your gateway has provider keys configured (e.g. OpenAI) so it can rout
 pip install otari
 ```
 
-### Setting Up Credentials
+### Setting up credentials
 
-For the hosted gateway, set your platform token (no `api_base` needed — it defaults to `https://api.otari.ai`):
+For the hosted gateway, set your platform token (no `api_base` needed, it defaults to `https://api.otari.ai`):
 
 ```bash
 export OTARI_AI_TOKEN="tk_your_api_token"
@@ -89,76 +76,67 @@ export GATEWAY_API_BASE="http://localhost:8000"
 export GATEWAY_API_KEY="your-key-here"
 ```
 
-Alternatively, pass credentials directly when creating the client (see [Usage](#usage) examples).
+Alternatively, pass credentials directly when creating the client (see [Authentication](#authentication)).
 
-## otari-gateway
+## Authentication
 
-This Python SDK is a client for [otari-gateway](https://github.com/mozilla-ai/otari), an **optional** FastAPI-based proxy server that adds enterprise-grade features on top of the core library:
+The client supports two authentication modes, matching the TypeScript SDK. When no explicit credentials are passed, the client auto-detects the mode from environment variables.
 
-- **Budget Management** - Enforce spending limits with automatic daily, weekly, or monthly resets
-- **API Key Management** - Issue, revoke, and monitor virtual API keys without exposing provider credentials
-- **Usage Analytics** - Track every request with full token counts, costs, and metadata
-- **Multi-tenant Support** - Manage access and budgets across users and teams
+**Platform mode (hosted)**
 
-The gateway sits between your applications and LLM providers, exposing an OpenAI-compatible API that works with any supported provider.
-
-### Quick Start
-
-```bash
-docker run \
-  -e GATEWAY_MASTER_KEY="your-secure-master-key" \
-  -e OPENAI_API_KEY="your-api-key" \
-  -p 8000:8000 \
-  ghcr.io/mozilla-ai/otari/gateway:latest
-```
-
-> **Note:** You can use a specific release version instead of `latest` (e.g., `1.2.0`). See [available versions](https://github.com/orgs/mozilla-ai/packages/container/package/otari%2Fgateway).
-
-### Managed Platform (Beta)
-
-Prefer a hosted experience? The [otari platform](https://otari.ai/) provides a managed control plane for keys, usage tracking, and cost visibility across providers, while still building on the same `otari` interfaces.
-
-## Usage
-
-> **Migrating from a previous version?** `OtariClient` is now **synchronous** — call its methods directly (no `await`). For asynchronous code, switch to `AsyncOtariClient`, which keeps the previous `await`-based API. See [Async usage](#async-usage).
-
-### Authentication Modes
-
-The client supports two authentication modes, matching the TypeScript SDK:
-
-#### Platform Mode (Recommended)
-
-Uses a Bearer token in the standard Authorization header. On the hosted platform, generate an API token at [otari.ai/organization-settings/api-tokens](https://otari.ai/organization-settings/api-tokens) and add a provider key (e.g. OpenAI) at [otari.ai/organization-settings/provider-keys](https://otari.ai/organization-settings/provider-keys) so the gateway can route requests to that provider. With no `api_base`, the client defaults to the hosted gateway at `https://api.otari.ai`:
+Targets the hosted platform at [otari.ai](https://otari.ai/). The platform token is sent as a Bearer token in the standard `Authorization` header. Generate an API token at [otari.ai/organization-settings/api-tokens](https://otari.ai/organization-settings/api-tokens) and add a provider key (e.g. OpenAI) at [otari.ai/organization-settings/provider-keys](https://otari.ai/organization-settings/provider-keys) so the gateway can route requests to that provider. With no `api_base`, the client defaults to the hosted gateway at `https://api.otari.ai`:
 
 ```python
+from otari import OtariClient
+
 client = OtariClient(
     platform_token="tk_your_api_token",
 )
 ```
 
-#### Non-Platform Mode (Self-Hosted)
+Set `OTARI_AI_TOKEN` (or the legacy alias `GATEWAY_PLATFORM_TOKEN`) and `OtariClient()` picks up the token automatically.
 
-Sends the API key via a custom `Otari-Key` header. This targets a self-hosted gateway, so an explicit `api_base` is required:
+**Self-hosted mode**
+
+Targets a gateway you run yourself. The API key is sent via the custom `Otari-Key` header, and an explicit `api_base` is required. Follow the setup in the [otari repo](https://github.com/mozilla-ai/otari), then point the SDK at your gateway:
 
 ```python
+from otari import OtariClient
+
 client = OtariClient(
-    api_base="http://localhost:8000",
-    api_key="your-api-key",
+    api_base="http://localhost:8000",  # or wherever you host the gateway
+    api_key="your-gateway-api-key",
 )
 ```
 
-#### Auto-Detection from Environment Variables
+Set `GATEWAY_API_BASE` and `GATEWAY_API_KEY` and `OtariClient()` picks them up automatically. Make sure your gateway has provider keys configured (e.g. OpenAI) so it can route requests upstream; see the [otari repo](https://github.com/mozilla-ai/otari) for setup.
 
-When no explicit credentials are provided, the client reads from environment variables:
+**Environment variable quick reference**
+
+| Variable | Mode | Purpose |
+|----------|------|---------|
+| `OTARI_AI_TOKEN` | Platform | Platform token, sent as `Authorization: Bearer …`. |
+| `GATEWAY_PLATFORM_TOKEN` | Platform | Legacy alias for `OTARI_AI_TOKEN` (lower precedence). |
+| `GATEWAY_API_BASE` | Self-hosted | Base URL of the gateway (required in self-hosted mode). |
+| `GATEWAY_API_KEY` | Self-hosted | API key, sent via the `Otari-Key` header. |
+| `GATEWAY_ADMIN_KEY` | Either | Admin/master key for the control-plane endpoints. |
+
+When no explicit credentials are provided, the client reads from these variables:
 
 ```python
+from otari import OtariClient
+
 # Platform mode: OTARI_AI_TOKEN (or legacy GATEWAY_PLATFORM_TOKEN),
 # defaulting to the hosted gateway.
 # Self-hosted: GATEWAY_API_BASE + GATEWAY_API_KEY.
 client = OtariClient()
 ```
 
-### Chat Completions
+## Usage
+
+> **Migrating from a previous version?** `OtariClient` is now synchronous, call its methods directly (no `await`). For asynchronous code, switch to `AsyncOtariClient`, which keeps the previous `await`-based API. See [Async usage](#async-usage).
+
+### Chat completions
 
 ```python
 response = client.completion(
@@ -195,10 +173,9 @@ response = client.response(
 print(response.output_text)
 ```
 
-### Messages API (Anthropic-shaped)
+### Messages API
 
-The gateway's `/messages` endpoint (Anthropic message shape) is exposed via
-`message(...)`. Set `stream=True` to iterate raw message-stream event dicts.
+The gateway's `/messages` endpoint (Anthropic message shape) is exposed via `message(...)`. `max_tokens` is required. Set `stream=True` to iterate raw message-stream event dicts.
 
 ```python
 message = client.message(
@@ -221,13 +198,104 @@ result = client.embedding(
 print(result.data[0].embedding)
 ```
 
-### Listing Models
+### Listing models
 
 ```python
 models = client.list_models()
 for model in models:
     print(model.id)
 ```
+
+### Moderation
+
+```python
+result = client.moderation(
+    model="openai:omni-moderation-latest",
+    input="Some text to classify.",
+)
+
+print(result.results[0].flagged)
+```
+
+### Reranking
+
+```python
+result = client.rerank(
+    model="cohere:rerank-v3.5",
+    query="What is the capital of France?",
+    documents=["Paris is the capital of France.", "Berlin is in Germany."],
+)
+
+for item in result.results:
+    print(item.index, item.relevance_score)
+```
+
+### Batch operations
+
+Submit many requests as a single batch job, poll for status, then fetch results once the batch completes. Batch endpoints are scoped to a `provider`.
+
+```python
+batch = client.create_batch(
+    {
+        "model": "openai:gpt-4o-mini",
+        "requests": [
+            {
+                "custom_id": "req-1",
+                "body": {
+                    "model": "openai:gpt-4o-mini",
+                    "messages": [{"role": "user", "content": "Hello!"}],
+                },
+            },
+        ],
+        "completion_window": "24h",
+    }
+)
+
+# Poll for status.
+status = client.retrieve_batch(batch.id, provider="openai")
+
+# List batches for a provider.
+batches = client.list_batches("openai", {"limit": 20})
+
+# Fetch results once complete (raises BatchNotCompleteError on HTTP 409).
+results = client.retrieve_batch_results(batch.id, provider="openai")
+for item in results.results:
+    print(item.custom_id, item.result)
+
+# Cancel a running batch.
+client.cancel_batch(batch.id, provider="openai")
+```
+
+### Error handling
+
+In platform mode, HTTP errors are mapped to typed exceptions:
+
+```python
+from otari import OtariClient, AuthenticationError, RateLimitError
+
+try:
+    response = client.completion(
+        model="openai:gpt-4o-mini",
+        messages=[{"role": "user", "content": "Hello!"}],
+    )
+except AuthenticationError as e:
+    print(f"Invalid credentials: {e.message}")
+except RateLimitError as e:
+    print(f"Rate limited, retry after: {e.retry_after}")
+```
+
+| HTTP Status | Error Class | Description |
+|------------|-------------|-------------|
+| 400 (capability) | `UnsupportedCapabilityError` | Selected provider does not support the requested capability |
+| 401, 403 | `AuthenticationError` | Invalid or missing credentials |
+| 402 | `InsufficientFundsError` | Budget or credits exhausted |
+| 404 | `ModelNotFoundError` | Model not found, or no provider key configured for the requested provider. The exception's `message` carries the gateway's detail. |
+| 409 | `BatchNotCompleteError` | Batch results requested before the batch finished |
+| 429 | `RateLimitError` | Rate limit exceeded (includes `retry_after`) |
+| 502 | `UpstreamProviderError` | Upstream provider unreachable |
+| 504 | `GatewayTimeoutError` | Gateway timed out waiting for provider |
+
+`UnsupportedCapabilityError` surfaces in both platform and non-platform modes; the other mappings are platform-mode only.
 
 ### Async usage
 
@@ -261,37 +329,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-### Error Handling
-
-In platform mode, HTTP errors are mapped to typed exceptions:
-
-```python
-from otari import OtariClient, AuthenticationError, RateLimitError
-
-try:
-    response = client.completion(
-        model="openai:gpt-4o-mini",
-        messages=[{"role": "user", "content": "Hello!"}],
-    )
-except AuthenticationError as e:
-    print(f"Invalid credentials: {e.message}")
-except RateLimitError as e:
-    print(f"Rate limited, retry after: {e.retry_after}")
-```
-
-| HTTP Status | Error Class | Description |
-|------------|-------------|-------------|
-| 400 (capability) | `UnsupportedCapabilityError` | Selected provider does not support the requested capability |
-| 401, 403 | `AuthenticationError` | Invalid or missing credentials |
-| 402 | `InsufficientFundsError` | Budget or credits exhausted |
-| 404 | `ModelNotFoundError` | Model not found, or no provider key configured for the requested provider. The exception's `message` carries the gateway's detail. |
-| 429 | `RateLimitError` | Rate limit exceeded (includes `retry_after`) |
-| 502 | `UpstreamProviderError` | Upstream provider unreachable |
-| 504 | `GatewayTimeoutError` | Gateway timed out waiting for provider |
-
-`UnsupportedCapabilityError` surfaces in both platform and non-platform modes; the other mappings are platform-mode only.
-
-### Context Manager
+### Context manager
 
 The client supports a context manager for automatic cleanup:
 
@@ -312,15 +350,6 @@ async with AsyncOtariClient(api_base="http://localhost:8000") as client:
         messages=[{"role": "user", "content": "Hello!"}],
     )
 ```
-
-## Why choose `otari`?
-
-- **Simple, unified interface** - Single client for all providers through the gateway, switch models with just a string change
-- **Developer friendly** - Full type hints for better IDE support and clear, actionable error messages
-- **Leverages the OpenAI SDK** - Built on the official OpenAI Python SDK for maximum compatibility
-- **Sync and async** - Use the synchronous `OtariClient` or the asynchronous `AsyncOtariClient`, both with the same typed interface
-- **Stays framework-agnostic** so it can be used across different projects and use cases
-- **Battle-tested** - Powers our own production tools ([any-agent](https://github.com/mozilla-ai/any-agent))
 
 ## Development
 

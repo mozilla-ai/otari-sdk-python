@@ -1,4 +1,4 @@
-"""Tests for the asynchronous AsyncOtariClient (Option C: generated-core shell).
+"""Tests for the asynchronous AsyncOtariClient (generated-core shell).
 
 The async client dispatches the (synchronous) generated calls off-thread via
 ``asyncio.to_thread`` and streams natively over ``httpx.AsyncClient``. Non-
