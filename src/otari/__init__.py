@@ -18,6 +18,10 @@ Example::
 
 from importlib.metadata import PackageNotFoundError, version
 
+# Gateway/spec version the generated core was built from, stamped into the core by
+# the gateway codegen pipeline. Surfaced here so callers can check which gateway
+# spec this SDK targets (see https://github.com/mozilla-ai/otari spec compatibility).
+from otari._client._spec_version import __spec_version__ as __spec_version__
 from otari.async_client import AsyncOtariClient
 from otari.client import OtariClient
 from otari.control_plane import ControlPlane
