@@ -1,0 +1,48 @@
+name: Release
+
+# Independent release automation for this SDK (decoupled from the gateway's own
+# releases). release-please watches main: each merged conventional commit
+# accumulates into a release PR that bumps the version in pyproject.toml and
+# updates CHANGELOG.md. Merging that release PR tags the release and creates a
+# GitHub Release, and the publish job below ships it to PyPI in the same run
+# (so no PAT is needed to chain a separate workflow off the release event).
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Build package
+        # release-please already committed the version bump to pyproject.toml on
+        # main, so the build picks it up with no tag-to-file patching needed.
+        run: uv build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
