@@ -56,7 +56,7 @@ from otari.types import (
 try:
     __version__ = version("otari")
 except PackageNotFoundError:
-    __version__ = "0.0.0-dev"
+    __version__ = "0.1.1"
 
 
 __all__ = [
