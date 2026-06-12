@@ -69,10 +69,8 @@ __all__ = [
     "CCKCompletionTokensDetails",
     "CCKCompletionUsage",
     "CCKPromptTokensDetails",
-    "CCKReasoning",
     "CCKTopLogprob",
     "CCPromptTokensDetails",
-    "CCReasoning",
     "CCTopLogprob",
     "Caller",
     "ChatCompletion",
@@ -265,10 +263,8 @@ from otari._client.models.cck_chunk_choice import CCKChunkChoice as CCKChunkChoi
 from otari._client.models.cck_completion_tokens_details import CCKCompletionTokensDetails as CCKCompletionTokensDetails
 from otari._client.models.cck_completion_usage import CCKCompletionUsage as CCKCompletionUsage
 from otari._client.models.cck_prompt_tokens_details import CCKPromptTokensDetails as CCKPromptTokensDetails
-from otari._client.models.cck_reasoning import CCKReasoning as CCKReasoning
 from otari._client.models.cck_top_logprob import CCKTopLogprob as CCKTopLogprob
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails as CCPromptTokensDetails
-from otari._client.models.cc_reasoning import CCReasoning as CCReasoning
 from otari._client.models.cc_top_logprob import CCTopLogprob as CCTopLogprob
 from otari._client.models.caller import Caller as Caller
 from otari._client.models.chat_completion import ChatCompletion as ChatCompletion

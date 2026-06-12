@@ -17,12 +17,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.cc_chat_completion_audio import CCChatCompletionAudio
 from otari._client.models.cc_chat_completion_message_tool_calls_inner import CCChatCompletionMessageToolCallsInner
 from otari._client.models.cc_function_call import CCFunctionCall
-from otari._client.models.cc_reasoning import CCReasoning
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -38,7 +37,7 @@ class CCChatCompletionMessage(BaseModel):
     audio: Optional[CCChatCompletionAudio] = None
     function_call: Optional[CCFunctionCall] = None
     tool_calls: Optional[List[CCChatCompletionMessageToolCallsInner]] = None
-    reasoning: Optional[CCReasoning] = None
+    reasoning: Optional[StrictStr] = Field(default=None, description="Filter models by provider name")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["content", "refusal", "role", "annotations", "audio", "function_call", "tool_calls", "reasoning"]
 
@@ -103,9 +102,6 @@ class CCChatCompletionMessage(BaseModel):
                 if _item_tool_calls:
                     _items.append(_item_tool_calls.to_dict())
             _dict['tool_calls'] = _items
-        # override the default output from pydantic by calling `to_dict()` of reasoning
-        if self.reasoning:
-            _dict['reasoning'] = self.reasoning.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -165,7 +161,7 @@ class CCChatCompletionMessage(BaseModel):
             "audio": CCChatCompletionAudio.from_dict(obj["audio"]) if obj.get("audio") is not None else None,
             "function_call": CCFunctionCall.from_dict(obj["function_call"]) if obj.get("function_call") is not None else None,
             "tool_calls": [CCChatCompletionMessageToolCallsInner.from_dict(_item) for _item in obj["tool_calls"]] if obj.get("tool_calls") is not None else None,
-            "reasoning": CCReasoning.from_dict(obj["reasoning"]) if obj.get("reasoning") is not None else None
+            "reasoning": obj.get("reasoning")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

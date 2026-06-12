@@ -17,11 +17,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.cck_choice_delta_function_call import CCKChoiceDeltaFunctionCall
 from otari._client.models.cck_choice_delta_tool_call import CCKChoiceDeltaToolCall
-from otari._client.models.cck_reasoning import CCKReasoning
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -35,7 +34,7 @@ class CCKChoiceDelta(BaseModel):
     refusal: Optional[StrictStr] = None
     role: Optional[StrictStr] = None
     tool_calls: Optional[List[CCKChoiceDeltaToolCall]] = None
-    reasoning: Optional[CCKReasoning] = None
+    reasoning: Optional[StrictStr] = Field(default=None, description="Filter models by provider name")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["content", "function_call", "refusal", "role", "tool_calls", "reasoning"]
 
@@ -100,9 +99,6 @@ class CCKChoiceDelta(BaseModel):
                 if _item_tool_calls:
                     _items.append(_item_tool_calls.to_dict())
             _dict['tool_calls'] = _items
-        # override the default output from pydantic by calling `to_dict()` of reasoning
-        if self.reasoning:
-            _dict['reasoning'] = self.reasoning.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -155,7 +151,7 @@ class CCKChoiceDelta(BaseModel):
             "refusal": obj.get("refusal"),
             "role": obj.get("role"),
             "tool_calls": [CCKChoiceDeltaToolCall.from_dict(_item) for _item in obj["tool_calls"]] if obj.get("tool_calls") is not None else None,
-            "reasoning": CCKReasoning.from_dict(obj["reasoning"]) if obj.get("reasoning") is not None else None
+            "reasoning": obj.get("reasoning")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
