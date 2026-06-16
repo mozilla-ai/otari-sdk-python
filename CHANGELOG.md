@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.1.1...otari-0.2.0) (2026-06-16)
+
+
+### Features
+
+* add image generation and audio (speech/transcription) methods ([#16](https://github.com/mozilla-ai/otari-sdk-python/issues/16)) ([c558a03](https://github.com/mozilla-ai/otari-sdk-python/commit/c558a03afc192549f006717455fd64b9212bf393))
+
 ## [0.1.1](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.1.0...otari-0.1.1) (2026-06-12)
 
 
