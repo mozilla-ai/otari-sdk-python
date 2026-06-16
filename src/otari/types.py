@@ -109,3 +109,24 @@ class BatchResult:
     """Aggregated results of a completed batch job."""
 
     results: list[BatchResultItem] = field(default_factory=list)
+
+
+# ---------------------------------------------------------------------------
+# Audio types
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class TranscriptionResult:
+    """Result of an audio transcription request.
+
+    Exactly one field is populated, chosen by the gateway response's content
+    type: ``json`` for the default ``json`` / ``verbose_json`` formats, ``text``
+    for the plain ``text`` / ``srt`` / ``vtt`` formats.
+    """
+
+    json: dict[str, Any] | None = None
+    """Parsed JSON response, for ``json`` / ``verbose_json`` formats."""
+
+    text: str | None = None
+    """Raw text response, for ``text`` / ``srt`` / ``vtt`` formats."""

@@ -208,7 +208,8 @@ class TestAudio:
         )
         client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
         result = await client.transcription(model="openai:whisper-1", file=b"\x00\x01")
-        assert result == TRANSCRIPTION_RESPONSE
+        assert result.json == TRANSCRIPTION_RESPONSE
+        assert result.text is None
         request = route.calls.last.request
         assert request.headers["content-type"].startswith("multipart/form-data")
         assert b'name="file"' in request.content

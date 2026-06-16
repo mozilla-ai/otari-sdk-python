@@ -69,6 +69,7 @@ if TYPE_CHECKING:
         BatchResult,
         CreateBatchParams,
         ListBatchesOptions,
+        TranscriptionResult,
     )
 
 
@@ -367,11 +368,12 @@ class AsyncOtariClient(_BaseOtariClient):
         file: bytes,
         filename: str = "audio",
         **kwargs: Any,
-    ) -> Any:
+    ) -> TranscriptionResult:
         """Transcribe audio to text.
 
         ``file`` is the raw audio bytes uploaded as multipart form data. Returns
-        the parsed JSON (a dict) for JSON response formats, or the raw text for
+        a :class:`~otari.types.TranscriptionResult` whose ``json`` field is set
+        for JSON response formats and whose ``text`` field is set for the
         ``text`` / ``srt`` / ``vtt`` formats.
 
         Args:
@@ -382,12 +384,14 @@ class AsyncOtariClient(_BaseOtariClient):
             **kwargs: Additional parameters (``language``, ``prompt``,
                 ``response_format``, ``temperature``, ``user``).
         """
+        from otari.types import TranscriptionResult  # noqa: PLC0415
+
         data = {"model": model, **{key: str(value) for key, value in kwargs.items()}}
         files = {"file": (filename, file)}
         response = await self._post("/audio/transcriptions", data=data, files=files)
         if "application/json" in response.headers.get("content-type", ""):
-            return response.json()
-        return response.text
+            return TranscriptionResult(json=response.json())
+        return TranscriptionResult(text=response.text)
 
     # -- Models -------------------------------------------------------------
 

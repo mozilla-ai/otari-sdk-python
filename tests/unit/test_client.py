@@ -433,7 +433,8 @@ class TestAudio:
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
         result = client.transcription(model="openai:whisper-1", file=b"\x00\x01")
-        assert result == TRANSCRIPTION_RESPONSE
+        assert result.json == TRANSCRIPTION_RESPONSE
+        assert result.text is None
         request = route.calls.last.request
         assert request.headers["content-type"].startswith("multipart/form-data")
         assert b'name="model"' in request.content
@@ -450,7 +451,8 @@ class TestAudio:
         result = client.transcription(
             model="m", file=b"\x00", response_format="text"
         )
-        assert result == "hello"
+        assert result.text == "hello"
+        assert result.json is None
 
 
 # ---------------------------------------------------------------------------

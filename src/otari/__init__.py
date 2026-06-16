@@ -51,6 +51,7 @@ from otari.types import (
     ModerationResponse,
     OtariClientOptions,
     RerankResponse,
+    TranscriptionResult,
 )
 
 try:
@@ -84,6 +85,7 @@ __all__ = [
     "OtariError",
     "RateLimitError",
     "RerankResponse",
+    "TranscriptionResult",
     "UnsupportedCapabilityError",
     "UpstreamProviderError",
 ]

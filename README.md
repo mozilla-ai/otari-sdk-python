@@ -263,7 +263,7 @@ result = client.transcription(
     model="openai:whisper-1",
     file=Path("speech.mp3").read_bytes(),
 )
-print(result["text"])
+print(result.json["text"])
 ```
 
 ### Batch operations
