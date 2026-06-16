@@ -77,6 +77,13 @@ MODELS_RESPONSE: dict[str, Any] = {
     "data": [{"id": "openai:gpt-4o", "object": "model", "created": 1, "owned_by": "openai"}],
 }
 
+IMAGE_RESPONSE: dict[str, Any] = {
+    "created": 1,
+    "data": [{"url": "https://example.com/image.png"}],
+}
+
+TRANSCRIPTION_RESPONSE: dict[str, Any] = {"text": "hello world"}
+
 
 def _sse(*events: str) -> bytes:
     """Build a ``text/event-stream`` body from JSON event strings + the DONE sentinel."""
@@ -370,6 +377,83 @@ class TestChatStreaming:
             )
         )
         assert route.calls.last.request.headers["authorization"] == "Bearer tk"
+
+
+# ---------------------------------------------------------------------------
+# Images (generated core) + audio (raw httpx)
+# ---------------------------------------------------------------------------
+
+
+class TestImages:
+    def test_image_generation_returns_typed(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=IMAGE_RESPONSE)
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+        result = client.image_generation(model="openai:dall-e-3", prompt="a cat")
+        assert result.created == 1
+        assert result.data[0].url == "https://example.com/image.png"
+        assert mock.last.url.endswith("/v1/images/generations")
+        body = mock.last.json_body
+        assert body["model"] == "openai:dall-e-3"
+        assert body["prompt"] == "a cat"
+
+    def test_image_generation_maps_errors(self, mock_rest: Any) -> None:
+        mock_rest(status=402, body={"detail": "no funds"}, reason="err")
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+        with pytest.raises(InsufficientFundsError):
+            client.image_generation(model="m", prompt="x")
+
+
+class TestAudio:
+    @respx.mock
+    def test_speech_returns_bytes(self) -> None:
+        route = respx.post("http://localhost:8000/v1/audio/speech").mock(
+            return_value=httpx.Response(
+                200, headers={"content-type": "audio/mpeg"}, content=b"AUDIO"
+            )
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+        audio = client.speech(model="openai:tts-1", input="hi", voice="alloy")
+        assert audio == b"AUDIO"
+        request = route.calls.last.request
+        assert request.headers["otari-key"] == "Bearer vk"
+        assert request.headers["content-type"] == "application/json"
+
+    @respx.mock
+    def test_speech_maps_errors(self) -> None:
+        respx.post("http://localhost:8000/v1/audio/speech").mock(
+            return_value=httpx.Response(429, json={"detail": "slow down"})
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+        with pytest.raises(RateLimitError):
+            client.speech(model="m", input="hi", voice="alloy")
+
+    @respx.mock
+    def test_transcription_returns_json(self) -> None:
+        route = respx.post("http://localhost:8000/v1/audio/transcriptions").mock(
+            return_value=httpx.Response(200, json=TRANSCRIPTION_RESPONSE)
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+        result = client.transcription(model="openai:whisper-1", file=b"\x00\x01")
+        assert result.json == TRANSCRIPTION_RESPONSE
+        assert result.text is None
+        request = route.calls.last.request
+        assert request.headers["content-type"].startswith("multipart/form-data")
+        assert b'name="model"' in request.content
+        assert b'name="file"' in request.content
+
+    @respx.mock
+    def test_transcription_returns_text(self) -> None:
+        respx.post("http://localhost:8000/v1/audio/transcriptions").mock(
+            return_value=httpx.Response(
+                200, headers={"content-type": "text/plain"}, content=b"hello"
+            )
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+        result = client.transcription(
+            model="m", file=b"\x00", response_format="text"
+        )
+        assert result.text == "hello"
+        assert result.json is None
 
 
 # ---------------------------------------------------------------------------

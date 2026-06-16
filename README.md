@@ -230,6 +230,42 @@ for item in result.results:
     print(item.index, item.relevance_score)
 ```
 
+### Image generation
+
+```python
+result = client.image_generation(
+    model="openai:dall-e-3",
+    prompt="A watercolor fox in a misty forest",
+)
+
+print(result.data[0].url)
+```
+
+The gateway returns a typed OpenAI-compatible `ImagesResponse`.
+
+### Audio
+
+Text to speech returns the raw audio bytes:
+
+```python
+audio = client.speech(
+    model="openai:tts-1",
+    input="Hello from otari.",
+    voice="alloy",
+)
+Path("speech.mp3").write_bytes(audio)
+```
+
+Transcription uploads audio bytes and returns the parsed response:
+
+```python
+result = client.transcription(
+    model="openai:whisper-1",
+    file=Path("speech.mp3").read_bytes(),
+)
+print(result.json["text"])
+```
+
 ### Batch operations
 
 Submit many requests as a single batch job, poll for status, then fetch results once the batch completes. Batch endpoints are scoped to a `provider`.
