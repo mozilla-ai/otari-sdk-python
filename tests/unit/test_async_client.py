@@ -30,9 +30,11 @@ from tests.unit.test_client import (
     CHAT_RESPONSE,
     COUNT_TOKENS_RESPONSE,
     EMBEDDING_RESPONSE,
+    IMAGE_RESPONSE,
     MESSAGE_RESPONSE,
     MODELS_RESPONSE,
     RERANK_RESPONSE,
+    TRANSCRIPTION_RESPONSE,
     _sse,
 )
 
@@ -166,6 +168,50 @@ class TestStreaming:
         )
         with pytest.raises(RateLimitError):
             _ = [chunk async for chunk in stream]
+
+
+class TestImages:
+    async def test_image_generation_returns_dict(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=IMAGE_RESPONSE)
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+        result = await client.image_generation(model="openai:dall-e-3", prompt="a cat")
+        assert result == IMAGE_RESPONSE
+        assert mock.last.url.endswith("/v1/images/generations")
+
+
+class TestAudio:
+    @respx.mock
+    async def test_speech_returns_bytes(self) -> None:
+        route = respx.post("http://localhost:8000/v1/audio/speech").mock(
+            return_value=httpx.Response(
+                200, headers={"content-type": "audio/mpeg"}, content=b"AUDIO"
+            )
+        )
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+        audio = await client.speech(model="openai:tts-1", input="hi", voice="alloy")
+        assert audio == b"AUDIO"
+        assert route.calls.last.request.headers["otari-key"] == "Bearer vk"
+
+    @respx.mock
+    async def test_speech_maps_errors(self) -> None:
+        respx.post("http://localhost:8000/v1/audio/speech").mock(
+            return_value=httpx.Response(429, json={"detail": "slow down"})
+        )
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+        with pytest.raises(RateLimitError):
+            await client.speech(model="m", input="hi", voice="alloy")
+
+    @respx.mock
+    async def test_transcription_returns_json(self) -> None:
+        route = respx.post("http://localhost:8000/v1/audio/transcriptions").mock(
+            return_value=httpx.Response(200, json=TRANSCRIPTION_RESPONSE)
+        )
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+        result = await client.transcription(model="openai:whisper-1", file=b"\x00\x01")
+        assert result == TRANSCRIPTION_RESPONSE
+        request = route.calls.last.request
+        assert request.headers["content-type"].startswith("multipart/form-data")
+        assert b'name="file"' in request.content
 
 
 class TestControlPlane:

@@ -36,6 +36,7 @@ from otari._client import ApiClient, Configuration
 from otari._client.api.batches_api import BatchesApi
 from otari._client.api.chat_api import ChatApi
 from otari._client.api.embeddings_api import EmbeddingsApi
+from otari._client.api.images_api import ImagesApi
 from otari._client.api.messages_api import MessagesApi
 from otari._client.api.models_api import ModelsApi
 from otari._client.api.moderations_api import ModerationsApi
@@ -46,6 +47,7 @@ from otari._client.models.chat_completion_request import ChatCompletionRequest
 from otari._client.models.count_tokens_request import CountTokensRequest
 from otari._client.models.create_batch_request import CreateBatchRequest
 from otari._client.models.embedding_request import EmbeddingRequest
+from otari._client.models.image_generation_request import ImageGenerationRequest
 from otari._client.models.messages_request import MessagesRequest
 from otari._client.models.moderation_request import ModerationRequest
 from otari._client.models.rerank_request import RerankRequest
@@ -126,6 +128,7 @@ class AsyncOtariClient(_BaseOtariClient):
         self._rerank = RerankApi(self._api)
         self._messages = MessagesApi(self._api)
         self._models = ModelsApi(self._api)
+        self._images = ImagesApi(self._api)
         self._batches = BatchesApi(self._api)
 
     @cached_property
@@ -301,6 +304,91 @@ class AsyncOtariClient(_BaseOtariClient):
         result = await self._call(lambda: self._rerank.create_rerank_v1_rerank_post(request))
         return cast("RerankResponse", result)
 
+    # -- Images -------------------------------------------------------------
+
+    async def image_generation(
+        self,
+        *,
+        model: str,
+        prompt: str,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        """Generate images from a text prompt.
+
+        Returns the gateway's OpenAI-compatible image payload as a dict
+        (``{"created": ..., "data": [...]}``). The generated core models this
+        response as an opaque object, so the parsed JSON is returned unchanged.
+
+        Args:
+            model: Model identifier (e.g. ``"openai:dall-e-3"``).
+            prompt: Text prompt describing the desired image(s).
+            **kwargs: Additional parameters (``n``, ``size``, ``quality``,
+                ``response_format``, ``style``, ``user``).
+        """
+        request = build_request(
+            ImageGenerationRequest, {"model": model, "prompt": prompt, **kwargs}
+        )
+        result = await self._call(
+            lambda: self._images.create_image_v1_images_generations_post(request)
+        )
+        return cast("dict[str, Any]", result)
+
+    # -- Audio --------------------------------------------------------------
+
+    async def speech(
+        self,
+        *,
+        model: str,
+        input: str,  # noqa: A002
+        voice: str,
+        **kwargs: Any,
+    ) -> bytes:
+        """Synthesize speech (text-to-speech), returning raw audio bytes.
+
+        The gateway returns binary audio (``audio/mpeg`` by default) with no
+        JSON response model, so this posts over httpx and returns the raw
+        ``bytes``.
+
+        Args:
+            model: Model identifier (e.g. ``"openai:tts-1"``).
+            input: Text to synthesize.
+            voice: Voice to use (e.g. ``"alloy"``).
+            **kwargs: Additional parameters (``response_format``, ``speed``,
+                ``instructions``, ``user``).
+        """
+        body = {"model": model, "input": input, "voice": voice, **kwargs}
+        response = await self._post("/audio/speech", json=body)
+        return response.content
+
+    async def transcription(
+        self,
+        *,
+        model: str,
+        file: bytes,
+        filename: str = "audio",
+        **kwargs: Any,
+    ) -> Any:
+        """Transcribe audio to text.
+
+        ``file`` is the raw audio bytes uploaded as multipart form data. Returns
+        the parsed JSON (a dict) for JSON response formats, or the raw text for
+        ``text`` / ``srt`` / ``vtt`` formats.
+
+        Args:
+            model: Model identifier (e.g. ``"openai:whisper-1"``).
+            file: Raw audio bytes to transcribe.
+            filename: Filename for the multipart upload (some providers infer
+                the audio format from its extension).
+            **kwargs: Additional parameters (``language``, ``prompt``,
+                ``response_format``, ``temperature``, ``user``).
+        """
+        data = {"model": model, **{key: str(value) for key, value in kwargs.items()}}
+        files = {"file": (filename, file)}
+        response = await self._post("/audio/transcriptions", data=data, files=files)
+        if "application/json" in response.headers.get("content-type", ""):
+            return response.json()
+        return response.text
+
     # -- Models -------------------------------------------------------------
 
     async def list_models(self) -> list[ModelObject]:
@@ -377,6 +465,28 @@ class AsyncOtariClient(_BaseOtariClient):
             return await asyncio.to_thread(fn)
         except ApiException as exc:
             raise self._map_api_exception(exc) from exc
+
+    async def _post(
+        self,
+        path: str,
+        *,
+        json: dict[str, Any] | None = None,
+        data: dict[str, Any] | None = None,
+        files: dict[str, Any] | None = None,
+    ) -> httpx.Response:
+        """Issue a non-streaming raw httpx POST, mapping error responses.
+
+        Audio endpoints (binary speech, multipart transcription) do not fit the
+        generated JSON core, so they post directly over httpx and reuse the same
+        error mapping as the streaming shim.
+        """
+        url = f"{self._base_url}{path}"
+        response = await self._http.post(
+            url, headers=self._default_headers, json=json, data=data, files=files
+        )
+        if response.status_code >= 400:
+            raise self._map_streaming_response(response, response.content)
+        return response
 
     async def _stream(self, path: str, body: dict[str, Any], kind: Any) -> AsyncIterator[Any]:
         """Open a raw async streaming POST and yield parsed SSE chunks."""
