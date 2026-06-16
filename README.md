@@ -238,10 +238,10 @@ result = client.image_generation(
     prompt="A watercolor fox in a misty forest",
 )
 
-print(result["data"][0]["url"])
+print(result.data[0].url)
 ```
 
-The gateway returns the OpenAI-compatible image payload as a dict.
+The gateway returns a typed OpenAI-compatible `ImagesResponse`.
 
 ### Audio
 

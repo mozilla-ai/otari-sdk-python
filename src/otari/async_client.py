@@ -62,6 +62,7 @@ if TYPE_CHECKING:
     from otari._client.models.chat_completion_chunk import ChatCompletionChunk
     from otari._client.models.count_tokens_response import CountTokensResponse
     from otari._client.models.create_embedding_response import CreateEmbeddingResponse
+    from otari._client.models.images_response import ImagesResponse
     from otari._client.models.model_object import ModelObject
     from otari._client.models.moderation_response import ModerationResponse
     from otari._client.models.rerank_response import RerankResponse
@@ -313,12 +314,11 @@ class AsyncOtariClient(_BaseOtariClient):
         model: str,
         prompt: str,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ImagesResponse:
         """Generate images from a text prompt.
 
-        Returns the gateway's OpenAI-compatible image payload as a dict
-        (``{"created": ..., "data": [...]}``). The generated core models this
-        response as an opaque object, so the parsed JSON is returned unchanged.
+        Returns the gateway's OpenAI-compatible
+        :class:`~otari._client.models.images_response.ImagesResponse`.
 
         Args:
             model: Model identifier (e.g. ``"openai:dall-e-3"``).
@@ -332,7 +332,7 @@ class AsyncOtariClient(_BaseOtariClient):
         result = await self._call(
             lambda: self._images.create_image_v1_images_generations_post(request)
         )
-        return cast("dict[str, Any]", result)
+        return cast("ImagesResponse", result)
 
     # -- Audio --------------------------------------------------------------
 

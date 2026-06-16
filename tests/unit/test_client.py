@@ -385,11 +385,12 @@ class TestChatStreaming:
 
 
 class TestImages:
-    def test_image_generation_returns_dict(self, mock_rest: Any) -> None:
+    def test_image_generation_returns_typed(self, mock_rest: Any) -> None:
         mock = mock_rest(status=200, body=IMAGE_RESPONSE)
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
         result = client.image_generation(model="openai:dall-e-3", prompt="a cat")
-        assert result == IMAGE_RESPONSE
+        assert result.created == 1
+        assert result.data[0].url == "https://example.com/image.png"
         assert mock.last.url.endswith("/v1/images/generations")
         body = mock.last.json_body
         assert body["model"] == "openai:dall-e-3"
