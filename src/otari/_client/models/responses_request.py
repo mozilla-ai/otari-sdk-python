@@ -56,11 +56,12 @@ class ResponsesRequest(BaseModel):
     response_format: Optional[Dict[str, Any]] = None
     safety_identifier: Optional[StrictStr] = None
     service_tier: Optional[StrictStr] = None
+    session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     store: Optional[StrictBool] = None
     stream: Optional[StrictBool] = False
     stream_options: Optional[Dict[str, Any]] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
-    text: Optional[Any] = None
+    text: Optional[Dict[str, Any]] = None
     tool_choice: Optional[ToolChoice1] = None
     tools: Optional[List[Dict[str, Any]]] = None
     tools_header: Optional[StrictStr] = None
@@ -69,7 +70,7 @@ class ResponsesRequest(BaseModel):
     truncation: Optional[StrictStr] = None
     user: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["background", "conversation", "frequency_penalty", "guardrails", "include", "input", "instructions", "max_output_tokens", "max_tool_calls", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "metadata", "model", "parallel_tool_calls", "presence_penalty", "previous_response_id", "prompt_cache_key", "prompt_cache_retention", "reasoning", "response_format", "safety_identifier", "service_tier", "store", "stream", "stream_options", "temperature", "text", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "truncation", "user"]
+    __properties: ClassVar[List[str]] = ["background", "conversation", "frequency_penalty", "guardrails", "include", "input", "instructions", "max_output_tokens", "max_tool_calls", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "metadata", "model", "parallel_tool_calls", "presence_penalty", "previous_response_id", "prompt_cache_key", "prompt_cache_retention", "reasoning", "response_format", "safety_identifier", "service_tier", "session_label", "store", "stream", "stream_options", "temperature", "text", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "truncation", "user"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -129,9 +130,6 @@ class ResponsesRequest(BaseModel):
                 if _item_mcp_servers:
                     _items.append(_item_mcp_servers.to_dict())
             _dict['mcp_servers'] = _items
-        # override the default output from pydantic by calling `to_dict()` of text
-        if self.text:
-            _dict['text'] = self.text.to_dict()
         # override the default output from pydantic by calling `to_dict()` of tool_choice
         if self.tool_choice:
             _dict['tool_choice'] = self.tool_choice.to_dict()
@@ -250,6 +248,11 @@ class ResponsesRequest(BaseModel):
         if self.service_tier is None and "service_tier" in self.model_fields_set:
             _dict['service_tier'] = None
 
+        # set to None if session_label (nullable) is None
+        # and model_fields_set contains the field
+        if self.session_label is None and "session_label" in self.model_fields_set:
+            _dict['session_label'] = None
+
         # set to None if store (nullable) is None
         # and model_fields_set contains the field
         if self.store is None and "store" in self.model_fields_set:
@@ -340,11 +343,12 @@ class ResponsesRequest(BaseModel):
             "response_format": obj.get("response_format"),
             "safety_identifier": obj.get("safety_identifier"),
             "service_tier": obj.get("service_tier"),
+            "session_label": obj.get("session_label"),
             "store": obj.get("store"),
             "stream": obj.get("stream") if obj.get("stream") is not None else False,
             "stream_options": obj.get("stream_options"),
             "temperature": obj.get("temperature"),
-            "text": AnyOf.from_dict(obj["text"]) if obj.get("text") is not None else None,
+            "text": obj.get("text"),
             "tool_choice": ToolChoice1.from_dict(obj["tool_choice"]) if obj.get("tool_choice") is not None else None,
             "tools": obj.get("tools"),
             "tools_header": obj.get("tools_header"),

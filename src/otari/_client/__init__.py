@@ -77,6 +77,7 @@ __all__ = [
     "ChatCompletion",
     "ChatCompletionChunk",
     "ChatCompletionRequest",
+    "ChatCompletionRequestToolsInner",
     "ChatMessageInput",
     "Content",
     "Content1",
@@ -279,6 +280,7 @@ from otari._client.models.caller import Caller as Caller
 from otari._client.models.chat_completion import ChatCompletion as ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk as ChatCompletionChunk
 from otari._client.models.chat_completion_request import ChatCompletionRequest as ChatCompletionRequest
+from otari._client.models.chat_completion_request_tools_inner import ChatCompletionRequestToolsInner as ChatCompletionRequestToolsInner
 from otari._client.models.chat_message_input import ChatMessageInput as ChatMessageInput
 from otari._client.models.content import Content as Content
 from otari._client.models.content1 import Content1 as Content1

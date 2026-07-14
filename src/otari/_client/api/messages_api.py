@@ -57,7 +57,7 @@ class MessagesApi:
     ) -> CountTokensResponse:
         """Count Message Tokens
 
-        Anthropic ``/v1/messages/count_tokens``-compatible endpoint.  Returns ``{\"input_tokens\": N}`` without contacting an upstream provider: counting is local, so there is no budget reservation, pricing, or usage logging. Authentication mirrors :func:`create_message` — platform mode resolves the caller's token against the platform, standalone mode validates the API key — so the endpoint is not an open token-counting oracle.
+        Anthropic ``/v1/messages/count_tokens``-compatible endpoint.  Returns ``{\"input_tokens\": N}`` without contacting an upstream provider: counting is local, so there is no budget reservation, pricing, or usage logging. Authentication mirrors :func:`create_message` — hybrid mode resolves the caller's token against the platform, standalone mode validates the API key — so the endpoint is not an open token-counting oracle.
 
         :param count_tokens_request: (required)
         :type count_tokens_request: CountTokensRequest
@@ -125,7 +125,7 @@ class MessagesApi:
     ) -> ApiResponse[CountTokensResponse]:
         """Count Message Tokens
 
-        Anthropic ``/v1/messages/count_tokens``-compatible endpoint.  Returns ``{\"input_tokens\": N}`` without contacting an upstream provider: counting is local, so there is no budget reservation, pricing, or usage logging. Authentication mirrors :func:`create_message` — platform mode resolves the caller's token against the platform, standalone mode validates the API key — so the endpoint is not an open token-counting oracle.
+        Anthropic ``/v1/messages/count_tokens``-compatible endpoint.  Returns ``{\"input_tokens\": N}`` without contacting an upstream provider: counting is local, so there is no budget reservation, pricing, or usage logging. Authentication mirrors :func:`create_message` — hybrid mode resolves the caller's token against the platform, standalone mode validates the API key — so the endpoint is not an open token-counting oracle.
 
         :param count_tokens_request: (required)
         :type count_tokens_request: CountTokensRequest
@@ -193,7 +193,7 @@ class MessagesApi:
     ) -> RESTResponseType:
         """Count Message Tokens
 
-        Anthropic ``/v1/messages/count_tokens``-compatible endpoint.  Returns ``{\"input_tokens\": N}`` without contacting an upstream provider: counting is local, so there is no budget reservation, pricing, or usage logging. Authentication mirrors :func:`create_message` — platform mode resolves the caller's token against the platform, standalone mode validates the API key — so the endpoint is not an open token-counting oracle.
+        Anthropic ``/v1/messages/count_tokens``-compatible endpoint.  Returns ``{\"input_tokens\": N}`` without contacting an upstream provider: counting is local, so there is no budget reservation, pricing, or usage logging. Authentication mirrors :func:`create_message` — hybrid mode resolves the caller's token against the platform, standalone mode validates the API key — so the endpoint is not an open token-counting oracle.
 
         :param count_tokens_request: (required)
         :type count_tokens_request: CountTokensRequest
@@ -294,6 +294,7 @@ class MessagesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'ApiKeyAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -333,7 +334,7 @@ class MessagesApi:
     ) -> MessageResponse:
         """Create Message
 
-        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and platform mode. Platform-mode requests resolve credentials via the platform service and (for non-tool-loop requests) get multi-attempt fallback across the resolved route. Tool-loop requests collapse to a single attempt — once ``on_first_response`` lock-in plumbing lands across the codebase, a follow-up will enable pre-lock-in fallback for tool-loop requests too.
+        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and hybrid mode. Hybrid-mode requests resolve credentials via the platform service and (for non-tool-loop requests) get multi-attempt fallback across the resolved route. Tool-loop requests collapse to a single attempt — once ``on_first_response`` lock-in plumbing lands across the codebase, a follow-up will enable pre-lock-in fallback for tool-loop requests too.
 
         :param messages_request: (required)
         :type messages_request: MessagesRequest
@@ -401,7 +402,7 @@ class MessagesApi:
     ) -> ApiResponse[MessageResponse]:
         """Create Message
 
-        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and platform mode. Platform-mode requests resolve credentials via the platform service and (for non-tool-loop requests) get multi-attempt fallback across the resolved route. Tool-loop requests collapse to a single attempt — once ``on_first_response`` lock-in plumbing lands across the codebase, a follow-up will enable pre-lock-in fallback for tool-loop requests too.
+        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and hybrid mode. Hybrid-mode requests resolve credentials via the platform service and (for non-tool-loop requests) get multi-attempt fallback across the resolved route. Tool-loop requests collapse to a single attempt — once ``on_first_response`` lock-in plumbing lands across the codebase, a follow-up will enable pre-lock-in fallback for tool-loop requests too.
 
         :param messages_request: (required)
         :type messages_request: MessagesRequest
@@ -469,7 +470,7 @@ class MessagesApi:
     ) -> RESTResponseType:
         """Create Message
 
-        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and platform mode. Platform-mode requests resolve credentials via the platform service and (for non-tool-loop requests) get multi-attempt fallback across the resolved route. Tool-loop requests collapse to a single attempt — once ``on_first_response`` lock-in plumbing lands across the codebase, a follow-up will enable pre-lock-in fallback for tool-loop requests too.
+        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and hybrid mode. Hybrid-mode requests resolve credentials via the platform service and (for non-tool-loop requests) get multi-attempt fallback across the resolved route. Tool-loop requests collapse to a single attempt — once ``on_first_response`` lock-in plumbing lands across the codebase, a follow-up will enable pre-lock-in fallback for tool-loop requests too.
 
         :param messages_request: (required)
         :type messages_request: MessagesRequest
@@ -570,6 +571,7 @@ class MessagesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'ApiKeyAuth'
         ]
 
         return self.api_client.param_serialize(

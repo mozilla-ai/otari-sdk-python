@@ -41,6 +41,7 @@ class MessagesRequest(BaseModel):
     messages: Annotated[List[Dict[str, Any]], Field(min_length=1)]
     metadata: Optional[Dict[str, Any]] = None
     model: StrictStr
+    session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     stop_sequences: Optional[List[StrictStr]] = None
     stream: Optional[StrictBool] = False
     system: Optional[System] = None
@@ -51,7 +52,7 @@ class MessagesRequest(BaseModel):
     tools_header: Optional[StrictStr] = None
     top_k: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["cache_control", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
+    __properties: ClassVar[List[str]] = ["cache_control", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -139,6 +140,11 @@ class MessagesRequest(BaseModel):
         if self.metadata is None and "metadata" in self.model_fields_set:
             _dict['metadata'] = None
 
+        # set to None if session_label (nullable) is None
+        # and model_fields_set contains the field
+        if self.session_label is None and "session_label" in self.model_fields_set:
+            _dict['session_label'] = None
+
         # set to None if stop_sequences (nullable) is None
         # and model_fields_set contains the field
         if self.stop_sequences is None and "stop_sequences" in self.model_fields_set:
@@ -205,6 +211,7 @@ class MessagesRequest(BaseModel):
             "messages": obj.get("messages"),
             "metadata": obj.get("metadata"),
             "model": obj.get("model"),
+            "session_label": obj.get("session_label"),
             "stop_sequences": obj.get("stop_sequences"),
             "stream": obj.get("stream") if obj.get("stream") is not None else False,
             "system": System.from_dict(obj["system"]) if obj.get("system") is not None else None,

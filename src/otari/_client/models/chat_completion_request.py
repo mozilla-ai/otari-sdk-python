@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, Stri
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from uuid import UUID
+from otari._client.models.chat_completion_request_tools_inner import ChatCompletionRequestToolsInner
 from otari._client.models.chat_message_input import ChatMessageInput
 from otari._client.models.guardrail_config import GuardrailConfig
 from otari._client.models.mcp_server_config import McpServerConfig
@@ -51,17 +52,18 @@ class ChatCompletionRequest(BaseModel):
     reasoning_effort: Optional[StrictStr] = None
     response_format: Optional[Dict[str, Any]] = None
     seed: Optional[StrictInt] = None
+    session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     stop: Optional[Stop] = None
     stream: Optional[StrictBool] = False
     stream_options: Optional[Dict[str, Any]] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     tool_choice: Optional[ToolChoice] = None
-    tools: Optional[List[Optional[Dict[str, Any]]]] = None
+    tools: Optional[List[ChatCompletionRequestToolsInner]] = None
     tools_header: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = Field(default=None, description="Optional override for the lead-in that the gateway prepends before the per-tool hint block in the system message. Useful for expressing global tool-selection policy (e.g. 'prefer MCP tools over code_execution'). Falls back to OTARI_TOOLS_HEADER env, then to the built-in default.")
     top_logprobs: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     user: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "model", "n", "parallel_tool_calls", "presence_penalty", "reasoning_effort", "response_format", "seed", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
+    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "model", "n", "parallel_tool_calls", "presence_penalty", "reasoning_effort", "response_format", "seed", "session_label", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
 
     @field_validator('reasoning_effort')
     def reasoning_effort_validate_enum(cls, value):
@@ -139,6 +141,13 @@ class ChatCompletionRequest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of tool_choice
         if self.tool_choice:
             _dict['tool_choice'] = self.tool_choice.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in tools (list)
+        _items = []
+        if self.tools:
+            for _item_tools in self.tools:
+                if _item_tools:
+                    _items.append(_item_tools.to_dict())
+            _dict['tools'] = _items
         # set to None if frequency_penalty (nullable) is None
         # and model_fields_set contains the field
         if self.frequency_penalty is None and "frequency_penalty" in self.model_fields_set:
@@ -214,6 +223,11 @@ class ChatCompletionRequest(BaseModel):
         if self.seed is None and "seed" in self.model_fields_set:
             _dict['seed'] = None
 
+        # set to None if session_label (nullable) is None
+        # and model_fields_set contains the field
+        if self.session_label is None and "session_label" in self.model_fields_set:
+            _dict['session_label'] = None
+
         # set to None if stop (nullable) is None
         # and model_fields_set contains the field
         if self.stop is None and "stop" in self.model_fields_set:
@@ -288,12 +302,13 @@ class ChatCompletionRequest(BaseModel):
             "reasoning_effort": obj.get("reasoning_effort"),
             "response_format": obj.get("response_format"),
             "seed": obj.get("seed"),
+            "session_label": obj.get("session_label"),
             "stop": Stop.from_dict(obj["stop"]) if obj.get("stop") is not None else None,
             "stream": obj.get("stream") if obj.get("stream") is not None else False,
             "stream_options": obj.get("stream_options"),
             "temperature": obj.get("temperature"),
             "tool_choice": ToolChoice.from_dict(obj["tool_choice"]) if obj.get("tool_choice") is not None else None,
-            "tools": obj.get("tools"),
+            "tools": [ChatCompletionRequestToolsInner.from_dict(_item) for _item in obj["tools"]] if obj.get("tools") is not None else None,
             "tools_header": obj.get("tools_header"),
             "top_logprobs": obj.get("top_logprobs"),
             "top_p": obj.get("top_p"),
