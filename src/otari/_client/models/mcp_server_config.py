@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class McpServerConfig(BaseModel):
     """
-    Inline MCP server configuration accepted on the chat completions request.  Streamable HTTP transport. The `url` must be reachable from the gateway process.  URL safety is enforced at parse time:  * SSRF guard rejects private, link-local, and reserved IP ranges. Loopback is   allowed by default (sidecars, dev) — set ``OTARI_MCP_ALLOW_LOOPBACK=false`` to disable. * Plain ``http://`` is rejected when ``authorization_token`` is set, to keep   bearer tokens off the wire in cleartext.
+    Inline MCP server configuration accepted on the chat completions request.  Streamable HTTP transport. The `url` must be reachable from the gateway process.  URL safety (SSRF guard against private/link-local/reserved IP ranges, plus rejecting plain ``http://`` when ``authorization_token`` is set) is enforced by :func:`gateway.services.url_safety.validate_mcp_url`, called from the async request pipeline (``prepare_gateway_tools``) rather than here at parse time: the safety check does a DNS lookup, which must be awaited so it can't block the event loop, and Pydantic validators run synchronously during request-body parsing.
     """ # noqa: E501
     allowed_tools: Optional[List[StrictStr]] = None
     authorization_token: Optional[StrictStr] = None

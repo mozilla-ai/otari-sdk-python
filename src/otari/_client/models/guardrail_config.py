@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class GuardrailConfig(BaseModel):
     """
-    A single guardrail check the caller wants the gateway to enforce.  URL safety: when ``url`` is supplied it is validated at parse time with the same SSRF guard used for MCP server URLs (loopback allowed by default for same-host sidecars; gated by ``OTARI_MCP_ALLOW_LOOPBACK`` / ``OTARI_MCP_ALLOW_PRIVATE_HOSTS``). Most deployments omit ``url`` and rely on the operator-set ``OTARI_GUARDRAILS_URL`` instead.
+    A single guardrail check the caller wants the gateway to enforce.  URL safety: when ``url`` is supplied it is validated by :func:`gateway.services.guardrails.run_input_guardrails` (not here at parse time — the check does a DNS lookup that must be awaited) with the same SSRF guard used for MCP server URLs (loopback allowed by default for same-host sidecars; gated by ``OTARI_MCP_ALLOW_LOOPBACK`` / ``OTARI_MCP_ALLOW_PRIVATE_HOSTS``). Most deployments omit ``url`` and rely on the operator-set ``OTARI_GUARDRAILS_URL`` instead.
     """ # noqa: E501
     mode: Optional[StrictStr] = 'monitor'
     on: Optional[List[StrictStr]] = None

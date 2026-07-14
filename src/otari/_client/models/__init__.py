@@ -46,6 +46,7 @@ from otari._client.models.caller import Caller
 from otari._client.models.chat_completion import ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk
 from otari._client.models.chat_completion_request import ChatCompletionRequest
+from otari._client.models.chat_completion_request_tools_inner import ChatCompletionRequestToolsInner
 from otari._client.models.chat_message_input import ChatMessageInput
 from otari._client.models.content import Content
 from otari._client.models.content1 import Content1

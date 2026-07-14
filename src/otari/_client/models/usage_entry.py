@@ -28,6 +28,8 @@ class UsageEntry(BaseModel):
     A single usage log entry.
     """ # noqa: E501
     api_key_id: Optional[StrictStr]
+    cache_read_tokens: Optional[StrictInt]
+    cache_write_tokens: Optional[StrictInt]
     completion_tokens: Optional[StrictInt]
     cost: Optional[Union[StrictFloat, StrictInt]]
     endpoint: StrictStr
@@ -40,7 +42,7 @@ class UsageEntry(BaseModel):
     timestamp: StrictStr
     total_tokens: Optional[StrictInt]
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "completion_tokens", "cost", "endpoint", "error_message", "id", "model", "prompt_tokens", "provider", "status", "timestamp", "total_tokens", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "cache_read_tokens", "cache_write_tokens", "completion_tokens", "cost", "endpoint", "error_message", "id", "model", "prompt_tokens", "provider", "status", "timestamp", "total_tokens", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,6 +87,16 @@ class UsageEntry(BaseModel):
         # and model_fields_set contains the field
         if self.api_key_id is None and "api_key_id" in self.model_fields_set:
             _dict['api_key_id'] = None
+
+        # set to None if cache_read_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_read_tokens is None and "cache_read_tokens" in self.model_fields_set:
+            _dict['cache_read_tokens'] = None
+
+        # set to None if cache_write_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_write_tokens is None and "cache_write_tokens" in self.model_fields_set:
+            _dict['cache_write_tokens'] = None
 
         # set to None if completion_tokens (nullable) is None
         # and model_fields_set contains the field
@@ -134,6 +146,8 @@ class UsageEntry(BaseModel):
 
         _obj = cls.model_validate({
             "api_key_id": obj.get("api_key_id"),
+            "cache_read_tokens": obj.get("cache_read_tokens"),
+            "cache_write_tokens": obj.get("cache_write_tokens"),
             "completion_tokens": obj.get("completion_tokens"),
             "cost": obj.get("cost"),
             "endpoint": obj.get("endpoint"),
