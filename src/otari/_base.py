@@ -271,7 +271,6 @@ def extract_detail(error: ApiException) -> str:
     return error.reason or "An error occurred"
 
 
-
 def map_api_exception(error: ApiException) -> OtariError:
     """Map a generated ``ApiException`` to a typed otari exception.
 
