@@ -154,98 +154,16 @@ class _BaseOtariClient:
     def _map_api_exception(self, error: ApiException) -> OtariError:
         """Map a generated ``ApiException`` to a typed otari exception.
 
-        ``ApiException`` carries ``.status`` (int) and ``.body`` (the raw JSON
-        string the gateway returned) plus ``.headers``. The gateway encodes the
-        human-readable reason under the ``detail`` key (FastAPI convention).
-
-        Most status mappings only apply in platform mode; in non-platform mode
-        the generic :class:`OtariError` is raised so the caller still gets a
-        single SDK exception type. The one cross-mode case is
-        :class:`UnsupportedCapabilityError`, surfaced in both modes.
+        Thin wrapper over the module-level :func:`map_api_exception` so the
+        control-plane resources can reuse the same mapping without a client
+        instance.
         """
-        status = error.status if isinstance(error.status, int) else 0
-        headers = error.headers or {}
-        detail = self._extract_detail(error)
-        correlation_id = _header_get(headers, "x-correlation-id")
-        retry_after = _header_get(headers, "retry-after")
-
-        full = f"{detail} (correlation_id={correlation_id})" if correlation_id else detail
-
-        # Unsupported-capability is surfaced regardless of mode.
-        if status == 400 and _UNSUPPORTED_MODERATION_RE.search(detail):
-            provider = _parse_unsupported_provider(detail)
-            capability = "multimodal_moderation" if "multimodal" in detail else "moderation"
-            return UnsupportedCapabilityError(
-                full,
-                status_code=status,
-                original_error=error,
-                provider_name=PROVIDER_NAME,
-                provider=provider,
-                capability=capability,
-            )
-
-        if status in (401, 403):
-            return AuthenticationError(
-                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
-            )
-        if status == 402:
-            return InsufficientFundsError(
-                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
-            )
-        if status == 404:
-            return ModelNotFoundError(
-                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
-            )
-        if status == 409:
-            return BatchNotCompleteError(
-                full,
-                status_code=status,
-                original_error=error,
-                provider_name=PROVIDER_NAME,
-                batch_id=_extract_batch_id(detail),
-                batch_status=_extract_status(detail),
-            )
-        if status == 429:
-            return RateLimitError(
-                full,
-                status_code=status,
-                original_error=error,
-                provider_name=PROVIDER_NAME,
-                retry_after=retry_after,
-            )
-        if status == 504:
-            return GatewayTimeoutError(
-                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
-            )
-        # 502 and any other 5xx are upstream-provider failures.
-        if status == 502 or 500 <= status < 600:
-            return UpstreamProviderError(
-                full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
-            )
-
-        return OtariError(
-            full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
-        )
+        return map_api_exception(error)
 
     @staticmethod
     def _extract_detail(error: ApiException) -> str:
         """Pull the gateway's human-readable detail from an ``ApiException`` body."""
-        body = error.body
-        if isinstance(body, (bytes, bytearray)):
-            body = body.decode("utf-8", "replace")
-        if isinstance(body, str) and body:
-            try:
-                parsed = json.loads(body)
-            except (ValueError, TypeError):
-                return body
-            if isinstance(parsed, dict):
-                detail = parsed.get("detail") or parsed.get("message") or parsed.get("error")
-                if isinstance(detail, str):
-                    return detail
-                if detail is not None:
-                    return str(detail)
-            return body
-        return error.reason or "An error occurred"
+        return extract_detail(error)
 
     def _map_streaming_response(self, response: httpx.Response, body: bytes) -> OtariError:
         """Map a failed raw streaming response to a typed otari exception.
@@ -331,3 +249,101 @@ def _extract_status(message: str) -> str | None:
 def _url_encode(value: str) -> str:
     """Percent-encode a single URL component."""
     return urllib.parse.quote(value, safe="")
+
+
+def extract_detail(error: ApiException) -> str:
+    """Pull the gateway's human-readable detail from an ``ApiException`` body."""
+    body = error.body
+    if isinstance(body, (bytes, bytearray)):
+        body = body.decode("utf-8", "replace")
+    if isinstance(body, str) and body:
+        try:
+            parsed = json.loads(body)
+        except (ValueError, TypeError):
+            return body
+        if isinstance(parsed, dict):
+            detail = parsed.get("detail") or parsed.get("message") or parsed.get("error")
+            if isinstance(detail, str):
+                return detail
+            if detail is not None:
+                return str(detail)
+        return body
+    return error.reason or "An error occurred"
+
+
+def map_api_exception(error: ApiException) -> OtariError:
+    """Map a generated ``ApiException`` to a typed otari exception.
+
+    ``ApiException`` carries ``.status`` (int) and ``.body`` (the raw JSON
+    string the gateway returned) plus ``.headers``. The gateway encodes the
+    human-readable reason under the ``detail`` key (FastAPI convention).
+
+    Most status mappings only apply in platform mode; in non-platform mode
+    the generic :class:`OtariError` is raised so the caller still gets a
+    single SDK exception type. The one cross-mode case is
+    :class:`UnsupportedCapabilityError`, surfaced in both modes.
+    """
+    status = error.status if isinstance(error.status, int) else 0
+    headers = error.headers or {}
+    detail = extract_detail(error)
+    correlation_id = _header_get(headers, "x-correlation-id")
+    retry_after = _header_get(headers, "retry-after")
+
+    full = f"{detail} (correlation_id={correlation_id})" if correlation_id else detail
+
+    # Unsupported-capability is surfaced regardless of mode.
+    if status == 400 and _UNSUPPORTED_MODERATION_RE.search(detail):
+        provider = _parse_unsupported_provider(detail)
+        capability = "multimodal_moderation" if "multimodal" in detail else "moderation"
+        return UnsupportedCapabilityError(
+            full,
+            status_code=status,
+            original_error=error,
+            provider_name=PROVIDER_NAME,
+            provider=provider,
+            capability=capability,
+        )
+
+    if status in (401, 403):
+        return AuthenticationError(
+            full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+        )
+    if status == 402:
+        return InsufficientFundsError(
+            full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+        )
+    if status == 404:
+        return ModelNotFoundError(
+            full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+        )
+    if status == 409:
+        return BatchNotCompleteError(
+            full,
+            status_code=status,
+            original_error=error,
+            provider_name=PROVIDER_NAME,
+            batch_id=_extract_batch_id(detail),
+            batch_status=_extract_status(detail),
+        )
+    if status == 429:
+        return RateLimitError(
+            full,
+            status_code=status,
+            original_error=error,
+            provider_name=PROVIDER_NAME,
+            retry_after=retry_after,
+        )
+    if status == 504:
+        return GatewayTimeoutError(
+            full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+        )
+    # 502 and any other 5xx are upstream-provider failures.
+    if status == 502 or 500 <= status < 600:
+        return UpstreamProviderError(
+            full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+        )
+
+    return OtariError(
+        full, status_code=status, original_error=error, provider_name=PROVIDER_NAME
+    )
+

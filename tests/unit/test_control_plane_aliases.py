@@ -20,7 +20,9 @@ from otari._client.api.keys_api import KeysApi
 from otari._client.api.pricing_api import PricingApi
 from otari._client.api.usage_api import UsageApi
 from otari._client.api.users_api import UsersApi
+from otari._client.exceptions import ApiException
 from otari.control_plane import ControlPlane
+from otari.errors import AuthenticationError
 
 # (resource, alias, alias_args, generated_method, expected_forwarded_args)
 CASES: list[tuple[str, str, tuple[Any, ...], str, tuple[Any, ...]]] = [
@@ -90,3 +92,41 @@ def test_raw_exposes_generated_api(control_plane: ControlPlane) -> None:
     assert isinstance(control_plane.pricing.raw, PricingApi)
     assert isinstance(control_plane.usage.raw, UsageApi)
     control_plane.close()
+
+
+# (resource, alias, generated_method, alias_args) covering every alias shape.
+MAP_CASES: list[tuple[str, str, str, tuple[Any, ...]]] = [
+    ("keys", "list", "list_keys_v1_keys_get", ()),
+    ("users", "get", "get_user_v1_users_user_id_get", ("u1",)),
+    ("budgets", "create", "create_budget_v1_budgets_post", ("req",)),
+    ("pricing", "delete", "delete_pricing_v1_pricing_model_key_delete", ("m1",)),
+    ("usage", "list", "list_usage_v1_usage_get", ()),
+]
+
+
+@pytest.mark.parametrize(("resource", "alias", "generated_method", "alias_args"), MAP_CASES)
+def test_alias_maps_api_exception_to_typed_error(
+    control_plane: ControlPlane,
+    resource: str,
+    alias: str,
+    generated_method: str,
+    alias_args: tuple[Any, ...],
+) -> None:
+    """Control-plane aliases surface a generated ``ApiException`` as a typed ``OtariError``.
+
+    Mirrors the inference path (``client.py`` maps ``ApiException`` already), so
+    a bad master key yields a clean ``AuthenticationError`` instead of leaking
+    the raw generated exception (and a CLI traceback).
+    """
+    res = getattr(control_plane, resource)
+    res.raw = MagicMock()
+    getattr(res.raw, generated_method).side_effect = ApiException(
+        status=401, reason="Unauthorized", body='{"detail":"Invalid master key"}'
+    )
+
+    with pytest.raises(AuthenticationError) as excinfo:
+        getattr(res, alias)(*alias_args)
+
+    assert not isinstance(excinfo.value, ApiException)
+    assert excinfo.value.status_code == 401
+    assert "Invalid master key" in str(excinfo.value)
