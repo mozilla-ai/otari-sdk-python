@@ -47,7 +47,6 @@ CASES: list[tuple[str, str, tuple[Any, ...], str, tuple[Any, ...]]] = [
     ("pricing", "set", ("req",), "set_pricing_v1_pricing_post", ("req",)),
     ("pricing", "delete", ("m1",), "delete_pricing_v1_pricing_model_key_delete", ("m1",)),
     ("pricing", "get_history", ("m1",), "get_pricing_history_v1_pricing_model_key_history_get", ("m1",)),
-    ("usage", "list", (None, None, "u1", 0, 10), "list_usage_v1_usage_get", (None, None, "u1", 0, 10)),
 ]
 
 
@@ -75,6 +74,19 @@ def test_alias_delegates_to_generated_method(
     getattr(res.raw, generated_method).assert_called_once_with(*forwarded)
     # ``delete`` aliases return ``None``; the rest return the generated result.
     assert result is (None if alias == "delete" else sentinel)
+
+
+def test_usage_list_forwards_by_keyword(control_plane: ControlPlane) -> None:
+    """usage.list must delegate by keyword.
+
+    The generated signature grows query-filter params between ``user_id`` and
+    ``skip``, so positional forwarding silently binds ``skip`` to a filter.
+    """
+    control_plane.usage.raw = MagicMock()
+    control_plane.usage.list(None, None, "u1", 0, 10)
+    control_plane.usage.raw.list_usage_v1_usage_get.assert_called_once_with(
+        start_date=None, end_date=None, user_id="u1", skip=0, limit=10
+    )
 
 
 def test_alias_forwards_request_options_as_kwargs(control_plane: ControlPlane) -> None:

@@ -227,7 +227,16 @@ class UsageResource:
         limit: int | None = None,
         **kwargs: Any,
     ) -> list[UsageEntry]:
-        return self.raw.list_usage_v1_usage_get(start_date, end_date, user_id, skip, limit, **kwargs)
+        # Passed by keyword: the generated signature grows query-filter params
+        # between user_id and skip as the gateway adds them.
+        return self.raw.list_usage_v1_usage_get(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            skip=skip,
+            limit=limit,
+            **kwargs,
+        )
 
 
 class ControlPlane:
