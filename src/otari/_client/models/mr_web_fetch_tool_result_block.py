@@ -19,8 +19,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.caller import Caller
-from otari._client.models.content7 import Content7
+from otari._client.models.caller1 import Caller1
+from otari._client.models.content14 import Content14
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,8 +29,8 @@ class MRWebFetchToolResultBlock(BaseModel):
     """
     MRWebFetchToolResultBlock
     """ # noqa: E501
-    caller: Optional[Caller] = None
-    content: Content7
+    caller: Optional[Caller1] = None
+    content: Content14
     tool_use_id: StrictStr
     type: StrictStr
     additional_properties: Dict[str, Any] = {}
@@ -112,8 +112,8 @@ class MRWebFetchToolResultBlock(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "caller": Caller.from_dict(obj["caller"]) if obj.get("caller") is not None else None,
-            "content": Content7.from_dict(obj["content"]) if obj.get("content") is not None else None,
+            "caller": Caller1.from_dict(obj["caller"]) if obj.get("caller") is not None else None,
+            "content": Content14.from_dict(obj["content"]) if obj.get("content") is not None else None,
             "tool_use_id": obj.get("tool_use_id"),
             "type": obj.get("type")
         })

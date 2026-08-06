@@ -18,7 +18,8 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Union
+from typing import Any, ClassVar, Dict, List, Optional, Union
+from otari._client.models.pricing_tier import PricingTier
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,13 +28,17 @@ class PricingResponse(BaseModel):
     """
     Response model for model pricing.
     """ # noqa: E501
+    cache_read_price_per_million: Optional[Union[StrictFloat, StrictInt]]
+    cache_write_1h_price_per_million: Optional[Union[StrictFloat, StrictInt]]
+    cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]]
     created_at: StrictStr
     effective_at: StrictStr
     input_price_per_million: Union[StrictFloat, StrictInt]
     model_key: StrictStr
     output_price_per_million: Union[StrictFloat, StrictInt]
+    pricing_tiers: List[PricingTier]
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["created_at", "effective_at", "input_price_per_million", "model_key", "output_price_per_million", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "created_at", "effective_at", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -74,6 +79,28 @@ class PricingResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in pricing_tiers (list)
+        _items = []
+        if self.pricing_tiers:
+            for _item_pricing_tiers in self.pricing_tiers:
+                if _item_pricing_tiers:
+                    _items.append(_item_pricing_tiers.to_dict())
+            _dict['pricing_tiers'] = _items
+        # set to None if cache_read_price_per_million (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
+            _dict['cache_read_price_per_million'] = None
+
+        # set to None if cache_write_1h_price_per_million (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_write_1h_price_per_million is None and "cache_write_1h_price_per_million" in self.model_fields_set:
+            _dict['cache_write_1h_price_per_million'] = None
+
+        # set to None if cache_write_price_per_million (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
+            _dict['cache_write_price_per_million'] = None
+
         return _dict
 
     @classmethod
@@ -86,11 +113,15 @@ class PricingResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
+            "cache_write_1h_price_per_million": obj.get("cache_write_1h_price_per_million"),
+            "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "created_at": obj.get("created_at"),
             "effective_at": obj.get("effective_at"),
             "input_price_per_million": obj.get("input_price_per_million"),
             "model_key": obj.get("model_key"),
             "output_price_per_million": obj.get("output_price_per_million"),
+            "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
             "updated_at": obj.get("updated_at")
         })
         return _obj

@@ -322,6 +322,7 @@ class FilesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -603,6 +604,7 @@ class FilesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -644,7 +646,7 @@ class FilesApi:
     ) -> object:
         """Get File Content
 
-        Download the raw bytes of a file.
+        Download the raw bytes of a file, streamed rather than buffered whole.
 
         :param file_id: (required)
         :type file_id: str
@@ -716,7 +718,7 @@ class FilesApi:
     ) -> ApiResponse[object]:
         """Get File Content
 
-        Download the raw bytes of a file.
+        Download the raw bytes of a file, streamed rather than buffered whole.
 
         :param file_id: (required)
         :type file_id: str
@@ -788,7 +790,7 @@ class FilesApi:
     ) -> RESTResponseType:
         """Get File Content
 
-        Download the raw bytes of a file.
+        Download the raw bytes of a file, streamed rather than buffered whole.
 
         :param file_id: (required)
         :type file_id: str
@@ -884,6 +886,7 @@ class FilesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -1165,6 +1168,7 @@ class FilesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -1448,6 +1452,7 @@ class FilesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 

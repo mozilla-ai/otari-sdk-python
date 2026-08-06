@@ -18,7 +18,9 @@ __version__ = "1.0.0"
 
 # Define package exports
 __all__ = [
+    "AliasesApi",
     "AudioApi",
+    "AuthApi",
     "BatchesApi",
     "BudgetsApi",
     "ChatApi",
@@ -30,9 +32,15 @@ __all__ = [
     "MessagesApi",
     "ModelsApi",
     "ModerationsApi",
+    "OtelApi",
     "PricingApi",
+    "ProvidersApi",
     "RerankApi",
     "ResponsesApi",
+    "RoutingApi",
+    "SearchApi",
+    "SettingsApi",
+    "ToolSettingsApi",
     "UsageApi",
     "UsersApi",
     "ApiResponse",
@@ -44,8 +52,12 @@ __all__ = [
     "ApiKeyError",
     "ApiAttributeError",
     "ApiException",
+    "AliasRequest",
+    "AliasResponse",
+    "AppliedEditsInner",
     "AudioSpeechRequest",
     "BatchRequestItem",
+    "BudgetResetLogResponse",
     "BudgetResponse",
     "CCChatCompletionAudio",
     "CCChatCompletionMessage",
@@ -74,13 +86,23 @@ __all__ = [
     "CCPromptTokensDetails",
     "CCTopLogprob",
     "Caller",
+    "Caller1",
+    "CandidateResponse",
     "ChatCompletion",
     "ChatCompletionChunk",
     "ChatCompletionRequest",
     "ChatCompletionRequestToolsInner",
     "ChatMessageInput",
+    "ConfigField",
     "Content",
     "Content1",
+    "Content10",
+    "Content11",
+    "Content12",
+    "Content13",
+    "Content14",
+    "Content15",
+    "Content16Inner",
     "Content2",
     "Content2AnyOfInner",
     "Content3",
@@ -89,7 +111,7 @@ __all__ = [
     "Content6",
     "Content7",
     "Content8",
-    "Content9Inner",
+    "Content9",
     "ContentAnyOfInner",
     "Conversation",
     "CountTokensRequest",
@@ -99,10 +121,23 @@ __all__ = [
     "CreateEmbeddingResponse",
     "CreateKeyRequest",
     "CreateKeyResponse",
+    "CreateSessionRequest",
+    "CreateStoredProviderRequest",
     "CreateUserRequest",
+    "DiscoverableModel",
+    "DiscoverableModelsResponse",
+    "DiscoverableProvider",
+    "DroppedResponse",
     "EMBEmbedding",
     "EMBUsage",
     "EmbeddingRequest",
+    "ExplainRequest",
+    "ExplainResponse",
+    "ExternalEventsRequest",
+    "ExternalIngestError",
+    "ExternalIngestResult",
+    "ExternalUsageEvent",
+    "GatewaySettings",
     "GuardrailConfig",
     "HTTPValidationError",
     "IMGImage",
@@ -114,12 +149,71 @@ __all__ = [
     "Input",
     "Input1",
     "KeyInfo",
+    "KnownProviderSchema",
+    "KnownProviderSummarySchema",
     "LocationInner",
+    "MRAnthropicTypesThinkingBlockThinkingBlock",
+    "MRAnyLlmTypesMessagesThinkingBlock",
     "MRBase64PDFSource",
     "MRBashCodeExecutionOutputBlock",
     "MRBashCodeExecutionResultBlock",
     "MRBashCodeExecutionToolResultBlock",
     "MRBashCodeExecutionToolResultError",
+    "MRBetaBase64PDFSource",
+    "MRBetaBashCodeExecutionOutputBlock",
+    "MRBetaBashCodeExecutionResultBlock",
+    "MRBetaBashCodeExecutionToolResultBlock",
+    "MRBetaBashCodeExecutionToolResultError",
+    "MRBetaCacheCreation",
+    "MRBetaCitationCharLocation",
+    "MRBetaCitationConfig",
+    "MRBetaCitationContentBlockLocation",
+    "MRBetaCitationPageLocation",
+    "MRBetaCitationSearchResultLocation",
+    "MRBetaCitationsWebSearchResultLocation",
+    "MRBetaClearThinking20251015EditResponse",
+    "MRBetaClearToolUses20250919EditResponse",
+    "MRBetaCodeExecutionOutputBlock",
+    "MRBetaCodeExecutionResultBlock",
+    "MRBetaCodeExecutionToolResultBlock",
+    "MRBetaCodeExecutionToolResultError",
+    "MRBetaCompactionBlock",
+    "MRBetaCompactionIterationUsage",
+    "MRBetaContainer",
+    "MRBetaContainerUploadBlock",
+    "MRBetaContextManagementResponse",
+    "MRBetaDiagnosticsFallback",
+    "MRBetaDirectCaller",
+    "MRBetaDocumentBlock",
+    "MRBetaEncryptedCodeExecutionResultBlock",
+    "MRBetaMCPToolResultBlock",
+    "MRBetaMCPToolUseBlock",
+    "MRBetaMessageIterationUsage",
+    "MRBetaPlainTextSource",
+    "MRBetaRedactedThinkingBlock",
+    "MRBetaServerToolCaller",
+    "MRBetaServerToolCaller20260120",
+    "MRBetaServerToolUseBlock",
+    "MRBetaSkill",
+    "MRBetaTextBlock",
+    "MRBetaTextBlockCitationsInner",
+    "MRBetaTextEditorCodeExecutionCreateResultBlock",
+    "MRBetaTextEditorCodeExecutionStrReplaceResultBlock",
+    "MRBetaTextEditorCodeExecutionToolResultBlock",
+    "MRBetaTextEditorCodeExecutionToolResultError",
+    "MRBetaTextEditorCodeExecutionViewResultBlock",
+    "MRBetaThinkingBlock",
+    "MRBetaToolReferenceBlock",
+    "MRBetaToolSearchToolResultBlock",
+    "MRBetaToolSearchToolResultError",
+    "MRBetaToolSearchToolSearchResultBlock",
+    "MRBetaToolUseBlock",
+    "MRBetaWebFetchBlock",
+    "MRBetaWebFetchToolResultBlock",
+    "MRBetaWebFetchToolResultErrorBlock",
+    "MRBetaWebSearchResultBlock",
+    "MRBetaWebSearchToolResultBlock",
+    "MRBetaWebSearchToolResultError",
     "MRCacheCreation",
     "MRCitationCharLocation",
     "MRCitationContentBlockLocation",
@@ -131,11 +225,12 @@ __all__ = [
     "MRCodeExecutionResultBlock",
     "MRCodeExecutionToolResultBlock",
     "MRCodeExecutionToolResultError",
-    "MRContainer",
     "MRContainerUploadBlock",
     "MRDirectCaller",
     "MRDocumentBlock",
     "MREncryptedCodeExecutionResultBlock",
+    "MRMessageUsage",
+    "MRMessageUsageIterationsInner",
     "MRPlainTextSource",
     "MRRedactedThinkingBlock",
     "MRRefusalStopDetails",
@@ -150,13 +245,11 @@ __all__ = [
     "MRTextEditorCodeExecutionToolResultBlock",
     "MRTextEditorCodeExecutionToolResultError",
     "MRTextEditorCodeExecutionViewResultBlock",
-    "MRThinkingBlock",
     "MRToolReferenceBlock",
     "MRToolSearchToolResultBlock",
     "MRToolSearchToolResultError",
     "MRToolSearchToolSearchResultBlock",
     "MRToolUseBlock",
-    "MRUsage",
     "MRWebFetchBlock",
     "MRWebFetchToolResultBlock",
     "MRWebFetchToolResultErrorBlock",
@@ -188,36 +281,85 @@ __all__ = [
     "MessagesRequest",
     "Model",
     "ModelListResponse",
+    "ModelMetadata",
+    "ModelMetadataResponse",
     "ModelObject",
     "ModelPricingInfo",
     "ModerationRequest",
     "ModerationResponse",
     "ModerationResult",
+    "PolicyRequest",
+    "PolicyResponse",
+    "PricingRefreshChangeResponse",
+    "PricingRefreshConfirmationResponse",
+    "PricingRefreshPreviewResponse",
     "PricingResponse",
+    "PricingTier",
+    "PricingTiersInnerValue",
+    "ProviderCapabilitiesSchema",
+    "ProviderHealthResponse",
+    "ProviderHealthSchema",
+    "ProviderInfoSchema",
+    "ProvidersResponse",
     "RRRerankMeta",
     "RRRerankResult",
     "RRRerankUsage",
+    "ReencryptProviderCredentialsResponse",
     "RerankRequest",
     "RerankResponse",
     "ResponsesRequest",
+    "RotateMasterKeyResponse",
+    "SearchRequest",
+    "SearchResponse",
+    "SearchResultItem",
+    "SessionResponse",
     "SetPricingRequest",
     "Source",
+    "Source1",
     "Stop",
+    "StoredProviderResponse",
     "System",
+    "TestProviderRequest",
+    "TestProviderResponse",
+    "TestServiceRequest",
+    "TestServiceResponse",
     "ToolCallsInner",
     "ToolChoice",
     "ToolChoice1",
+    "ToolSettingField",
+    "ToolSettingsResponse",
     "UpdateBudgetRequest",
     "UpdateKeyRequest",
+    "UpdateSettingsRequest",
+    "UpdateStoredProviderRequest",
+    "UpdateToolSettingsRequest",
     "UpdateUserRequest",
+    "UsageCount",
+    "UsageDeleteRequest",
+    "UsageDeleteResult",
     "UsageEntry",
+    "UsageEntryPricingBreakdownInnerValue",
+    "UsageErrorCodeRow",
+    "UsageGroupRow",
+    "UsageGroupedSeries",
+    "UsageGroupedSeriesPoint",
     "UsageLogResponse",
+    "UsageSeriesPoint",
+    "UsageSetPriceRequest",
+    "UsageSetPriceResult",
+    "UsageSummary",
+    "UsageToolRow",
+    "UsageTotals",
     "UserResponse",
     "ValidationError",
+    "Value",
+    "Value1",
 ]
 
 # import apis into sdk package
+from otari._client.api.aliases_api import AliasesApi as AliasesApi
 from otari._client.api.audio_api import AudioApi as AudioApi
+from otari._client.api.auth_api import AuthApi as AuthApi
 from otari._client.api.batches_api import BatchesApi as BatchesApi
 from otari._client.api.budgets_api import BudgetsApi as BudgetsApi
 from otari._client.api.chat_api import ChatApi as ChatApi
@@ -229,9 +371,15 @@ from otari._client.api.keys_api import KeysApi as KeysApi
 from otari._client.api.messages_api import MessagesApi as MessagesApi
 from otari._client.api.models_api import ModelsApi as ModelsApi
 from otari._client.api.moderations_api import ModerationsApi as ModerationsApi
+from otari._client.api.otel_api import OtelApi as OtelApi
 from otari._client.api.pricing_api import PricingApi as PricingApi
+from otari._client.api.providers_api import ProvidersApi as ProvidersApi
 from otari._client.api.rerank_api import RerankApi as RerankApi
 from otari._client.api.responses_api import ResponsesApi as ResponsesApi
+from otari._client.api.routing_api import RoutingApi as RoutingApi
+from otari._client.api.search_api import SearchApi as SearchApi
+from otari._client.api.settings_api import SettingsApi as SettingsApi
+from otari._client.api.tool_settings_api import ToolSettingsApi as ToolSettingsApi
 from otari._client.api.usage_api import UsageApi as UsageApi
 from otari._client.api.users_api import UsersApi as UsersApi
 
@@ -247,8 +395,12 @@ from otari._client.exceptions import ApiAttributeError as ApiAttributeError
 from otari._client.exceptions import ApiException as ApiException
 
 # import models into sdk package
+from otari._client.models.alias_request import AliasRequest as AliasRequest
+from otari._client.models.alias_response import AliasResponse as AliasResponse
+from otari._client.models.applied_edits_inner import AppliedEditsInner as AppliedEditsInner
 from otari._client.models.audio_speech_request import AudioSpeechRequest as AudioSpeechRequest
 from otari._client.models.batch_request_item import BatchRequestItem as BatchRequestItem
+from otari._client.models.budget_reset_log_response import BudgetResetLogResponse as BudgetResetLogResponse
 from otari._client.models.budget_response import BudgetResponse as BudgetResponse
 from otari._client.models.cc_chat_completion_audio import CCChatCompletionAudio as CCChatCompletionAudio
 from otari._client.models.cc_chat_completion_message import CCChatCompletionMessage as CCChatCompletionMessage
@@ -277,13 +429,23 @@ from otari._client.models.cck_top_logprob import CCKTopLogprob as CCKTopLogprob
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails as CCPromptTokensDetails
 from otari._client.models.cc_top_logprob import CCTopLogprob as CCTopLogprob
 from otari._client.models.caller import Caller as Caller
+from otari._client.models.caller1 import Caller1 as Caller1
+from otari._client.models.candidate_response import CandidateResponse as CandidateResponse
 from otari._client.models.chat_completion import ChatCompletion as ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk as ChatCompletionChunk
 from otari._client.models.chat_completion_request import ChatCompletionRequest as ChatCompletionRequest
 from otari._client.models.chat_completion_request_tools_inner import ChatCompletionRequestToolsInner as ChatCompletionRequestToolsInner
 from otari._client.models.chat_message_input import ChatMessageInput as ChatMessageInput
+from otari._client.models.config_field import ConfigField as ConfigField
 from otari._client.models.content import Content as Content
 from otari._client.models.content1 import Content1 as Content1
+from otari._client.models.content10 import Content10 as Content10
+from otari._client.models.content11 import Content11 as Content11
+from otari._client.models.content12 import Content12 as Content12
+from otari._client.models.content13 import Content13 as Content13
+from otari._client.models.content14 import Content14 as Content14
+from otari._client.models.content15 import Content15 as Content15
+from otari._client.models.content16_inner import Content16Inner as Content16Inner
 from otari._client.models.content2 import Content2 as Content2
 from otari._client.models.content2_any_of_inner import Content2AnyOfInner as Content2AnyOfInner
 from otari._client.models.content3 import Content3 as Content3
@@ -292,7 +454,7 @@ from otari._client.models.content5 import Content5 as Content5
 from otari._client.models.content6 import Content6 as Content6
 from otari._client.models.content7 import Content7 as Content7
 from otari._client.models.content8 import Content8 as Content8
-from otari._client.models.content9_inner import Content9Inner as Content9Inner
+from otari._client.models.content9 import Content9 as Content9
 from otari._client.models.content_any_of_inner import ContentAnyOfInner as ContentAnyOfInner
 from otari._client.models.conversation import Conversation as Conversation
 from otari._client.models.count_tokens_request import CountTokensRequest as CountTokensRequest
@@ -302,10 +464,23 @@ from otari._client.models.create_budget_request import CreateBudgetRequest as Cr
 from otari._client.models.create_embedding_response import CreateEmbeddingResponse as CreateEmbeddingResponse
 from otari._client.models.create_key_request import CreateKeyRequest as CreateKeyRequest
 from otari._client.models.create_key_response import CreateKeyResponse as CreateKeyResponse
+from otari._client.models.create_session_request import CreateSessionRequest as CreateSessionRequest
+from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest as CreateStoredProviderRequest
 from otari._client.models.create_user_request import CreateUserRequest as CreateUserRequest
+from otari._client.models.discoverable_model import DiscoverableModel as DiscoverableModel
+from otari._client.models.discoverable_models_response import DiscoverableModelsResponse as DiscoverableModelsResponse
+from otari._client.models.discoverable_provider import DiscoverableProvider as DiscoverableProvider
+from otari._client.models.dropped_response import DroppedResponse as DroppedResponse
 from otari._client.models.emb_embedding import EMBEmbedding as EMBEmbedding
 from otari._client.models.emb_usage import EMBUsage as EMBUsage
 from otari._client.models.embedding_request import EmbeddingRequest as EmbeddingRequest
+from otari._client.models.explain_request import ExplainRequest as ExplainRequest
+from otari._client.models.explain_response import ExplainResponse as ExplainResponse
+from otari._client.models.external_events_request import ExternalEventsRequest as ExternalEventsRequest
+from otari._client.models.external_ingest_error import ExternalIngestError as ExternalIngestError
+from otari._client.models.external_ingest_result import ExternalIngestResult as ExternalIngestResult
+from otari._client.models.external_usage_event import ExternalUsageEvent as ExternalUsageEvent
+from otari._client.models.gateway_settings import GatewaySettings as GatewaySettings
 from otari._client.models.guardrail_config import GuardrailConfig as GuardrailConfig
 from otari._client.models.http_validation_error import HTTPValidationError as HTTPValidationError
 from otari._client.models.img_image import IMGImage as IMGImage
@@ -317,12 +492,71 @@ from otari._client.models.images_response import ImagesResponse as ImagesRespons
 from otari._client.models.input import Input as Input
 from otari._client.models.input1 import Input1 as Input1
 from otari._client.models.key_info import KeyInfo as KeyInfo
+from otari._client.models.known_provider_schema import KnownProviderSchema as KnownProviderSchema
+from otari._client.models.known_provider_summary_schema import KnownProviderSummarySchema as KnownProviderSummarySchema
 from otari._client.models.location_inner import LocationInner as LocationInner
+from otari._client.models.mr_anthropic_types_thinking_block_thinking_block import MRAnthropicTypesThinkingBlockThinkingBlock as MRAnthropicTypesThinkingBlockThinkingBlock
+from otari._client.models.mr_any_llm_types_messages_thinking_block import MRAnyLlmTypesMessagesThinkingBlock as MRAnyLlmTypesMessagesThinkingBlock
 from otari._client.models.mr_base64_pdf_source import MRBase64PDFSource as MRBase64PDFSource
 from otari._client.models.mr_bash_code_execution_output_block import MRBashCodeExecutionOutputBlock as MRBashCodeExecutionOutputBlock
 from otari._client.models.mr_bash_code_execution_result_block import MRBashCodeExecutionResultBlock as MRBashCodeExecutionResultBlock
 from otari._client.models.mr_bash_code_execution_tool_result_block import MRBashCodeExecutionToolResultBlock as MRBashCodeExecutionToolResultBlock
 from otari._client.models.mr_bash_code_execution_tool_result_error import MRBashCodeExecutionToolResultError as MRBashCodeExecutionToolResultError
+from otari._client.models.mr_beta_base64_pdf_source import MRBetaBase64PDFSource as MRBetaBase64PDFSource
+from otari._client.models.mr_beta_bash_code_execution_output_block import MRBetaBashCodeExecutionOutputBlock as MRBetaBashCodeExecutionOutputBlock
+from otari._client.models.mr_beta_bash_code_execution_result_block import MRBetaBashCodeExecutionResultBlock as MRBetaBashCodeExecutionResultBlock
+from otari._client.models.mr_beta_bash_code_execution_tool_result_block import MRBetaBashCodeExecutionToolResultBlock as MRBetaBashCodeExecutionToolResultBlock
+from otari._client.models.mr_beta_bash_code_execution_tool_result_error import MRBetaBashCodeExecutionToolResultError as MRBetaBashCodeExecutionToolResultError
+from otari._client.models.mr_beta_cache_creation import MRBetaCacheCreation as MRBetaCacheCreation
+from otari._client.models.mr_beta_citation_char_location import MRBetaCitationCharLocation as MRBetaCitationCharLocation
+from otari._client.models.mr_beta_citation_config import MRBetaCitationConfig as MRBetaCitationConfig
+from otari._client.models.mr_beta_citation_content_block_location import MRBetaCitationContentBlockLocation as MRBetaCitationContentBlockLocation
+from otari._client.models.mr_beta_citation_page_location import MRBetaCitationPageLocation as MRBetaCitationPageLocation
+from otari._client.models.mr_beta_citation_search_result_location import MRBetaCitationSearchResultLocation as MRBetaCitationSearchResultLocation
+from otari._client.models.mr_beta_citations_web_search_result_location import MRBetaCitationsWebSearchResultLocation as MRBetaCitationsWebSearchResultLocation
+from otari._client.models.mr_beta_clear_thinking20251015_edit_response import MRBetaClearThinking20251015EditResponse as MRBetaClearThinking20251015EditResponse
+from otari._client.models.mr_beta_clear_tool_uses20250919_edit_response import MRBetaClearToolUses20250919EditResponse as MRBetaClearToolUses20250919EditResponse
+from otari._client.models.mr_beta_code_execution_output_block import MRBetaCodeExecutionOutputBlock as MRBetaCodeExecutionOutputBlock
+from otari._client.models.mr_beta_code_execution_result_block import MRBetaCodeExecutionResultBlock as MRBetaCodeExecutionResultBlock
+from otari._client.models.mr_beta_code_execution_tool_result_block import MRBetaCodeExecutionToolResultBlock as MRBetaCodeExecutionToolResultBlock
+from otari._client.models.mr_beta_code_execution_tool_result_error import MRBetaCodeExecutionToolResultError as MRBetaCodeExecutionToolResultError
+from otari._client.models.mr_beta_compaction_block import MRBetaCompactionBlock as MRBetaCompactionBlock
+from otari._client.models.mr_beta_compaction_iteration_usage import MRBetaCompactionIterationUsage as MRBetaCompactionIterationUsage
+from otari._client.models.mr_beta_container import MRBetaContainer as MRBetaContainer
+from otari._client.models.mr_beta_container_upload_block import MRBetaContainerUploadBlock as MRBetaContainerUploadBlock
+from otari._client.models.mr_beta_context_management_response import MRBetaContextManagementResponse as MRBetaContextManagementResponse
+from otari._client.models.mr_beta_diagnostics_fallback import MRBetaDiagnosticsFallback as MRBetaDiagnosticsFallback
+from otari._client.models.mr_beta_direct_caller import MRBetaDirectCaller as MRBetaDirectCaller
+from otari._client.models.mr_beta_document_block import MRBetaDocumentBlock as MRBetaDocumentBlock
+from otari._client.models.mr_beta_encrypted_code_execution_result_block import MRBetaEncryptedCodeExecutionResultBlock as MRBetaEncryptedCodeExecutionResultBlock
+from otari._client.models.mr_beta_mcp_tool_result_block import MRBetaMCPToolResultBlock as MRBetaMCPToolResultBlock
+from otari._client.models.mr_beta_mcp_tool_use_block import MRBetaMCPToolUseBlock as MRBetaMCPToolUseBlock
+from otari._client.models.mr_beta_message_iteration_usage import MRBetaMessageIterationUsage as MRBetaMessageIterationUsage
+from otari._client.models.mr_beta_plain_text_source import MRBetaPlainTextSource as MRBetaPlainTextSource
+from otari._client.models.mr_beta_redacted_thinking_block import MRBetaRedactedThinkingBlock as MRBetaRedactedThinkingBlock
+from otari._client.models.mr_beta_server_tool_caller import MRBetaServerToolCaller as MRBetaServerToolCaller
+from otari._client.models.mr_beta_server_tool_caller20260120 import MRBetaServerToolCaller20260120 as MRBetaServerToolCaller20260120
+from otari._client.models.mr_beta_server_tool_use_block import MRBetaServerToolUseBlock as MRBetaServerToolUseBlock
+from otari._client.models.mr_beta_skill import MRBetaSkill as MRBetaSkill
+from otari._client.models.mr_beta_text_block import MRBetaTextBlock as MRBetaTextBlock
+from otari._client.models.mr_beta_text_block_citations_inner import MRBetaTextBlockCitationsInner as MRBetaTextBlockCitationsInner
+from otari._client.models.mr_beta_text_editor_code_execution_create_result_block import MRBetaTextEditorCodeExecutionCreateResultBlock as MRBetaTextEditorCodeExecutionCreateResultBlock
+from otari._client.models.mr_beta_text_editor_code_execution_str_replace_result_block import MRBetaTextEditorCodeExecutionStrReplaceResultBlock as MRBetaTextEditorCodeExecutionStrReplaceResultBlock
+from otari._client.models.mr_beta_text_editor_code_execution_tool_result_block import MRBetaTextEditorCodeExecutionToolResultBlock as MRBetaTextEditorCodeExecutionToolResultBlock
+from otari._client.models.mr_beta_text_editor_code_execution_tool_result_error import MRBetaTextEditorCodeExecutionToolResultError as MRBetaTextEditorCodeExecutionToolResultError
+from otari._client.models.mr_beta_text_editor_code_execution_view_result_block import MRBetaTextEditorCodeExecutionViewResultBlock as MRBetaTextEditorCodeExecutionViewResultBlock
+from otari._client.models.mr_beta_thinking_block import MRBetaThinkingBlock as MRBetaThinkingBlock
+from otari._client.models.mr_beta_tool_reference_block import MRBetaToolReferenceBlock as MRBetaToolReferenceBlock
+from otari._client.models.mr_beta_tool_search_tool_result_block import MRBetaToolSearchToolResultBlock as MRBetaToolSearchToolResultBlock
+from otari._client.models.mr_beta_tool_search_tool_result_error import MRBetaToolSearchToolResultError as MRBetaToolSearchToolResultError
+from otari._client.models.mr_beta_tool_search_tool_search_result_block import MRBetaToolSearchToolSearchResultBlock as MRBetaToolSearchToolSearchResultBlock
+from otari._client.models.mr_beta_tool_use_block import MRBetaToolUseBlock as MRBetaToolUseBlock
+from otari._client.models.mr_beta_web_fetch_block import MRBetaWebFetchBlock as MRBetaWebFetchBlock
+from otari._client.models.mr_beta_web_fetch_tool_result_block import MRBetaWebFetchToolResultBlock as MRBetaWebFetchToolResultBlock
+from otari._client.models.mr_beta_web_fetch_tool_result_error_block import MRBetaWebFetchToolResultErrorBlock as MRBetaWebFetchToolResultErrorBlock
+from otari._client.models.mr_beta_web_search_result_block import MRBetaWebSearchResultBlock as MRBetaWebSearchResultBlock
+from otari._client.models.mr_beta_web_search_tool_result_block import MRBetaWebSearchToolResultBlock as MRBetaWebSearchToolResultBlock
+from otari._client.models.mr_beta_web_search_tool_result_error import MRBetaWebSearchToolResultError as MRBetaWebSearchToolResultError
 from otari._client.models.mr_cache_creation import MRCacheCreation as MRCacheCreation
 from otari._client.models.mr_citation_char_location import MRCitationCharLocation as MRCitationCharLocation
 from otari._client.models.mr_citation_content_block_location import MRCitationContentBlockLocation as MRCitationContentBlockLocation
@@ -334,11 +568,12 @@ from otari._client.models.mr_code_execution_output_block import MRCodeExecutionO
 from otari._client.models.mr_code_execution_result_block import MRCodeExecutionResultBlock as MRCodeExecutionResultBlock
 from otari._client.models.mr_code_execution_tool_result_block import MRCodeExecutionToolResultBlock as MRCodeExecutionToolResultBlock
 from otari._client.models.mr_code_execution_tool_result_error import MRCodeExecutionToolResultError as MRCodeExecutionToolResultError
-from otari._client.models.mr_container import MRContainer as MRContainer
 from otari._client.models.mr_container_upload_block import MRContainerUploadBlock as MRContainerUploadBlock
 from otari._client.models.mr_direct_caller import MRDirectCaller as MRDirectCaller
 from otari._client.models.mr_document_block import MRDocumentBlock as MRDocumentBlock
 from otari._client.models.mr_encrypted_code_execution_result_block import MREncryptedCodeExecutionResultBlock as MREncryptedCodeExecutionResultBlock
+from otari._client.models.mr_message_usage import MRMessageUsage as MRMessageUsage
+from otari._client.models.mr_message_usage_iterations_inner import MRMessageUsageIterationsInner as MRMessageUsageIterationsInner
 from otari._client.models.mr_plain_text_source import MRPlainTextSource as MRPlainTextSource
 from otari._client.models.mr_redacted_thinking_block import MRRedactedThinkingBlock as MRRedactedThinkingBlock
 from otari._client.models.mr_refusal_stop_details import MRRefusalStopDetails as MRRefusalStopDetails
@@ -353,13 +588,11 @@ from otari._client.models.mr_text_editor_code_execution_str_replace_result_block
 from otari._client.models.mr_text_editor_code_execution_tool_result_block import MRTextEditorCodeExecutionToolResultBlock as MRTextEditorCodeExecutionToolResultBlock
 from otari._client.models.mr_text_editor_code_execution_tool_result_error import MRTextEditorCodeExecutionToolResultError as MRTextEditorCodeExecutionToolResultError
 from otari._client.models.mr_text_editor_code_execution_view_result_block import MRTextEditorCodeExecutionViewResultBlock as MRTextEditorCodeExecutionViewResultBlock
-from otari._client.models.mr_thinking_block import MRThinkingBlock as MRThinkingBlock
 from otari._client.models.mr_tool_reference_block import MRToolReferenceBlock as MRToolReferenceBlock
 from otari._client.models.mr_tool_search_tool_result_block import MRToolSearchToolResultBlock as MRToolSearchToolResultBlock
 from otari._client.models.mr_tool_search_tool_result_error import MRToolSearchToolResultError as MRToolSearchToolResultError
 from otari._client.models.mr_tool_search_tool_search_result_block import MRToolSearchToolSearchResultBlock as MRToolSearchToolSearchResultBlock
 from otari._client.models.mr_tool_use_block import MRToolUseBlock as MRToolUseBlock
-from otari._client.models.mr_usage import MRUsage as MRUsage
 from otari._client.models.mr_web_fetch_block import MRWebFetchBlock as MRWebFetchBlock
 from otari._client.models.mr_web_fetch_tool_result_block import MRWebFetchToolResultBlock as MRWebFetchToolResultBlock
 from otari._client.models.mr_web_fetch_tool_result_error_block import MRWebFetchToolResultErrorBlock as MRWebFetchToolResultErrorBlock
@@ -391,30 +624,77 @@ from otari._client.models.message_response import MessageResponse as MessageResp
 from otari._client.models.messages_request import MessagesRequest as MessagesRequest
 from otari._client.models.model import Model as Model
 from otari._client.models.model_list_response import ModelListResponse as ModelListResponse
+from otari._client.models.model_metadata import ModelMetadata as ModelMetadata
+from otari._client.models.model_metadata_response import ModelMetadataResponse as ModelMetadataResponse
 from otari._client.models.model_object import ModelObject as ModelObject
 from otari._client.models.model_pricing_info import ModelPricingInfo as ModelPricingInfo
 from otari._client.models.moderation_request import ModerationRequest as ModerationRequest
 from otari._client.models.moderation_response import ModerationResponse as ModerationResponse
 from otari._client.models.moderation_result import ModerationResult as ModerationResult
+from otari._client.models.policy_request import PolicyRequest as PolicyRequest
+from otari._client.models.policy_response import PolicyResponse as PolicyResponse
+from otari._client.models.pricing_refresh_change_response import PricingRefreshChangeResponse as PricingRefreshChangeResponse
+from otari._client.models.pricing_refresh_confirmation_response import PricingRefreshConfirmationResponse as PricingRefreshConfirmationResponse
+from otari._client.models.pricing_refresh_preview_response import PricingRefreshPreviewResponse as PricingRefreshPreviewResponse
 from otari._client.models.pricing_response import PricingResponse as PricingResponse
+from otari._client.models.pricing_tier import PricingTier as PricingTier
+from otari._client.models.pricing_tiers_inner_value import PricingTiersInnerValue as PricingTiersInnerValue
+from otari._client.models.provider_capabilities_schema import ProviderCapabilitiesSchema as ProviderCapabilitiesSchema
+from otari._client.models.provider_health_response import ProviderHealthResponse as ProviderHealthResponse
+from otari._client.models.provider_health_schema import ProviderHealthSchema as ProviderHealthSchema
+from otari._client.models.provider_info_schema import ProviderInfoSchema as ProviderInfoSchema
+from otari._client.models.providers_response import ProvidersResponse as ProvidersResponse
 from otari._client.models.rr_rerank_meta import RRRerankMeta as RRRerankMeta
 from otari._client.models.rr_rerank_result import RRRerankResult as RRRerankResult
 from otari._client.models.rr_rerank_usage import RRRerankUsage as RRRerankUsage
+from otari._client.models.reencrypt_provider_credentials_response import ReencryptProviderCredentialsResponse as ReencryptProviderCredentialsResponse
 from otari._client.models.rerank_request import RerankRequest as RerankRequest
 from otari._client.models.rerank_response import RerankResponse as RerankResponse
 from otari._client.models.responses_request import ResponsesRequest as ResponsesRequest
+from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse as RotateMasterKeyResponse
+from otari._client.models.search_request import SearchRequest as SearchRequest
+from otari._client.models.search_response import SearchResponse as SearchResponse
+from otari._client.models.search_result_item import SearchResultItem as SearchResultItem
+from otari._client.models.session_response import SessionResponse as SessionResponse
 from otari._client.models.set_pricing_request import SetPricingRequest as SetPricingRequest
 from otari._client.models.source import Source as Source
+from otari._client.models.source1 import Source1 as Source1
 from otari._client.models.stop import Stop as Stop
+from otari._client.models.stored_provider_response import StoredProviderResponse as StoredProviderResponse
 from otari._client.models.system import System as System
+from otari._client.models.test_provider_request import TestProviderRequest as TestProviderRequest
+from otari._client.models.test_provider_response import TestProviderResponse as TestProviderResponse
+from otari._client.models.test_service_request import TestServiceRequest as TestServiceRequest
+from otari._client.models.test_service_response import TestServiceResponse as TestServiceResponse
 from otari._client.models.tool_calls_inner import ToolCallsInner as ToolCallsInner
 from otari._client.models.tool_choice import ToolChoice as ToolChoice
 from otari._client.models.tool_choice1 import ToolChoice1 as ToolChoice1
+from otari._client.models.tool_setting_field import ToolSettingField as ToolSettingField
+from otari._client.models.tool_settings_response import ToolSettingsResponse as ToolSettingsResponse
 from otari._client.models.update_budget_request import UpdateBudgetRequest as UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest as UpdateKeyRequest
+from otari._client.models.update_settings_request import UpdateSettingsRequest as UpdateSettingsRequest
+from otari._client.models.update_stored_provider_request import UpdateStoredProviderRequest as UpdateStoredProviderRequest
+from otari._client.models.update_tool_settings_request import UpdateToolSettingsRequest as UpdateToolSettingsRequest
 from otari._client.models.update_user_request import UpdateUserRequest as UpdateUserRequest
+from otari._client.models.usage_count import UsageCount as UsageCount
+from otari._client.models.usage_delete_request import UsageDeleteRequest as UsageDeleteRequest
+from otari._client.models.usage_delete_result import UsageDeleteResult as UsageDeleteResult
 from otari._client.models.usage_entry import UsageEntry as UsageEntry
+from otari._client.models.usage_entry_pricing_breakdown_inner_value import UsageEntryPricingBreakdownInnerValue as UsageEntryPricingBreakdownInnerValue
+from otari._client.models.usage_error_code_row import UsageErrorCodeRow as UsageErrorCodeRow
+from otari._client.models.usage_group_row import UsageGroupRow as UsageGroupRow
+from otari._client.models.usage_grouped_series import UsageGroupedSeries as UsageGroupedSeries
+from otari._client.models.usage_grouped_series_point import UsageGroupedSeriesPoint as UsageGroupedSeriesPoint
 from otari._client.models.usage_log_response import UsageLogResponse as UsageLogResponse
+from otari._client.models.usage_series_point import UsageSeriesPoint as UsageSeriesPoint
+from otari._client.models.usage_set_price_request import UsageSetPriceRequest as UsageSetPriceRequest
+from otari._client.models.usage_set_price_result import UsageSetPriceResult as UsageSetPriceResult
+from otari._client.models.usage_summary import UsageSummary as UsageSummary
+from otari._client.models.usage_tool_row import UsageToolRow as UsageToolRow
+from otari._client.models.usage_totals import UsageTotals as UsageTotals
 from otari._client.models.user_response import UserResponse as UserResponse
 from otari._client.models.validation_error import ValidationError as ValidationError
+from otari._client.models.value import Value as Value
+from otari._client.models.value1 import Value1 as Value1
 

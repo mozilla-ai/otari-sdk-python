@@ -30,10 +30,11 @@ class GuardrailConfig(BaseModel):
     """ # noqa: E501
     mode: Optional[StrictStr] = 'monitor'
     on: Optional[List[StrictStr]] = None
+    on_unavailable: Optional[StrictStr] = 'block'
     profile: Annotated[str, Field(min_length=1, strict=True, max_length=128)]
     url: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     validate_kwargs: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["mode", "on", "profile", "url", "validate_kwargs"]
+    __properties: ClassVar[List[str]] = ["mode", "on", "on_unavailable", "profile", "url", "validate_kwargs"]
 
     @field_validator('mode')
     def mode_validate_enum(cls, value):
@@ -54,6 +55,16 @@ class GuardrailConfig(BaseModel):
         for i in value:
             if i not in set(['input', 'output']):
                 raise ValueError("each list item must be one of ('input', 'output')")
+        return value
+
+    @field_validator('on_unavailable')
+    def on_unavailable_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['block', 'monitor']):
+            raise ValueError("must be one of enum values ('block', 'monitor')")
         return value
 
     model_config = ConfigDict(
@@ -114,6 +125,7 @@ class GuardrailConfig(BaseModel):
         _obj = cls.model_validate({
             "mode": obj.get("mode") if obj.get("mode") is not None else 'monitor',
             "on": obj.get("on"),
+            "on_unavailable": obj.get("on_unavailable") if obj.get("on_unavailable") is not None else 'block',
             "profile": obj.get("profile"),
             "url": obj.get("url"),
             "validate_kwargs": obj.get("validate_kwargs")

@@ -25,14 +25,18 @@ from pydantic_core import to_jsonable_python
 
 class BudgetResponse(BaseModel):
     """
-    Response model for budget information.
+    Response model for budget information.  ``max_budget`` is the per-user spending limit, and multiple users can share one budget, so the usage rollup is an aggregate over the users assigned to this budget: how many there are and their combined ``spend`` / ``reserved``. Assigning users to a budget is done through the users API (dashboard support lands with user management), so a fresh gateway reports zeros here.
     """ # noqa: E501
     budget_duration_sec: Optional[StrictInt]
     budget_id: StrictStr
     created_at: StrictStr
     max_budget: Optional[Union[StrictFloat, StrictInt]]
+    name: Optional[StrictStr]
+    total_reserved: Optional[Union[StrictFloat, StrictInt]] = 0.0
+    total_spend: Optional[Union[StrictFloat, StrictInt]] = 0.0
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "updated_at"]
+    user_count: Optional[StrictInt] = 0
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "name", "total_reserved", "total_spend", "updated_at", "user_count"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,6 +87,11 @@ class BudgetResponse(BaseModel):
         if self.max_budget is None and "max_budget" in self.model_fields_set:
             _dict['max_budget'] = None
 
+        # set to None if name (nullable) is None
+        # and model_fields_set contains the field
+        if self.name is None and "name" in self.model_fields_set:
+            _dict['name'] = None
+
         return _dict
 
     @classmethod
@@ -99,7 +108,11 @@ class BudgetResponse(BaseModel):
             "budget_id": obj.get("budget_id"),
             "created_at": obj.get("created_at"),
             "max_budget": obj.get("max_budget"),
-            "updated_at": obj.get("updated_at")
+            "name": obj.get("name"),
+            "total_reserved": obj.get("total_reserved") if obj.get("total_reserved") is not None else 0.0,
+            "total_spend": obj.get("total_spend") if obj.get("total_spend") is not None else 0.0,
+            "updated_at": obj.get("updated_at"),
+            "user_count": obj.get("user_count") if obj.get("user_count") is not None else 0
         })
         return _obj
 

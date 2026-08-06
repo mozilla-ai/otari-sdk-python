@@ -33,7 +33,8 @@ class CreateBatchRequest(BaseModel):
     metadata: Optional[Dict[str, StrictStr]] = None
     model: StrictStr
     requests: Annotated[List[BatchRequestItem], Field(min_length=1, max_length=10000)]
-    __properties: ClassVar[List[str]] = ["completion_window", "metadata", "model", "requests"]
+    user: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["completion_window", "metadata", "model", "requests", "user"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,6 +87,11 @@ class CreateBatchRequest(BaseModel):
         if self.metadata is None and "metadata" in self.model_fields_set:
             _dict['metadata'] = None
 
+        # set to None if user (nullable) is None
+        # and model_fields_set contains the field
+        if self.user is None and "user" in self.model_fields_set:
+            _dict['user'] = None
+
         return _dict
 
     @classmethod
@@ -101,7 +107,8 @@ class CreateBatchRequest(BaseModel):
             "completion_window": obj.get("completion_window") if obj.get("completion_window") is not None else '24h',
             "metadata": obj.get("metadata"),
             "model": obj.get("model"),
-            "requests": [BatchRequestItem.from_dict(_item) for _item in obj["requests"]] if obj.get("requests") is not None else None
+            "requests": [BatchRequestItem.from_dict(_item) for _item in obj["requests"]] if obj.get("requests") is not None else None,
+            "user": obj.get("user")
         })
         return _obj
 

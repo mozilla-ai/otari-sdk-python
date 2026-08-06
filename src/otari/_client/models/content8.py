@@ -18,29 +18,29 @@ import json
 import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
-from typing import List, Optional
-from otari._client.models.mr_web_search_result_block import MRWebSearchResultBlock
-from otari._client.models.mr_web_search_tool_result_error import MRWebSearchToolResultError
+from typing import Optional
+from otari._client.models.mr_beta_tool_search_tool_result_error import MRBetaToolSearchToolResultError
+from otari._client.models.mr_beta_tool_search_tool_search_result_block import MRBetaToolSearchToolSearchResultBlock
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-CONTENT8_ANY_OF_SCHEMAS = ["List[MRWebSearchResultBlock]", "MRWebSearchToolResultError"]
+CONTENT8_ANY_OF_SCHEMAS = ["MRBetaToolSearchToolResultError", "MRBetaToolSearchToolSearchResultBlock"]
 
 class Content8(BaseModel):
     """
     Content8
     """
 
-    # data type: MRWebSearchToolResultError
-    anyof_schema_1_validator: Optional[MRWebSearchToolResultError] = None
-    # data type: List[MRWebSearchResultBlock]
-    anyof_schema_2_validator: Optional[List[MRWebSearchResultBlock]] = None
+    # data type: MRBetaToolSearchToolResultError
+    anyof_schema_1_validator: Optional[MRBetaToolSearchToolResultError] = None
+    # data type: MRBetaToolSearchToolSearchResultBlock
+    anyof_schema_2_validator: Optional[MRBetaToolSearchToolSearchResultBlock] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[List[MRWebSearchResultBlock], MRWebSearchToolResultError]] = None
+        actual_instance: Optional[Union[MRBetaToolSearchToolResultError, MRBetaToolSearchToolSearchResultBlock]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "List[MRWebSearchResultBlock]", "MRWebSearchToolResultError" }
+    any_of_schemas: Set[str] = { "MRBetaToolSearchToolResultError", "MRBetaToolSearchToolSearchResultBlock" }
 
     model_config = {
         "validate_assignment": True,
@@ -61,21 +61,21 @@ class Content8(BaseModel):
     def actual_instance_must_validate_anyof(cls, v):
         instance = Content8.model_construct()
         error_messages = []
-        # validate data type: MRWebSearchToolResultError
-        if not isinstance(v, MRWebSearchToolResultError):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRWebSearchToolResultError`")
+        # validate data type: MRBetaToolSearchToolResultError
+        if not isinstance(v, MRBetaToolSearchToolResultError):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaToolSearchToolResultError`")
         else:
             return v
 
-        # validate data type: List[MRWebSearchResultBlock]
-        try:
-            instance.anyof_schema_2_validator = v
+        # validate data type: MRBetaToolSearchToolSearchResultBlock
+        if not isinstance(v, MRBetaToolSearchToolSearchResultBlock):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaToolSearchToolSearchResultBlock`")
+        else:
             return v
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
+
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Content8 with anyOf schemas: List[MRWebSearchResultBlock], MRWebSearchToolResultError. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Content8 with anyOf schemas: MRBetaToolSearchToolResultError, MRBetaToolSearchToolSearchResultBlock. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -88,25 +88,22 @@ class Content8(BaseModel):
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
         error_messages = []
-        # anyof_schema_1_validator: Optional[MRWebSearchToolResultError] = None
+        # anyof_schema_1_validator: Optional[MRBetaToolSearchToolResultError] = None
         try:
-            instance.actual_instance = MRWebSearchToolResultError.from_json(json_str)
+            instance.actual_instance = MRBetaToolSearchToolResultError.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
-        # deserialize data into List[MRWebSearchResultBlock]
+        # anyof_schema_2_validator: Optional[MRBetaToolSearchToolSearchResultBlock] = None
         try:
-            # validation
-            instance.anyof_schema_2_validator = json.loads(json_str)
-            # assign value to actual_instance
-            instance.actual_instance = instance.anyof_schema_2_validator
+            instance.actual_instance = MRBetaToolSearchToolSearchResultBlock.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
+             error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Content8 with anyOf schemas: List[MRWebSearchResultBlock], MRWebSearchToolResultError. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Content8 with anyOf schemas: MRBetaToolSearchToolResultError, MRBetaToolSearchToolSearchResultBlock. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -120,7 +117,7 @@ class Content8(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], List[MRWebSearchResultBlock], MRWebSearchToolResultError]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], MRBetaToolSearchToolResultError, MRBetaToolSearchToolSearchResultBlock]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

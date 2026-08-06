@@ -27,15 +27,19 @@ class KeyInfo(BaseModel):
     """
     Response model for key information.
     """ # noqa: E501
+    allowed_models: Optional[List[StrictStr]]
     created_at: StrictStr
+    exclude_from_budget: StrictBool
     expires_at: Optional[StrictStr]
     id: StrictStr
     is_active: StrictBool
     key_name: Optional[StrictStr]
+    key_prefix: Optional[StrictStr]
     last_used_at: Optional[StrictStr]
     metadata: Dict[str, Any]
+    reject_user_mismatch: Optional[StrictBool]
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["created_at", "expires_at", "id", "is_active", "key_name", "last_used_at", "metadata", "user_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "created_at", "exclude_from_budget", "expires_at", "id", "is_active", "key_name", "key_prefix", "last_used_at", "metadata", "reject_user_mismatch", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -76,6 +80,11 @@ class KeyInfo(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if allowed_models (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_models is None and "allowed_models" in self.model_fields_set:
+            _dict['allowed_models'] = None
+
         # set to None if expires_at (nullable) is None
         # and model_fields_set contains the field
         if self.expires_at is None and "expires_at" in self.model_fields_set:
@@ -86,10 +95,20 @@ class KeyInfo(BaseModel):
         if self.key_name is None and "key_name" in self.model_fields_set:
             _dict['key_name'] = None
 
+        # set to None if key_prefix (nullable) is None
+        # and model_fields_set contains the field
+        if self.key_prefix is None and "key_prefix" in self.model_fields_set:
+            _dict['key_prefix'] = None
+
         # set to None if last_used_at (nullable) is None
         # and model_fields_set contains the field
         if self.last_used_at is None and "last_used_at" in self.model_fields_set:
             _dict['last_used_at'] = None
+
+        # set to None if reject_user_mismatch (nullable) is None
+        # and model_fields_set contains the field
+        if self.reject_user_mismatch is None and "reject_user_mismatch" in self.model_fields_set:
+            _dict['reject_user_mismatch'] = None
 
         # set to None if user_id (nullable) is None
         # and model_fields_set contains the field
@@ -108,13 +127,17 @@ class KeyInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "allowed_models": obj.get("allowed_models"),
             "created_at": obj.get("created_at"),
+            "exclude_from_budget": obj.get("exclude_from_budget"),
             "expires_at": obj.get("expires_at"),
             "id": obj.get("id"),
             "is_active": obj.get("is_active"),
             "key_name": obj.get("key_name"),
+            "key_prefix": obj.get("key_prefix"),
             "last_used_at": obj.get("last_used_at"),
             "metadata": obj.get("metadata"),
+            "reject_user_mismatch": obj.get("reject_user_mismatch"),
             "user_id": obj.get("user_id")
         })
         return _obj

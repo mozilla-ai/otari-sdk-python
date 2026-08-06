@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.mr_document_block import MRDocumentBlock
 from typing import Optional, Set
@@ -29,7 +29,7 @@ class MRWebFetchBlock(BaseModel):
     MRWebFetchBlock
     """ # noqa: E501
     content: MRDocumentBlock
-    retrieved_at: Optional[StrictStr] = Field(default=None, description="Filter models by provider name")
+    retrieved_at: Optional[StrictStr] = None
     type: StrictStr
     url: StrictStr
     additional_properties: Dict[str, Any] = {}

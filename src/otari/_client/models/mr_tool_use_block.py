@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.caller import Caller
+from otari._client.models.caller1 import Caller1
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,7 +29,7 @@ class MRToolUseBlock(BaseModel):
     MRToolUseBlock
     """ # noqa: E501
     id: StrictStr
-    caller: Optional[Caller] = None
+    caller: Optional[Caller1] = None
     input: Dict[str, Any]
     name: StrictStr
     type: StrictStr
@@ -110,7 +110,7 @@ class MRToolUseBlock(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "caller": Caller.from_dict(obj["caller"]) if obj.get("caller") is not None else None,
+            "caller": Caller1.from_dict(obj["caller"]) if obj.get("caller") is not None else None,
             "input": obj.get("input"),
             "name": obj.get("name"),
             "type": obj.get("type")

@@ -17,21 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class MRContainer(BaseModel):
+class ExternalIngestError(BaseModel):
     """
-    Information about the container used in the request (for the code execution tool)
+    A single rejected event, with enough context to fix it and retry.
     """ # noqa: E501
-    id: StrictStr
-    expires_at: datetime
-    additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "expires_at"]
+    detail: StrictStr
+    index: StrictInt
+    source_event_id: Optional[StrictStr]
+    __properties: ClassVar[List[str]] = ["detail", "index", "source_event_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +50,7 @@ class MRContainer(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of MRContainer from a JSON string"""
+        """Create an instance of ExternalIngestError from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -63,10 +62,8 @@ class MRContainer(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
-            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -74,16 +71,16 @@ class MRContainer(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # puts key-value pairs in additional_properties in the top level
-        if self.additional_properties is not None:
-            for _key, _value in self.additional_properties.items():
-                _dict[_key] = _value
+        # set to None if source_event_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.source_event_id is None and "source_event_id" in self.model_fields_set:
+            _dict['source_event_id'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of MRContainer from a dict"""
+        """Create an instance of ExternalIngestError from a dict"""
         if obj is None:
             return None
 
@@ -91,14 +88,10 @@ class MRContainer(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "expires_at": obj.get("expires_at")
+            "detail": obj.get("detail"),
+            "index": obj.get("index"),
+            "source_event_id": obj.get("source_event_id")
         })
-        # store additional fields in additional_properties
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                _obj.additional_properties[_key] = obj.get(_key)
-
         return _obj
 
 

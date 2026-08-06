@@ -33,6 +33,7 @@ class UsageLogResponse(BaseModel):
     endpoint: StrictStr
     error_message: Optional[StrictStr]
     id: StrictStr
+    latency_ms: Optional[StrictInt]
     model: StrictStr
     prompt_tokens: Optional[StrictInt]
     provider: Optional[StrictStr]
@@ -40,7 +41,7 @@ class UsageLogResponse(BaseModel):
     timestamp: StrictStr
     total_tokens: Optional[StrictInt]
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "completion_tokens", "cost", "endpoint", "error_message", "id", "model", "prompt_tokens", "provider", "status", "timestamp", "total_tokens", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "completion_tokens", "cost", "endpoint", "error_message", "id", "latency_ms", "model", "prompt_tokens", "provider", "status", "timestamp", "total_tokens", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -101,6 +102,11 @@ class UsageLogResponse(BaseModel):
         if self.error_message is None and "error_message" in self.model_fields_set:
             _dict['error_message'] = None
 
+        # set to None if latency_ms (nullable) is None
+        # and model_fields_set contains the field
+        if self.latency_ms is None and "latency_ms" in self.model_fields_set:
+            _dict['latency_ms'] = None
+
         # set to None if prompt_tokens (nullable) is None
         # and model_fields_set contains the field
         if self.prompt_tokens is None and "prompt_tokens" in self.model_fields_set:
@@ -139,6 +145,7 @@ class UsageLogResponse(BaseModel):
             "endpoint": obj.get("endpoint"),
             "error_message": obj.get("error_message"),
             "id": obj.get("id"),
+            "latency_ms": obj.get("latency_ms"),
             "model": obj.get("model"),
             "prompt_tokens": obj.get("prompt_tokens"),
             "provider": obj.get("provider"),

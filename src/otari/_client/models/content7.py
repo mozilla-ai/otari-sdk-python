@@ -19,28 +19,34 @@ import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Optional
-from otari._client.models.mr_web_fetch_block import MRWebFetchBlock
-from otari._client.models.mr_web_fetch_tool_result_error_block import MRWebFetchToolResultErrorBlock
+from otari._client.models.mr_beta_text_editor_code_execution_create_result_block import MRBetaTextEditorCodeExecutionCreateResultBlock
+from otari._client.models.mr_beta_text_editor_code_execution_str_replace_result_block import MRBetaTextEditorCodeExecutionStrReplaceResultBlock
+from otari._client.models.mr_beta_text_editor_code_execution_tool_result_error import MRBetaTextEditorCodeExecutionToolResultError
+from otari._client.models.mr_beta_text_editor_code_execution_view_result_block import MRBetaTextEditorCodeExecutionViewResultBlock
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-CONTENT7_ANY_OF_SCHEMAS = ["MRWebFetchBlock", "MRWebFetchToolResultErrorBlock"]
+CONTENT7_ANY_OF_SCHEMAS = ["MRBetaTextEditorCodeExecutionCreateResultBlock", "MRBetaTextEditorCodeExecutionStrReplaceResultBlock", "MRBetaTextEditorCodeExecutionToolResultError", "MRBetaTextEditorCodeExecutionViewResultBlock"]
 
 class Content7(BaseModel):
     """
     Content7
     """
 
-    # data type: MRWebFetchToolResultErrorBlock
-    anyof_schema_1_validator: Optional[MRWebFetchToolResultErrorBlock] = None
-    # data type: MRWebFetchBlock
-    anyof_schema_2_validator: Optional[MRWebFetchBlock] = None
+    # data type: MRBetaTextEditorCodeExecutionToolResultError
+    anyof_schema_1_validator: Optional[MRBetaTextEditorCodeExecutionToolResultError] = None
+    # data type: MRBetaTextEditorCodeExecutionViewResultBlock
+    anyof_schema_2_validator: Optional[MRBetaTextEditorCodeExecutionViewResultBlock] = None
+    # data type: MRBetaTextEditorCodeExecutionCreateResultBlock
+    anyof_schema_3_validator: Optional[MRBetaTextEditorCodeExecutionCreateResultBlock] = None
+    # data type: MRBetaTextEditorCodeExecutionStrReplaceResultBlock
+    anyof_schema_4_validator: Optional[MRBetaTextEditorCodeExecutionStrReplaceResultBlock] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[MRWebFetchBlock, MRWebFetchToolResultErrorBlock]] = None
+        actual_instance: Optional[Union[MRBetaTextEditorCodeExecutionCreateResultBlock, MRBetaTextEditorCodeExecutionStrReplaceResultBlock, MRBetaTextEditorCodeExecutionToolResultError, MRBetaTextEditorCodeExecutionViewResultBlock]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "MRWebFetchBlock", "MRWebFetchToolResultErrorBlock" }
+    any_of_schemas: Set[str] = { "MRBetaTextEditorCodeExecutionCreateResultBlock", "MRBetaTextEditorCodeExecutionStrReplaceResultBlock", "MRBetaTextEditorCodeExecutionToolResultError", "MRBetaTextEditorCodeExecutionViewResultBlock" }
 
     model_config = {
         "validate_assignment": True,
@@ -61,21 +67,33 @@ class Content7(BaseModel):
     def actual_instance_must_validate_anyof(cls, v):
         instance = Content7.model_construct()
         error_messages = []
-        # validate data type: MRWebFetchToolResultErrorBlock
-        if not isinstance(v, MRWebFetchToolResultErrorBlock):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRWebFetchToolResultErrorBlock`")
+        # validate data type: MRBetaTextEditorCodeExecutionToolResultError
+        if not isinstance(v, MRBetaTextEditorCodeExecutionToolResultError):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaTextEditorCodeExecutionToolResultError`")
         else:
             return v
 
-        # validate data type: MRWebFetchBlock
-        if not isinstance(v, MRWebFetchBlock):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRWebFetchBlock`")
+        # validate data type: MRBetaTextEditorCodeExecutionViewResultBlock
+        if not isinstance(v, MRBetaTextEditorCodeExecutionViewResultBlock):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaTextEditorCodeExecutionViewResultBlock`")
+        else:
+            return v
+
+        # validate data type: MRBetaTextEditorCodeExecutionCreateResultBlock
+        if not isinstance(v, MRBetaTextEditorCodeExecutionCreateResultBlock):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaTextEditorCodeExecutionCreateResultBlock`")
+        else:
+            return v
+
+        # validate data type: MRBetaTextEditorCodeExecutionStrReplaceResultBlock
+        if not isinstance(v, MRBetaTextEditorCodeExecutionStrReplaceResultBlock):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaTextEditorCodeExecutionStrReplaceResultBlock`")
         else:
             return v
 
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Content7 with anyOf schemas: MRWebFetchBlock, MRWebFetchToolResultErrorBlock. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Content7 with anyOf schemas: MRBetaTextEditorCodeExecutionCreateResultBlock, MRBetaTextEditorCodeExecutionStrReplaceResultBlock, MRBetaTextEditorCodeExecutionToolResultError, MRBetaTextEditorCodeExecutionViewResultBlock. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -88,22 +106,34 @@ class Content7(BaseModel):
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
         error_messages = []
-        # anyof_schema_1_validator: Optional[MRWebFetchToolResultErrorBlock] = None
+        # anyof_schema_1_validator: Optional[MRBetaTextEditorCodeExecutionToolResultError] = None
         try:
-            instance.actual_instance = MRWebFetchToolResultErrorBlock.from_json(json_str)
+            instance.actual_instance = MRBetaTextEditorCodeExecutionToolResultError.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
-        # anyof_schema_2_validator: Optional[MRWebFetchBlock] = None
+        # anyof_schema_2_validator: Optional[MRBetaTextEditorCodeExecutionViewResultBlock] = None
         try:
-            instance.actual_instance = MRWebFetchBlock.from_json(json_str)
+            instance.actual_instance = MRBetaTextEditorCodeExecutionViewResultBlock.from_json(json_str)
+            return instance
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
+        # anyof_schema_3_validator: Optional[MRBetaTextEditorCodeExecutionCreateResultBlock] = None
+        try:
+            instance.actual_instance = MRBetaTextEditorCodeExecutionCreateResultBlock.from_json(json_str)
+            return instance
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
+        # anyof_schema_4_validator: Optional[MRBetaTextEditorCodeExecutionStrReplaceResultBlock] = None
+        try:
+            instance.actual_instance = MRBetaTextEditorCodeExecutionStrReplaceResultBlock.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Content7 with anyOf schemas: MRWebFetchBlock, MRWebFetchToolResultErrorBlock. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Content7 with anyOf schemas: MRBetaTextEditorCodeExecutionCreateResultBlock, MRBetaTextEditorCodeExecutionStrReplaceResultBlock, MRBetaTextEditorCodeExecutionToolResultError, MRBetaTextEditorCodeExecutionViewResultBlock. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -117,7 +147,7 @@ class Content7(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], MRWebFetchBlock, MRWebFetchToolResultErrorBlock]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], MRBetaTextEditorCodeExecutionCreateResultBlock, MRBetaTextEditorCodeExecutionStrReplaceResultBlock, MRBetaTextEditorCodeExecutionToolResultError, MRBetaTextEditorCodeExecutionViewResultBlock]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

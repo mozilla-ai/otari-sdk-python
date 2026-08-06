@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from otari._client.models.usage_entry_pricing_breakdown_inner_value import UsageEntryPricingBreakdownInnerValue
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,21 +29,34 @@ class UsageEntry(BaseModel):
     A single usage log entry.
     """ # noqa: E501
     api_key_id: Optional[StrictStr]
+    attempt_count: Optional[StrictInt] = None
+    attempt_position: Optional[StrictInt] = None
+    billing_meters: Optional[Dict[str, Any]] = Field(description="An unsaved policy body to explain.")
     cache_read_tokens: Optional[StrictInt]
+    cache_write_1h_tokens: Optional[StrictInt]
     cache_write_tokens: Optional[StrictInt]
     completion_tokens: Optional[StrictInt]
     cost: Optional[Union[StrictFloat, StrictInt]]
+    counts_toward_budget: StrictBool
     endpoint: StrictStr
     error_message: Optional[StrictStr]
     id: StrictStr
+    latency_ms: Optional[StrictInt]
     model: StrictStr
+    policy_name: Optional[StrictStr] = None
+    pricing_breakdown: Optional[List[Dict[str, UsageEntryPricingBreakdownInnerValue]]]
     prompt_tokens: Optional[StrictInt]
     provider: Optional[StrictStr]
+    request_group_id: Optional[StrictStr] = None
+    selection_reason: Optional[StrictStr] = None
+    source: StrictStr
+    source_label: Optional[StrictStr]
     status: StrictStr
+    status_code: Optional[StrictInt]
     timestamp: StrictStr
     total_tokens: Optional[StrictInt]
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "cache_read_tokens", "cache_write_tokens", "completion_tokens", "cost", "endpoint", "error_message", "id", "model", "prompt_tokens", "provider", "status", "timestamp", "total_tokens", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "attempt_count", "attempt_position", "billing_meters", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "timestamp", "total_tokens", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,15 +97,44 @@ class UsageEntry(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in pricing_breakdown (list of dict)
+        _items = []
+        if self.pricing_breakdown:
+            for _item_pricing_breakdown in self.pricing_breakdown:
+                if _item_pricing_breakdown:
+                    _items.append(
+                         {_inner_key: _inner_value.to_dict() for _inner_key, _inner_value in _item_pricing_breakdown.items()}
+                    )
+            _dict['pricing_breakdown'] = _items
         # set to None if api_key_id (nullable) is None
         # and model_fields_set contains the field
         if self.api_key_id is None and "api_key_id" in self.model_fields_set:
             _dict['api_key_id'] = None
 
+        # set to None if attempt_count (nullable) is None
+        # and model_fields_set contains the field
+        if self.attempt_count is None and "attempt_count" in self.model_fields_set:
+            _dict['attempt_count'] = None
+
+        # set to None if attempt_position (nullable) is None
+        # and model_fields_set contains the field
+        if self.attempt_position is None and "attempt_position" in self.model_fields_set:
+            _dict['attempt_position'] = None
+
+        # set to None if billing_meters (nullable) is None
+        # and model_fields_set contains the field
+        if self.billing_meters is None and "billing_meters" in self.model_fields_set:
+            _dict['billing_meters'] = None
+
         # set to None if cache_read_tokens (nullable) is None
         # and model_fields_set contains the field
         if self.cache_read_tokens is None and "cache_read_tokens" in self.model_fields_set:
             _dict['cache_read_tokens'] = None
+
+        # set to None if cache_write_1h_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_write_1h_tokens is None and "cache_write_1h_tokens" in self.model_fields_set:
+            _dict['cache_write_1h_tokens'] = None
 
         # set to None if cache_write_tokens (nullable) is None
         # and model_fields_set contains the field
@@ -113,6 +156,21 @@ class UsageEntry(BaseModel):
         if self.error_message is None and "error_message" in self.model_fields_set:
             _dict['error_message'] = None
 
+        # set to None if latency_ms (nullable) is None
+        # and model_fields_set contains the field
+        if self.latency_ms is None and "latency_ms" in self.model_fields_set:
+            _dict['latency_ms'] = None
+
+        # set to None if policy_name (nullable) is None
+        # and model_fields_set contains the field
+        if self.policy_name is None and "policy_name" in self.model_fields_set:
+            _dict['policy_name'] = None
+
+        # set to None if pricing_breakdown (nullable) is None
+        # and model_fields_set contains the field
+        if self.pricing_breakdown is None and "pricing_breakdown" in self.model_fields_set:
+            _dict['pricing_breakdown'] = None
+
         # set to None if prompt_tokens (nullable) is None
         # and model_fields_set contains the field
         if self.prompt_tokens is None and "prompt_tokens" in self.model_fields_set:
@@ -122,6 +180,26 @@ class UsageEntry(BaseModel):
         # and model_fields_set contains the field
         if self.provider is None and "provider" in self.model_fields_set:
             _dict['provider'] = None
+
+        # set to None if request_group_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.request_group_id is None and "request_group_id" in self.model_fields_set:
+            _dict['request_group_id'] = None
+
+        # set to None if selection_reason (nullable) is None
+        # and model_fields_set contains the field
+        if self.selection_reason is None and "selection_reason" in self.model_fields_set:
+            _dict['selection_reason'] = None
+
+        # set to None if source_label (nullable) is None
+        # and model_fields_set contains the field
+        if self.source_label is None and "source_label" in self.model_fields_set:
+            _dict['source_label'] = None
+
+        # set to None if status_code (nullable) is None
+        # and model_fields_set contains the field
+        if self.status_code is None and "status_code" in self.model_fields_set:
+            _dict['status_code'] = None
 
         # set to None if total_tokens (nullable) is None
         # and model_fields_set contains the field
@@ -146,17 +224,33 @@ class UsageEntry(BaseModel):
 
         _obj = cls.model_validate({
             "api_key_id": obj.get("api_key_id"),
+            "attempt_count": obj.get("attempt_count"),
+            "attempt_position": obj.get("attempt_position"),
+            "billing_meters": obj.get("billing_meters"),
             "cache_read_tokens": obj.get("cache_read_tokens"),
+            "cache_write_1h_tokens": obj.get("cache_write_1h_tokens"),
             "cache_write_tokens": obj.get("cache_write_tokens"),
             "completion_tokens": obj.get("completion_tokens"),
             "cost": obj.get("cost"),
+            "counts_toward_budget": obj.get("counts_toward_budget"),
             "endpoint": obj.get("endpoint"),
             "error_message": obj.get("error_message"),
             "id": obj.get("id"),
+            "latency_ms": obj.get("latency_ms"),
             "model": obj.get("model"),
+            "policy_name": obj.get("policy_name"),
+            "pricing_breakdown": [
+                    {_inner_key: UsageEntryPricingBreakdownInnerValue.from_dict(_inner_value) for _inner_key, _inner_value in _item.items()}
+                    for _item in obj["pricing_breakdown"]
+                ] if obj.get("pricing_breakdown") is not None else None,
             "prompt_tokens": obj.get("prompt_tokens"),
             "provider": obj.get("provider"),
+            "request_group_id": obj.get("request_group_id"),
+            "selection_reason": obj.get("selection_reason"),
+            "source": obj.get("source"),
+            "source_label": obj.get("source_label"),
             "status": obj.get("status"),
+            "status_code": obj.get("status_code"),
             "timestamp": obj.get("timestamp"),
             "total_tokens": obj.get("total_tokens"),
             "user_id": obj.get("user_id")

@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -30,7 +30,8 @@ class CreateBudgetRequest(BaseModel):
     """ # noqa: E501
     budget_duration_sec: Optional[Annotated[int, Field(strict=True, gt=0)]] = Field(default=None, description="Budget duration in seconds (e.g., 86400 for daily, 604800 for weekly)")
     max_budget: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Maximum spending limit")
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget"]
+    name: Optional[StrictStr] = Field(default=None, description="Admin-facing label for the budget")
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,6 +82,11 @@ class CreateBudgetRequest(BaseModel):
         if self.max_budget is None and "max_budget" in self.model_fields_set:
             _dict['max_budget'] = None
 
+        # set to None if name (nullable) is None
+        # and model_fields_set contains the field
+        if self.name is None and "name" in self.model_fields_set:
+            _dict['name'] = None
+
         return _dict
 
     @classmethod
@@ -94,7 +100,8 @@ class CreateBudgetRequest(BaseModel):
 
         _obj = cls.model_validate({
             "budget_duration_sec": obj.get("budget_duration_sec"),
-            "max_budget": obj.get("max_budget")
+            "max_budget": obj.get("max_budget"),
+            "name": obj.get("name")
         })
         return _obj
 

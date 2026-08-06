@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,7 +31,7 @@ class ModerationResult(BaseModel):
     category_applied_input_types: Optional[Dict[str, List[StrictStr]]] = None
     category_scores: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = None
     flagged: StrictBool
-    provider_raw: Optional[Dict[str, Any]] = None
+    provider_raw: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     __properties: ClassVar[List[str]] = ["categories", "category_applied_input_types", "category_scores", "flagged", "provider_raw"]
 
     model_config = ConfigDict(

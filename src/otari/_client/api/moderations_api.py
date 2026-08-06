@@ -58,7 +58,7 @@ class ModerationsApi:
     ) -> ModerationResponse:
         """Create Moderation
 
-        OpenAI-compatible moderations endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible moderations endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param moderation_request: (required)
         :type moderation_request: ModerationRequest
@@ -130,7 +130,7 @@ class ModerationsApi:
     ) -> ApiResponse[ModerationResponse]:
         """Create Moderation
 
-        OpenAI-compatible moderations endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible moderations endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param moderation_request: (required)
         :type moderation_request: ModerationRequest
@@ -202,7 +202,7 @@ class ModerationsApi:
     ) -> RESTResponseType:
         """Create Moderation
 
-        OpenAI-compatible moderations endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible moderations endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param moderation_request: (required)
         :type moderation_request: ModerationRequest
@@ -311,6 +311,7 @@ class ModerationsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 

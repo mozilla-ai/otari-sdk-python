@@ -19,28 +19,28 @@ import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Optional
-from otari._client.models.mr_base64_pdf_source import MRBase64PDFSource
-from otari._client.models.mr_plain_text_source import MRPlainTextSource
+from otari._client.models.mr_beta_base64_pdf_source import MRBetaBase64PDFSource
+from otari._client.models.mr_beta_plain_text_source import MRBetaPlainTextSource
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-SOURCE_ANY_OF_SCHEMAS = ["MRBase64PDFSource", "MRPlainTextSource"]
+SOURCE_ANY_OF_SCHEMAS = ["MRBetaBase64PDFSource", "MRBetaPlainTextSource"]
 
 class Source(BaseModel):
     """
     Source
     """
 
-    # data type: MRBase64PDFSource
-    anyof_schema_1_validator: Optional[MRBase64PDFSource] = None
-    # data type: MRPlainTextSource
-    anyof_schema_2_validator: Optional[MRPlainTextSource] = None
+    # data type: MRBetaBase64PDFSource
+    anyof_schema_1_validator: Optional[MRBetaBase64PDFSource] = None
+    # data type: MRBetaPlainTextSource
+    anyof_schema_2_validator: Optional[MRBetaPlainTextSource] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[MRBase64PDFSource, MRPlainTextSource]] = None
+        actual_instance: Optional[Union[MRBetaBase64PDFSource, MRBetaPlainTextSource]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "MRBase64PDFSource", "MRPlainTextSource" }
+    any_of_schemas: Set[str] = { "MRBetaBase64PDFSource", "MRBetaPlainTextSource" }
 
     model_config = {
         "validate_assignment": True,
@@ -61,21 +61,21 @@ class Source(BaseModel):
     def actual_instance_must_validate_anyof(cls, v):
         instance = Source.model_construct()
         error_messages = []
-        # validate data type: MRBase64PDFSource
-        if not isinstance(v, MRBase64PDFSource):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBase64PDFSource`")
+        # validate data type: MRBetaBase64PDFSource
+        if not isinstance(v, MRBetaBase64PDFSource):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaBase64PDFSource`")
         else:
             return v
 
-        # validate data type: MRPlainTextSource
-        if not isinstance(v, MRPlainTextSource):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRPlainTextSource`")
+        # validate data type: MRBetaPlainTextSource
+        if not isinstance(v, MRBetaPlainTextSource):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaPlainTextSource`")
         else:
             return v
 
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Source with anyOf schemas: MRBase64PDFSource, MRPlainTextSource. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Source with anyOf schemas: MRBetaBase64PDFSource, MRBetaPlainTextSource. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -88,22 +88,22 @@ class Source(BaseModel):
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
         error_messages = []
-        # anyof_schema_1_validator: Optional[MRBase64PDFSource] = None
+        # anyof_schema_1_validator: Optional[MRBetaBase64PDFSource] = None
         try:
-            instance.actual_instance = MRBase64PDFSource.from_json(json_str)
+            instance.actual_instance = MRBetaBase64PDFSource.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
-        # anyof_schema_2_validator: Optional[MRPlainTextSource] = None
+        # anyof_schema_2_validator: Optional[MRBetaPlainTextSource] = None
         try:
-            instance.actual_instance = MRPlainTextSource.from_json(json_str)
+            instance.actual_instance = MRBetaPlainTextSource.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Source with anyOf schemas: MRBase64PDFSource, MRPlainTextSource. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Source with anyOf schemas: MRBetaBase64PDFSource, MRBetaPlainTextSource. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -117,7 +117,7 @@ class Source(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], MRBase64PDFSource, MRPlainTextSource]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], MRBetaBase64PDFSource, MRBetaPlainTextSource]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

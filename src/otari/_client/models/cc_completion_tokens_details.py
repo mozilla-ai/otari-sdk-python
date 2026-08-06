@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,10 +27,10 @@ class CCCompletionTokensDetails(BaseModel):
     """
     Breakdown of tokens used in a completion.
     """ # noqa: E501
-    accepted_prediction_tokens: Optional[StrictInt] = None
+    accepted_prediction_tokens: Optional[StrictInt] = Field(default=None, description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")
     audio_tokens: Optional[StrictInt] = None
-    reasoning_tokens: Optional[StrictInt] = None
-    rejected_prediction_tokens: Optional[StrictInt] = None
+    reasoning_tokens: Optional[StrictInt] = Field(default=None, description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")
+    rejected_prediction_tokens: Optional[StrictInt] = Field(default=None, description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["accepted_prediction_tokens", "audio_tokens", "reasoning_tokens", "rejected_prediction_tokens"]
 
