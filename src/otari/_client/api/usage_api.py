@@ -16,10 +16,19 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from datetime import datetime
-from pydantic import Field, StrictStr
-from typing import List, Optional
+from pydantic import Field, StrictBool, StrictInt, StrictStr, field_validator
+from typing import Any, List, Optional
 from typing_extensions import Annotated
+from otari._client.models.external_events_request import ExternalEventsRequest
+from otari._client.models.external_ingest_result import ExternalIngestResult
+from otari._client.models.usage_count import UsageCount
+from otari._client.models.usage_delete_request import UsageDeleteRequest
+from otari._client.models.usage_delete_result import UsageDeleteResult
 from otari._client.models.usage_entry import UsageEntry
+from otari._client.models.usage_grouped_series import UsageGroupedSeries
+from otari._client.models.usage_set_price_request import UsageSetPriceRequest
+from otari._client.models.usage_set_price_result import UsageSetPriceResult
+from otari._client.models.usage_summary import UsageSummary
 
 from otari._client.api_client import ApiClient, RequestSerialized
 from otari._client.api_response import ApiResponse
@@ -40,11 +49,1103 @@ class UsageApi:
 
 
     @validate_call
+    def count_usage_v1_usage_count_get(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> UsageCount:
+        """Count Usage
+
+        Total number of usage logs matching the given filters.  Serves the dashboard paginator's \"N of M\" total without changing the bare array contract of ``GET /v1/usage``. Runs only when the client asks (a separate request), so the ``COUNT(*)`` is not paid on every page load. With ``counts_toward_budget=false`` it also backs the \"select all N matching this filter\" affordance for bulk delete / set-price, which touch imported rows only.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
+        :type request_group_id: List[str]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._count_usage_v1_usage_count_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            request_group_id=request_group_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageCount",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def count_usage_v1_usage_count_get_with_http_info(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[UsageCount]:
+        """Count Usage
+
+        Total number of usage logs matching the given filters.  Serves the dashboard paginator's \"N of M\" total without changing the bare array contract of ``GET /v1/usage``. Runs only when the client asks (a separate request), so the ``COUNT(*)`` is not paid on every page load. With ``counts_toward_budget=false`` it also backs the \"select all N matching this filter\" affordance for bulk delete / set-price, which touch imported rows only.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
+        :type request_group_id: List[str]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._count_usage_v1_usage_count_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            request_group_id=request_group_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageCount",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def count_usage_v1_usage_count_get_without_preload_content(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Count Usage
+
+        Total number of usage logs matching the given filters.  Serves the dashboard paginator's \"N of M\" total without changing the bare array contract of ``GET /v1/usage``. Runs only when the client asks (a separate request), so the ``COUNT(*)`` is not paid on every page load. With ``counts_toward_budget=false`` it also backs the \"select all N matching this filter\" affordance for bulk delete / set-price, which touch imported rows only.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
+        :type request_group_id: List[str]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._count_usage_v1_usage_count_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            request_group_id=request_group_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageCount",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _count_usage_v1_usage_count_get_serialize(
+        self,
+        start_date,
+        end_date,
+        user_id,
+        status,
+        status_code,
+        model,
+        endpoint,
+        provider,
+        source,
+        source_label,
+        api_key_id,
+        priced,
+        tool,
+        counts_toward_budget,
+        request_group_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'request_group_id': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if start_date is not None:
+            if isinstance(start_date, datetime):
+                _query_params.append(
+                    (
+                        'start_date',
+                        start_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('start_date', start_date))
+            
+        if end_date is not None:
+            if isinstance(end_date, datetime):
+                _query_params.append(
+                    (
+                        'end_date',
+                        end_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('end_date', end_date))
+            
+        if user_id is not None:
+            
+            _query_params.append(('user_id', user_id))
+            
+        if status is not None:
+            
+            _query_params.append(('status', status))
+            
+        if status_code is not None:
+            
+            _query_params.append(('status_code', status_code))
+            
+        if model is not None:
+            
+            _query_params.append(('model', model))
+            
+        if endpoint is not None:
+            
+            _query_params.append(('endpoint', endpoint))
+            
+        if provider is not None:
+            
+            _query_params.append(('provider', provider))
+            
+        if source is not None:
+            
+            _query_params.append(('source', source))
+            
+        if source_label is not None:
+            
+            _query_params.append(('source_label', source_label))
+            
+        if api_key_id is not None:
+            
+            _query_params.append(('api_key_id', api_key_id))
+            
+        if priced is not None:
+            
+            _query_params.append(('priced', priced))
+            
+        if tool is not None:
+            
+            _query_params.append(('tool', tool))
+            
+        if counts_toward_budget is not None:
+            
+            _query_params.append(('counts_toward_budget', counts_toward_budget))
+            
+        if request_group_id is not None:
+            
+            _query_params.append(('request_group_id', request_group_id))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v1/usage/count',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def delete_usage_rows_v1_usage_delete(
+        self,
+        usage_delete_request: UsageDeleteRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> UsageDeleteResult:
+        """Delete Usage Rows
+
+        Delete imported usage rows by explicit ids or by filter (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true`` plus optional ``source`` / ``model`` / ``user_id`` / ``status`` / date range / ``priced``). Only imported rows (``counts_toward_budget = false``) are ever removed: enforced gateway rows and the spend ledger (``users.spend``) are untouched, so a delete can never desync a budget. Master-key only.
+
+        :param usage_delete_request: (required)
+        :type usage_delete_request: UsageDeleteRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._delete_usage_rows_v1_usage_delete_serialize(
+            usage_delete_request=usage_delete_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageDeleteResult",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def delete_usage_rows_v1_usage_delete_with_http_info(
+        self,
+        usage_delete_request: UsageDeleteRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[UsageDeleteResult]:
+        """Delete Usage Rows
+
+        Delete imported usage rows by explicit ids or by filter (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true`` plus optional ``source`` / ``model`` / ``user_id`` / ``status`` / date range / ``priced``). Only imported rows (``counts_toward_budget = false``) are ever removed: enforced gateway rows and the spend ledger (``users.spend``) are untouched, so a delete can never desync a budget. Master-key only.
+
+        :param usage_delete_request: (required)
+        :type usage_delete_request: UsageDeleteRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._delete_usage_rows_v1_usage_delete_serialize(
+            usage_delete_request=usage_delete_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageDeleteResult",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def delete_usage_rows_v1_usage_delete_without_preload_content(
+        self,
+        usage_delete_request: UsageDeleteRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Delete Usage Rows
+
+        Delete imported usage rows by explicit ids or by filter (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true`` plus optional ``source`` / ``model`` / ``user_id`` / ``status`` / date range / ``priced``). Only imported rows (``counts_toward_budget = false``) are ever removed: enforced gateway rows and the spend ledger (``users.spend``) are untouched, so a delete can never desync a budget. Master-key only.
+
+        :param usage_delete_request: (required)
+        :type usage_delete_request: UsageDeleteRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._delete_usage_rows_v1_usage_delete_serialize(
+            usage_delete_request=usage_delete_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageDeleteResult",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _delete_usage_rows_v1_usage_delete_serialize(
+        self,
+        usage_delete_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if usage_delete_request is not None:
+            _body_params = usage_delete_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='DELETE',
+            resource_path='/v1/usage',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def ingest_external_usage_v1_usage_external_events_post(
+        self,
+        external_events_request: ExternalEventsRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ExternalIngestResult:
+        """Ingest External Usage
+
+        Ingest a batch of externally-observed usage events (standalone).  Authenticated with either an API key or the master key. Usage binds to the authenticated principal: an API key attributes to its own user (and stamps its id on the rows); the master key may name any user via ``user_id``. Records subscription-backed usage (e.g. Claude Code) as usage-log rows tagged with their ``source``, priced at the effective API rate for each event's timestamp. Imported usage is real cost, but never counts toward budgets or mutates ``users.spend`` (it is retrospective, so it cannot be reserved). Idempotent by ``(source, source_event_id)``. The payload is content-free; any prompt/completion/tool field is rejected (422), not stored.
+
+        :param external_events_request: (required)
+        :type external_events_request: ExternalEventsRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._ingest_external_usage_v1_usage_external_events_post_serialize(
+            external_events_request=external_events_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ExternalIngestResult",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def ingest_external_usage_v1_usage_external_events_post_with_http_info(
+        self,
+        external_events_request: ExternalEventsRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ExternalIngestResult]:
+        """Ingest External Usage
+
+        Ingest a batch of externally-observed usage events (standalone).  Authenticated with either an API key or the master key. Usage binds to the authenticated principal: an API key attributes to its own user (and stamps its id on the rows); the master key may name any user via ``user_id``. Records subscription-backed usage (e.g. Claude Code) as usage-log rows tagged with their ``source``, priced at the effective API rate for each event's timestamp. Imported usage is real cost, but never counts toward budgets or mutates ``users.spend`` (it is retrospective, so it cannot be reserved). Idempotent by ``(source, source_event_id)``. The payload is content-free; any prompt/completion/tool field is rejected (422), not stored.
+
+        :param external_events_request: (required)
+        :type external_events_request: ExternalEventsRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._ingest_external_usage_v1_usage_external_events_post_serialize(
+            external_events_request=external_events_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ExternalIngestResult",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def ingest_external_usage_v1_usage_external_events_post_without_preload_content(
+        self,
+        external_events_request: ExternalEventsRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Ingest External Usage
+
+        Ingest a batch of externally-observed usage events (standalone).  Authenticated with either an API key or the master key. Usage binds to the authenticated principal: an API key attributes to its own user (and stamps its id on the rows); the master key may name any user via ``user_id``. Records subscription-backed usage (e.g. Claude Code) as usage-log rows tagged with their ``source``, priced at the effective API rate for each event's timestamp. Imported usage is real cost, but never counts toward budgets or mutates ``users.spend`` (it is retrospective, so it cannot be reserved). Idempotent by ``(source, source_event_id)``. The payload is content-free; any prompt/completion/tool field is rejected (422), not stored.
+
+        :param external_events_request: (required)
+        :type external_events_request: ExternalEventsRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._ingest_external_usage_v1_usage_external_events_post_serialize(
+            external_events_request=external_events_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ExternalIngestResult",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _ingest_external_usage_v1_usage_external_events_post_serialize(
+        self,
+        external_events_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if external_events_request is not None:
+            _body_params = external_events_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/v1/usage/external-events',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def list_usage_v1_usage_get(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
         user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        request_group_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
         _request_timeout: Union[
@@ -62,7 +1163,7 @@ class UsageApi:
     ) -> List[UsageEntry]:
         """List Usage
 
-        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range and user. Paginated via skip/limit. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
+        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range, user, status, failure status code, model, endpoint, provider, source, session (``source_label``), and request group (``request_group_id``, repeatable, which returns a routed request's whole attempt plan). Paginated via skip/limit. The return shape is a bare JSON array; external billing/analytics consumers depend on this, so the total row count for a paginated UI is served separately by ``GET /v1/usage/count`` rather than wrapped in an envelope here. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -70,6 +1171,30 @@ class UsageApi:
         :type end_date: datetime
         :param user_id: Filter to a single user
         :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
+        :type request_group_id: List[Optional[str]]
         :param skip:
         :type skip: int
         :param limit:
@@ -100,6 +1225,18 @@ class UsageApi:
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            request_group_id=request_group_id,
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -129,6 +1266,18 @@ class UsageApi:
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
         user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        request_group_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
         _request_timeout: Union[
@@ -146,7 +1295,7 @@ class UsageApi:
     ) -> ApiResponse[List[UsageEntry]]:
         """List Usage
 
-        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range and user. Paginated via skip/limit. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
+        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range, user, status, failure status code, model, endpoint, provider, source, session (``source_label``), and request group (``request_group_id``, repeatable, which returns a routed request's whole attempt plan). Paginated via skip/limit. The return shape is a bare JSON array; external billing/analytics consumers depend on this, so the total row count for a paginated UI is served separately by ``GET /v1/usage/count`` rather than wrapped in an envelope here. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -154,6 +1303,30 @@ class UsageApi:
         :type end_date: datetime
         :param user_id: Filter to a single user
         :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
+        :type request_group_id: List[Optional[str]]
         :param skip:
         :type skip: int
         :param limit:
@@ -184,6 +1357,18 @@ class UsageApi:
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            request_group_id=request_group_id,
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -213,6 +1398,18 @@ class UsageApi:
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
         user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        request_group_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
         _request_timeout: Union[
@@ -230,7 +1427,7 @@ class UsageApi:
     ) -> RESTResponseType:
         """List Usage
 
-        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range and user. Paginated via skip/limit. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
+        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range, user, status, failure status code, model, endpoint, provider, source, session (``source_label``), and request group (``request_group_id``, repeatable, which returns a routed request's whole attempt plan). Paginated via skip/limit. The return shape is a bare JSON array; external billing/analytics consumers depend on this, so the total row count for a paginated UI is served separately by ``GET /v1/usage/count`` rather than wrapped in an envelope here. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -238,6 +1435,30 @@ class UsageApi:
         :type end_date: datetime
         :param user_id: Filter to a single user
         :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
+        :type request_group_id: List[Optional[str]]
         :param skip:
         :type skip: int
         :param limit:
@@ -268,6 +1489,18 @@ class UsageApi:
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            request_group_id=request_group_id,
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -292,8 +1525,1357 @@ class UsageApi:
         start_date,
         end_date,
         user_id,
+        status,
+        status_code,
+        model,
+        endpoint,
+        provider,
+        source,
+        source_label,
+        api_key_id,
+        priced,
+        tool,
+        counts_toward_budget,
+        request_group_id,
         skip,
         limit,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'request_group_id': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if start_date is not None:
+            if isinstance(start_date, datetime):
+                _query_params.append(
+                    (
+                        'start_date',
+                        start_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('start_date', start_date))
+            
+        if end_date is not None:
+            if isinstance(end_date, datetime):
+                _query_params.append(
+                    (
+                        'end_date',
+                        end_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('end_date', end_date))
+            
+        if user_id is not None:
+            
+            _query_params.append(('user_id', user_id))
+            
+        if status is not None:
+            
+            _query_params.append(('status', status))
+            
+        if status_code is not None:
+            
+            _query_params.append(('status_code', status_code))
+            
+        if model is not None:
+            
+            _query_params.append(('model', model))
+            
+        if endpoint is not None:
+            
+            _query_params.append(('endpoint', endpoint))
+            
+        if provider is not None:
+            
+            _query_params.append(('provider', provider))
+            
+        if source is not None:
+            
+            _query_params.append(('source', source))
+            
+        if source_label is not None:
+            
+            _query_params.append(('source_label', source_label))
+            
+        if api_key_id is not None:
+            
+            _query_params.append(('api_key_id', api_key_id))
+            
+        if priced is not None:
+            
+            _query_params.append(('priced', priced))
+            
+        if tool is not None:
+            
+            _query_params.append(('tool', tool))
+            
+        if counts_toward_budget is not None:
+            
+            _query_params.append(('counts_toward_budget', counts_toward_budget))
+            
+        if request_group_id is not None:
+            
+            _query_params.append(('request_group_id', request_group_id))
+            
+        if skip is not None:
+            
+            _query_params.append(('skip', skip))
+            
+        if limit is not None:
+            
+            _query_params.append(('limit', limit))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v1/usage',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def set_usage_price_rows_v1_usage_set_price_post(
+        self,
+        usage_set_price_request: UsageSetPriceRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> UsageSetPriceResult:
+        """Set Usage Price Rows
+
+        Set the cost of imported usage rows from manual per-1M rates (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true``). Cost / billing meters / pricing breakdown are recomputed from each row's own token counts at the supplied ``input`` / ``output`` / ``cache_read`` / ``cache_write`` per-1M rates (manual rates, not a recompute from configured pricing). Only imported rows (``counts_toward_budget = false``) are touched, so ``users.spend`` is never affected. Master-key only.
+
+        :param usage_set_price_request: (required)
+        :type usage_set_price_request: UsageSetPriceRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_usage_price_rows_v1_usage_set_price_post_serialize(
+            usage_set_price_request=usage_set_price_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageSetPriceResult",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def set_usage_price_rows_v1_usage_set_price_post_with_http_info(
+        self,
+        usage_set_price_request: UsageSetPriceRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[UsageSetPriceResult]:
+        """Set Usage Price Rows
+
+        Set the cost of imported usage rows from manual per-1M rates (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true``). Cost / billing meters / pricing breakdown are recomputed from each row's own token counts at the supplied ``input`` / ``output`` / ``cache_read`` / ``cache_write`` per-1M rates (manual rates, not a recompute from configured pricing). Only imported rows (``counts_toward_budget = false``) are touched, so ``users.spend`` is never affected. Master-key only.
+
+        :param usage_set_price_request: (required)
+        :type usage_set_price_request: UsageSetPriceRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_usage_price_rows_v1_usage_set_price_post_serialize(
+            usage_set_price_request=usage_set_price_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageSetPriceResult",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def set_usage_price_rows_v1_usage_set_price_post_without_preload_content(
+        self,
+        usage_set_price_request: UsageSetPriceRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Set Usage Price Rows
+
+        Set the cost of imported usage rows from manual per-1M rates (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true``). Cost / billing meters / pricing breakdown are recomputed from each row's own token counts at the supplied ``input`` / ``output`` / ``cache_read`` / ``cache_write`` per-1M rates (manual rates, not a recompute from configured pricing). Only imported rows (``counts_toward_budget = false``) are touched, so ``users.spend`` is never affected. Master-key only.
+
+        :param usage_set_price_request: (required)
+        :type usage_set_price_request: UsageSetPriceRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_usage_price_rows_v1_usage_set_price_post_serialize(
+            usage_set_price_request=usage_set_price_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageSetPriceResult",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _set_usage_price_rows_v1_usage_set_price_post_serialize(
+        self,
+        usage_set_price_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if usage_set_price_request is not None:
+            _body_params = usage_set_price_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/v1/usage/set-price',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def usage_series_v1_usage_series_get(
+        self,
+        group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> UsageGroupedSeries:
+        """Usage Series
+
+        Time series split by one dimension, for the dashboard's stacked charts.  Same filters and window bounds as ``/summary`` (kept in lockstep: the dashboard serializes one filter object for both, and a filter this endpoint silently ignored would make the stacked chart disagree with the tiles beside it). The window's top groups by spend are returned as their own series; everything past the top eight folds into a single ``other`` series per bucket, so the stack always reconciles with the summary totals. Points are sparse (populated cells only); the bucket grid is bounded like ``/summary``'s series, so an hourly bucket over a too-wide window is rejected rather than ballooning the payload.
+
+        :param group_by: Dimension to split the series by (required)
+        :type group_by: str
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._usage_series_v1_usage_series_get_serialize(
+            group_by=group_by,
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            bucket=bucket,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageGroupedSeries",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def usage_series_v1_usage_series_get_with_http_info(
+        self,
+        group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[UsageGroupedSeries]:
+        """Usage Series
+
+        Time series split by one dimension, for the dashboard's stacked charts.  Same filters and window bounds as ``/summary`` (kept in lockstep: the dashboard serializes one filter object for both, and a filter this endpoint silently ignored would make the stacked chart disagree with the tiles beside it). The window's top groups by spend are returned as their own series; everything past the top eight folds into a single ``other`` series per bucket, so the stack always reconciles with the summary totals. Points are sparse (populated cells only); the bucket grid is bounded like ``/summary``'s series, so an hourly bucket over a too-wide window is rejected rather than ballooning the payload.
+
+        :param group_by: Dimension to split the series by (required)
+        :type group_by: str
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._usage_series_v1_usage_series_get_serialize(
+            group_by=group_by,
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            bucket=bucket,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageGroupedSeries",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def usage_series_v1_usage_series_get_without_preload_content(
+        self,
+        group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Usage Series
+
+        Time series split by one dimension, for the dashboard's stacked charts.  Same filters and window bounds as ``/summary`` (kept in lockstep: the dashboard serializes one filter object for both, and a filter this endpoint silently ignored would make the stacked chart disagree with the tiles beside it). The window's top groups by spend are returned as their own series; everything past the top eight folds into a single ``other`` series per bucket, so the stack always reconciles with the summary totals. Points are sparse (populated cells only); the bucket grid is bounded like ``/summary``'s series, so an hourly bucket over a too-wide window is rejected rather than ballooning the payload.
+
+        :param group_by: Dimension to split the series by (required)
+        :type group_by: str
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._usage_series_v1_usage_series_get_serialize(
+            group_by=group_by,
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            bucket=bucket,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageGroupedSeries",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _usage_series_v1_usage_series_get_serialize(
+        self,
+        group_by,
+        start_date,
+        end_date,
+        user_id,
+        status,
+        status_code,
+        model,
+        endpoint,
+        provider,
+        source,
+        source_label,
+        api_key_id,
+        priced,
+        tool,
+        counts_toward_budget,
+        bucket,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if group_by is not None:
+            
+            _query_params.append(('group_by', group_by))
+            
+        if start_date is not None:
+            if isinstance(start_date, datetime):
+                _query_params.append(
+                    (
+                        'start_date',
+                        start_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('start_date', start_date))
+            
+        if end_date is not None:
+            if isinstance(end_date, datetime):
+                _query_params.append(
+                    (
+                        'end_date',
+                        end_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('end_date', end_date))
+            
+        if user_id is not None:
+            
+            _query_params.append(('user_id', user_id))
+            
+        if status is not None:
+            
+            _query_params.append(('status', status))
+            
+        if status_code is not None:
+            
+            _query_params.append(('status_code', status_code))
+            
+        if model is not None:
+            
+            _query_params.append(('model', model))
+            
+        if endpoint is not None:
+            
+            _query_params.append(('endpoint', endpoint))
+            
+        if provider is not None:
+            
+            _query_params.append(('provider', provider))
+            
+        if source is not None:
+            
+            _query_params.append(('source', source))
+            
+        if source_label is not None:
+            
+            _query_params.append(('source_label', source_label))
+            
+        if api_key_id is not None:
+            
+            _query_params.append(('api_key_id', api_key_id))
+            
+        if priced is not None:
+            
+            _query_params.append(('priced', priced))
+            
+        if tool is not None:
+            
+            _query_params.append(('tool', tool))
+            
+        if counts_toward_budget is not None:
+            
+            _query_params.append(('counts_toward_budget', counts_toward_budget))
+            
+        if bucket is not None:
+            
+            _query_params.append(('bucket', bucket))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v1/usage/series',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def usage_summary_csv_v1_usage_summary_csv_get(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> object:
+        """Usage Summary Csv
+
+        Download every breakdown the summary reports, as one CSV.  One row per (dimension, key): model, user, API key, source, session (``source_label``), endpoint, and provider. A dedicated route rather than a ``format=csv`` flag on ``/summary`` so that endpoint keeps a single JSON response model and a clean OpenAPI schema. The export is **uncapped** (no top-N fold): finance wants every row. ``tokens`` is the billed total (fresh input, both cache buckets, and output), matching the dashboard's analytics. Kept separate from the bare-array ``/v1/usage`` contract, which is untouched.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._usage_summary_csv_v1_usage_summary_csv_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "object",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def usage_summary_csv_v1_usage_summary_csv_get_with_http_info(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[object]:
+        """Usage Summary Csv
+
+        Download every breakdown the summary reports, as one CSV.  One row per (dimension, key): model, user, API key, source, session (``source_label``), endpoint, and provider. A dedicated route rather than a ``format=csv`` flag on ``/summary`` so that endpoint keeps a single JSON response model and a clean OpenAPI schema. The export is **uncapped** (no top-N fold): finance wants every row. ``tokens`` is the billed total (fresh input, both cache buckets, and output), matching the dashboard's analytics. Kept separate from the bare-array ``/v1/usage`` contract, which is untouched.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._usage_summary_csv_v1_usage_summary_csv_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "object",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def usage_summary_csv_v1_usage_summary_csv_get_without_preload_content(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Usage Summary Csv
+
+        Download every breakdown the summary reports, as one CSV.  One row per (dimension, key): model, user, API key, source, session (``source_label``), endpoint, and provider. A dedicated route rather than a ``format=csv`` flag on ``/summary`` so that endpoint keeps a single JSON response model and a clean OpenAPI schema. The export is **uncapped** (no top-N fold): finance wants every row. ``tokens`` is the billed total (fresh input, both cache buckets, and output), matching the dashboard's analytics. Kept separate from the bare-array ``/v1/usage`` contract, which is untouched.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._usage_summary_csv_v1_usage_summary_csv_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "object",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _usage_summary_csv_v1_usage_summary_csv_get_serialize(
+        self,
+        start_date,
+        end_date,
+        user_id,
+        status,
+        status_code,
+        model,
+        endpoint,
+        provider,
+        source,
+        source_label,
+        api_key_id,
+        priced,
+        tool,
+        counts_toward_budget,
         _request_auth,
         _content_type,
         _headers,
@@ -346,13 +2928,49 @@ class UsageApi:
             
             _query_params.append(('user_id', user_id))
             
-        if skip is not None:
+        if status is not None:
             
-            _query_params.append(('skip', skip))
+            _query_params.append(('status', status))
             
-        if limit is not None:
+        if status_code is not None:
             
-            _query_params.append(('limit', limit))
+            _query_params.append(('status_code', status_code))
+            
+        if model is not None:
+            
+            _query_params.append(('model', model))
+            
+        if endpoint is not None:
+            
+            _query_params.append(('endpoint', endpoint))
+            
+        if provider is not None:
+            
+            _query_params.append(('provider', provider))
+            
+        if source is not None:
+            
+            _query_params.append(('source', source))
+            
+        if source_label is not None:
+            
+            _query_params.append(('source_label', source_label))
+            
+        if api_key_id is not None:
+            
+            _query_params.append(('api_key_id', api_key_id))
+            
+        if priced is not None:
+            
+            _query_params.append(('priced', priced))
+            
+        if tool is not None:
+            
+            _query_params.append(('tool', tool))
+            
+        if counts_toward_budget is not None:
+            
+            _query_params.append(('counts_toward_budget', counts_toward_budget))
             
         # process the header parameters
         # process the form parameters
@@ -370,12 +2988,554 @@ class UsageApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/usage',
+            resource_path='/v1/usage/summary.csv',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def usage_summary_v1_usage_summary_get(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        dimensions: Annotated[Optional[List[StrictStr]], Field(description="Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> UsageSummary:
+        """Usage Summary
+
+        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param dimensions: Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.
+        :type dimensions: List[str]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._usage_summary_v1_usage_summary_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            bucket=bucket,
+            dimensions=dimensions,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageSummary",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def usage_summary_v1_usage_summary_get_with_http_info(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        dimensions: Annotated[Optional[List[StrictStr]], Field(description="Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[UsageSummary]:
+        """Usage Summary
+
+        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param dimensions: Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.
+        :type dimensions: List[str]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._usage_summary_v1_usage_summary_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            bucket=bucket,
+            dimensions=dimensions,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageSummary",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def usage_summary_v1_usage_summary_get_without_preload_content(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
+        status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
+        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
+        source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
+        source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
+        tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        dimensions: Annotated[Optional[List[StrictStr]], Field(description="Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Usage Summary
+
+        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to a single user
+        :type user_id: str
+        :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
+        :type status: str
+        :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
+        :type status_code: int
+        :param model: Filter to a single model
+        :type model: str
+        :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
+        :type endpoint: str
+        :param provider: Filter to a single provider (e.g. 'openai')
+        :type provider: str
+        :param source: Filter to a single provenance source (e.g. 'gateway' or 'claude_code')
+        :type source: str
+        :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
+        :type source_label: str
+        :param api_key_id: Filter to a single API key id
+        :type api_key_id: str
+        :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
+        :type priced: bool
+        :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
+        :type tool: str
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :type counts_toward_budget: bool
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param dimensions: Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.
+        :type dimensions: List[str]
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._usage_summary_v1_usage_summary_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            status=status,
+            status_code=status_code,
+            model=model,
+            endpoint=endpoint,
+            provider=provider,
+            source=source,
+            source_label=source_label,
+            api_key_id=api_key_id,
+            priced=priced,
+            tool=tool,
+            counts_toward_budget=counts_toward_budget,
+            bucket=bucket,
+            dimensions=dimensions,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "UsageSummary",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _usage_summary_v1_usage_summary_get_serialize(
+        self,
+        start_date,
+        end_date,
+        user_id,
+        status,
+        status_code,
+        model,
+        endpoint,
+        provider,
+        source,
+        source_label,
+        api_key_id,
+        priced,
+        tool,
+        counts_toward_budget,
+        bucket,
+        dimensions,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'dimensions': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if start_date is not None:
+            if isinstance(start_date, datetime):
+                _query_params.append(
+                    (
+                        'start_date',
+                        start_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('start_date', start_date))
+            
+        if end_date is not None:
+            if isinstance(end_date, datetime):
+                _query_params.append(
+                    (
+                        'end_date',
+                        end_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('end_date', end_date))
+            
+        if user_id is not None:
+            
+            _query_params.append(('user_id', user_id))
+            
+        if status is not None:
+            
+            _query_params.append(('status', status))
+            
+        if status_code is not None:
+            
+            _query_params.append(('status_code', status_code))
+            
+        if model is not None:
+            
+            _query_params.append(('model', model))
+            
+        if endpoint is not None:
+            
+            _query_params.append(('endpoint', endpoint))
+            
+        if provider is not None:
+            
+            _query_params.append(('provider', provider))
+            
+        if source is not None:
+            
+            _query_params.append(('source', source))
+            
+        if source_label is not None:
+            
+            _query_params.append(('source_label', source_label))
+            
+        if api_key_id is not None:
+            
+            _query_params.append(('api_key_id', api_key_id))
+            
+        if priced is not None:
+            
+            _query_params.append(('priced', priced))
+            
+        if tool is not None:
+            
+            _query_params.append(('tool', tool))
+            
+        if counts_toward_budget is not None:
+            
+            _query_params.append(('counts_toward_budget', counts_toward_budget))
+            
+        if bucket is not None:
+            
+            _query_params.append(('bucket', bucket))
+            
+        if dimensions is not None:
+            
+            _query_params.append(('dimensions', dimensions))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v1/usage/summary',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -37,9 +37,10 @@ class CCChatCompletionMessage(BaseModel):
     audio: Optional[CCChatCompletionAudio] = None
     function_call: Optional[CCFunctionCall] = None
     tool_calls: Optional[List[CCChatCompletionMessageToolCallsInner]] = None
-    reasoning: Optional[StrictStr] = Field(default=None, description="Filter models by provider name")
+    reasoning: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
+    extra_content: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["content", "refusal", "role", "annotations", "audio", "function_call", "tool_calls", "reasoning"]
+    __properties: ClassVar[List[str]] = ["content", "refusal", "role", "annotations", "audio", "function_call", "tool_calls", "reasoning", "extra_content"]
 
     @field_validator('role')
     def role_validate_enum(cls, value):
@@ -142,6 +143,11 @@ class CCChatCompletionMessage(BaseModel):
         if self.reasoning is None and "reasoning" in self.model_fields_set:
             _dict['reasoning'] = None
 
+        # set to None if extra_content (nullable) is None
+        # and model_fields_set contains the field
+        if self.extra_content is None and "extra_content" in self.model_fields_set:
+            _dict['extra_content'] = None
+
         return _dict
 
     @classmethod
@@ -161,7 +167,8 @@ class CCChatCompletionMessage(BaseModel):
             "audio": CCChatCompletionAudio.from_dict(obj["audio"]) if obj.get("audio") is not None else None,
             "function_call": CCFunctionCall.from_dict(obj["function_call"]) if obj.get("function_call") is not None else None,
             "tool_calls": [CCChatCompletionMessageToolCallsInner.from_dict(_item) for _item in obj["tool_calls"]] if obj.get("tool_calls") is not None else None,
-            "reasoning": obj.get("reasoning")
+            "reasoning": obj.get("reasoning"),
+            "extra_content": obj.get("extra_content")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

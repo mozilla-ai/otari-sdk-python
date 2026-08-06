@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.mr_citations_config import MRCitationsConfig
-from otari._client.models.source import Source
+from otari._client.models.source1 import Source1
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,7 +30,7 @@ class MRDocumentBlock(BaseModel):
     MRDocumentBlock
     """ # noqa: E501
     citations: Optional[MRCitationsConfig] = None
-    source: Source
+    source: Source1
     title: Optional[StrictStr] = None
     type: StrictStr
     additional_properties: Dict[str, Any] = {}
@@ -118,7 +118,7 @@ class MRDocumentBlock(BaseModel):
 
         _obj = cls.model_validate({
             "citations": MRCitationsConfig.from_dict(obj["citations"]) if obj.get("citations") is not None else None,
-            "source": Source.from_dict(obj["source"]) if obj.get("source") is not None else None,
+            "source": Source1.from_dict(obj["source"]) if obj.get("source") is not None else None,
             "title": obj.get("title"),
             "type": obj.get("type")
         })

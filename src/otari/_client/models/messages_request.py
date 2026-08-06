@@ -32,7 +32,9 @@ class MessagesRequest(BaseModel):
     """
     Anthropic Messages API-compatible request.  The wire fields are derived from any-llm's ``MessagesParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. Gateway-internal fields (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) opt the request into gateway-managed MCP / sandbox / web_search / guardrails without changing the upstream wire shape. They're stripped before the request is forwarded.
     """ # noqa: E501
+    betas: Optional[List[StrictStr]] = None
     cache_control: Optional[Dict[str, Any]] = None
+    context_management: Optional[Dict[str, Any]] = None
     guardrails: Optional[Annotated[List[GuardrailConfig], Field(max_length=8)]] = None
     max_tokens: StrictInt
     max_tool_iterations: Optional[Annotated[int, Field(le=25, strict=True, ge=1)]] = None
@@ -41,6 +43,7 @@ class MessagesRequest(BaseModel):
     messages: Annotated[List[Dict[str, Any]], Field(min_length=1)]
     metadata: Optional[Dict[str, Any]] = None
     model: StrictStr
+    output_format: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     stop_sequences: Optional[List[StrictStr]] = None
     stream: Optional[StrictBool] = False
@@ -52,7 +55,7 @@ class MessagesRequest(BaseModel):
     tools_header: Optional[StrictStr] = None
     top_k: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["cache_control", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
+    __properties: ClassVar[List[str]] = ["betas", "cache_control", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_format", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -110,10 +113,20 @@ class MessagesRequest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of system
         if self.system:
             _dict['system'] = self.system.to_dict()
+        # set to None if betas (nullable) is None
+        # and model_fields_set contains the field
+        if self.betas is None and "betas" in self.model_fields_set:
+            _dict['betas'] = None
+
         # set to None if cache_control (nullable) is None
         # and model_fields_set contains the field
         if self.cache_control is None and "cache_control" in self.model_fields_set:
             _dict['cache_control'] = None
+
+        # set to None if context_management (nullable) is None
+        # and model_fields_set contains the field
+        if self.context_management is None and "context_management" in self.model_fields_set:
+            _dict['context_management'] = None
 
         # set to None if guardrails (nullable) is None
         # and model_fields_set contains the field
@@ -139,6 +152,11 @@ class MessagesRequest(BaseModel):
         # and model_fields_set contains the field
         if self.metadata is None and "metadata" in self.model_fields_set:
             _dict['metadata'] = None
+
+        # set to None if output_format (nullable) is None
+        # and model_fields_set contains the field
+        if self.output_format is None and "output_format" in self.model_fields_set:
+            _dict['output_format'] = None
 
         # set to None if session_label (nullable) is None
         # and model_fields_set contains the field
@@ -202,7 +220,9 @@ class MessagesRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "betas": obj.get("betas"),
             "cache_control": obj.get("cache_control"),
+            "context_management": obj.get("context_management"),
             "guardrails": [GuardrailConfig.from_dict(_item) for _item in obj["guardrails"]] if obj.get("guardrails") is not None else None,
             "max_tokens": obj.get("max_tokens"),
             "max_tool_iterations": obj.get("max_tool_iterations"),
@@ -211,6 +231,7 @@ class MessagesRequest(BaseModel):
             "messages": obj.get("messages"),
             "metadata": obj.get("metadata"),
             "model": obj.get("model"),
+            "output_format": obj.get("output_format"),
             "session_label": obj.get("session_label"),
             "stop_sequences": obj.get("stop_sequences"),
             "stream": obj.get("stream") if obj.get("stream") is not None else False,

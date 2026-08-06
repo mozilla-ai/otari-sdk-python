@@ -28,11 +28,12 @@ class CreateUserRequest(BaseModel):
     Request model for creating a new user.
     """ # noqa: E501
     alias: Optional[StrictStr] = Field(default=None, description="Optional admin-facing alias")
+    allowed_models: Optional[List[StrictStr]] = Field(default=None, description="Default model access-list this user's keys inherit; null = unrestricted, [] = deny all")
     blocked: Optional[StrictBool] = Field(default=False, description="Whether user is blocked")
     budget_id: Optional[StrictStr] = Field(default=None, description="Optional budget ID")
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata")
     user_id: StrictStr = Field(description="Unique user identifier")
-    __properties: ClassVar[List[str]] = ["alias", "blocked", "budget_id", "metadata", "user_id"]
+    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "blocked", "budget_id", "metadata", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -78,6 +79,11 @@ class CreateUserRequest(BaseModel):
         if self.alias is None and "alias" in self.model_fields_set:
             _dict['alias'] = None
 
+        # set to None if allowed_models (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_models is None and "allowed_models" in self.model_fields_set:
+            _dict['allowed_models'] = None
+
         # set to None if budget_id (nullable) is None
         # and model_fields_set contains the field
         if self.budget_id is None and "budget_id" in self.model_fields_set:
@@ -96,6 +102,7 @@ class CreateUserRequest(BaseModel):
 
         _obj = cls.model_validate({
             "alias": obj.get("alias"),
+            "allowed_models": obj.get("allowed_models"),
             "blocked": obj.get("blocked") if obj.get("blocked") is not None else False,
             "budget_id": obj.get("budget_id"),
             "metadata": obj.get("metadata"),

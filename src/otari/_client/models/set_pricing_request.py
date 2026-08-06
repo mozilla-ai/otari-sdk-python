@@ -21,19 +21,24 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from otari._client.models.pricing_tier import PricingTier
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class SetPricingRequest(BaseModel):
     """
-    Request model for setting model pricing.
+    Create a versioned per-model price, with optional cache and context tiers.
     """ # noqa: E501
+    cache_read_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cached-input tokens")
+    cache_write_1h_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M Anthropic 1-hour cache-write tokens")
+    cache_write_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cache-write (creation) tokens")
     effective_at: Optional[datetime] = Field(default=None, description="ISO 8601 datetime from which this price applies. Defaults to now if omitted.")
     input_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M input tokens")
     model_key: StrictStr = Field(description="Model identifier in format 'provider:model'")
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens")
-    __properties: ClassVar[List[str]] = ["effective_at", "input_price_per_million", "model_key", "output_price_per_million"]
+    pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "effective_at", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -74,10 +79,37 @@ class SetPricingRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in pricing_tiers (list)
+        _items = []
+        if self.pricing_tiers:
+            for _item_pricing_tiers in self.pricing_tiers:
+                if _item_pricing_tiers:
+                    _items.append(_item_pricing_tiers.to_dict())
+            _dict['pricing_tiers'] = _items
+        # set to None if cache_read_price_per_million (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
+            _dict['cache_read_price_per_million'] = None
+
+        # set to None if cache_write_1h_price_per_million (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_write_1h_price_per_million is None and "cache_write_1h_price_per_million" in self.model_fields_set:
+            _dict['cache_write_1h_price_per_million'] = None
+
+        # set to None if cache_write_price_per_million (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
+            _dict['cache_write_price_per_million'] = None
+
         # set to None if effective_at (nullable) is None
         # and model_fields_set contains the field
         if self.effective_at is None and "effective_at" in self.model_fields_set:
             _dict['effective_at'] = None
+
+        # set to None if pricing_tiers (nullable) is None
+        # and model_fields_set contains the field
+        if self.pricing_tiers is None and "pricing_tiers" in self.model_fields_set:
+            _dict['pricing_tiers'] = None
 
         return _dict
 
@@ -91,10 +123,14 @@ class SetPricingRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
+            "cache_write_1h_price_per_million": obj.get("cache_write_1h_price_per_million"),
+            "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "effective_at": obj.get("effective_at"),
             "input_price_per_million": obj.get("input_price_per_million"),
             "model_key": obj.get("model_key"),
-            "output_price_per_million": obj.get("output_price_per_million")
+            "output_price_per_million": obj.get("output_price_per_million"),
+            "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None
         })
         return _obj
 

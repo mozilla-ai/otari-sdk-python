@@ -294,6 +294,7 @@ class MessagesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -334,7 +335,7 @@ class MessagesApi:
     ) -> MessageResponse:
         """Create Message
 
-        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and hybrid mode. Hybrid-mode requests resolve credentials via the platform service and (for non-tool-loop requests) get multi-attempt fallback across the resolved route. Tool-loop requests collapse to a single attempt — once ``on_first_response`` lock-in plumbing lands across the codebase, a follow-up will enable pre-lock-in fallback for tool-loop requests too.
+        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and hybrid mode. Hybrid-mode requests resolve credentials via the platform service and get multi-attempt fallback across the resolved route, tool-loop requests included (fallback applies up to the pre-lock-in point, same as chat).
 
         :param messages_request: (required)
         :type messages_request: MessagesRequest
@@ -402,7 +403,7 @@ class MessagesApi:
     ) -> ApiResponse[MessageResponse]:
         """Create Message
 
-        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and hybrid mode. Hybrid-mode requests resolve credentials via the platform service and (for non-tool-loop requests) get multi-attempt fallback across the resolved route. Tool-loop requests collapse to a single attempt — once ``on_first_response`` lock-in plumbing lands across the codebase, a follow-up will enable pre-lock-in fallback for tool-loop requests too.
+        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and hybrid mode. Hybrid-mode requests resolve credentials via the platform service and get multi-attempt fallback across the resolved route, tool-loop requests included (fallback applies up to the pre-lock-in point, same as chat).
 
         :param messages_request: (required)
         :type messages_request: MessagesRequest
@@ -470,7 +471,7 @@ class MessagesApi:
     ) -> RESTResponseType:
         """Create Message
 
-        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and hybrid mode. Hybrid-mode requests resolve credentials via the platform service and (for non-tool-loop requests) get multi-attempt fallback across the resolved route. Tool-loop requests collapse to a single attempt — once ``on_first_response`` lock-in plumbing lands across the codebase, a follow-up will enable pre-lock-in fallback for tool-loop requests too.
+        Anthropic Messages API-compatible endpoint.  Supports MCP tool-use loops, sandboxed code execution, and SearXNG web_search in both standalone mode and hybrid mode. Hybrid-mode requests resolve credentials via the platform service and get multi-attempt fallback across the resolved route, tool-loop requests included (fallback applies up to the pre-lock-in point, same as chat).
 
         :param messages_request: (required)
         :type messages_request: MessagesRequest
@@ -571,6 +572,7 @@ class MessagesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 

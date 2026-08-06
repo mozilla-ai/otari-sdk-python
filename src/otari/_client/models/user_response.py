@@ -28,6 +28,7 @@ class UserResponse(BaseModel):
     Response model for user information.
     """ # noqa: E501
     alias: Optional[StrictStr]
+    allowed_models: Optional[List[StrictStr]]
     blocked: StrictBool
     budget_id: Optional[StrictStr]
     budget_started_at: Optional[StrictStr]
@@ -38,7 +39,7 @@ class UserResponse(BaseModel):
     spend: Union[StrictFloat, StrictInt]
     updated_at: StrictStr
     user_id: StrictStr
-    __properties: ClassVar[List[str]] = ["alias", "blocked", "budget_id", "budget_started_at", "created_at", "metadata", "next_budget_reset_at", "reserved", "spend", "updated_at", "user_id"]
+    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "blocked", "budget_id", "budget_started_at", "created_at", "metadata", "next_budget_reset_at", "reserved", "spend", "updated_at", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -84,6 +85,11 @@ class UserResponse(BaseModel):
         if self.alias is None and "alias" in self.model_fields_set:
             _dict['alias'] = None
 
+        # set to None if allowed_models (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_models is None and "allowed_models" in self.model_fields_set:
+            _dict['allowed_models'] = None
+
         # set to None if budget_id (nullable) is None
         # and model_fields_set contains the field
         if self.budget_id is None and "budget_id" in self.model_fields_set:
@@ -112,6 +118,7 @@ class UserResponse(BaseModel):
 
         _obj = cls.model_validate({
             "alias": obj.get("alias"),
+            "allowed_models": obj.get("allowed_models"),
             "blocked": obj.get("blocked"),
             "budget_id": obj.get("budget_id"),
             "budget_started_at": obj.get("budget_started_at"),

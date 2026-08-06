@@ -28,11 +28,14 @@ class UpdateKeyRequest(BaseModel):
     """
     Request model for updating a key.
     """ # noqa: E501
+    allowed_models: Optional[List[StrictStr]] = None
+    exclude_from_budget: Optional[StrictBool] = None
     expires_at: Optional[datetime] = None
     is_active: Optional[StrictBool] = None
     key_name: Optional[StrictStr] = None
     metadata: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["expires_at", "is_active", "key_name", "metadata"]
+    reject_user_mismatch: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["allowed_models", "exclude_from_budget", "expires_at", "is_active", "key_name", "metadata", "reject_user_mismatch"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -73,6 +76,16 @@ class UpdateKeyRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if allowed_models (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_models is None and "allowed_models" in self.model_fields_set:
+            _dict['allowed_models'] = None
+
+        # set to None if exclude_from_budget (nullable) is None
+        # and model_fields_set contains the field
+        if self.exclude_from_budget is None and "exclude_from_budget" in self.model_fields_set:
+            _dict['exclude_from_budget'] = None
+
         # set to None if expires_at (nullable) is None
         # and model_fields_set contains the field
         if self.expires_at is None and "expires_at" in self.model_fields_set:
@@ -93,6 +106,11 @@ class UpdateKeyRequest(BaseModel):
         if self.metadata is None and "metadata" in self.model_fields_set:
             _dict['metadata'] = None
 
+        # set to None if reject_user_mismatch (nullable) is None
+        # and model_fields_set contains the field
+        if self.reject_user_mismatch is None and "reject_user_mismatch" in self.model_fields_set:
+            _dict['reject_user_mismatch'] = None
+
         return _dict
 
     @classmethod
@@ -105,10 +123,13 @@ class UpdateKeyRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "allowed_models": obj.get("allowed_models"),
+            "exclude_from_budget": obj.get("exclude_from_budget"),
             "expires_at": obj.get("expires_at"),
             "is_active": obj.get("is_active"),
             "key_name": obj.get("key_name"),
-            "metadata": obj.get("metadata")
+            "metadata": obj.get("metadata"),
+            "reject_user_mismatch": obj.get("reject_user_mismatch")
         })
         return _obj
 

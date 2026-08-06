@@ -27,17 +27,19 @@ from pydantic_core import to_jsonable_python
 
 class CountTokensRequest(BaseModel):
     """
-    Anthropic ``/v1/messages/count_tokens`` request.  A subset of :class:`MessagesRequest`: the input fields that affect the token count, minus ``max_tokens`` and the streaming/sampling controls, since the endpoint only counts input tokens. Clients such as Claude Code call this on every turn to keep their prompt within the model's context window.
+    Anthropic ``/v1/messages/count_tokens`` request.  A subset of :class:`MessagesRequest`: the input fields that affect the token count, minus ``max_tokens`` and the streaming/sampling controls, since the endpoint only counts input tokens. ``context_management`` and ``betas`` are accepted for wire compatibility, but the local estimate does not apply provider-side context edits. Clients such as Claude Code call this on every turn to keep their prompt within the model's context window.
     """ # noqa: E501
-    cache_control: Optional[Dict[str, Any]] = None
+    betas: Optional[List[StrictStr]] = None
+    cache_control: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    context_management: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     messages: Annotated[List[Optional[Dict[str, Any]]], Field(min_length=1)]
-    metadata: Optional[Dict[str, Any]] = None
+    metadata: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     model: StrictStr
     system: Optional[System] = None
-    thinking: Optional[Dict[str, Any]] = None
-    tool_choice: Optional[Dict[str, Any]] = None
+    thinking: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    tool_choice: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     tools: Optional[List[Dict[str, Any]]] = None
-    __properties: ClassVar[List[str]] = ["cache_control", "messages", "metadata", "model", "system", "thinking", "tool_choice", "tools"]
+    __properties: ClassVar[List[str]] = ["betas", "cache_control", "context_management", "messages", "metadata", "model", "system", "thinking", "tool_choice", "tools"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,10 +83,20 @@ class CountTokensRequest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of system
         if self.system:
             _dict['system'] = self.system.to_dict()
+        # set to None if betas (nullable) is None
+        # and model_fields_set contains the field
+        if self.betas is None and "betas" in self.model_fields_set:
+            _dict['betas'] = None
+
         # set to None if cache_control (nullable) is None
         # and model_fields_set contains the field
         if self.cache_control is None and "cache_control" in self.model_fields_set:
             _dict['cache_control'] = None
+
+        # set to None if context_management (nullable) is None
+        # and model_fields_set contains the field
+        if self.context_management is None and "context_management" in self.model_fields_set:
+            _dict['context_management'] = None
 
         # set to None if metadata (nullable) is None
         # and model_fields_set contains the field
@@ -123,7 +135,9 @@ class CountTokensRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "betas": obj.get("betas"),
             "cache_control": obj.get("cache_control"),
+            "context_management": obj.get("context_management"),
             "messages": obj.get("messages"),
             "metadata": obj.get("metadata"),
             "model": obj.get("model"),

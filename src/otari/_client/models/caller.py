@@ -19,31 +19,31 @@ import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Optional
-from otari._client.models.mr_direct_caller import MRDirectCaller
-from otari._client.models.mr_server_tool_caller import MRServerToolCaller
-from otari._client.models.mr_server_tool_caller20260120 import MRServerToolCaller20260120
+from otari._client.models.mr_beta_direct_caller import MRBetaDirectCaller
+from otari._client.models.mr_beta_server_tool_caller import MRBetaServerToolCaller
+from otari._client.models.mr_beta_server_tool_caller20260120 import MRBetaServerToolCaller20260120
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-CALLER_ANY_OF_SCHEMAS = ["MRDirectCaller", "MRServerToolCaller", "MRServerToolCaller20260120"]
+CALLER_ANY_OF_SCHEMAS = ["MRBetaDirectCaller", "MRBetaServerToolCaller", "MRBetaServerToolCaller20260120"]
 
 class Caller(BaseModel):
     """
     Caller
     """
 
-    # data type: MRDirectCaller
-    anyof_schema_1_validator: Optional[MRDirectCaller] = None
-    # data type: MRServerToolCaller
-    anyof_schema_2_validator: Optional[MRServerToolCaller] = None
-    # data type: MRServerToolCaller20260120
-    anyof_schema_3_validator: Optional[MRServerToolCaller20260120] = None
+    # data type: MRBetaDirectCaller
+    anyof_schema_1_validator: Optional[MRBetaDirectCaller] = None
+    # data type: MRBetaServerToolCaller
+    anyof_schema_2_validator: Optional[MRBetaServerToolCaller] = None
+    # data type: MRBetaServerToolCaller20260120
+    anyof_schema_3_validator: Optional[MRBetaServerToolCaller20260120] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[MRDirectCaller, MRServerToolCaller, MRServerToolCaller20260120]] = None
+        actual_instance: Optional[Union[MRBetaDirectCaller, MRBetaServerToolCaller, MRBetaServerToolCaller20260120]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "MRDirectCaller", "MRServerToolCaller", "MRServerToolCaller20260120" }
+    any_of_schemas: Set[str] = { "MRBetaDirectCaller", "MRBetaServerToolCaller", "MRBetaServerToolCaller20260120" }
 
     model_config = {
         "validate_assignment": True,
@@ -67,27 +67,27 @@ class Caller(BaseModel):
 
         instance = Caller.model_construct()
         error_messages = []
-        # validate data type: MRDirectCaller
-        if not isinstance(v, MRDirectCaller):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRDirectCaller`")
+        # validate data type: MRBetaDirectCaller
+        if not isinstance(v, MRBetaDirectCaller):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaDirectCaller`")
         else:
             return v
 
-        # validate data type: MRServerToolCaller
-        if not isinstance(v, MRServerToolCaller):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRServerToolCaller`")
+        # validate data type: MRBetaServerToolCaller
+        if not isinstance(v, MRBetaServerToolCaller):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaServerToolCaller`")
         else:
             return v
 
-        # validate data type: MRServerToolCaller20260120
-        if not isinstance(v, MRServerToolCaller20260120):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRServerToolCaller20260120`")
+        # validate data type: MRBetaServerToolCaller20260120
+        if not isinstance(v, MRBetaServerToolCaller20260120):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaServerToolCaller20260120`")
         else:
             return v
 
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Caller with anyOf schemas: MRDirectCaller, MRServerToolCaller, MRServerToolCaller20260120. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Caller with anyOf schemas: MRBetaDirectCaller, MRBetaServerToolCaller, MRBetaServerToolCaller20260120. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -103,28 +103,28 @@ class Caller(BaseModel):
             return instance
 
         error_messages = []
-        # anyof_schema_1_validator: Optional[MRDirectCaller] = None
+        # anyof_schema_1_validator: Optional[MRBetaDirectCaller] = None
         try:
-            instance.actual_instance = MRDirectCaller.from_json(json_str)
+            instance.actual_instance = MRBetaDirectCaller.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
-        # anyof_schema_2_validator: Optional[MRServerToolCaller] = None
+        # anyof_schema_2_validator: Optional[MRBetaServerToolCaller] = None
         try:
-            instance.actual_instance = MRServerToolCaller.from_json(json_str)
+            instance.actual_instance = MRBetaServerToolCaller.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
-        # anyof_schema_3_validator: Optional[MRServerToolCaller20260120] = None
+        # anyof_schema_3_validator: Optional[MRBetaServerToolCaller20260120] = None
         try:
-            instance.actual_instance = MRServerToolCaller20260120.from_json(json_str)
+            instance.actual_instance = MRBetaServerToolCaller20260120.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Caller with anyOf schemas: MRDirectCaller, MRServerToolCaller, MRServerToolCaller20260120. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Caller with anyOf schemas: MRBetaDirectCaller, MRBetaServerToolCaller, MRBetaServerToolCaller20260120. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -138,7 +138,7 @@ class Caller(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], MRDirectCaller, MRServerToolCaller, MRServerToolCaller20260120]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], MRBetaDirectCaller, MRBetaServerToolCaller, MRBetaServerToolCaller20260120]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

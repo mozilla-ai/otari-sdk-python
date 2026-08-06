@@ -55,7 +55,7 @@ class ImagesApi:
     ) -> ImagesResponse:
         """Create Image
 
-        OpenAI-compatible image generation endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible image generation endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param image_generation_request: (required)
         :type image_generation_request: ImageGenerationRequest
@@ -123,7 +123,7 @@ class ImagesApi:
     ) -> ApiResponse[ImagesResponse]:
         """Create Image
 
-        OpenAI-compatible image generation endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible image generation endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param image_generation_request: (required)
         :type image_generation_request: ImageGenerationRequest
@@ -191,7 +191,7 @@ class ImagesApi:
     ) -> RESTResponseType:
         """Create Image
 
-        OpenAI-compatible image generation endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible image generation endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param image_generation_request: (required)
         :type image_generation_request: ImageGenerationRequest
@@ -292,6 +292,7 @@ class ImagesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 

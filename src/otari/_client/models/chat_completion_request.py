@@ -55,7 +55,7 @@ class ChatCompletionRequest(BaseModel):
     session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     stop: Optional[Stop] = None
     stream: Optional[StrictBool] = False
-    stream_options: Optional[Dict[str, Any]] = None
+    stream_options: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     tool_choice: Optional[ToolChoice] = None
     tools: Optional[List[ChatCompletionRequestToolsInner]] = None

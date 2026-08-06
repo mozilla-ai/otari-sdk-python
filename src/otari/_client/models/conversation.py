@@ -31,9 +31,9 @@ class Conversation(BaseModel):
     """
 
     # data type: str
-    anyof_schema_1_validator: Optional[StrictStr] = Field(default=None, description="Filter models by provider name")
+    anyof_schema_1_validator: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
     # data type: Dict[str, object]
-    anyof_schema_2_validator: Optional[Dict[str, Any]] = None
+    anyof_schema_2_validator: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     if TYPE_CHECKING:
         actual_instance: Optional[Union[Dict[str, object], str]] = None
     else:

@@ -31,7 +31,7 @@ class ChatCompletionRequestToolsInner(BaseModel):
     """
 
     # data type: Dict[str, object]
-    anyof_schema_1_validator: Optional[Dict[str, Any]] = None
+    anyof_schema_1_validator: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     # data type: Dict[str, object]
     anyof_schema_2_validator: Optional[Dict[str, Any]] = None
     if TYPE_CHECKING:

@@ -28,7 +28,7 @@ class MRRefusalStopDetails(BaseModel):
     Structured information about a refusal.
     """ # noqa: E501
     category: Optional[StrictStr] = None
-    explanation: Optional[StrictStr] = Field(default=None, description="Filter models by provider name")
+    explanation: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
     type: StrictStr
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["category", "explanation", "type"]

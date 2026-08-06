@@ -28,12 +28,14 @@ class ModelObject(BaseModel):
     """
     OpenAI-compatible model object.
     """ # noqa: E501
+    context_window: Optional[StrictInt] = None
     created: StrictInt
     id: StrictStr
     object: Optional[StrictStr] = 'model'
     owned_by: StrictStr
     pricing: Optional[ModelPricingInfo] = None
-    __properties: ClassVar[List[str]] = ["created", "id", "object", "owned_by", "pricing"]
+    pricing_source: Optional[StrictStr] = 'none'
+    __properties: ClassVar[List[str]] = ["context_window", "created", "id", "object", "owned_by", "pricing", "pricing_source"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -77,6 +79,11 @@ class ModelObject(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of pricing
         if self.pricing:
             _dict['pricing'] = self.pricing.to_dict()
+        # set to None if context_window (nullable) is None
+        # and model_fields_set contains the field
+        if self.context_window is None and "context_window" in self.model_fields_set:
+            _dict['context_window'] = None
+
         # set to None if pricing (nullable) is None
         # and model_fields_set contains the field
         if self.pricing is None and "pricing" in self.model_fields_set:
@@ -94,11 +101,13 @@ class ModelObject(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "context_window": obj.get("context_window"),
             "created": obj.get("created"),
             "id": obj.get("id"),
             "object": obj.get("object") if obj.get("object") is not None else 'model',
             "owned_by": obj.get("owned_by"),
-            "pricing": ModelPricingInfo.from_dict(obj["pricing"]) if obj.get("pricing") is not None else None
+            "pricing": ModelPricingInfo.from_dict(obj["pricing"]) if obj.get("pricing") is not None else None,
+            "pricing_source": obj.get("pricing_source") if obj.get("pricing_source") is not None else 'none'
         })
         return _obj
 

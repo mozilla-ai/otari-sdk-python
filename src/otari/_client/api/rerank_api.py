@@ -55,7 +55,7 @@ class RerankApi:
     ) -> RerankResponse:
         """Create Rerank
 
-        Rerank documents by relevance to a query.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        Rerank documents by relevance to a query.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param rerank_request: (required)
         :type rerank_request: RerankRequest
@@ -123,7 +123,7 @@ class RerankApi:
     ) -> ApiResponse[RerankResponse]:
         """Create Rerank
 
-        Rerank documents by relevance to a query.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        Rerank documents by relevance to a query.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param rerank_request: (required)
         :type rerank_request: RerankRequest
@@ -191,7 +191,7 @@ class RerankApi:
     ) -> RESTResponseType:
         """Create Rerank
 
-        Rerank documents by relevance to a query.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        Rerank documents by relevance to a query.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param rerank_request: (required)
         :type rerank_request: RerankRequest
@@ -292,6 +292,7 @@ class RerankApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 

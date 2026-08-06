@@ -55,7 +55,7 @@ class ChatApi:
     ) -> ChatCompletion:
         """Chat Completions
 
-        OpenAI-compatible chat completions endpoint.  Supports both streaming and non-streaming responses. Handles reasoning content from otari providers.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible chat completions endpoint.  Supports both streaming and non-streaming responses. Handles reasoning content from otari providers.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param chat_completion_request: (required)
         :type chat_completion_request: ChatCompletionRequest
@@ -123,7 +123,7 @@ class ChatApi:
     ) -> ApiResponse[ChatCompletion]:
         """Chat Completions
 
-        OpenAI-compatible chat completions endpoint.  Supports both streaming and non-streaming responses. Handles reasoning content from otari providers.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible chat completions endpoint.  Supports both streaming and non-streaming responses. Handles reasoning content from otari providers.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param chat_completion_request: (required)
         :type chat_completion_request: ChatCompletionRequest
@@ -191,7 +191,7 @@ class ChatApi:
     ) -> RESTResponseType:
         """Chat Completions
 
-        OpenAI-compatible chat completions endpoint.  Supports both streaming and non-streaming responses. Handles reasoning content from otari providers.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible chat completions endpoint.  Supports both streaming and non-streaming responses. Handles reasoning content from otari providers.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param chat_completion_request: (required)
         :type chat_completion_request: ChatCompletionRequest
@@ -292,6 +292,7 @@ class ChatApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 

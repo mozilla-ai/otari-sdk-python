@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,7 +28,7 @@ class CCPromptTokensDetails(BaseModel):
     Breakdown of tokens used in the prompt.
     """ # noqa: E501
     audio_tokens: Optional[StrictInt] = None
-    cached_tokens: Optional[StrictInt] = None
+    cached_tokens: Optional[StrictInt] = Field(default=None, description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["audio_tokens", "cached_tokens"]
 

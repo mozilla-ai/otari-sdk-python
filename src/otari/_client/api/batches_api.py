@@ -297,6 +297,7 @@ class BatchesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -337,7 +338,7 @@ class BatchesApi:
     ) -> object:
         """Create Batch
 
-        Create a batch of LLM requests for asynchronous processing.
+        Create a batch of LLM requests for asynchronous processing.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param create_batch_request: (required)
         :type create_batch_request: CreateBatchRequest
@@ -405,7 +406,7 @@ class BatchesApi:
     ) -> ApiResponse[object]:
         """Create Batch
 
-        Create a batch of LLM requests for asynchronous processing.
+        Create a batch of LLM requests for asynchronous processing.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param create_batch_request: (required)
         :type create_batch_request: CreateBatchRequest
@@ -473,7 +474,7 @@ class BatchesApi:
     ) -> RESTResponseType:
         """Create Batch
 
-        Create a batch of LLM requests for asynchronous processing.
+        Create a batch of LLM requests for asynchronous processing.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param create_batch_request: (required)
         :type create_batch_request: CreateBatchRequest
@@ -574,6 +575,7 @@ class BatchesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -616,7 +618,7 @@ class BatchesApi:
     ) -> object:
         """List Batches
 
-        List batches for a provider.
+        List batches for a provider.  Non-master keys only see batches they own (plus legacy batches without an ownership marker); the page is filtered after the provider call, so a page may contain fewer than ``limit`` items.
 
         :param provider: (required)
         :type provider: str
@@ -692,7 +694,7 @@ class BatchesApi:
     ) -> ApiResponse[object]:
         """List Batches
 
-        List batches for a provider.
+        List batches for a provider.  Non-master keys only see batches they own (plus legacy batches without an ownership marker); the page is filtered after the provider call, so a page may contain fewer than ``limit`` items.
 
         :param provider: (required)
         :type provider: str
@@ -768,7 +770,7 @@ class BatchesApi:
     ) -> RESTResponseType:
         """List Batches
 
-        List batches for a provider.
+        List batches for a provider.  Non-master keys only see batches they own (plus legacy batches without an ownership marker); the page is filtered after the provider call, so a page may contain fewer than ``limit`` items.
 
         :param provider: (required)
         :type provider: str
@@ -874,6 +876,7 @@ class BatchesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -1161,6 +1164,7 @@ class BatchesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -1442,6 +1446,7 @@ class BatchesApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 

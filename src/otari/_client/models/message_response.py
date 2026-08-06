@@ -19,11 +19,13 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.content9_inner import Content9Inner
+from otari._client.models.content16_inner import Content16Inner
 from otari._client.models.model import Model
-from otari._client.models.mr_container import MRContainer
+from otari._client.models.mr_beta_container import MRBetaContainer
+from otari._client.models.mr_beta_context_management_response import MRBetaContextManagementResponse
+from otari._client.models.mr_beta_diagnostics_fallback import MRBetaDiagnosticsFallback
+from otari._client.models.mr_message_usage import MRMessageUsage
 from otari._client.models.mr_refusal_stop_details import MRRefusalStopDetails
-from otari._client.models.mr_usage import MRUsage
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -33,17 +35,19 @@ class MessageResponse(BaseModel):
     MessageResponse
     """ # noqa: E501
     id: StrictStr
-    container: Optional[MRContainer] = None
-    content: List[Content9Inner]
+    container: Optional[MRBetaContainer] = None
+    content: List[Content16Inner]
     model: Model
     role: StrictStr
     stop_details: Optional[MRRefusalStopDetails] = None
     stop_reason: Optional[StrictStr] = None
-    stop_sequence: Optional[StrictStr] = Field(default=None, description="Filter models by provider name")
+    stop_sequence: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
     type: StrictStr
-    usage: MRUsage
+    usage: MRMessageUsage
+    context_management: Optional[MRBetaContextManagementResponse] = None
+    diagnostics: Optional[MRBetaDiagnosticsFallback] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "container", "content", "model", "role", "stop_details", "stop_reason", "stop_sequence", "type", "usage"]
+    __properties: ClassVar[List[str]] = ["id", "container", "content", "model", "role", "stop_details", "stop_reason", "stop_sequence", "type", "usage", "context_management", "diagnostics"]
 
     @field_validator('role')
     def role_validate_enum(cls, value):
@@ -58,8 +62,8 @@ class MessageResponse(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['end_turn', 'max_tokens', 'stop_sequence', 'tool_use', 'pause_turn', 'refusal']):
-            raise ValueError("must be one of enum values ('end_turn', 'max_tokens', 'stop_sequence', 'tool_use', 'pause_turn', 'refusal')")
+        if value not in set(['end_turn', 'max_tokens', 'stop_sequence', 'tool_use', 'pause_turn', 'compaction', 'refusal', 'model_context_window_exceeded']):
+            raise ValueError("must be one of enum values ('end_turn', 'max_tokens', 'stop_sequence', 'tool_use', 'pause_turn', 'compaction', 'refusal', 'model_context_window_exceeded')")
         return value
 
     @field_validator('type')
@@ -129,6 +133,12 @@ class MessageResponse(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of usage
         if self.usage:
             _dict['usage'] = self.usage.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of context_management
+        if self.context_management:
+            _dict['context_management'] = self.context_management.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of diagnostics
+        if self.diagnostics:
+            _dict['diagnostics'] = self.diagnostics.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -154,6 +164,16 @@ class MessageResponse(BaseModel):
         if self.stop_sequence is None and "stop_sequence" in self.model_fields_set:
             _dict['stop_sequence'] = None
 
+        # set to None if context_management (nullable) is None
+        # and model_fields_set contains the field
+        if self.context_management is None and "context_management" in self.model_fields_set:
+            _dict['context_management'] = None
+
+        # set to None if diagnostics (nullable) is None
+        # and model_fields_set contains the field
+        if self.diagnostics is None and "diagnostics" in self.model_fields_set:
+            _dict['diagnostics'] = None
+
         return _dict
 
     @classmethod
@@ -167,15 +187,17 @@ class MessageResponse(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "container": MRContainer.from_dict(obj["container"]) if obj.get("container") is not None else None,
-            "content": [Content9Inner.from_dict(_item) for _item in obj["content"]] if obj.get("content") is not None else None,
+            "container": MRBetaContainer.from_dict(obj["container"]) if obj.get("container") is not None else None,
+            "content": [Content16Inner.from_dict(_item) for _item in obj["content"]] if obj.get("content") is not None else None,
             "model": Model.from_dict(obj["model"]) if obj.get("model") is not None else None,
             "role": obj.get("role"),
             "stop_details": MRRefusalStopDetails.from_dict(obj["stop_details"]) if obj.get("stop_details") is not None else None,
             "stop_reason": obj.get("stop_reason"),
             "stop_sequence": obj.get("stop_sequence"),
             "type": obj.get("type"),
-            "usage": MRUsage.from_dict(obj["usage"]) if obj.get("usage") is not None else None
+            "usage": MRMessageUsage.from_dict(obj["usage"]) if obj.get("usage") is not None else None,
+            "context_management": MRBetaContextManagementResponse.from_dict(obj["context_management"]) if obj.get("context_management") is not None else None,
+            "diagnostics": MRBetaDiagnosticsFallback.from_dict(obj["diagnostics"]) if obj.get("diagnostics") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

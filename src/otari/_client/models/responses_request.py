@@ -34,6 +34,7 @@ class ResponsesRequest(BaseModel):
     OpenAI Responses API-compatible request.  The wire fields are derived from any-llm's ``ResponsesParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. Gateway-internal fields (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) opt the request into gateway-managed MCP / sandbox / web_search / guardrails without changing the upstream wire shape. They're stripped before the request is forwarded.
     """ # noqa: E501
     background: Optional[StrictBool] = None
+    context_management: Optional[List[Dict[str, Any]]] = None
     conversation: Optional[Conversation] = None
     frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     guardrails: Optional[Annotated[List[GuardrailConfig], Field(max_length=8)]] = None
@@ -52,7 +53,7 @@ class ResponsesRequest(BaseModel):
     previous_response_id: Optional[StrictStr] = None
     prompt_cache_key: Optional[StrictStr] = None
     prompt_cache_retention: Optional[StrictStr] = None
-    reasoning: Optional[Dict[str, Any]] = None
+    reasoning: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
     response_format: Optional[Dict[str, Any]] = None
     safety_identifier: Optional[StrictStr] = None
     service_tier: Optional[StrictStr] = None
@@ -70,7 +71,7 @@ class ResponsesRequest(BaseModel):
     truncation: Optional[StrictStr] = None
     user: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["background", "conversation", "frequency_penalty", "guardrails", "include", "input", "instructions", "max_output_tokens", "max_tool_calls", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "metadata", "model", "parallel_tool_calls", "presence_penalty", "previous_response_id", "prompt_cache_key", "prompt_cache_retention", "reasoning", "response_format", "safety_identifier", "service_tier", "session_label", "store", "stream", "stream_options", "temperature", "text", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "truncation", "user"]
+    __properties: ClassVar[List[str]] = ["background", "context_management", "conversation", "frequency_penalty", "guardrails", "include", "input", "instructions", "max_output_tokens", "max_tool_calls", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "metadata", "model", "parallel_tool_calls", "presence_penalty", "previous_response_id", "prompt_cache_key", "prompt_cache_retention", "reasoning", "response_format", "safety_identifier", "service_tier", "session_label", "store", "stream", "stream_options", "temperature", "text", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "truncation", "user"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -142,6 +143,11 @@ class ResponsesRequest(BaseModel):
         # and model_fields_set contains the field
         if self.background is None and "background" in self.model_fields_set:
             _dict['background'] = None
+
+        # set to None if context_management (nullable) is None
+        # and model_fields_set contains the field
+        if self.context_management is None and "context_management" in self.model_fields_set:
+            _dict['context_management'] = None
 
         # set to None if conversation (nullable) is None
         # and model_fields_set contains the field
@@ -321,6 +327,7 @@ class ResponsesRequest(BaseModel):
 
         _obj = cls.model_validate({
             "background": obj.get("background"),
+            "context_management": obj.get("context_management"),
             "conversation": Conversation.from_dict(obj["conversation"]) if obj.get("conversation") is not None else None,
             "frequency_penalty": obj.get("frequency_penalty"),
             "guardrails": [GuardrailConfig.from_dict(_item) for _item in obj["guardrails"]] if obj.get("guardrails") is not None else None,

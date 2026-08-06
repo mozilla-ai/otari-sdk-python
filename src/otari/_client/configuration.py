@@ -112,6 +112,7 @@ AuthSettings = TypedDict(
     "AuthSettings",
     {
         "ApiKeyAuth": APIKeyAuthSetting,
+        "XApiKeyAuth": APIKeyAuthSetting,
     },
     total=False,
 )
@@ -541,6 +542,15 @@ conf = otari._client.Configuration(
                 'key': 'Otari-Key',
                 'value': self.get_api_key_with_prefix(
                     'ApiKeyAuth',
+                ),
+            }
+        if 'XApiKeyAuth' in self.api_key:
+            auth['XApiKeyAuth'] = {
+                'type': 'api_key',
+                'in': 'header',
+                'key': 'x-api-key',
+                'value': self.get_api_key_with_prefix(
+                    'XApiKeyAuth',
                 ),
             }
         return auth

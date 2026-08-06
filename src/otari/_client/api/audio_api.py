@@ -56,7 +56,7 @@ class AudioApi:
     ) -> object:
         """Create Speech
 
-        OpenAI-compatible audio speech (TTS) endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible audio speech (TTS) endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param audio_speech_request: (required)
         :type audio_speech_request: AudioSpeechRequest
@@ -124,7 +124,7 @@ class AudioApi:
     ) -> ApiResponse[object]:
         """Create Speech
 
-        OpenAI-compatible audio speech (TTS) endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible audio speech (TTS) endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param audio_speech_request: (required)
         :type audio_speech_request: AudioSpeechRequest
@@ -192,7 +192,7 @@ class AudioApi:
     ) -> RESTResponseType:
         """Create Speech
 
-        OpenAI-compatible audio speech (TTS) endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible audio speech (TTS) endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param audio_speech_request: (required)
         :type audio_speech_request: AudioSpeechRequest
@@ -299,6 +299,7 @@ class AudioApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 
@@ -345,7 +346,7 @@ class AudioApi:
     ) -> object:
         """Create Transcription
 
-        OpenAI-compatible audio transcription endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible audio transcription endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param file: (required)
         :type file: str
@@ -437,7 +438,7 @@ class AudioApi:
     ) -> ApiResponse[object]:
         """Create Transcription
 
-        OpenAI-compatible audio transcription endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible audio transcription endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param file: (required)
         :type file: str
@@ -529,7 +530,7 @@ class AudioApi:
     ) -> RESTResponseType:
         """Create Transcription
 
-        OpenAI-compatible audio transcription endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible audio transcription endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param file: (required)
         :type file: str
@@ -666,6 +667,7 @@ class AudioApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 

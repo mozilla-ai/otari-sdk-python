@@ -17,28 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class MRThinkingBlock(BaseModel):
+class ReencryptProviderCredentialsResponse(BaseModel):
     """
-    MRThinkingBlock
+    Result of re-encrypting stored provider keys with the primary secret key.
     """ # noqa: E501
-    signature: StrictStr
-    thinking: StrictStr
-    type: StrictStr
-    additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["signature", "thinking", "type"]
-
-    @field_validator('type')
-    def type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['thinking']):
-            raise ValueError("must be one of enum values ('thinking')")
-        return value
+    reencrypted: StrictInt = Field(description="Number of stored provider keys re-encrypted.")
+    unreadable: StrictInt = Field(description="Number of encrypted keys left untouched because they could not be decrypted.")
+    __properties: ClassVar[List[str]] = ["reencrypted", "unreadable"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -58,7 +49,7 @@ class MRThinkingBlock(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of MRThinkingBlock from a JSON string"""
+        """Create an instance of ReencryptProviderCredentialsResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -70,10 +61,8 @@ class MRThinkingBlock(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
-            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -81,16 +70,11 @@ class MRThinkingBlock(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # puts key-value pairs in additional_properties in the top level
-        if self.additional_properties is not None:
-            for _key, _value in self.additional_properties.items():
-                _dict[_key] = _value
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of MRThinkingBlock from a dict"""
+        """Create an instance of ReencryptProviderCredentialsResponse from a dict"""
         if obj is None:
             return None
 
@@ -98,15 +82,9 @@ class MRThinkingBlock(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "signature": obj.get("signature"),
-            "thinking": obj.get("thinking"),
-            "type": obj.get("type")
+            "reencrypted": obj.get("reencrypted"),
+            "unreadable": obj.get("unreadable")
         })
-        # store additional fields in additional_properties
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                _obj.additional_properties[_key] = obj.get(_key)
-
         return _obj
 
 

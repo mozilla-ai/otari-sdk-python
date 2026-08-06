@@ -55,7 +55,7 @@ class EmbeddingsApi:
     ) -> CreateEmbeddingResponse:
         """Create Embedding
 
-        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param embedding_request: (required)
         :type embedding_request: EmbeddingRequest
@@ -123,7 +123,7 @@ class EmbeddingsApi:
     ) -> ApiResponse[CreateEmbeddingResponse]:
         """Create Embedding
 
-        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param embedding_request: (required)
         :type embedding_request: EmbeddingRequest
@@ -191,7 +191,7 @@ class EmbeddingsApi:
     ) -> RESTResponseType:
         """Create Embedding
 
-        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use virtual user created with API key
+        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param embedding_request: (required)
         :type embedding_request: EmbeddingRequest
@@ -292,6 +292,7 @@ class EmbeddingsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
+            'XApiKeyAuth', 
             'ApiKeyAuth'
         ]
 

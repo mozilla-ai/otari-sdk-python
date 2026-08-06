@@ -26,14 +26,15 @@ from pydantic_core import to_jsonable_python
 
 class CCKChoiceDeltaToolCall(BaseModel):
     """
-    CCKChoiceDeltaToolCall
+    Streaming counterpart of ``ChatCompletionMessageFunctionToolCall``.  Adds the same ``extra_content`` field so provider-specific tool-call metadata (e.g. Gemini's ``thought_signature``) can be carried on streaming deltas, not just on the final non-streaming tool call.
     """ # noqa: E501
     index: StrictInt
     id: Optional[StrictStr] = None
     function: Optional[CCKChoiceDeltaToolCallFunction] = None
     type: Optional[StrictStr] = None
+    extra_content: Optional[Dict[str, Any]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["index", "id", "function", "type"]
+    __properties: ClassVar[List[str]] = ["index", "id", "function", "type", "extra_content"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -109,6 +110,11 @@ class CCKChoiceDeltaToolCall(BaseModel):
         if self.type is None and "type" in self.model_fields_set:
             _dict['type'] = None
 
+        # set to None if extra_content (nullable) is None
+        # and model_fields_set contains the field
+        if self.extra_content is None and "extra_content" in self.model_fields_set:
+            _dict['extra_content'] = None
+
         return _dict
 
     @classmethod
@@ -124,7 +130,8 @@ class CCKChoiceDeltaToolCall(BaseModel):
             "index": obj.get("index"),
             "id": obj.get("id"),
             "function": CCKChoiceDeltaToolCallFunction.from_dict(obj["function"]) if obj.get("function") is not None else None,
-            "type": obj.get("type")
+            "type": obj.get("type"),
+            "extra_content": obj.get("extra_content")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
