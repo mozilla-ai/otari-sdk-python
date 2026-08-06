@@ -46,12 +46,17 @@ Resolved in `_base.py` from constructor args, then environment:
   `Otari-Key` header; `api_base` is **required** in this mode.
 Error mapping applies in both modes; do not regress one when changing the other.
 
-### Endpoint-coverage drift gate
-`tests/unit/test_endpoint_coverage.py` fetches the canonical gateway spec
-(`https://raw.githubusercontent.com/mozilla-ai/otari/main/docs/public/openapi.json`) and
-asserts every gateway endpoint is accounted for in `sdk-endpoints.txt` (`[covered]` or
-`[excluded]` with a reason). A new gateway endpoint with no wrapper and no explicit exclusion
-fails CI. When you add or intentionally skip an endpoint, update `sdk-endpoints.txt`.
+### Endpoint-coverage manifest
+`sdk-endpoints.txt` records which gateway endpoints this SDK surfaces (`[covered]`) and which it
+deliberately does not (`[excluded]`, with a reason). **It is a generated artifact.** The gateway's
+codegen workflow pushes it here from the canonical copy at `scripts/sdk_codegen/sdk-endpoints.txt`
+in `mozilla-ai/otari`, so an edit made in this repo is overwritten on the next regeneration. To
+change coverage classification, edit the canonical copy in the gateway.
+
+`tests/unit/test_endpoint_coverage.py` only checks the manifest's structure, offline. The drift gate that compares it
+against the OpenAPI spec runs in the gateway, against the spec from the same commit. It used to run
+here over the network, which made the result depend on when CI ran rather than on the commit; see
+mozilla-ai/otari#438.
 
 ## Setup Commands
 - Install (dev): `uv sync --extra dev`
@@ -60,7 +65,7 @@ fails CI. When you add or intentionally skip an endpoint, update `sdk-endpoints.
 - Full suite: `uv run pytest`
 - Unit only: `uv run pytest tests/unit`
 - Single test: `uv run pytest tests/unit/test_client.py::TestOtariClient::test_completion -v`
-- Drift gate (needs network): `uv run pytest tests/unit/test_endpoint_coverage.py -v`
+- Manifest checks: `uv run pytest tests/unit/test_endpoint_coverage.py -v`
 - Integration tests under `tests/integration/` spawn / require a real gateway and are skipped
   when one is not available.
 
@@ -85,7 +90,7 @@ fails CI. When you add or intentionally skip an endpoint, update `sdk-endpoints.
   map errors correctly.
 - Touched streaming → run the streaming tests; verify chat yields `ChatCompletionChunk` and
   responses/messages yield raw dicts.
-- Added/removed an endpoint wrapper → update `sdk-endpoints.txt` and run the drift gate.
+- Added/removed an endpoint wrapper → update the canonical `sdk-endpoints.txt` in `mozilla-ai/otari` (`scripts/sdk_codegen/`); the copy here is regenerated.
 - Always run `uv run ruff check .` and `uv run mypy src/` before opening a PR.
 
 ## Writing style
