@@ -70,7 +70,7 @@ def fetch_spec() -> dict:
     if os.environ.get("OTARI_SKIP_NETWORK_TESTS") == "1":
         pytest.skip("OTARI_SKIP_NETWORK_TESTS=1")
     try:
-        with urllib.request.urlopen(SPEC_URL, timeout=30) as resp:  # noqa: S310
+        with urllib.request.urlopen(SPEC_URL, timeout=30) as resp:
             return json.loads(resp.read())
     except (urllib.error.URLError, TimeoutError) as exc:
         pytest.skip(f"could not fetch otari OpenAPI spec from {SPEC_URL}: {exc}")
