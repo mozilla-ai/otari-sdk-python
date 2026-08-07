@@ -53,15 +53,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -87,14 +87,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -103,8 +103,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -177,15 +177,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -211,14 +211,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -227,8 +227,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -301,15 +301,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -335,14 +335,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -351,8 +351,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -442,6 +442,9 @@ class UsageApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'user_id': 'multi',
+            'model': 'multi',
+            'api_key_id': 'multi',
             'request_group_id': 'multi',
         }
 
@@ -1133,15 +1136,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -1169,14 +1172,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[Optional[str]]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -1185,8 +1188,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -1265,15 +1268,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -1301,14 +1304,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[Optional[str]]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -1317,8 +1320,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -1397,15 +1400,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -1433,14 +1436,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[Optional[str]]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -1449,8 +1452,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -1548,6 +1551,9 @@ class UsageApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'user_id': 'multi',
+            'model': 'multi',
+            'api_key_id': 'multi',
             'request_group_id': 'multi',
         }
 
@@ -1970,15 +1976,15 @@ class UsageApi:
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -2006,14 +2012,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -2022,8 +2028,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -2098,15 +2104,15 @@ class UsageApi:
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -2134,14 +2140,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -2150,8 +2156,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -2226,15 +2232,15 @@ class UsageApi:
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -2262,14 +2268,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -2278,8 +2284,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -2371,6 +2377,9 @@ class UsageApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'user_id': 'multi',
+            'model': 'multi',
+            'api_key_id': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -2509,15 +2518,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -2542,14 +2551,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -2558,8 +2567,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -2629,15 +2638,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -2662,14 +2671,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -2678,8 +2687,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -2749,15 +2758,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -2782,14 +2791,14 @@ class UsageApi:
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -2798,8 +2807,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -2885,6 +2894,9 @@ class UsageApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'user_id': 'multi',
+            'model': 'multi',
+            'api_key_id': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -3015,15 +3027,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -3044,20 +3056,20 @@ class UsageApi:
     ) -> UsageSummary:
         """Usage Summary
 
-        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.
+        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.  ``model``, ``user_id``, and ``api_key_id`` are repeatable: several values match any of them, so one chart can compare a handful of models, users, or keys.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -3066,8 +3078,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -3143,15 +3155,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -3172,20 +3184,20 @@ class UsageApi:
     ) -> ApiResponse[UsageSummary]:
         """Usage Summary
 
-        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.
+        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.  ``model``, ``user_id``, and ``api_key_id`` are repeatable: several values match any of them, so one chart can compare a handful of models, users, or keys.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -3194,8 +3206,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -3271,15 +3283,15 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[StrictStr], Field(description="Filter to a single user")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
-        model: Annotated[Optional[StrictStr], Field(description="Filter to a single model")] = None,
+        model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
         endpoint: Annotated[Optional[StrictStr], Field(description="Filter to a single endpoint (e.g. '/v1/chat/completions')")] = None,
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
-        api_key_id: Annotated[Optional[StrictStr], Field(description="Filter to a single API key id")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
@@ -3300,20 +3312,20 @@ class UsageApi:
     ) -> RESTResponseType:
         """Usage Summary
 
-        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.
+        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.  ``model``, ``user_id``, and ``api_key_id`` are repeatable: several values match any of them, so one chart can compare a handful of models, users, or keys.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
-        :param user_id: Filter to a single user
-        :type user_id: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
         :type status_code: int
-        :param model: Filter to a single model
-        :type model: str
+        :param model: Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.
+        :type model: List[str]
         :param endpoint: Filter to a single endpoint (e.g. '/v1/chat/completions')
         :type endpoint: str
         :param provider: Filter to a single provider (e.g. 'openai')
@@ -3322,8 +3334,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
-        :param api_key_id: Filter to a single API key id
-        :type api_key_id: str
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
@@ -3417,6 +3429,9 @@ class UsageApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'user_id': 'multi',
+            'model': 'multi',
+            'api_key_id': 'multi',
             'dimensions': 'multi',
         }
 

@@ -18,28 +18,27 @@ import json
 import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
-from typing import List, Optional
-from typing_extensions import Annotated
+from typing import Optional
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-MODEL_ANY_OF_SCHEMAS = ["List[str]", "str"]
+MODEL1_ANY_OF_SCHEMAS = ["str"]
 
-class Model(BaseModel):
+class Model1(BaseModel):
     """
-    Model
+    Model1
     """
 
     # data type: str
     anyof_schema_1_validator: Optional[StrictStr] = None
-    # data type: List[str]
-    anyof_schema_2_validator: Optional[Annotated[List[StrictStr], Field(max_length=50)]] = None
+    # data type: str
+    anyof_schema_2_validator: Optional[StrictStr] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[List[str], str]] = None
+        actual_instance: Optional[Union[str]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "List[str]", "str" }
+    any_of_schemas: Set[str] = { "str" }
 
     model_config = {
         "validate_assignment": True,
@@ -58,10 +57,7 @@ class Model(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_anyof(cls, v):
-        if v is None:
-            return v
-
-        instance = Model.model_construct()
+        instance = Model1.model_construct()
         error_messages = []
         # validate data type: str
         try:
@@ -69,7 +65,7 @@ class Model(BaseModel):
             return v
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # validate data type: List[str]
+        # validate data type: str
         try:
             instance.anyof_schema_2_validator = v
             return v
@@ -77,7 +73,7 @@ class Model(BaseModel):
             error_messages.append(str(e))
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Model with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Model1 with anyOf schemas: str. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -89,9 +85,6 @@ class Model(BaseModel):
     def from_json(cls, json_str: str) -> Self:
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
-        if json_str is None:
-            return instance
-
         error_messages = []
         # deserialize data into str
         try:
@@ -102,7 +95,7 @@ class Model(BaseModel):
             return instance
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into List[str]
+        # deserialize data into str
         try:
             # validation
             instance.anyof_schema_2_validator = json.loads(json_str)
@@ -114,7 +107,7 @@ class Model(BaseModel):
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Model with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Model1 with anyOf schemas: str. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -128,7 +121,7 @@ class Model(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], List[str], str]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], str]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

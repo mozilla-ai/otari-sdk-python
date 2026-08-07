@@ -24,6 +24,7 @@ from otari._client.api.routing_api import RoutingApi
 from otari._client.api.search_api import SearchApi
 from otari._client.api.settings_api import SettingsApi
 from otari._client.api.tool_settings_api import ToolSettingsApi
+from otari._client.api.tools_api import ToolsApi
 from otari._client.api.usage_api import UsageApi
 from otari._client.api.users_api import UsersApi
 

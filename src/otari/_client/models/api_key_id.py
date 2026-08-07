@@ -24,11 +24,11 @@ from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-MODEL_ANY_OF_SCHEMAS = ["List[str]", "str"]
+APIKEYID_ANY_OF_SCHEMAS = ["List[str]", "str"]
 
-class Model(BaseModel):
+class ApiKeyId(BaseModel):
     """
-    Model
+    ApiKeyId
     """
 
     # data type: str
@@ -61,7 +61,7 @@ class Model(BaseModel):
         if v is None:
             return v
 
-        instance = Model.model_construct()
+        instance = ApiKeyId.model_construct()
         error_messages = []
         # validate data type: str
         try:
@@ -77,7 +77,7 @@ class Model(BaseModel):
             error_messages.append(str(e))
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Model with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in ApiKeyId with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -114,7 +114,7 @@ class Model(BaseModel):
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Model with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into ApiKeyId with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
         else:
             return instance
 
