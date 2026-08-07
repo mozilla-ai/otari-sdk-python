@@ -229,10 +229,14 @@ class UsageResource:
     ) -> list[UsageEntry]:
         # Passed by keyword: the generated signature grows query-filter params
         # between user_id and skip as the gateway adds them.
+        #
+        # user_id is repeatable upstream (user_id=a&user_id=b, max 50). This alias
+        # keeps its single-user signature and wraps, so the public API is
+        # unchanged; multi-user filtering is reachable via `raw`.
         return self.raw.list_usage_v1_usage_get(
             start_date=start_date,
             end_date=end_date,
-            user_id=user_id,
+            user_id=None if user_id is None else [user_id],
             skip=skip,
             limit=limit,
             **kwargs,

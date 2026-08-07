@@ -85,8 +85,26 @@ def test_usage_list_forwards_by_keyword(control_plane: ControlPlane) -> None:
     control_plane.usage.raw = MagicMock()
     control_plane.usage.list(None, None, "u1", 0, 10)
     control_plane.usage.raw.list_usage_v1_usage_get.assert_called_once_with(
-        start_date=None, end_date=None, user_id="u1", skip=0, limit=10
+        start_date=None, end_date=None, user_id=["u1"], skip=0, limit=10
     )
+
+
+def test_usage_list_wraps_user_id_for_the_repeatable_query_param(
+    control_plane: ControlPlane,
+) -> None:
+    """user_id is repeatable upstream, so the single-user alias must wrap it."""
+    control_plane.usage.raw = MagicMock()
+    control_plane.usage.list(user_id="u1")
+    kwargs = control_plane.usage.raw.list_usage_v1_usage_get.call_args.kwargs
+    assert kwargs["user_id"] == ["u1"]
+
+
+def test_usage_list_leaves_user_id_none_unwrapped(control_plane: ControlPlane) -> None:
+    """None must stay None; [None] would filter on a literal missing user."""
+    control_plane.usage.raw = MagicMock()
+    control_plane.usage.list()
+    kwargs = control_plane.usage.raw.list_usage_v1_usage_get.call_args.kwargs
+    assert kwargs["user_id"] is None
 
 
 def test_alias_forwards_request_options_as_kwargs(control_plane: ControlPlane) -> None:
