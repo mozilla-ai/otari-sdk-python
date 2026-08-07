@@ -28,12 +28,13 @@ class DiscoverableProvider(BaseModel):
     """
     One provider instance's discovery result.
     """ # noqa: E501
+    checked_at: Optional[StrictStr] = Field(default=None, description="When this instance was last dialed, ISO 8601. Null when it has not been checked yet, which is what the first read after a restart sees while the background refresh runs.")
     discovery_unsupported: Optional[StrictBool] = Field(default=False, description="True when discovery failed only because this backend serves no model-listing endpoint. The provider may still handle requests for models declared in config.")
     error: Optional[StrictStr] = Field(default=None, description="Why discovery failed. Null when `ok` is true.")
     models: List[DiscoverableModel]
     ok: StrictBool = Field(description="False when this instance could not be queried.")
     provider: StrictStr
-    __properties: ClassVar[List[str]] = ["discovery_unsupported", "error", "models", "ok", "provider"]
+    __properties: ClassVar[List[str]] = ["checked_at", "discovery_unsupported", "error", "models", "ok", "provider"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,6 +82,11 @@ class DiscoverableProvider(BaseModel):
                 if _item_models:
                     _items.append(_item_models.to_dict())
             _dict['models'] = _items
+        # set to None if checked_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.checked_at is None and "checked_at" in self.model_fields_set:
+            _dict['checked_at'] = None
+
         # set to None if error (nullable) is None
         # and model_fields_set contains the field
         if self.error is None and "error" in self.model_fields_set:
@@ -98,6 +104,7 @@ class DiscoverableProvider(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "checked_at": obj.get("checked_at"),
             "discovery_unsupported": obj.get("discovery_unsupported") if obj.get("discovery_unsupported") is not None else False,
             "error": obj.get("error"),
             "models": [DiscoverableModel.from_dict(_item) for _item in obj["models"]] if obj.get("models") is not None else None,

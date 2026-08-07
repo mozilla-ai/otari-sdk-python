@@ -34,8 +34,10 @@ class ExplainResponse(BaseModel):
     guardrails: List[Optional[Dict[str, Any]]]
     is_dynamic: StrictBool
     name: StrictStr
+    router_backend: Optional[StrictStr] = None
+    router_candidates: Optional[List[StrictStr]] = None
     selection_reason: StrictStr
-    __properties: ClassVar[List[str]] = ["candidates", "dropped", "guardrails", "is_dynamic", "name", "selection_reason"]
+    __properties: ClassVar[List[str]] = ["candidates", "dropped", "guardrails", "is_dynamic", "name", "router_backend", "router_candidates", "selection_reason"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -90,6 +92,11 @@ class ExplainResponse(BaseModel):
                 if _item_dropped:
                     _items.append(_item_dropped.to_dict())
             _dict['dropped'] = _items
+        # set to None if router_backend (nullable) is None
+        # and model_fields_set contains the field
+        if self.router_backend is None and "router_backend" in self.model_fields_set:
+            _dict['router_backend'] = None
+
         return _dict
 
     @classmethod
@@ -107,6 +114,8 @@ class ExplainResponse(BaseModel):
             "guardrails": obj.get("guardrails"),
             "is_dynamic": obj.get("is_dynamic"),
             "name": obj.get("name"),
+            "router_backend": obj.get("router_backend"),
+            "router_candidates": obj.get("router_candidates"),
             "selection_reason": obj.get("selection_reason")
         })
         return _obj

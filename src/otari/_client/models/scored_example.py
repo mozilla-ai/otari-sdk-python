@@ -17,23 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UsageGroupRow(BaseModel):
+class ScoredExample(BaseModel):
     """
-    One breakdown row (a model, a user, an API key, a session, ...).  ``key`` is None both for the synthesized fold row (``is_other=True``) and for a real group whose column was NULL (e.g. usage from a since-deleted user, with ``is_other=False``). ``is_other`` disambiguates the two so the UI does not mislabel deleted-user usage as the fold.
+    One prompt and how well each candidate answered it.
     """ # noqa: E501
-    cost: Union[StrictFloat, StrictInt]
-    is_other: Optional[StrictBool] = False
-    key: Optional[StrictStr]
-    label: Optional[StrictStr] = None
-    requests: StrictInt
-    tokens: StrictInt
-    __properties: ClassVar[List[str]] = ["cost", "is_other", "key", "label", "requests", "tokens"]
+    label_source: Optional[StrictStr] = Field(default='human', description="Provenance of the scores: 'human' or 'judge'.")
+    prompt: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The prompt that was tried.")
+    scores: Dict[str, Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(description="Selector -> quality in [0.0, 1.0], where 1.0 is a great answer. Ties are fine and meaningful: two models that both answered well is exactly the case where the router should take the cheaper one.")
+    task_id: Optional[StrictStr] = Field(default=None, description="Partition this example belongs to, matching the Otari-Router-Task header requests send. Omit to file it in the user's default pool.")
+    __properties: ClassVar[List[str]] = ["label_source", "prompt", "scores", "task_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +52,7 @@ class UsageGroupRow(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UsageGroupRow from a JSON string"""
+        """Create an instance of ScoredExample from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,21 +73,16 @@ class UsageGroupRow(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if key (nullable) is None
+        # set to None if task_id (nullable) is None
         # and model_fields_set contains the field
-        if self.key is None and "key" in self.model_fields_set:
-            _dict['key'] = None
-
-        # set to None if label (nullable) is None
-        # and model_fields_set contains the field
-        if self.label is None and "label" in self.model_fields_set:
-            _dict['label'] = None
+        if self.task_id is None and "task_id" in self.model_fields_set:
+            _dict['task_id'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UsageGroupRow from a dict"""
+        """Create an instance of ScoredExample from a dict"""
         if obj is None:
             return None
 
@@ -96,12 +90,10 @@ class UsageGroupRow(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "cost": obj.get("cost"),
-            "is_other": obj.get("is_other") if obj.get("is_other") is not None else False,
-            "key": obj.get("key"),
-            "label": obj.get("label"),
-            "requests": obj.get("requests"),
-            "tokens": obj.get("tokens")
+            "label_source": obj.get("label_source") if obj.get("label_source") is not None else 'human',
+            "prompt": obj.get("prompt"),
+            "scores": obj.get("scores"),
+            "task_id": obj.get("task_id")
         })
         return _obj
 
