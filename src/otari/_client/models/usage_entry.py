@@ -29,6 +29,7 @@ class UsageEntry(BaseModel):
     A single usage log entry.
     """ # noqa: E501
     api_key_id: Optional[StrictStr]
+    api_key_name: Optional[StrictStr] = None
     attempt_count: Optional[StrictInt] = None
     attempt_position: Optional[StrictInt] = None
     billing_meters: Optional[Dict[str, Any]] = Field(description="An unsaved policy body to explain.")
@@ -55,8 +56,9 @@ class UsageEntry(BaseModel):
     status_code: Optional[StrictInt]
     timestamp: StrictStr
     total_tokens: Optional[StrictInt]
+    user_alias: Optional[StrictStr] = None
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "attempt_count", "attempt_position", "billing_meters", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "timestamp", "total_tokens", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "timestamp", "total_tokens", "user_alias", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -110,6 +112,11 @@ class UsageEntry(BaseModel):
         # and model_fields_set contains the field
         if self.api_key_id is None and "api_key_id" in self.model_fields_set:
             _dict['api_key_id'] = None
+
+        # set to None if api_key_name (nullable) is None
+        # and model_fields_set contains the field
+        if self.api_key_name is None and "api_key_name" in self.model_fields_set:
+            _dict['api_key_name'] = None
 
         # set to None if attempt_count (nullable) is None
         # and model_fields_set contains the field
@@ -206,6 +213,11 @@ class UsageEntry(BaseModel):
         if self.total_tokens is None and "total_tokens" in self.model_fields_set:
             _dict['total_tokens'] = None
 
+        # set to None if user_alias (nullable) is None
+        # and model_fields_set contains the field
+        if self.user_alias is None and "user_alias" in self.model_fields_set:
+            _dict['user_alias'] = None
+
         # set to None if user_id (nullable) is None
         # and model_fields_set contains the field
         if self.user_id is None and "user_id" in self.model_fields_set:
@@ -224,6 +236,7 @@ class UsageEntry(BaseModel):
 
         _obj = cls.model_validate({
             "api_key_id": obj.get("api_key_id"),
+            "api_key_name": obj.get("api_key_name"),
             "attempt_count": obj.get("attempt_count"),
             "attempt_position": obj.get("attempt_position"),
             "billing_meters": obj.get("billing_meters"),
@@ -253,6 +266,7 @@ class UsageEntry(BaseModel):
             "status_code": obj.get("status_code"),
             "timestamp": obj.get("timestamp"),
             "total_tokens": obj.get("total_tokens"),
+            "user_alias": obj.get("user_alias"),
             "user_id": obj.get("user_id")
         })
         return _obj

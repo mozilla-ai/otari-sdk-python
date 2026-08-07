@@ -17,23 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictInt
+from typing import Any, ClassVar, Dict, List
+from otari._client.models.recorded_pool import RecordedPool
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UsageGroupRow(BaseModel):
+class RankResponse(BaseModel):
     """
-    One breakdown row (a model, a user, an API key, a session, ...).  ``key`` is None both for the synthesized fold row (``is_other=True``) and for a real group whose column was NULL (e.g. usage from a since-deleted user, with ``is_other=False``). ``is_other`` disambiguates the two so the UI does not mislabel deleted-user usage as the fold.
+    RankResponse
     """ # noqa: E501
-    cost: Union[StrictFloat, StrictInt]
-    is_other: Optional[StrictBool] = False
-    key: Optional[StrictStr]
-    label: Optional[StrictStr] = None
-    requests: StrictInt
-    tokens: StrictInt
-    __properties: ClassVar[List[str]] = ["cost", "is_other", "key", "label", "requests", "tokens"]
+    pools: List[RecordedPool]
+    recorded: StrictInt
+    seed_count: StrictInt
+    __properties: ClassVar[List[str]] = ["pools", "recorded", "seed_count"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +51,7 @@ class UsageGroupRow(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UsageGroupRow from a JSON string"""
+        """Create an instance of RankResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,21 +72,18 @@ class UsageGroupRow(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if key (nullable) is None
-        # and model_fields_set contains the field
-        if self.key is None and "key" in self.model_fields_set:
-            _dict['key'] = None
-
-        # set to None if label (nullable) is None
-        # and model_fields_set contains the field
-        if self.label is None and "label" in self.model_fields_set:
-            _dict['label'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of each item in pools (list)
+        _items = []
+        if self.pools:
+            for _item_pools in self.pools:
+                if _item_pools:
+                    _items.append(_item_pools.to_dict())
+            _dict['pools'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UsageGroupRow from a dict"""
+        """Create an instance of RankResponse from a dict"""
         if obj is None:
             return None
 
@@ -96,12 +91,9 @@ class UsageGroupRow(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "cost": obj.get("cost"),
-            "is_other": obj.get("is_other") if obj.get("is_other") is not None else False,
-            "key": obj.get("key"),
-            "label": obj.get("label"),
-            "requests": obj.get("requests"),
-            "tokens": obj.get("tokens")
+            "pools": [RecordedPool.from_dict(_item) for _item in obj["pools"]] if obj.get("pools") is not None else None,
+            "recorded": obj.get("recorded"),
+            "seed_count": obj.get("seed_count")
         })
         return _obj
 

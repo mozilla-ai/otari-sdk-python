@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictBool, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
 from otari._client.models.discoverable_models_response import DiscoverableModelsResponse
@@ -309,6 +309,7 @@ class ModelsApi:
     @validate_call
     def list_discoverable_models_v1_models_discoverable_get(
         self,
+        refresh: Annotated[Optional[StrictBool], Field(description="Re-dial every provider instead of answering from the discovery cache.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -324,8 +325,10 @@ class ModelsApi:
     ) -> DiscoverableModelsResponse:
         """List Discoverable Models
 
-        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is master-key gated because a provider error message describes the gateway's own configuration.
+        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is master-key gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
 
+        :param refresh: Re-dial every provider instead of answering from the discovery cache.
+        :type refresh: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -349,6 +352,7 @@ class ModelsApi:
         """ # noqa: E501
 
         _param = self._list_discoverable_models_v1_models_discoverable_get_serialize(
+            refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -357,6 +361,7 @@ class ModelsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DiscoverableModelsResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -372,6 +377,7 @@ class ModelsApi:
     @validate_call
     def list_discoverable_models_v1_models_discoverable_get_with_http_info(
         self,
+        refresh: Annotated[Optional[StrictBool], Field(description="Re-dial every provider instead of answering from the discovery cache.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -387,8 +393,10 @@ class ModelsApi:
     ) -> ApiResponse[DiscoverableModelsResponse]:
         """List Discoverable Models
 
-        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is master-key gated because a provider error message describes the gateway's own configuration.
+        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is master-key gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
 
+        :param refresh: Re-dial every provider instead of answering from the discovery cache.
+        :type refresh: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -412,6 +420,7 @@ class ModelsApi:
         """ # noqa: E501
 
         _param = self._list_discoverable_models_v1_models_discoverable_get_serialize(
+            refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -420,6 +429,7 @@ class ModelsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DiscoverableModelsResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -435,6 +445,7 @@ class ModelsApi:
     @validate_call
     def list_discoverable_models_v1_models_discoverable_get_without_preload_content(
         self,
+        refresh: Annotated[Optional[StrictBool], Field(description="Re-dial every provider instead of answering from the discovery cache.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -450,8 +461,10 @@ class ModelsApi:
     ) -> RESTResponseType:
         """List Discoverable Models
 
-        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is master-key gated because a provider error message describes the gateway's own configuration.
+        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is master-key gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
 
+        :param refresh: Re-dial every provider instead of answering from the discovery cache.
+        :type refresh: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -475,6 +488,7 @@ class ModelsApi:
         """ # noqa: E501
 
         _param = self._list_discoverable_models_v1_models_discoverable_get_serialize(
+            refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -483,6 +497,7 @@ class ModelsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DiscoverableModelsResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -493,6 +508,7 @@ class ModelsApi:
 
     def _list_discoverable_models_v1_models_discoverable_get_serialize(
         self,
+        refresh,
         _request_auth,
         _content_type,
         _headers,
@@ -515,6 +531,10 @@ class ModelsApi:
 
         # process the path parameters
         # process the query parameters
+        if refresh is not None:
+            
+            _query_params.append(('refresh', refresh))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -571,7 +591,7 @@ class ModelsApi:
     ) -> ModelMetadataResponse:
         """List Model Metadata
 
-        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Master-key gated: it describes the gateway's configured providers.
+        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Master-key gated: it describes the gateway's configured providers.  Answers from the cached catalog, kept warm by a background refresher, so the dashboard never waits on the models.dev fetch timeout.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -634,7 +654,7 @@ class ModelsApi:
     ) -> ApiResponse[ModelMetadataResponse]:
         """List Model Metadata
 
-        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Master-key gated: it describes the gateway's configured providers.
+        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Master-key gated: it describes the gateway's configured providers.  Answers from the cached catalog, kept warm by a background refresher, so the dashboard never waits on the models.dev fetch timeout.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -697,7 +717,7 @@ class ModelsApi:
     ) -> RESTResponseType:
         """List Model Metadata
 
-        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Master-key gated: it describes the gateway's configured providers.
+        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Master-key gated: it describes the gateway's configured providers.  Answers from the cached catalog, kept warm by a background refresher, so the dashboard never waits on the models.dev fetch timeout.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

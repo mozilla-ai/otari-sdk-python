@@ -17,23 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UsageGroupRow(BaseModel):
+class PoolStatus(BaseModel):
     """
-    One breakdown row (a model, a user, an API key, a session, ...).  ``key`` is None both for the synthesized fold row (``is_other=True``) and for a real group whose column was NULL (e.g. usage from a since-deleted user, with ``is_other=False``). ``is_other`` disambiguates the two so the UI does not mislabel deleted-user usage as the fold.
+    PoolStatus
     """ # noqa: E501
-    cost: Union[StrictFloat, StrictInt]
-    is_other: Optional[StrictBool] = False
-    key: Optional[StrictStr]
-    label: Optional[StrictStr] = None
-    requests: StrictInt
-    tokens: StrictInt
-    __properties: ClassVar[List[str]] = ["cost", "is_other", "key", "label", "requests", "tokens"]
+    records: StrictInt
+    warm: StrictBool
+    __properties: ClassVar[List[str]] = ["records", "warm"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +49,7 @@ class UsageGroupRow(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UsageGroupRow from a JSON string"""
+        """Create an instance of PoolStatus from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,21 +70,11 @@ class UsageGroupRow(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if key (nullable) is None
-        # and model_fields_set contains the field
-        if self.key is None and "key" in self.model_fields_set:
-            _dict['key'] = None
-
-        # set to None if label (nullable) is None
-        # and model_fields_set contains the field
-        if self.label is None and "label" in self.model_fields_set:
-            _dict['label'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UsageGroupRow from a dict"""
+        """Create an instance of PoolStatus from a dict"""
         if obj is None:
             return None
 
@@ -96,12 +82,8 @@ class UsageGroupRow(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "cost": obj.get("cost"),
-            "is_other": obj.get("is_other") if obj.get("is_other") is not None else False,
-            "key": obj.get("key"),
-            "label": obj.get("label"),
-            "requests": obj.get("requests"),
-            "tokens": obj.get("tokens")
+            "records": obj.get("records"),
+            "warm": obj.get("warm")
         })
         return _obj
 

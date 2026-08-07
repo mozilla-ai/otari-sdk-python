@@ -113,6 +113,7 @@ from otari._client.models.input1 import Input1
 from otari._client.models.key_info import KeyInfo
 from otari._client.models.known_provider_schema import KnownProviderSchema
 from otari._client.models.known_provider_summary_schema import KnownProviderSummarySchema
+from otari._client.models.learned_policy import LearnedPolicy
 from otari._client.models.location_inner import LocationInner
 from otari._client.models.mr_anthropic_types_thinking_block_thinking_block import MRAnthropicTypesThinkingBlockThinkingBlock
 from otari._client.models.mr_any_llm_types_messages_thinking_block import MRAnyLlmTypesMessagesThinkingBlock
@@ -254,6 +255,7 @@ from otari._client.models.moderation_response import ModerationResponse
 from otari._client.models.moderation_result import ModerationResult
 from otari._client.models.policy_request import PolicyRequest
 from otari._client.models.policy_response import PolicyResponse
+from otari._client.models.pool_status import PoolStatus
 from otari._client.models.pricing_refresh_change_response import PricingRefreshChangeResponse
 from otari._client.models.pricing_refresh_confirmation_response import PricingRefreshConfirmationResponse
 from otari._client.models.pricing_refresh_preview_response import PricingRefreshPreviewResponse
@@ -268,11 +270,16 @@ from otari._client.models.providers_response import ProvidersResponse
 from otari._client.models.rr_rerank_meta import RRRerankMeta
 from otari._client.models.rr_rerank_result import RRRerankResult
 from otari._client.models.rr_rerank_usage import RRRerankUsage
+from otari._client.models.rank_request import RankRequest
+from otari._client.models.rank_response import RankResponse
+from otari._client.models.recorded_pool import RecordedPool
 from otari._client.models.reencrypt_provider_credentials_response import ReencryptProviderCredentialsResponse
 from otari._client.models.rerank_request import RerankRequest
 from otari._client.models.rerank_response import RerankResponse
 from otari._client.models.responses_request import ResponsesRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse
+from otari._client.models.router_status import RouterStatus
+from otari._client.models.scored_example import ScoredExample
 from otari._client.models.search_request import SearchRequest
 from otari._client.models.search_response import SearchResponse
 from otari._client.models.search_result_item import SearchResultItem
@@ -283,6 +290,7 @@ from otari._client.models.source1 import Source1
 from otari._client.models.stop import Stop
 from otari._client.models.stored_provider_response import StoredProviderResponse
 from otari._client.models.system import System
+from otari._client.models.task_pool import TaskPool
 from otari._client.models.test_provider_request import TestProviderRequest
 from otari._client.models.test_provider_response import TestProviderResponse
 from otari._client.models.test_service_request import TestServiceRequest
