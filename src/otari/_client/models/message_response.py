@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.content16_inner import Content16Inner
-from otari._client.models.model import Model
+from otari._client.models.model1 import Model1
 from otari._client.models.mr_beta_container import MRBetaContainer
 from otari._client.models.mr_beta_context_management_response import MRBetaContextManagementResponse
 from otari._client.models.mr_beta_diagnostics_fallback import MRBetaDiagnosticsFallback
@@ -37,7 +37,7 @@ class MessageResponse(BaseModel):
     id: StrictStr
     container: Optional[MRBetaContainer] = None
     content: List[Content16Inner]
-    model: Model
+    model: Model1
     role: StrictStr
     stop_details: Optional[MRRefusalStopDetails] = None
     stop_reason: Optional[StrictStr] = None
@@ -189,7 +189,7 @@ class MessageResponse(BaseModel):
             "id": obj.get("id"),
             "container": MRBetaContainer.from_dict(obj["container"]) if obj.get("container") is not None else None,
             "content": [Content16Inner.from_dict(_item) for _item in obj["content"]] if obj.get("content") is not None else None,
-            "model": Model.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "model": Model1.from_dict(obj["model"]) if obj.get("model") is not None else None,
             "role": obj.get("role"),
             "stop_details": MRRefusalStopDetails.from_dict(obj["stop_details"]) if obj.get("stop_details") is not None else None,
             "stop_reason": obj.get("stop_reason"),

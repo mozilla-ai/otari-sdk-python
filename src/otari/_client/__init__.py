@@ -41,6 +41,7 @@ __all__ = [
     "SearchApi",
     "SettingsApi",
     "ToolSettingsApi",
+    "ToolsApi",
     "UsageApi",
     "UsersApi",
     "ApiResponse",
@@ -54,6 +55,7 @@ __all__ = [
     "ApiException",
     "AliasRequest",
     "AliasResponse",
+    "ApiKeyId",
     "AppliedEditsInner",
     "AudioSpeechRequest",
     "BatchRequestItem",
@@ -276,10 +278,12 @@ __all__ = [
     "MSGFunctionCall",
     "MSGImageURL",
     "MSGInputAudio",
+    "ManagedTool",
     "McpServerConfig",
     "MessageResponse",
     "MessagesRequest",
     "Model",
+    "Model1",
     "ModelListResponse",
     "ModelMetadata",
     "ModelMetadataResponse",
@@ -328,6 +332,7 @@ __all__ = [
     "ToolChoice1",
     "ToolSettingField",
     "ToolSettingsResponse",
+    "ToolsResponse",
     "UpdateBudgetRequest",
     "UpdateKeyRequest",
     "UpdateSettingsRequest",
@@ -350,6 +355,7 @@ __all__ = [
     "UsageSummary",
     "UsageToolRow",
     "UsageTotals",
+    "UserId",
     "UserResponse",
     "ValidationError",
     "Value",
@@ -380,6 +386,7 @@ from otari._client.api.routing_api import RoutingApi as RoutingApi
 from otari._client.api.search_api import SearchApi as SearchApi
 from otari._client.api.settings_api import SettingsApi as SettingsApi
 from otari._client.api.tool_settings_api import ToolSettingsApi as ToolSettingsApi
+from otari._client.api.tools_api import ToolsApi as ToolsApi
 from otari._client.api.usage_api import UsageApi as UsageApi
 from otari._client.api.users_api import UsersApi as UsersApi
 
@@ -397,6 +404,7 @@ from otari._client.exceptions import ApiException as ApiException
 # import models into sdk package
 from otari._client.models.alias_request import AliasRequest as AliasRequest
 from otari._client.models.alias_response import AliasResponse as AliasResponse
+from otari._client.models.api_key_id import ApiKeyId as ApiKeyId
 from otari._client.models.applied_edits_inner import AppliedEditsInner as AppliedEditsInner
 from otari._client.models.audio_speech_request import AudioSpeechRequest as AudioSpeechRequest
 from otari._client.models.batch_request_item import BatchRequestItem as BatchRequestItem
@@ -619,10 +627,12 @@ from otari._client.models.msg_function import MSGFunction as MSGFunction
 from otari._client.models.msg_function_call import MSGFunctionCall as MSGFunctionCall
 from otari._client.models.msg_image_url import MSGImageURL as MSGImageURL
 from otari._client.models.msg_input_audio import MSGInputAudio as MSGInputAudio
+from otari._client.models.managed_tool import ManagedTool as ManagedTool
 from otari._client.models.mcp_server_config import McpServerConfig as McpServerConfig
 from otari._client.models.message_response import MessageResponse as MessageResponse
 from otari._client.models.messages_request import MessagesRequest as MessagesRequest
 from otari._client.models.model import Model as Model
+from otari._client.models.model1 import Model1 as Model1
 from otari._client.models.model_list_response import ModelListResponse as ModelListResponse
 from otari._client.models.model_metadata import ModelMetadata as ModelMetadata
 from otari._client.models.model_metadata_response import ModelMetadataResponse as ModelMetadataResponse
@@ -671,6 +681,7 @@ from otari._client.models.tool_choice import ToolChoice as ToolChoice
 from otari._client.models.tool_choice1 import ToolChoice1 as ToolChoice1
 from otari._client.models.tool_setting_field import ToolSettingField as ToolSettingField
 from otari._client.models.tool_settings_response import ToolSettingsResponse as ToolSettingsResponse
+from otari._client.models.tools_response import ToolsResponse as ToolsResponse
 from otari._client.models.update_budget_request import UpdateBudgetRequest as UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest as UpdateKeyRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest as UpdateSettingsRequest
@@ -693,6 +704,7 @@ from otari._client.models.usage_set_price_result import UsageSetPriceResult as U
 from otari._client.models.usage_summary import UsageSummary as UsageSummary
 from otari._client.models.usage_tool_row import UsageToolRow as UsageToolRow
 from otari._client.models.usage_totals import UsageTotals as UsageTotals
+from otari._client.models.user_id import UserId as UserId
 from otari._client.models.user_response import UserResponse as UserResponse
 from otari._client.models.validation_error import ValidationError as ValidationError
 from otari._client.models.value import Value as Value

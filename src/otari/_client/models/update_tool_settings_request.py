@@ -33,10 +33,11 @@ class UpdateToolSettingsRequest(BaseModel):
     sandbox_url: Optional[StrictStr] = None
     web_search_engines: Optional[StrictStr] = None
     web_search_extract: Optional[StrictBool] = None
+    web_search_intercept: Optional[StrictBool] = None
     web_search_max_results: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
     web_search_purpose_hint: Optional[StrictStr] = None
     web_search_url: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["guardrails_url", "sandbox_purpose_hint", "sandbox_url", "web_search_engines", "web_search_extract", "web_search_max_results", "web_search_purpose_hint", "web_search_url"]
+    __properties: ClassVar[List[str]] = ["guardrails_url", "sandbox_purpose_hint", "sandbox_url", "web_search_engines", "web_search_extract", "web_search_intercept", "web_search_max_results", "web_search_purpose_hint", "web_search_url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -102,6 +103,11 @@ class UpdateToolSettingsRequest(BaseModel):
         if self.web_search_extract is None and "web_search_extract" in self.model_fields_set:
             _dict['web_search_extract'] = None
 
+        # set to None if web_search_intercept (nullable) is None
+        # and model_fields_set contains the field
+        if self.web_search_intercept is None and "web_search_intercept" in self.model_fields_set:
+            _dict['web_search_intercept'] = None
+
         # set to None if web_search_max_results (nullable) is None
         # and model_fields_set contains the field
         if self.web_search_max_results is None and "web_search_max_results" in self.model_fields_set:
@@ -134,6 +140,7 @@ class UpdateToolSettingsRequest(BaseModel):
             "sandbox_url": obj.get("sandbox_url"),
             "web_search_engines": obj.get("web_search_engines"),
             "web_search_extract": obj.get("web_search_extract"),
+            "web_search_intercept": obj.get("web_search_intercept"),
             "web_search_max_results": obj.get("web_search_max_results"),
             "web_search_purpose_hint": obj.get("web_search_purpose_hint"),
             "web_search_url": obj.get("web_search_url")

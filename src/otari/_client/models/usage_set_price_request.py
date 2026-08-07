@@ -21,6 +21,9 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from otari._client.models.api_key_id import ApiKeyId
+from otari._client.models.model import Model
+from otari._client.models.user_id import UserId
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,7 +32,7 @@ class UsageSetPriceRequest(BaseModel):
     """
     Selection of imported usage rows plus the manual per-1M rates to price them at.  ``input`` and ``output`` are required (every row is charged for them); the cache rates are optional and, when omitted, those tokens fold into the fresh-input charge exactly as an unpriced cache rate does in normal metered pricing.
     """ # noqa: E501
-    api_key_id: Optional[StrictStr] = None
+    api_key_id: Optional[ApiKeyId] = None
     by_filter: Optional[StrictBool] = False
     cache_read_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = None
     cache_write_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = None
@@ -37,7 +40,7 @@ class UsageSetPriceRequest(BaseModel):
     endpoint: Optional[StrictStr] = None
     ids: Optional[Annotated[List[StrictStr], Field(max_length=1000)]] = None
     input_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]
-    model: Optional[StrictStr] = None
+    model: Optional[Model] = None
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]
     priced: Optional[StrictBool] = None
     provider: Optional[StrictStr] = None
@@ -46,7 +49,7 @@ class UsageSetPriceRequest(BaseModel):
     start_date: Optional[datetime] = None
     status: Optional[StrictStr] = None
     tool: Optional[StrictStr] = None
-    user_id: Optional[StrictStr] = None
+    user_id: Optional[UserId] = None
     __properties: ClassVar[List[str]] = ["api_key_id", "by_filter", "cache_read_price_per_million", "cache_write_price_per_million", "end_date", "endpoint", "ids", "input_price_per_million", "model", "output_price_per_million", "priced", "provider", "source", "source_label", "start_date", "status", "tool", "user_id"]
 
     model_config = ConfigDict(
@@ -88,6 +91,15 @@ class UsageSetPriceRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of api_key_id
+        if self.api_key_id:
+            _dict['api_key_id'] = self.api_key_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of model
+        if self.model:
+            _dict['model'] = self.model.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of user_id
+        if self.user_id:
+            _dict['user_id'] = self.user_id.to_dict()
         # set to None if api_key_id (nullable) is None
         # and model_fields_set contains the field
         if self.api_key_id is None and "api_key_id" in self.model_fields_set:
@@ -175,7 +187,7 @@ class UsageSetPriceRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "api_key_id": obj.get("api_key_id"),
+            "api_key_id": ApiKeyId.from_dict(obj["api_key_id"]) if obj.get("api_key_id") is not None else None,
             "by_filter": obj.get("by_filter") if obj.get("by_filter") is not None else False,
             "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
@@ -183,7 +195,7 @@ class UsageSetPriceRequest(BaseModel):
             "endpoint": obj.get("endpoint"),
             "ids": obj.get("ids"),
             "input_price_per_million": obj.get("input_price_per_million"),
-            "model": obj.get("model"),
+            "model": Model.from_dict(obj["model"]) if obj.get("model") is not None else None,
             "output_price_per_million": obj.get("output_price_per_million"),
             "priced": obj.get("priced"),
             "provider": obj.get("provider"),
@@ -192,7 +204,7 @@ class UsageSetPriceRequest(BaseModel):
             "start_date": obj.get("start_date"),
             "status": obj.get("status"),
             "tool": obj.get("tool"),
-            "user_id": obj.get("user_id")
+            "user_id": UserId.from_dict(obj["user_id"]) if obj.get("user_id") is not None else None
         })
         return _obj
 

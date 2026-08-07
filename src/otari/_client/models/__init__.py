@@ -15,6 +15,7 @@
 # import models into model package
 from otari._client.models.alias_request import AliasRequest
 from otari._client.models.alias_response import AliasResponse
+from otari._client.models.api_key_id import ApiKeyId
 from otari._client.models.applied_edits_inner import AppliedEditsInner
 from otari._client.models.audio_speech_request import AudioSpeechRequest
 from otari._client.models.batch_request_item import BatchRequestItem
@@ -237,10 +238,12 @@ from otari._client.models.msg_function import MSGFunction
 from otari._client.models.msg_function_call import MSGFunctionCall
 from otari._client.models.msg_image_url import MSGImageURL
 from otari._client.models.msg_input_audio import MSGInputAudio
+from otari._client.models.managed_tool import ManagedTool
 from otari._client.models.mcp_server_config import McpServerConfig
 from otari._client.models.message_response import MessageResponse
 from otari._client.models.messages_request import MessagesRequest
 from otari._client.models.model import Model
+from otari._client.models.model1 import Model1
 from otari._client.models.model_list_response import ModelListResponse
 from otari._client.models.model_metadata import ModelMetadata
 from otari._client.models.model_metadata_response import ModelMetadataResponse
@@ -289,6 +292,7 @@ from otari._client.models.tool_choice import ToolChoice
 from otari._client.models.tool_choice1 import ToolChoice1
 from otari._client.models.tool_setting_field import ToolSettingField
 from otari._client.models.tool_settings_response import ToolSettingsResponse
+from otari._client.models.tools_response import ToolsResponse
 from otari._client.models.update_budget_request import UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest
@@ -311,6 +315,7 @@ from otari._client.models.usage_set_price_result import UsageSetPriceResult
 from otari._client.models.usage_summary import UsageSummary
 from otari._client.models.usage_tool_row import UsageToolRow
 from otari._client.models.usage_totals import UsageTotals
+from otari._client.models.user_id import UserId
 from otari._client.models.user_response import UserResponse
 from otari._client.models.validation_error import ValidationError
 from otari._client.models.value import Value
