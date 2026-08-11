@@ -148,6 +148,8 @@ __all__ = [
     "IMGUsageOutputTokensDetails",
     "ImageGenerationRequest",
     "ImagesResponse",
+    "InFlightEntry",
+    "InFlightResponse",
     "Input",
     "Input1",
     "KeyInfo",
@@ -505,6 +507,8 @@ from otari._client.models.img_usage_input_tokens_details import IMGUsageInputTok
 from otari._client.models.img_usage_output_tokens_details import IMGUsageOutputTokensDetails as IMGUsageOutputTokensDetails
 from otari._client.models.image_generation_request import ImageGenerationRequest as ImageGenerationRequest
 from otari._client.models.images_response import ImagesResponse as ImagesResponse
+from otari._client.models.in_flight_entry import InFlightEntry as InFlightEntry
+from otari._client.models.in_flight_response import InFlightResponse as InFlightResponse
 from otari._client.models.input import Input as Input
 from otari._client.models.input1 import Input1 as Input1
 from otari._client.models.key_info import KeyInfo as KeyInfo

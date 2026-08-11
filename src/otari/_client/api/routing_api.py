@@ -870,7 +870,7 @@ class RoutingApi:
     ) -> RankResponse:
         """Rank Candidates
 
-        Record scored examples: one routing-memory record each, plus an audit row.  The routing-memory record is written before its audit row for each example, because it is the load-bearing one (the router votes over it) and embedding it can fail; writing the audit row only afterwards means a failed embedding never leaves an orphan audit row.  A failed embedding is a 502 that names the model, not a 500. Every example in the batch is embedded, so this is the call an operator makes most often and the one most likely to meet a misconfigured ``router_embedding_model``.  Score keys are stored in the spelling the policy uses (see :func:`_validated_scores`), because the router matches them against its candidate selectors by exact string.
+        Record scored examples: one routing-memory record each, plus an audit row.  The routing-memory record is written before its audit row for each example, because it is the load-bearing one (the router votes over it) and embedding it can fail; writing the audit row only afterwards means a failed embedding never leaves an orphan audit row.  A failed embedding is a 502 that names the model, not a 500. Every example in the batch is embedded, so this is the call an operator makes most often and the one most likely to meet a misconfigured ``router_embedding_model``.  Score keys are stored canonically as ``instance:model`` (see :func:`_validated_scores`), which is the form the router canonicalizes its candidates to, so how a policy spells a candidate cannot decide whether it matches.
 
         :param rank_request: (required)
         :type rank_request: RankRequest
@@ -938,7 +938,7 @@ class RoutingApi:
     ) -> ApiResponse[RankResponse]:
         """Rank Candidates
 
-        Record scored examples: one routing-memory record each, plus an audit row.  The routing-memory record is written before its audit row for each example, because it is the load-bearing one (the router votes over it) and embedding it can fail; writing the audit row only afterwards means a failed embedding never leaves an orphan audit row.  A failed embedding is a 502 that names the model, not a 500. Every example in the batch is embedded, so this is the call an operator makes most often and the one most likely to meet a misconfigured ``router_embedding_model``.  Score keys are stored in the spelling the policy uses (see :func:`_validated_scores`), because the router matches them against its candidate selectors by exact string.
+        Record scored examples: one routing-memory record each, plus an audit row.  The routing-memory record is written before its audit row for each example, because it is the load-bearing one (the router votes over it) and embedding it can fail; writing the audit row only afterwards means a failed embedding never leaves an orphan audit row.  A failed embedding is a 502 that names the model, not a 500. Every example in the batch is embedded, so this is the call an operator makes most often and the one most likely to meet a misconfigured ``router_embedding_model``.  Score keys are stored canonically as ``instance:model`` (see :func:`_validated_scores`), which is the form the router canonicalizes its candidates to, so how a policy spells a candidate cannot decide whether it matches.
 
         :param rank_request: (required)
         :type rank_request: RankRequest
@@ -1006,7 +1006,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Rank Candidates
 
-        Record scored examples: one routing-memory record each, plus an audit row.  The routing-memory record is written before its audit row for each example, because it is the load-bearing one (the router votes over it) and embedding it can fail; writing the audit row only afterwards means a failed embedding never leaves an orphan audit row.  A failed embedding is a 502 that names the model, not a 500. Every example in the batch is embedded, so this is the call an operator makes most often and the one most likely to meet a misconfigured ``router_embedding_model``.  Score keys are stored in the spelling the policy uses (see :func:`_validated_scores`), because the router matches them against its candidate selectors by exact string.
+        Record scored examples: one routing-memory record each, plus an audit row.  The routing-memory record is written before its audit row for each example, because it is the load-bearing one (the router votes over it) and embedding it can fail; writing the audit row only afterwards means a failed embedding never leaves an orphan audit row.  A failed embedding is a 502 that names the model, not a 500. Every example in the batch is embedded, so this is the call an operator makes most often and the one most likely to meet a misconfigured ``router_embedding_model``.  Score keys are stored canonically as ``instance:model`` (see :func:`_validated_scores`), which is the form the router canonicalizes its candidates to, so how a policy spells a candidate cannot decide whether it matches.
 
         :param rank_request: (required)
         :type rank_request: RankRequest
