@@ -17,21 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictInt
 from typing import Any, ClassVar, Dict, List
+from otari._client.models.in_flight_entry import InFlightEntry
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class LearnedPolicy(BaseModel):
+class InFlightResponse(BaseModel):
     """
-    A policy whose selection depends on routing memory, for the status overview.  Only a *learned* policy belongs here. A weighted policy names a router too, but its split is written in the policy document, so listing it under a warmth report would tie it to a pool it never reads.
+    The requests in flight on the answering worker.
     """ # noqa: E501
-    backend: StrictStr
-    candidates: List[StrictStr]
-    default_target: StrictStr
-    name: StrictStr
-    __properties: ClassVar[List[str]] = ["backend", "candidates", "default_target", "name"]
+    requests: List[InFlightEntry]
+    total: StrictInt
+    __properties: ClassVar[List[str]] = ["requests", "total"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +50,7 @@ class LearnedPolicy(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of LearnedPolicy from a JSON string"""
+        """Create an instance of InFlightResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,11 +71,18 @@ class LearnedPolicy(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in requests (list)
+        _items = []
+        if self.requests:
+            for _item_requests in self.requests:
+                if _item_requests:
+                    _items.append(_item_requests.to_dict())
+            _dict['requests'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of LearnedPolicy from a dict"""
+        """Create an instance of InFlightResponse from a dict"""
         if obj is None:
             return None
 
@@ -84,10 +90,8 @@ class LearnedPolicy(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "backend": obj.get("backend"),
-            "candidates": obj.get("candidates"),
-            "default_target": obj.get("default_target"),
-            "name": obj.get("name")
+            "requests": [InFlightEntry.from_dict(_item) for _item in obj["requests"]] if obj.get("requests") is not None else None,
+            "total": obj.get("total")
         })
         return _obj
 

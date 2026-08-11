@@ -108,6 +108,8 @@ from otari._client.models.img_usage_input_tokens_details import IMGUsageInputTok
 from otari._client.models.img_usage_output_tokens_details import IMGUsageOutputTokensDetails
 from otari._client.models.image_generation_request import ImageGenerationRequest
 from otari._client.models.images_response import ImagesResponse
+from otari._client.models.in_flight_entry import InFlightEntry
+from otari._client.models.in_flight_response import InFlightResponse
 from otari._client.models.input import Input
 from otari._client.models.input1 import Input1
 from otari._client.models.key_info import KeyInfo

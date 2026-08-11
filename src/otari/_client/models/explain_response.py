@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from otari._client.models.candidate_response import CandidateResponse
 from otari._client.models.dropped_response import DroppedResponse
 from typing import Optional, Set
@@ -36,8 +36,9 @@ class ExplainResponse(BaseModel):
     name: StrictStr
     router_backend: Optional[StrictStr] = None
     router_candidates: Optional[List[StrictStr]] = None
+    router_weights: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = Field(default=None, description="For a weighted policy, the percentage of traffic each candidate receives, normalized over the candidates this caller may use. Empty for every other policy, and for a weighted policy whose whole split this caller may not use: a split over no candidate is not a split, and each filtered candidate is named in `dropped` instead. A weighted split needs no request state, so unlike a learned router's ranking it is knowable here: the plan above is the real ordering by share, not the decline path.")
     selection_reason: StrictStr
-    __properties: ClassVar[List[str]] = ["candidates", "dropped", "guardrails", "is_dynamic", "name", "router_backend", "router_candidates", "selection_reason"]
+    __properties: ClassVar[List[str]] = ["candidates", "dropped", "guardrails", "is_dynamic", "name", "router_backend", "router_candidates", "router_weights", "selection_reason"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -116,6 +117,7 @@ class ExplainResponse(BaseModel):
             "name": obj.get("name"),
             "router_backend": obj.get("router_backend"),
             "router_candidates": obj.get("router_candidates"),
+            "router_weights": obj.get("router_weights"),
             "selection_reason": obj.get("selection_reason")
         })
         return _obj
