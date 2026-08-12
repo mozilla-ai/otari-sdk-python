@@ -1,6 +1,7 @@
 # flake8: noqa
 
 # import apis into api package
+from otari._client.api.agent_telemetry_api import AgentTelemetryApi
 from otari._client.api.aliases_api import AliasesApi
 from otari._client.api.audio_api import AudioApi
 from otari._client.api.auth_api import AuthApi

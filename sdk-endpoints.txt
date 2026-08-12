@@ -120,6 +120,8 @@ DELETE /v1/usage                                # not yet wrapped
 POST /v1/usage/external-events                  # not yet wrapped
 POST /v1/usage/set-price                        # not yet wrapped
 GET /v1/usage/in-flight                         # dashboard-only, per-worker live view
+# Agent telemetry purge
+DELETE /v1/agent-telemetry                      # not yet wrapped
 # Routing policies
 GET /v1/routing/policies                        # not yet wrapped
 POST /v1/routing/policies                       # not yet wrapped

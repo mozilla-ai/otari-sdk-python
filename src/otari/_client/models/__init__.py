@@ -13,6 +13,8 @@
 """  # noqa: E501
 
 # import models into model package
+from otari._client.models.agent_telemetry_delete_request import AgentTelemetryDeleteRequest
+from otari._client.models.agent_telemetry_delete_result import AgentTelemetryDeleteResult
 from otari._client.models.alias_request import AliasRequest
 from otari._client.models.alias_response import AliasResponse
 from otari._client.models.api_key_id import ApiKeyId

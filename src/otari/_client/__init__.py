@@ -18,6 +18,7 @@ __version__ = "1.0.0"
 
 # Define package exports
 __all__ = [
+    "AgentTelemetryApi",
     "AliasesApi",
     "AudioApi",
     "AuthApi",
@@ -53,6 +54,8 @@ __all__ = [
     "ApiKeyError",
     "ApiAttributeError",
     "ApiException",
+    "AgentTelemetryDeleteRequest",
+    "AgentTelemetryDeleteResult",
     "AliasRequest",
     "AliasResponse",
     "ApiKeyId",
@@ -373,6 +376,7 @@ __all__ = [
 ]
 
 # import apis into sdk package
+from otari._client.api.agent_telemetry_api import AgentTelemetryApi as AgentTelemetryApi
 from otari._client.api.aliases_api import AliasesApi as AliasesApi
 from otari._client.api.audio_api import AudioApi as AudioApi
 from otari._client.api.auth_api import AuthApi as AuthApi
@@ -412,6 +416,8 @@ from otari._client.exceptions import ApiAttributeError as ApiAttributeError
 from otari._client.exceptions import ApiException as ApiException
 
 # import models into sdk package
+from otari._client.models.agent_telemetry_delete_request import AgentTelemetryDeleteRequest as AgentTelemetryDeleteRequest
+from otari._client.models.agent_telemetry_delete_result import AgentTelemetryDeleteResult as AgentTelemetryDeleteResult
 from otari._client.models.alias_request import AliasRequest as AliasRequest
 from otari._client.models.alias_response import AliasResponse as AliasResponse
 from otari._client.models.api_key_id import ApiKeyId as ApiKeyId
