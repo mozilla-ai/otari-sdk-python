@@ -28,6 +28,7 @@ class CreateKeyResponse(BaseModel):
     Response model for creating a new API key.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]]
+    capture_agent_telemetry: Optional[StrictBool]
     created_at: StrictStr
     exclude_from_budget: StrictBool
     expires_at: Optional[StrictStr]
@@ -39,7 +40,7 @@ class CreateKeyResponse(BaseModel):
     metadata: Dict[str, Any]
     reject_user_mismatch: Optional[StrictBool]
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["allowed_models", "created_at", "exclude_from_budget", "expires_at", "id", "is_active", "key", "key_name", "key_prefix", "metadata", "reject_user_mismatch", "user_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "created_at", "exclude_from_budget", "expires_at", "id", "is_active", "key", "key_name", "key_prefix", "metadata", "reject_user_mismatch", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,6 +86,11 @@ class CreateKeyResponse(BaseModel):
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
 
+        # set to None if capture_agent_telemetry (nullable) is None
+        # and model_fields_set contains the field
+        if self.capture_agent_telemetry is None and "capture_agent_telemetry" in self.model_fields_set:
+            _dict['capture_agent_telemetry'] = None
+
         # set to None if expires_at (nullable) is None
         # and model_fields_set contains the field
         if self.expires_at is None and "expires_at" in self.model_fields_set:
@@ -123,6 +129,7 @@ class CreateKeyResponse(BaseModel):
 
         _obj = cls.model_validate({
             "allowed_models": obj.get("allowed_models"),
+            "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "created_at": obj.get("created_at"),
             "exclude_from_budget": obj.get("exclude_from_budget"),
             "expires_at": obj.get("expires_at"),

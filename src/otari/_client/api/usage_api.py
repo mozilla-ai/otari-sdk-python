@@ -1384,7 +1384,7 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
         model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
@@ -1396,7 +1396,7 @@ class UsageApi:
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
-        request_group_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
+        request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
         _request_timeout: Union[
@@ -1421,7 +1421,7 @@ class UsageApi:
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
         :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
-        :type user_id: List[Optional[str]]
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
@@ -1445,7 +1445,7 @@ class UsageApi:
         :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
-        :type request_group_id: List[Optional[str]]
+        :type request_group_id: List[str]
         :param skip:
         :type skip: int
         :param limit:
@@ -1516,7 +1516,7 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
         model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
@@ -1528,7 +1528,7 @@ class UsageApi:
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
-        request_group_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
+        request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
         _request_timeout: Union[
@@ -1553,7 +1553,7 @@ class UsageApi:
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
         :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
-        :type user_id: List[Optional[str]]
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
@@ -1577,7 +1577,7 @@ class UsageApi:
         :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
-        :type request_group_id: List[Optional[str]]
+        :type request_group_id: List[str]
         :param skip:
         :type skip: int
         :param limit:
@@ -1648,7 +1648,7 @@ class UsageApi:
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
-        user_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         status: Annotated[Optional[StrictStr], Field(description="Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)")] = None,
         status_code: Annotated[Optional[StrictInt], Field(description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")] = None,
         model: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more models; repeatable (model=a&model=b). Several values match any of them. At most 50 per call.")] = None,
@@ -1660,7 +1660,7 @@ class UsageApi:
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
         counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
-        request_group_id: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
+        request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
         _request_timeout: Union[
@@ -1685,7 +1685,7 @@ class UsageApi:
         :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
         :type end_date: datetime
         :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
-        :type user_id: List[Optional[str]]
+        :type user_id: List[str]
         :param status: Filter to a single status: 'success', 'error', or 'absorbed' (an attempt a routing policy recovered from, excluded from error_count and request_count)
         :type status: str
         :param status_code: Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly
@@ -1709,7 +1709,7 @@ class UsageApi:
         :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
-        :type request_group_id: List[Optional[str]]
+        :type request_group_id: List[str]
         :param skip:
         :type skip: int
         :param limit:

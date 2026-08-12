@@ -29,13 +29,14 @@ class CreateKeyRequest(BaseModel):
     Request model for creating a new API key.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = Field(default=None, description="Model allow-list: null = any model, [] = deny all, or canonical instance:model entries (with instance:* / instance:prefix* wildcards).")
+    capture_agent_telemetry: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide capture_agent_telemetry setting: null (default) inherits it, true always stores behavioral events (tool_result, tool_decision, user_prompt, api_error) from POST /v1/logs, false always discards them. Usage capture and billing are unaffected either way.")
     exclude_from_budget: Optional[StrictBool] = Field(default=False, description="When true, requests on this key are logged with cost but never reserved, reconciled into the user's spend, or gated by budget.")
     expires_at: Optional[datetime] = Field(default=None, description="Optional expiration timestamp")
     key_name: Optional[StrictStr] = Field(default=None, description="Optional name for the key")
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata")
     reject_user_mismatch: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide reject_user_mismatch setting: null (default) inherits it, true always rejects a request naming a different 'user', false always accepts it. Spend binds to this key's own user either way.")
     user_id: Optional[StrictStr] = Field(default=None, description="Optional user ID to associate with this key")
-    __properties: ClassVar[List[str]] = ["allowed_models", "exclude_from_budget", "expires_at", "key_name", "metadata", "reject_user_mismatch", "user_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "exclude_from_budget", "expires_at", "key_name", "metadata", "reject_user_mismatch", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,6 +82,11 @@ class CreateKeyRequest(BaseModel):
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
 
+        # set to None if capture_agent_telemetry (nullable) is None
+        # and model_fields_set contains the field
+        if self.capture_agent_telemetry is None and "capture_agent_telemetry" in self.model_fields_set:
+            _dict['capture_agent_telemetry'] = None
+
         # set to None if expires_at (nullable) is None
         # and model_fields_set contains the field
         if self.expires_at is None and "expires_at" in self.model_fields_set:
@@ -114,6 +120,7 @@ class CreateKeyRequest(BaseModel):
 
         _obj = cls.model_validate({
             "allowed_models": obj.get("allowed_models"),
+            "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "exclude_from_budget": obj.get("exclude_from_budget") if obj.get("exclude_from_budget") is not None else False,
             "expires_at": obj.get("expires_at"),
             "key_name": obj.get("key_name"),
