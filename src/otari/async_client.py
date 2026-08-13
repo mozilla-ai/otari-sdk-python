@@ -31,7 +31,7 @@ from typing import TYPE_CHECKING, Any, cast, overload
 
 import httpx
 
-from otari._base import _BaseOtariClient, build_request
+from otari._base import _BaseOtariClient, _header_get, build_request
 from otari._client import ApiClient, Configuration
 from otari._client.api.batches_api import BatchesApi
 from otari._client.api.chat_api import ChatApi
@@ -54,6 +54,7 @@ from otari._client.models.rerank_request import RerankRequest
 from otari._streaming import aiter_sse
 from otari.control_plane import ControlPlane
 from otari.errors import OtariError
+from otari.response_metadata import AsyncOtariStream, OtariResponse
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Callable
@@ -63,6 +64,7 @@ if TYPE_CHECKING:
     from otari._client.models.count_tokens_response import CountTokensResponse
     from otari._client.models.create_embedding_response import CreateEmbeddingResponse
     from otari._client.models.images_response import ImagesResponse
+    from otari._client.models.message_response import MessageResponse
     from otari._client.models.model_object import ModelObject
     from otari._client.models.moderation_response import ModerationResponse
     from otari._client.models.rerank_response import RerankResponse
@@ -147,6 +149,11 @@ class AsyncOtariClient(_BaseOtariClient):
             )
             raise OtariError(msg)
         return ControlPlane(self._gateway_root_url, self._admin_token)
+
+    @cached_property
+    def with_response_metadata(self) -> AsyncOtariClientWithResponseMetadata:
+        """Inference methods that return per-request Otari response metadata."""
+        return AsyncOtariClientWithResponseMetadata(self)
 
     # -- Chat completions ---------------------------------------------------
 
@@ -470,6 +477,17 @@ class AsyncOtariClient(_BaseOtariClient):
         except ApiException as exc:
             raise self._map_api_exception(exc) from exc
 
+    async def _call_with_response_metadata(
+        self,
+        fn: Callable[[], Any],
+    ) -> OtariResponse[Any]:
+        """Run a generated HTTP-info call and preserve its Otari request ID."""
+        response = await self._call(fn)
+        return OtariResponse(
+            data=response.data,
+            request_id=_header_get(response.headers, "X-Otari-Request-ID"),
+        )
+
     async def _post(
         self,
         path: str,
@@ -494,6 +512,26 @@ class AsyncOtariClient(_BaseOtariClient):
 
     async def _stream(self, path: str, body: dict[str, Any], kind: Any) -> AsyncIterator[Any]:
         """Open a raw async streaming POST and yield parsed SSE chunks."""
+        async for chunk in self._iter_stream(path, body, kind):
+            yield chunk
+
+    def _stream_with_response_metadata(
+        self,
+        path: str,
+        body: dict[str, Any],
+        kind: Any,
+    ) -> AsyncOtariStream[Any]:
+        """Open a stream that exposes metadata for its individual request."""
+        return AsyncOtariStream(lambda stream: self._iter_stream(path, body, kind, stream))
+
+    async def _iter_stream(
+        self,
+        path: str,
+        body: dict[str, Any],
+        kind: Any,
+        stream: AsyncOtariStream[Any] | None = None,
+    ) -> AsyncIterator[Any]:
+        """Issue and parse the raw HTTP streaming request."""
         url = f"{self._base_url}{path}"
         headers = {
             "Content-Type": "application/json",
@@ -504,6 +542,8 @@ class AsyncOtariClient(_BaseOtariClient):
             if response.status_code >= 400:
                 raw = await response.aread()
                 raise self._map_streaming_response(response, raw)
+            if stream is not None:
+                stream._set_request_id(_header_get(response.headers, "X-Otari-Request-ID"))
             async for chunk in aiter_sse(response, kind):
                 yield chunk
 
@@ -519,3 +559,70 @@ class AsyncOtariClient(_BaseOtariClient):
 
     async def __aexit__(self, *args: Any) -> None:
         await self.close()
+
+
+class AsyncOtariClientWithResponseMetadata:
+    """Opt-in async inference API that retains metadata for each HTTP response."""
+
+    def __init__(self, client: AsyncOtariClient) -> None:
+        self._client = client
+
+    async def completion(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        stream: bool | None = None,
+        **kwargs: Any,
+    ) -> OtariResponse[ChatCompletion] | AsyncOtariStream[ChatCompletionChunk]:
+        """Create a chat completion and retain its Otari request ID."""
+        body = {"model": model, "messages": messages, **kwargs}
+        if stream:
+            body["stream"] = True
+            return self._client._stream_with_response_metadata("/chat/completions", body, "chat")
+        request = build_request(ChatCompletionRequest, body)
+        return await self._client._call_with_response_metadata(
+            lambda: self._client._chat.chat_completions_v1_chat_completions_post_with_http_info(
+                request
+            )
+        )
+
+    async def response(
+        self,
+        *,
+        model: str,
+        input: Any,  # noqa: A002
+        stream: bool | None = None,
+        **kwargs: Any,
+    ) -> OtariResponse[Any] | AsyncOtariStream[dict[str, Any]]:
+        """Create an OpenAI-style response and retain its Otari request ID."""
+        body = {"model": model, "input": input, **kwargs}
+        if stream:
+            body["stream"] = True
+            return self._client._stream_with_response_metadata("/responses", body, "responses")
+        return await self._client._call_with_response_metadata(
+            lambda: self._client._responses.create_response_v1_responses_post_with_http_info(
+                body  # type: ignore[arg-type]
+            )
+        )
+
+    async def message(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        stream: bool | None = None,
+        **kwargs: Any,
+    ) -> OtariResponse[MessageResponse] | AsyncOtariStream[dict[str, Any]]:
+        """Create an Anthropic-style message and retain its Otari request ID."""
+        body = {"model": model, "messages": messages, "max_tokens": max_tokens, **kwargs}
+        if stream:
+            body["stream"] = True
+            return self._client._stream_with_response_metadata("/messages", body, "messages")
+        request = build_request(MessagesRequest, body)
+        return await self._client._call_with_response_metadata(
+            lambda: self._client._messages.create_message_v1_messages_post_with_http_info(
+                request
+            )
+        )

@@ -36,6 +36,7 @@ from otari.errors import (
     UnsupportedCapabilityError,
     UpstreamProviderError,
 )
+from otari.response_metadata import AsyncOtariStream, OtariResponse, OtariStream
 from otari.types import (
     BatchRequestItem,
     BatchResult,
@@ -62,6 +63,7 @@ except PackageNotFoundError:
 
 __all__ = [
     "AsyncOtariClient",
+    "AsyncOtariStream",
     "AuthenticationError",
     "BatchNotCompleteError",
     "BatchRequestItem",
@@ -83,6 +85,8 @@ __all__ = [
     "OtariClient",
     "OtariClientOptions",
     "OtariError",
+    "OtariResponse",
+    "OtariStream",
     "RateLimitError",
     "RerankResponse",
     "TranscriptionResult",

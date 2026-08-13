@@ -187,6 +187,42 @@ message = client.message(
 print(message.content)
 ```
 
+### Response metadata
+
+Use the opt-in `with_response_metadata` API when you need the gateway's
+`X-Otari-Request-ID` for request correlation. It is available for chat
+completions, Responses API calls, and Messages API calls without changing the
+default return types.
+
+```python
+result = client.with_response_metadata.message(
+    model="anthropic:claude-3-5-sonnet",
+    messages=[{"role": "user", "content": "Hello!"}],
+    max_tokens=256,
+)
+
+print(result.data.content)
+print(result.request_id)
+```
+
+Streaming calls return an `OtariStream`. Its `request_id` is populated when
+iteration opens the HTTP response, before the first event is yielded.
+
+```python
+stream = client.with_response_metadata.message(
+    model="anthropic:claude-3-5-sonnet",
+    messages=[{"role": "user", "content": "Hello!"}],
+    max_tokens=256,
+    stream=True,
+)
+
+for event in stream:
+    print(stream.request_id, event)
+```
+
+The asynchronous client exposes the same API through
+`AsyncOtariClient.with_response_metadata`; its streams are async iterables.
+
 ### Embeddings
 
 ```python
