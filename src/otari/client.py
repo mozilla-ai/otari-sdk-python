@@ -27,7 +27,7 @@ Example::
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, cast, overload
+from typing import TYPE_CHECKING, Any, Literal, cast, overload
 
 import httpx
 
@@ -586,6 +586,36 @@ class OtariClientWithResponseMetadata:
     def __init__(self, client: OtariClient) -> None:
         self._client = client
 
+    @overload
+    def completion(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        stream: Literal[False] | None = None,
+        **kwargs: Any,
+    ) -> OtariResponse[ChatCompletion]: ...
+
+    @overload
+    def completion(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        stream: Literal[True],
+        **kwargs: Any,
+    ) -> OtariStream[ChatCompletionChunk]: ...
+
+    @overload
+    def completion(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        stream: bool | None,
+        **kwargs: Any,
+    ) -> OtariResponse[ChatCompletion] | OtariStream[ChatCompletionChunk]: ...
+
     def completion(
         self,
         *,
@@ -606,6 +636,36 @@ class OtariClientWithResponseMetadata:
             )
         )
 
+    @overload
+    def response(
+        self,
+        *,
+        model: str,
+        input: Any,
+        stream: Literal[False] | None = None,
+        **kwargs: Any,
+    ) -> OtariResponse[Any]: ...
+
+    @overload
+    def response(
+        self,
+        *,
+        model: str,
+        input: Any,
+        stream: Literal[True],
+        **kwargs: Any,
+    ) -> OtariStream[dict[str, Any]]: ...
+
+    @overload
+    def response(
+        self,
+        *,
+        model: str,
+        input: Any,
+        stream: bool | None,
+        **kwargs: Any,
+    ) -> OtariResponse[Any] | OtariStream[dict[str, Any]]: ...
+
     def response(
         self,
         *,
@@ -624,6 +684,39 @@ class OtariClientWithResponseMetadata:
                 body  # type: ignore[arg-type]
             )
         )
+
+    @overload
+    def message(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        stream: Literal[False] | None = None,
+        **kwargs: Any,
+    ) -> OtariResponse[MessageResponse]: ...
+
+    @overload
+    def message(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        stream: Literal[True],
+        **kwargs: Any,
+    ) -> OtariStream[dict[str, Any]]: ...
+
+    @overload
+    def message(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        stream: bool | None,
+        **kwargs: Any,
+    ) -> OtariResponse[MessageResponse] | OtariStream[dict[str, Any]]: ...
 
     def message(
         self,

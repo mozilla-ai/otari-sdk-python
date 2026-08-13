@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import asyncio
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, cast, overload
+from typing import TYPE_CHECKING, Any, Literal, cast, overload
 
 import httpx
 
@@ -567,6 +567,36 @@ class AsyncOtariClientWithResponseMetadata:
     def __init__(self, client: AsyncOtariClient) -> None:
         self._client = client
 
+    @overload
+    async def completion(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        stream: Literal[False] | None = None,
+        **kwargs: Any,
+    ) -> OtariResponse[ChatCompletion]: ...
+
+    @overload
+    async def completion(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        stream: Literal[True],
+        **kwargs: Any,
+    ) -> AsyncOtariStream[ChatCompletionChunk]: ...
+
+    @overload
+    async def completion(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        stream: bool | None,
+        **kwargs: Any,
+    ) -> OtariResponse[ChatCompletion] | AsyncOtariStream[ChatCompletionChunk]: ...
+
     async def completion(
         self,
         *,
@@ -587,6 +617,36 @@ class AsyncOtariClientWithResponseMetadata:
             )
         )
 
+    @overload
+    async def response(
+        self,
+        *,
+        model: str,
+        input: Any,
+        stream: Literal[False] | None = None,
+        **kwargs: Any,
+    ) -> OtariResponse[Any]: ...
+
+    @overload
+    async def response(
+        self,
+        *,
+        model: str,
+        input: Any,
+        stream: Literal[True],
+        **kwargs: Any,
+    ) -> AsyncOtariStream[dict[str, Any]]: ...
+
+    @overload
+    async def response(
+        self,
+        *,
+        model: str,
+        input: Any,
+        stream: bool | None,
+        **kwargs: Any,
+    ) -> OtariResponse[Any] | AsyncOtariStream[dict[str, Any]]: ...
+
     async def response(
         self,
         *,
@@ -605,6 +665,39 @@ class AsyncOtariClientWithResponseMetadata:
                 body  # type: ignore[arg-type]
             )
         )
+
+    @overload
+    async def message(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        stream: Literal[False] | None = None,
+        **kwargs: Any,
+    ) -> OtariResponse[MessageResponse]: ...
+
+    @overload
+    async def message(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        stream: Literal[True],
+        **kwargs: Any,
+    ) -> AsyncOtariStream[dict[str, Any]]: ...
+
+    @overload
+    async def message(
+        self,
+        *,
+        model: str,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        stream: bool | None,
+        **kwargs: Any,
+    ) -> OtariResponse[MessageResponse] | AsyncOtariStream[dict[str, Any]]: ...
 
     async def message(
         self,

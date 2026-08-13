@@ -65,6 +65,13 @@ MESSAGE_RESPONSE: dict[str, Any] = {
     "usage": {"input_tokens": 1, "output_tokens": 1},
 }
 
+RESPONSES_RESPONSE: dict[str, Any] = {
+    "id": "resp-1",
+    "object": "response",
+    "status": "completed",
+    "output": [],
+}
+
 COUNT_TOKENS_RESPONSE: dict[str, Any] = {"input_tokens": 42}
 
 MODERATION_RESPONSE: dict[str, Any] = {
@@ -186,6 +193,45 @@ class TestCompletion:
         client = OtariClient(api_base="http://localhost:8000", platform_token="tk")  # noqa: S106
         client.completion(model="m", messages=[{"role": "user", "content": "Hi"}])
         assert mock.last.headers.get("Authorization") == "Bearer tk"
+
+
+class TestResponseMetadata:
+    def test_non_streaming_exposes_request_id_without_changing_response(self, mock_rest: Any) -> None:
+        mock_rest(
+            status=200,
+            body=RESPONSES_RESPONSE,
+            headers={"X-Otari-Request-ID": "req-response-123"},
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = client.with_response_metadata.response(model="openai:gpt-4o-mini", input="Hi")
+
+        assert result.data == RESPONSES_RESPONSE
+        assert result.request_id == "req-response-123"
+
+    @respx.mock
+    def test_streaming_exposes_request_id_without_changing_events(self) -> None:
+        event = '{"type":"response.completed","response":{"id":"resp-1"}}'
+        respx.post("http://localhost:8000/v1/responses").mock(
+            return_value=httpx.Response(
+                200,
+                headers={
+                    "content-type": "text/event-stream",
+                    "X-Otari-Request-ID": "req-response-stream-123",
+                },
+                content=_sse(event),
+            )
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        stream = client.with_response_metadata.response(
+            model="openai:gpt-4o-mini",
+            input="Hi",
+            stream=True,
+        )
+
+        assert list(stream) == [{"type": "response.completed", "response": {"id": "resp-1"}}]
+        assert stream.request_id == "req-response-stream-123"
 
 
 class TestEmbedding:
