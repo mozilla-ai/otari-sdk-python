@@ -14,6 +14,7 @@ import httpx
 import pytest
 import respx
 
+from otari import AsyncOtariStream, OtariResponse
 from otari._client.models.chat_completion import ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk
 from otari.async_client import AsyncOtariClient
@@ -34,6 +35,7 @@ from tests.unit.test_client import (
     MESSAGE_RESPONSE,
     MODELS_RESPONSE,
     RERANK_RESPONSE,
+    RESPONSES_RESPONSE,
     TRANSCRIPTION_RESPONSE,
     _sse,
 )
@@ -69,6 +71,25 @@ class TestInference:
         assert mock.last.url.endswith("/v1/chat/completions")
         assert mock.last.headers.get("Otari-Key") == "Bearer vk"
 
+    async def test_response_with_metadata_exposes_request_id_without_changing_response(
+        self,
+        mock_rest: Any,
+    ) -> None:
+        mock_rest(
+            status=200,
+            body=RESPONSES_RESPONSE,
+            headers={"X-Otari-Request-ID": "req-async-response-123"},
+        )
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = await client.with_response_metadata.response(
+            model="openai:gpt-4o-mini",
+            input="Hi",
+        )
+
+        assert result.data == RESPONSES_RESPONSE
+        assert result.request_id == "req-async-response-123"
+
     async def test_embedding_returns_typed(self, mock_rest: Any) -> None:
         mock_rest(status=200, body=EMBEDDING_RESPONSE)
         client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
@@ -89,6 +110,24 @@ class TestInference:
         )
         assert result.id == "msg-1"
         assert mock.last.url.endswith("/v1/messages")
+
+    async def test_message_with_response_metadata_exposes_request_id(self, mock_rest: Any) -> None:
+        mock_rest(
+            status=200,
+            body=MESSAGE_RESPONSE,
+            headers={"x-otari-request-id": "req-async-message-123"},
+        )
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = await client.with_response_metadata.message(
+            model="anthropic:claude",
+            messages=[{"role": "user", "content": "Hi"}],
+            max_tokens=8,
+        )
+
+        assert isinstance(result, OtariResponse)
+        assert result.data.id == "msg-1"
+        assert result.request_id == "req-async-message-123"
 
     async def test_count_tokens_returns_typed(self, mock_rest: Any) -> None:
         mock = mock_rest(status=200, body=COUNT_TOKENS_RESPONSE)
@@ -156,6 +195,59 @@ class TestStreaming:
         assert [c.choices[0].delta.content for c in chunks] == ["He", "llo"]
         assert route.calls.last.request.headers["accept"] == "text/event-stream"
         assert route.calls.last.request.headers["otari-key"] == "Bearer vk"
+
+    @respx.mock
+    async def test_response_stream_metadata_exposes_request_id_without_changing_events(self) -> None:
+        event = '{"type":"response.completed","response":{"id":"resp-1"}}'
+        respx.post("http://localhost:8000/v1/responses").mock(
+            return_value=httpx.Response(
+                200,
+                headers={
+                    "content-type": "text/event-stream",
+                    "X-Otari-Request-ID": "req-async-response-stream-123",
+                },
+                content=_sse(event),
+            )
+        )
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        stream = await client.with_response_metadata.response(
+            model="openai:gpt-4o-mini",
+            input="Hi",
+            stream=True,
+        )
+
+        assert [event async for event in stream] == [
+            {"type": "response.completed", "response": {"id": "resp-1"}}
+        ]
+        assert stream.request_id == "req-async-response-stream-123"
+
+    @respx.mock
+    async def test_message_stream_metadata_exposes_request_id_without_mutating_events(self) -> None:
+        event = '{"type":"message_stop"}'
+        respx.post("http://localhost:8000/v1/messages").mock(
+            return_value=httpx.Response(
+                200,
+                headers={
+                    "content-type": "text/event-stream",
+                    "X-Otari-Request-ID": "req-async-stream-123",
+                },
+                content=_sse(event),
+            )
+        )
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        stream = await client.with_response_metadata.message(
+            model="anthropic:claude",
+            messages=[{"role": "user", "content": "Hi"}],
+            max_tokens=8,
+            stream=True,
+        )
+
+        assert isinstance(stream, AsyncOtariStream)
+        assert stream.request_id is None
+        assert [event async for event in stream] == [{"type": "message_stop"}]
+        assert stream.request_id == "req-async-stream-123"
 
     @respx.mock
     async def test_streaming_error_maps(self) -> None:

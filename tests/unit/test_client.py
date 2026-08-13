@@ -15,6 +15,7 @@ import httpx
 import pytest
 import respx
 
+from otari import OtariResponse, OtariStream
 from otari._client.models.chat_completion import ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk
 from otari.client import OtariClient
@@ -62,6 +63,13 @@ MESSAGE_RESPONSE: dict[str, Any] = {
     "model": "anthropic:claude-3-5-sonnet",
     "content": [{"type": "text", "text": "Hi"}],
     "usage": {"input_tokens": 1, "output_tokens": 1},
+}
+
+RESPONSES_RESPONSE: dict[str, Any] = {
+    "id": "resp-1",
+    "object": "response",
+    "status": "completed",
+    "output": [],
 }
 
 COUNT_TOKENS_RESPONSE: dict[str, Any] = {"input_tokens": 42}
@@ -187,6 +195,45 @@ class TestCompletion:
         assert mock.last.headers.get("Authorization") == "Bearer tk"
 
 
+class TestResponseMetadata:
+    def test_non_streaming_exposes_request_id_without_changing_response(self, mock_rest: Any) -> None:
+        mock_rest(
+            status=200,
+            body=RESPONSES_RESPONSE,
+            headers={"X-Otari-Request-ID": "req-response-123"},
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = client.with_response_metadata.response(model="openai:gpt-4o-mini", input="Hi")
+
+        assert result.data == RESPONSES_RESPONSE
+        assert result.request_id == "req-response-123"
+
+    @respx.mock
+    def test_streaming_exposes_request_id_without_changing_events(self) -> None:
+        event = '{"type":"response.completed","response":{"id":"resp-1"}}'
+        respx.post("http://localhost:8000/v1/responses").mock(
+            return_value=httpx.Response(
+                200,
+                headers={
+                    "content-type": "text/event-stream",
+                    "X-Otari-Request-ID": "req-response-stream-123",
+                },
+                content=_sse(event),
+            )
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        stream = client.with_response_metadata.response(
+            model="openai:gpt-4o-mini",
+            input="Hi",
+            stream=True,
+        )
+
+        assert list(stream) == [{"type": "response.completed", "response": {"id": "resp-1"}}]
+        assert stream.request_id == "req-response-stream-123"
+
+
 class TestEmbedding:
     def test_returns_typed_embedding(self, mock_rest: Any) -> None:
         mock = mock_rest(status=200, body=EMBEDDING_RESPONSE)
@@ -221,6 +268,41 @@ class TestMessage:
         body = mock.last.json_body
         assert body["max_tokens"] == 64
         assert body["model"] == "anthropic:claude-3-5-sonnet"
+
+    def test_with_response_metadata_exposes_request_id(self, mock_rest: Any) -> None:
+        mock_rest(
+            status=200,
+            body=MESSAGE_RESPONSE,
+            headers={"x-otari-request-id": "req-message-123"},
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = client.with_response_metadata.message(
+            model="anthropic:claude-3-5-sonnet",
+            messages=[{"role": "user", "content": "Hi"}],
+            max_tokens=64,
+        )
+
+        assert isinstance(result, OtariResponse)
+        assert result.data.id == "msg-1"
+        assert result.request_id == "req-message-123"
+
+    def test_with_response_metadata_is_available_for_chat(self, mock_rest: Any) -> None:
+        mock_rest(
+            status=200,
+            body=CHAT_RESPONSE,
+            headers={"X-Otari-Request-ID": "req-chat-123"},
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = client.with_response_metadata.completion(
+            model="openai:gpt-4o-mini",
+            messages=[{"role": "user", "content": "Hi"}],
+        )
+
+        assert isinstance(result, OtariResponse)
+        assert isinstance(result.data, ChatCompletion)
+        assert result.request_id == "req-chat-123"
 
     def test_count_tokens_returns_typed_response(self, mock_rest: Any) -> None:
         mock = mock_rest(status=200, body=COUNT_TOKENS_RESPONSE)
@@ -377,6 +459,33 @@ class TestChatStreaming:
             )
         )
         assert route.calls.last.request.headers["authorization"] == "Bearer tk"
+
+    @respx.mock
+    def test_message_stream_metadata_exposes_request_id_without_mutating_events(self) -> None:
+        event = '{"type":"message_stop"}'
+        respx.post("http://localhost:8000/v1/messages").mock(
+            return_value=httpx.Response(
+                200,
+                headers={
+                    "content-type": "text/event-stream",
+                    "X-Otari-Request-ID": "req-stream-123",
+                },
+                content=_sse(event),
+            )
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        stream = client.with_response_metadata.message(
+            model="anthropic:claude-3-5-sonnet",
+            messages=[{"role": "user", "content": "Hi"}],
+            max_tokens=64,
+            stream=True,
+        )
+
+        assert isinstance(stream, OtariStream)
+        assert stream.request_id is None
+        assert list(stream) == [{"type": "message_stop"}]
+        assert stream.request_id == "req-stream-123"
 
 
 # ---------------------------------------------------------------------------

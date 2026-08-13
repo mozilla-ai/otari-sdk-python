@@ -187,6 +187,26 @@ message = client.message(
 print(message.content)
 ```
 
+### Response metadata
+
+Use `with_response_metadata` to access the gateway's `X-Otari-Request-ID`:
+
+```python
+result = client.with_response_metadata.message(
+    model="anthropic:claude-3-5-sonnet",
+    messages=[{"role": "user", "content": "Hello!"}],
+    max_tokens=256,
+)
+print(result.request_id, result.data.content)
+```
+
+For sync and async streams, `stream.request_id` is populated when iteration
+starts, before the first event is yielded.
+
+Only a gateway running in platform mode sends this header, so `request_id` is
+`None` when you call a standalone self-hosted gateway. On a stream, `None` also
+means iteration has not opened the response yet.
+
 ### Embeddings
 
 ```python
