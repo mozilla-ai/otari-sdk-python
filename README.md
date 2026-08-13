@@ -203,6 +203,10 @@ print(result.request_id, result.data.content)
 For sync and async streams, `stream.request_id` is populated when iteration
 starts, before the first event is yielded.
 
+Only a gateway running in platform mode sends this header, so `request_id` is
+`None` when you call a standalone self-hosted gateway. On a stream, `None` also
+means iteration has not opened the response yet.
+
 ### Embeddings
 
 ```python
