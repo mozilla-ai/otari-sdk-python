@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.2.0...otari-0.3.0) (2026-08-13)
+
+
+### Features
+
+* expose Otari request IDs ([#32](https://github.com/mozilla-ai/otari-sdk-python/issues/32)) ([ccee0f0](https://github.com/mozilla-ai/otari-sdk-python/commit/ccee0f03ea845660a22531d79a57ce708f43492d))
+
+
+### Bug Fixes
+
+* **ci:** make the endpoint-coverage check offline and deterministic ([#26](https://github.com/mozilla-ai/otari-sdk-python/issues/26)) ([af17bdd](https://github.com/mozilla-ai/otari-sdk-python/commit/af17bdd73c28b3c171c71898b824a86e296eb2f9))
+* **control-plane:** forward usage.list arguments by keyword ([#24](https://github.com/mozilla-ai/otari-sdk-python/issues/24)) ([c7ac8eb](https://github.com/mozilla-ai/otari-sdk-python/commit/c7ac8ebe6dee4a32babe28efc8b0be56b297c80b))
+* **control-plane:** map generated ApiException to typed OtariError ([#21](https://github.com/mozilla-ai/otari-sdk-python/issues/21)) ([47dd032](https://github.com/mozilla-ai/otari-sdk-python/commit/47dd032b3ca82a5514bac24366174b88c38deee7))
+
 ## [0.2.0](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.1.1...otari-0.2.0) (2026-06-16)
 
 
