@@ -27,7 +27,7 @@ class MRBetaDiagnosticsFallback(BaseModel):
     """
     MRBetaDiagnosticsFallback
     """ # noqa: E501
-    cache_miss_reason: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    cache_miss_reason: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["cache_miss_reason"]
 

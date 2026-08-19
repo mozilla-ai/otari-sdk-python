@@ -30,7 +30,7 @@ class RerankResponse(BaseModel):
     """
     Normalized rerank response, provider-agnostic.
     """ # noqa: E501
-    id: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
+    id: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     results: List[RRRerankResult] = Field(description="Results sorted by relevance_score descending")
     meta: Optional[RRRerankMeta] = None
     usage: Optional[RRRerankUsage] = None

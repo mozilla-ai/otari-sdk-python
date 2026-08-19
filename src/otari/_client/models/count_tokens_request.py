@@ -30,14 +30,14 @@ class CountTokensRequest(BaseModel):
     Anthropic ``/v1/messages/count_tokens`` request.  A subset of :class:`MessagesRequest`: the input fields that affect the token count, minus ``max_tokens`` and the streaming/sampling controls, since the endpoint only counts input tokens. ``context_management`` and ``betas`` are accepted for wire compatibility, but the local estimate does not apply provider-side context edits. Clients such as Claude Code call this on every turn to keep their prompt within the model's context window.
     """ # noqa: E501
     betas: Optional[List[StrictStr]] = None
-    cache_control: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
-    context_management: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    cache_control: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    context_management: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     messages: Annotated[List[Optional[Dict[str, Any]]], Field(min_length=1)]
-    metadata: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     model: StrictStr
     system: Optional[System] = None
-    thinking: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
-    tool_choice: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    thinking: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    tool_choice: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     tools: Optional[List[Dict[str, Any]]] = None
     __properties: ClassVar[List[str]] = ["betas", "cache_control", "context_management", "messages", "metadata", "model", "system", "thinking", "tool_choice", "tools"]
 

@@ -31,9 +31,9 @@ class Conversation(BaseModel):
     """
 
     # data type: str
-    anyof_schema_1_validator: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
+    anyof_schema_1_validator: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     # data type: Dict[str, object]
-    anyof_schema_2_validator: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    anyof_schema_2_validator: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     if TYPE_CHECKING:
         actual_instance: Optional[Union[Dict[str, object], str]] = None
     else:

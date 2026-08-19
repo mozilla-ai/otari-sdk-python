@@ -28,7 +28,7 @@ from pydantic_core import to_jsonable_python
 
 class RouterStatus(BaseModel):
     """
-    How warm this user's routing memory is, and what depends on it.  Routing memory has no single warmth: it is a set of independent pools. ``default_pool`` is what a request with no ``Otari-Router-Task`` header votes over (every record the user has, labelled or not) and ``tasks`` lists each partition, which only requests carrying that label use. Each crosses ``seed_count`` on its own.
+    How warm this user's routing memory is, and what depends on it.  Routing memory has no single warmth: it is a set of independent pools. ``default_pool`` is what a request with no ``Otari-Router-Task`` header votes over (every record the user has, labeled or not) and ``tasks`` lists each partition, which only requests carrying that label use. Each crosses ``seed_count`` on its own.
     """ # noqa: E501
     alpha: Union[StrictFloat, StrictInt]
     confidence_floor: Union[StrictFloat, StrictInt]

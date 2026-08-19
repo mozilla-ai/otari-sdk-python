@@ -17,30 +17,28 @@ from inspect import getfullargspec
 import json
 import pprint
 import re  # noqa: F401
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, ValidationError, field_validator
-from typing import Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
+from typing import Any, Dict, Optional
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-USAGEENTRYPRICINGBREAKDOWNINNERVALUE_ANY_OF_SCHEMAS = ["float", "int", "str"]
+BILLINGMETERS_ANY_OF_SCHEMAS = ["BillingMeters", "Dict[str, object]"]
 
-class UsageEntryPricingBreakdownInnerValue(BaseModel):
+class BillingMeters(BaseModel):
     """
-    UsageEntryPricingBreakdownInnerValue
+    BillingMeters
     """
 
-    # data type: float
-    anyof_schema_1_validator: Optional[Union[StrictFloat, StrictInt]] = None
-    # data type: int
-    anyof_schema_2_validator: Optional[StrictInt] = None
-    # data type: str
-    anyof_schema_3_validator: Optional[StrictStr] = None
+    # data type: BillingMeters
+    anyof_schema_1_validator: Optional[BillingMeters] = None
+    # data type: Dict[str, object]
+    anyof_schema_2_validator: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[float, int, str]] = None
+        actual_instance: Optional[Union[BillingMeters, Dict[str, object]]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "float", "int", "str" }
+    any_of_schemas: Set[str] = { "BillingMeters", "Dict[str, object]" }
 
     model_config = {
         "validate_assignment": True,
@@ -59,29 +57,26 @@ class UsageEntryPricingBreakdownInnerValue(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_anyof(cls, v):
-        instance = UsageEntryPricingBreakdownInnerValue.model_construct()
-        error_messages = []
-        # validate data type: float
-        try:
-            instance.anyof_schema_1_validator = v
+        if v is None:
             return v
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-        # validate data type: int
+
+        instance = BillingMeters.model_construct()
+        error_messages = []
+        # validate data type: BillingMeters
+        if not isinstance(v, BillingMeters):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `BillingMeters`")
+        else:
+            return v
+
+        # validate data type: Dict[str, object]
         try:
             instance.anyof_schema_2_validator = v
             return v
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # validate data type: str
-        try:
-            instance.anyof_schema_3_validator = v
-            return v
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in UsageEntryPricingBreakdownInnerValue with anyOf schemas: float, int, str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in BillingMeters with anyOf schemas: BillingMeters, Dict[str, object]. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -93,17 +88,17 @@ class UsageEntryPricingBreakdownInnerValue(BaseModel):
     def from_json(cls, json_str: str) -> Self:
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
+        if json_str is None:
+            return instance
+
         error_messages = []
-        # deserialize data into float
+        # anyof_schema_1_validator: Optional[BillingMeters] = None
         try:
-            # validation
-            instance.anyof_schema_1_validator = json.loads(json_str)
-            # assign value to actual_instance
-            instance.actual_instance = instance.anyof_schema_1_validator
+            instance.actual_instance = BillingMeters.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-        # deserialize data into int
+             error_messages.append(str(e))
+        # deserialize data into Dict[str, object]
         try:
             # validation
             instance.anyof_schema_2_validator = json.loads(json_str)
@@ -112,19 +107,10 @@ class UsageEntryPricingBreakdownInnerValue(BaseModel):
             return instance
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into str
-        try:
-            # validation
-            instance.anyof_schema_3_validator = json.loads(json_str)
-            # assign value to actual_instance
-            instance.actual_instance = instance.anyof_schema_3_validator
-            return instance
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into UsageEntryPricingBreakdownInnerValue with anyOf schemas: float, int, str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into BillingMeters with anyOf schemas: BillingMeters, Dict[str, object]. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -138,7 +124,7 @@ class UsageEntryPricingBreakdownInnerValue(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], float, int, str]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], BillingMeters, Dict[str, object]]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None
@@ -152,4 +138,6 @@ class UsageEntryPricingBreakdownInnerValue(BaseModel):
         """Returns the string representation of the actual instance"""
         return pprint.pformat(self.model_dump())
 
+# TODO: Rewrite to not use raise_errors
+BillingMeters.model_rebuild(raise_errors=False)
 

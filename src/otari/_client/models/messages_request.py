@@ -43,7 +43,7 @@ class MessagesRequest(BaseModel):
     messages: Annotated[List[Dict[str, Any]], Field(min_length=1)]
     metadata: Optional[Dict[str, Any]] = None
     model: StrictStr
-    output_format: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    output_format: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     stop_sequences: Optional[List[StrictStr]] = None
     stream: Optional[StrictBool] = False

@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from otari._client.models.pricing_tiers_inner_value import PricingTiersInnerValue
+from otari._client.models.pricing_tiers_inner import PricingTiersInner
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -33,7 +33,7 @@ class ModelPricingInfo(BaseModel):
     cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     input_price_per_million: Union[StrictFloat, StrictInt]
     output_price_per_million: Union[StrictFloat, StrictInt]
-    pricing_tiers: Optional[List[Dict[str, PricingTiersInnerValue]]] = None
+    pricing_tiers: Optional[List[PricingTiersInner]] = None
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "input_price_per_million", "output_price_per_million", "pricing_tiers"]
 
     model_config = ConfigDict(
@@ -75,14 +75,12 @@ class ModelPricingInfo(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in pricing_tiers (list of dict)
+        # override the default output from pydantic by calling `to_dict()` of each item in pricing_tiers (list)
         _items = []
         if self.pricing_tiers:
             for _item_pricing_tiers in self.pricing_tiers:
                 if _item_pricing_tiers:
-                    _items.append(
-                         {_inner_key: _inner_value.to_dict() for _inner_key, _inner_value in _item_pricing_tiers.items()}
-                    )
+                    _items.append(_item_pricing_tiers.to_dict())
             _dict['pricing_tiers'] = _items
         # set to None if cache_read_price_per_million (nullable) is None
         # and model_fields_set contains the field
@@ -116,10 +114,7 @@ class ModelPricingInfo(BaseModel):
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "input_price_per_million": obj.get("input_price_per_million"),
             "output_price_per_million": obj.get("output_price_per_million"),
-            "pricing_tiers": [
-                    {_inner_key: PricingTiersInnerValue.from_dict(_inner_value) for _inner_key, _inner_value in _item.items()}
-                    for _item in obj["pricing_tiers"]
-                ] if obj.get("pricing_tiers") is not None else None
+            "pricing_tiers": [PricingTiersInner.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None
         })
         return _obj
 

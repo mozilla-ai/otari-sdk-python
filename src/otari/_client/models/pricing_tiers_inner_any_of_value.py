@@ -23,11 +23,11 @@ from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-PRICINGTIERSINNERVALUE_ANY_OF_SCHEMAS = ["float", "int"]
+PRICINGTIERSINNERANYOFVALUE_ANY_OF_SCHEMAS = ["float", "int"]
 
-class PricingTiersInnerValue(BaseModel):
+class PricingTiersInnerAnyOfValue(BaseModel):
     """
-    PricingTiersInnerValue
+    PricingTiersInnerAnyOfValue
     """
 
     # data type: float
@@ -57,7 +57,7 @@ class PricingTiersInnerValue(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_anyof(cls, v):
-        instance = PricingTiersInnerValue.model_construct()
+        instance = PricingTiersInnerAnyOfValue.model_construct()
         error_messages = []
         # validate data type: float
         try:
@@ -73,7 +73,7 @@ class PricingTiersInnerValue(BaseModel):
             error_messages.append(str(e))
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in PricingTiersInnerValue with anyOf schemas: float, int. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in PricingTiersInnerAnyOfValue with anyOf schemas: float, int. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -107,7 +107,7 @@ class PricingTiersInnerValue(BaseModel):
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into PricingTiersInnerValue with anyOf schemas: float, int. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into PricingTiersInnerAnyOfValue with anyOf schemas: float, int. Details: " + ", ".join(error_messages))
         else:
             return instance
 

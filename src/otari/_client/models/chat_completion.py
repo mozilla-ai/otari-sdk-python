@@ -35,7 +35,7 @@ class ChatCompletion(BaseModel):
     model: StrictStr
     object: StrictStr
     service_tier: Optional[StrictStr] = None
-    system_fingerprint: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
+    system_fingerprint: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     usage: Optional[CCCompletionUsage] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "choices", "created", "model", "object", "service_tier", "system_fingerprint", "usage"]

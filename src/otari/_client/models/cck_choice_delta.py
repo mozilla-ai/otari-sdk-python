@@ -34,7 +34,7 @@ class CCKChoiceDelta(BaseModel):
     refusal: Optional[StrictStr] = None
     role: Optional[StrictStr] = None
     tool_calls: Optional[List[CCKChoiceDeltaToolCall]] = None
-    reasoning: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
+    reasoning: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     extra_content: Optional[Dict[str, Any]] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["content", "function_call", "refusal", "role", "tool_calls", "reasoning", "extra_content"]

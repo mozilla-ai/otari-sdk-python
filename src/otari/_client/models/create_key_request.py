@@ -29,7 +29,7 @@ class CreateKeyRequest(BaseModel):
     Request model for creating a new API key.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = Field(default=None, description="Model allow-list: null = any model, [] = deny all, or canonical instance:model entries (with instance:* / instance:prefix* wildcards).")
-    capture_agent_telemetry: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide capture_agent_telemetry setting: null (default) inherits it, true always stores behavioral events (tool_result, tool_decision, user_prompt, api_error) from POST /v1/logs, false always discards them. Usage capture and billing are unaffected either way.")
+    capture_agent_telemetry: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide capture_agent_telemetry setting: null (default) inherits it, true always stores this key's coding-agent telemetry, false always discards it. Covers both behavioral events (tool_result, tool_decision, user_prompt, api_error) from POST /v1/logs and outcome-metric data points (lines of code, commits, pull requests, active time) from POST /v1/metrics. Usage capture and billing are unaffected either way.")
     exclude_from_budget: Optional[StrictBool] = Field(default=False, description="When true, requests on this key are logged with cost but never reserved, reconciled into the user's spend, or gated by budget.")
     expires_at: Optional[datetime] = Field(default=None, description="Optional expiration timestamp")
     key_name: Optional[StrictStr] = Field(default=None, description="Optional name for the key")

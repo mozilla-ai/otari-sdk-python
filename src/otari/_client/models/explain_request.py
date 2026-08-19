@@ -32,7 +32,7 @@ class ExplainRequest(BaseModel):
     budget_used_pct: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Simulated budget usage percentage.")
     key_id: Optional[StrictStr] = Field(default=None, description="Evaluate conditions as this API key id.")
     name: Optional[StrictStr] = Field(default=None, description="An existing policy to explain.")
-    spec: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    spec: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     user_id: Optional[StrictStr] = Field(default=None, description="Evaluate conditions as this user.")
     __properties: ClassVar[List[str]] = ["allowed_models", "budget_remaining_usd", "budget_used_pct", "key_id", "name", "spec", "user_id"]
 

@@ -91,7 +91,7 @@ POST /v1/provider-credentials/test              # not yet wrapped
 PATCH /v1/provider-credentials/{instance}       # not yet wrapped
 DELETE /v1/provider-credentials/{instance}      # not yet wrapped
 POST /v1/provider-credentials/{instance}/test   # not yet wrapped
-# Providers catalogue
+# Providers catalog
 GET /v1/providers                               # not yet wrapped
 GET /v1/providers/catalog                       # not yet wrapped
 # Runtime settings
@@ -108,10 +108,14 @@ GET /v1/budgets/{budget_id}/reset-logs          # not yet wrapped
 # --- Second wave of gateway endpoints (added after the initial manifest) ---
 # Dashboard session auth: browser cookie flow for the admin UI, not an SDK surface.
 POST /v1/auth/session                           # dashboard-only
+# Deployment bootstrap: tells the dashboard shell which deployment served it, so
+# it exists for a browser deciding what to render. An SDK already knows.
+GET /v1/bootstrap                               # dashboard-only
 DELETE /v1/auth/session                         # dashboard-only
 # OTLP ingest: OpenTelemetry collector receivers, not an SDK surface.
 POST /v1/logs                                   # otel ingest
 POST /v1/traces                                 # otel ingest
+POST /v1/metrics                                # otel ingest
 # Usage analytics and maintenance
 GET /v1/usage/summary                           # not yet wrapped
 GET /v1/usage/summary.csv                       # not yet wrapped
@@ -120,7 +124,10 @@ DELETE /v1/usage                                # not yet wrapped
 POST /v1/usage/external-events                  # not yet wrapped
 POST /v1/usage/set-price                        # not yet wrapped
 GET /v1/usage/in-flight                         # dashboard-only, per-worker live view
-# Agent telemetry purge
+# Agent telemetry read and purge
+GET /v1/agent-telemetry/summary                 # not yet wrapped
+GET /v1/agent-telemetry/count                   # not yet wrapped
+GET /v1/agent-telemetry/series                  # not yet wrapped
 DELETE /v1/agent-telemetry                      # not yet wrapped
 # Routing policies
 GET /v1/routing/policies                        # not yet wrapped
@@ -144,5 +151,31 @@ PATCH /v1/tool-settings                         # not yet wrapped
 POST /v1/tool-settings/{service}/test           # not yet wrapped
 POST /v1/search                                 # not yet wrapped
 POST /v1/search/{search_tool_name}              # not yet wrapped
+# Search tools (runtime search-tool management)
+GET /v1/search-tools                            # not yet wrapped
+GET /v1/search-tools/providers                  # not yet wrapped
+POST /v1/search-tools                           # not yet wrapped
+PATCH /v1/search-tools/{name}                   # not yet wrapped
+DELETE /v1/search-tools/{name}                  # not yet wrapped
+POST /v1/search-tools/reencrypt                 # not yet wrapped
 # Settings
 POST /v1/settings/master-key/rotate             # not yet wrapped
+# Tenancy: organizations, workspaces, and their memberships. The dashboard's
+# tenancy pages are the consumer; an SDK caller acts inside one workspace with a
+# key that already names it, so none of these is an SDK surface yet. Move to
+# [covered] if a shell grows an admin client.
+GET /v1/organizations/me                                    # dashboard-only
+PATCH /v1/organizations/me                                  # dashboard-only
+GET /v1/organizations/me/members                            # dashboard-only
+POST /v1/organizations/me/members                           # dashboard-only
+PATCH /v1/organizations/me/members/{organization_member_id} # dashboard-only
+DELETE /v1/organizations/me/members/{organization_member_id} # dashboard-only
+POST /v1/workspaces                                         # dashboard-only
+GET /v1/workspaces                                          # dashboard-only
+GET /v1/workspaces/{workspace_id}                           # dashboard-only
+PATCH /v1/workspaces/{workspace_id}                         # dashboard-only
+DELETE /v1/workspaces/{workspace_id}                        # dashboard-only
+GET /v1/workspaces/{workspace_id}/members                   # dashboard-only
+POST /v1/workspaces/{workspace_id}/members/{user_id}        # dashboard-only
+PATCH /v1/workspaces/{workspace_id}/members/{user_id}       # dashboard-only
+DELETE /v1/workspaces/{workspace_id}/members/{user_id}      # dashboard-only

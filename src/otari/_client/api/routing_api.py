@@ -1415,7 +1415,7 @@ class RoutingApi:
     ) -> PolicyResponse:
         """Set Policy
 
-        Create or update a stored policy, global or scoped to one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).
+        Create or update a stored policy, global or scoped to one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
 
         :param policy_request: (required)
         :type policy_request: PolicyRequest
@@ -1483,7 +1483,7 @@ class RoutingApi:
     ) -> ApiResponse[PolicyResponse]:
         """Set Policy
 
-        Create or update a stored policy, global or scoped to one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).
+        Create or update a stored policy, global or scoped to one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
 
         :param policy_request: (required)
         :type policy_request: PolicyRequest
@@ -1551,7 +1551,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Set Policy
 
-        Create or update a stored policy, global or scoped to one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).
+        Create or update a stored policy, global or scoped to one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
 
         :param policy_request: (required)
         :type policy_request: PolicyRequest

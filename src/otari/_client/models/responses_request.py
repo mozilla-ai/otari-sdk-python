@@ -53,7 +53,7 @@ class ResponsesRequest(BaseModel):
     previous_response_id: Optional[StrictStr] = None
     prompt_cache_key: Optional[StrictStr] = None
     prompt_cache_retention: Optional[StrictStr] = None
-    reasoning: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    reasoning: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     response_format: Optional[Dict[str, Any]] = None
     safety_identifier: Optional[StrictStr] = None
     service_tier: Optional[StrictStr] = None
