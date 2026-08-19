@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -36,7 +37,8 @@ class CreateKeyRequest(BaseModel):
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata")
     reject_user_mismatch: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide reject_user_mismatch setting: null (default) inherits it, true always rejects a request naming a different 'user', false always accepts it. Spend binds to this key's own user either way.")
     user_id: Optional[StrictStr] = Field(default=None, description="Optional user ID to associate with this key")
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "exclude_from_budget", "expires_at", "key_name", "metadata", "reject_user_mismatch", "user_id"]
+    workspace_id: Optional[UUID] = Field(default=None, description="Workspace this key belongs to. Omitted means the deployment's default workspace. A key belongs to exactly one workspace: requests on it are scoped and billed there, so the workspace is read off the key rather than off a request header.")
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "exclude_from_budget", "expires_at", "key_name", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -107,6 +109,11 @@ class CreateKeyRequest(BaseModel):
         if self.user_id is None and "user_id" in self.model_fields_set:
             _dict['user_id'] = None
 
+        # set to None if workspace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
+            _dict['workspace_id'] = None
+
         return _dict
 
     @classmethod
@@ -126,7 +133,8 @@ class CreateKeyRequest(BaseModel):
             "key_name": obj.get("key_name"),
             "metadata": obj.get("metadata"),
             "reject_user_mismatch": obj.get("reject_user_mismatch"),
-            "user_id": obj.get("user_id")
+            "user_id": obj.get("user_id"),
+            "workspace_id": obj.get("workspace_id")
         })
         return _obj
 

@@ -69,6 +69,7 @@ from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails
 from otari._client.models.cc_top_logprob import CCTopLogprob
 from otari._client.models.caller import Caller
 from otari._client.models.caller1 import Caller1
+from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic
 from otari._client.models.candidate_response import CandidateResponse
 from otari._client.models.chat_completion import ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk
@@ -104,6 +105,7 @@ from otari._client.models.create_budget_request import CreateBudgetRequest
 from otari._client.models.create_embedding_response import CreateEmbeddingResponse
 from otari._client.models.create_key_request import CreateKeyRequest
 from otari._client.models.create_key_response import CreateKeyResponse
+from otari._client.models.create_scoped_budget_request import CreateScopedBudgetRequest
 from otari._client.models.create_search_tool_request import CreateSearchToolRequest
 from otari._client.models.create_session_request import CreateSessionRequest
 from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest
@@ -309,6 +311,7 @@ from otari._client.models.rerank_response import RerankResponse
 from otari._client.models.responses_request import ResponsesRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus
+from otari._client.models.scoped_budget_response import ScopedBudgetResponse
 from otari._client.models.scored_example import ScoredExample
 from otari._client.models.search_provider_schema import SearchProviderSchema
 from otari._client.models.search_request import SearchRequest
@@ -341,6 +344,7 @@ from otari._client.models.units import Units
 from otari._client.models.units1 import Units1
 from otari._client.models.update_budget_request import UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest
+from otari._client.models.update_scoped_budget_request import UpdateScopedBudgetRequest
 from otari._client.models.update_search_tool_request import UpdateSearchToolRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest
 from otari._client.models.update_stored_provider_request import UpdateStoredProviderRequest

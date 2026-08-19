@@ -27,8 +27,9 @@ from pydantic_core import to_jsonable_python
 
 class ActiveOrganizationMemberPublic(BaseModel):
     """
-    A member row joined to the identity behind it, as the roster shows it.  Field-for-field the platform's shape, so the ported roster page is not rewritten around a new contract, with two consequences of the OSS line: ``email`` is nullable here (a local operator identity has no sign-in address), and ``invitation_id`` is always null until the invitation flow rehomes, which is what fills it.
+    A member row joined to the identity behind it, as the roster shows it.  Field-for-field the platform's shape, so the ported roster page is not rewritten around a new contract, with two consequences of the OSS line: ``email`` is nullable here (a local operator identity has no sign-in address), and ``invitation_id`` is always null until the invitation flow rehomes, which is what fills it.  ``attribution_user_id`` is the addition the platform has no counterpart for. Keys, budgets, and usage attach to the gateway's string-keyed ``users`` row, not to this UUID identity, so this carries the ``user_id`` a caller passes to ``POST /v1/keys`` to give this member a key. It is null when no usable row exists (nobody minted one, or it was soft-deleted through ``DELETE /v1/users``), which is the signal not to offer this member as a key owner: key creation would refuse. The two ids converge when the request plane re-parents onto tenancy (M4), and this field is what lets that happen without the dashboard changing.
     """ # noqa: E501
+    attribution_user_id: Optional[StrictStr] = None
     created_at: datetime
     email: Optional[StrictStr] = None
     full_name: Optional[StrictStr] = None
@@ -38,7 +39,7 @@ class ActiveOrganizationMemberPublic(BaseModel):
     status: StrictStr
     updated_at: Optional[datetime] = None
     user_id: Optional[UUID] = None
-    __properties: ClassVar[List[str]] = ["created_at", "email", "full_name", "invitation_id", "organization_member_id", "role", "status", "updated_at", "user_id"]
+    __properties: ClassVar[List[str]] = ["attribution_user_id", "created_at", "email", "full_name", "invitation_id", "organization_member_id", "role", "status", "updated_at", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -79,6 +80,11 @@ class ActiveOrganizationMemberPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if attribution_user_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribution_user_id is None and "attribution_user_id" in self.model_fields_set:
+            _dict['attribution_user_id'] = None
+
         # set to None if email (nullable) is None
         # and model_fields_set contains the field
         if self.email is None and "email" in self.model_fields_set:
@@ -121,6 +127,7 @@ class ActiveOrganizationMemberPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "attribution_user_id": obj.get("attribution_user_id"),
             "created_at": obj.get("created_at"),
             "email": obj.get("email"),
             "full_name": obj.get("full_name"),

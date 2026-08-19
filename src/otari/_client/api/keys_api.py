@@ -18,6 +18,7 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
+from uuid import UUID
 from otari._client.models.create_key_request import CreateKeyRequest
 from otari._client.models.create_key_response import CreateKeyResponse
 from otari._client.models.key_info import KeyInfo
@@ -854,6 +855,7 @@ class KeysApi:
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only keys in this workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -869,12 +871,14 @@ class KeysApi:
     ) -> List[KeyInfo]:
         """List Keys
 
-        List all API keys.  Requires master key authentication.
+        List all API keys.  Requires master key authentication. An unset ``workspace_id`` lists every key on the deployment, which keeps the pre-workspace view working unchanged.
 
         :param skip:
         :type skip: int
         :param limit:
         :type limit: int
+        :param workspace_id: Only keys in this workspace.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -900,6 +904,7 @@ class KeysApi:
         _param = self._list_keys_v1_keys_get_serialize(
             skip=skip,
             limit=limit,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -926,6 +931,7 @@ class KeysApi:
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only keys in this workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -941,12 +947,14 @@ class KeysApi:
     ) -> ApiResponse[List[KeyInfo]]:
         """List Keys
 
-        List all API keys.  Requires master key authentication.
+        List all API keys.  Requires master key authentication. An unset ``workspace_id`` lists every key on the deployment, which keeps the pre-workspace view working unchanged.
 
         :param skip:
         :type skip: int
         :param limit:
         :type limit: int
+        :param workspace_id: Only keys in this workspace.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -972,6 +980,7 @@ class KeysApi:
         _param = self._list_keys_v1_keys_get_serialize(
             skip=skip,
             limit=limit,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -998,6 +1007,7 @@ class KeysApi:
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only keys in this workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1013,12 +1023,14 @@ class KeysApi:
     ) -> RESTResponseType:
         """List Keys
 
-        List all API keys.  Requires master key authentication.
+        List all API keys.  Requires master key authentication. An unset ``workspace_id`` lists every key on the deployment, which keeps the pre-workspace view working unchanged.
 
         :param skip:
         :type skip: int
         :param limit:
         :type limit: int
+        :param workspace_id: Only keys in this workspace.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1044,6 +1056,7 @@ class KeysApi:
         _param = self._list_keys_v1_keys_get_serialize(
             skip=skip,
             limit=limit,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1065,6 +1078,7 @@ class KeysApi:
         self,
         skip,
         limit,
+        workspace_id,
         _request_auth,
         _content_type,
         _headers,
@@ -1094,6 +1108,10 @@ class KeysApi:
         if limit is not None:
             
             _query_params.append(('limit', limit))
+            
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
             
         # process the header parameters
         # process the form parameters
