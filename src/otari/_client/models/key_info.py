@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -40,7 +41,8 @@ class KeyInfo(BaseModel):
     metadata: Dict[str, Any]
     reject_user_mismatch: Optional[StrictBool]
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "created_at", "exclude_from_budget", "expires_at", "id", "is_active", "key_name", "key_prefix", "last_used_at", "metadata", "reject_user_mismatch", "user_id"]
+    workspace_id: UUID
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "created_at", "exclude_from_budget", "expires_at", "id", "is_active", "key_name", "key_prefix", "last_used_at", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -145,7 +147,8 @@ class KeyInfo(BaseModel):
             "last_used_at": obj.get("last_used_at"),
             "metadata": obj.get("metadata"),
             "reject_user_mismatch": obj.get("reject_user_mismatch"),
-            "user_id": obj.get("user_id")
+            "user_id": obj.get("user_id"),
+            "workspace_id": obj.get("workspace_id")
         })
         return _obj
 

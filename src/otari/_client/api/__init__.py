@@ -24,6 +24,7 @@ from otari._client.api.providers_api import ProvidersApi
 from otari._client.api.rerank_api import RerankApi
 from otari._client.api.responses_api import ResponsesApi
 from otari._client.api.routing_api import RoutingApi
+from otari._client.api.scoped_budgets_api import ScopedBudgetsApi
 from otari._client.api.search_api import SearchApi
 from otari._client.api.search_tools_api import SearchToolsApi
 from otari._client.api.settings_api import SettingsApi

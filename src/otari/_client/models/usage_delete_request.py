@@ -21,6 +21,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from uuid import UUID
 from otari._client.models.api_key_id import ApiKeyId
 from otari._client.models.model import Model
 from otari._client.models.user_id import UserId
@@ -46,7 +47,8 @@ class UsageDeleteRequest(BaseModel):
     status: Optional[StrictStr] = None
     tool: Optional[StrictStr] = None
     user_id: Optional[UserId] = None
-    __properties: ClassVar[List[str]] = ["api_key_id", "by_filter", "end_date", "endpoint", "ids", "model", "priced", "provider", "source", "source_label", "start_date", "status", "tool", "user_id"]
+    workspace_id: Optional[UUID] = None
+    __properties: ClassVar[List[str]] = ["api_key_id", "by_filter", "end_date", "endpoint", "ids", "model", "priced", "provider", "source", "source_label", "start_date", "status", "tool", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -161,6 +163,11 @@ class UsageDeleteRequest(BaseModel):
         if self.user_id is None and "user_id" in self.model_fields_set:
             _dict['user_id'] = None
 
+        # set to None if workspace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
+            _dict['workspace_id'] = None
+
         return _dict
 
     @classmethod
@@ -186,7 +193,8 @@ class UsageDeleteRequest(BaseModel):
             "start_date": obj.get("start_date"),
             "status": obj.get("status"),
             "tool": obj.get("tool"),
-            "user_id": UserId.from_dict(obj["user_id"]) if obj.get("user_id") is not None else None
+            "user_id": UserId.from_dict(obj["user_id"]) if obj.get("user_id") is not None else None,
+            "workspace_id": obj.get("workspace_id")
         })
         return _obj
 

@@ -29,6 +29,7 @@ class ActiveOrganizationMemberCreateResultPublic(BaseModel):
     """
     The outcome of adding a member.  The platform answers ``invited`` on both its branches, because being added there always needs acceptance: a known address gets an ``invited`` membership, an unknown one an emailed invitation. This edition has neither an invitation to send nor a way to accept one, so it answers on the other arm of the same union, ``active``, and the invitation fields stay null until that flow rehomes.
     """ # noqa: E501
+    attribution_user_id: Optional[StrictStr] = None
     created_at: Optional[datetime] = None
     email: StrictStr
     expires_at: Optional[datetime] = None
@@ -39,7 +40,7 @@ class ActiveOrganizationMemberCreateResultPublic(BaseModel):
     status: StrictStr
     updated_at: Optional[datetime] = None
     user_id: Optional[UUID] = None
-    __properties: ClassVar[List[str]] = ["created_at", "email", "expires_at", "full_name", "invitation_id", "organization_member_id", "role", "status", "updated_at", "user_id"]
+    __properties: ClassVar[List[str]] = ["attribution_user_id", "created_at", "email", "expires_at", "full_name", "invitation_id", "organization_member_id", "role", "status", "updated_at", "user_id"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -87,6 +88,11 @@ class ActiveOrganizationMemberCreateResultPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if attribution_user_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribution_user_id is None and "attribution_user_id" in self.model_fields_set:
+            _dict['attribution_user_id'] = None
+
         # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:
@@ -134,6 +140,7 @@ class ActiveOrganizationMemberCreateResultPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "attribution_user_id": obj.get("attribution_user_id"),
             "created_at": obj.get("created_at"),
             "email": obj.get("email"),
             "expires_at": obj.get("expires_at"),

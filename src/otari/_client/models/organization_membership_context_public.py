@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
+from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic
 from otari._client.models.organization_public import OrganizationPublic
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,7 +35,8 @@ class OrganizationMembershipContextPublic(BaseModel):
     organization_member_id: UUID
     role: StrictStr
     status: StrictStr
-    __properties: ClassVar[List[str]] = ["byo_provider_keys_allowed", "organization", "organization_member_id", "role", "status"]
+    workspace_memberships: Optional[List[CallerWorkspaceMembershipPublic]] = None
+    __properties: ClassVar[List[str]] = ["byo_provider_keys_allowed", "organization", "organization_member_id", "role", "status", "workspace_memberships"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -78,6 +80,13 @@ class OrganizationMembershipContextPublic(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of organization
         if self.organization:
             _dict['organization'] = self.organization.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in workspace_memberships (list)
+        _items = []
+        if self.workspace_memberships:
+            for _item_workspace_memberships in self.workspace_memberships:
+                if _item_workspace_memberships:
+                    _items.append(_item_workspace_memberships.to_dict())
+            _dict['workspace_memberships'] = _items
         return _dict
 
     @classmethod
@@ -94,7 +103,8 @@ class OrganizationMembershipContextPublic(BaseModel):
             "organization": OrganizationPublic.from_dict(obj["organization"]) if obj.get("organization") is not None else None,
             "organization_member_id": obj.get("organization_member_id"),
             "role": obj.get("role"),
-            "status": obj.get("status")
+            "status": obj.get("status"),
+            "workspace_memberships": [CallerWorkspaceMembershipPublic.from_dict(_item) for _item in obj["workspace_memberships"]] if obj.get("workspace_memberships") is not None else None
         })
         return _obj
 

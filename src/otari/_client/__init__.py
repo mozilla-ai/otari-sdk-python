@@ -41,6 +41,7 @@ __all__ = [
     "RerankApi",
     "ResponsesApi",
     "RoutingApi",
+    "ScopedBudgetsApi",
     "SearchApi",
     "SearchToolsApi",
     "SettingsApi",
@@ -114,6 +115,7 @@ __all__ = [
     "CCTopLogprob",
     "Caller",
     "Caller1",
+    "CallerWorkspaceMembershipPublic",
     "CandidateResponse",
     "ChatCompletion",
     "ChatCompletionChunk",
@@ -149,6 +151,7 @@ __all__ = [
     "CreateEmbeddingResponse",
     "CreateKeyRequest",
     "CreateKeyResponse",
+    "CreateScopedBudgetRequest",
     "CreateSearchToolRequest",
     "CreateSessionRequest",
     "CreateStoredProviderRequest",
@@ -354,6 +357,7 @@ __all__ = [
     "ResponsesRequest",
     "RotateMasterKeyResponse",
     "RouterStatus",
+    "ScopedBudgetResponse",
     "ScoredExample",
     "SearchProviderSchema",
     "SearchRequest",
@@ -386,6 +390,7 @@ __all__ = [
     "Units1",
     "UpdateBudgetRequest",
     "UpdateKeyRequest",
+    "UpdateScopedBudgetRequest",
     "UpdateSearchToolRequest",
     "UpdateSettingsRequest",
     "UpdateStoredProviderRequest",
@@ -445,6 +450,7 @@ from otari._client.api.providers_api import ProvidersApi as ProvidersApi
 from otari._client.api.rerank_api import RerankApi as RerankApi
 from otari._client.api.responses_api import ResponsesApi as ResponsesApi
 from otari._client.api.routing_api import RoutingApi as RoutingApi
+from otari._client.api.scoped_budgets_api import ScopedBudgetsApi as ScopedBudgetsApi
 from otari._client.api.search_api import SearchApi as SearchApi
 from otari._client.api.search_tools_api import SearchToolsApi as SearchToolsApi
 from otari._client.api.settings_api import SettingsApi as SettingsApi
@@ -522,6 +528,7 @@ from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails 
 from otari._client.models.cc_top_logprob import CCTopLogprob as CCTopLogprob
 from otari._client.models.caller import Caller as Caller
 from otari._client.models.caller1 import Caller1 as Caller1
+from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic as CallerWorkspaceMembershipPublic
 from otari._client.models.candidate_response import CandidateResponse as CandidateResponse
 from otari._client.models.chat_completion import ChatCompletion as ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk as ChatCompletionChunk
@@ -557,6 +564,7 @@ from otari._client.models.create_budget_request import CreateBudgetRequest as Cr
 from otari._client.models.create_embedding_response import CreateEmbeddingResponse as CreateEmbeddingResponse
 from otari._client.models.create_key_request import CreateKeyRequest as CreateKeyRequest
 from otari._client.models.create_key_response import CreateKeyResponse as CreateKeyResponse
+from otari._client.models.create_scoped_budget_request import CreateScopedBudgetRequest as CreateScopedBudgetRequest
 from otari._client.models.create_search_tool_request import CreateSearchToolRequest as CreateSearchToolRequest
 from otari._client.models.create_session_request import CreateSessionRequest as CreateSessionRequest
 from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest as CreateStoredProviderRequest
@@ -762,6 +770,7 @@ from otari._client.models.rerank_response import RerankResponse as RerankRespons
 from otari._client.models.responses_request import ResponsesRequest as ResponsesRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse as RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus as RouterStatus
+from otari._client.models.scoped_budget_response import ScopedBudgetResponse as ScopedBudgetResponse
 from otari._client.models.scored_example import ScoredExample as ScoredExample
 from otari._client.models.search_provider_schema import SearchProviderSchema as SearchProviderSchema
 from otari._client.models.search_request import SearchRequest as SearchRequest
@@ -794,6 +803,7 @@ from otari._client.models.units import Units as Units
 from otari._client.models.units1 import Units1 as Units1
 from otari._client.models.update_budget_request import UpdateBudgetRequest as UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest as UpdateKeyRequest
+from otari._client.models.update_scoped_budget_request import UpdateScopedBudgetRequest as UpdateScopedBudgetRequest
 from otari._client.models.update_search_tool_request import UpdateSearchToolRequest as UpdateSearchToolRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest as UpdateSettingsRequest
 from otari._client.models.update_stored_provider_request import UpdateStoredProviderRequest as UpdateStoredProviderRequest

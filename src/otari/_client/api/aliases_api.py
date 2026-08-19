@@ -18,6 +18,7 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
+from uuid import UUID
 from otari._client.models.alias_request import AliasRequest
 from otari._client.models.alias_response import AliasResponse
 
@@ -324,6 +325,7 @@ class AliasesApi:
     @validate_call
     def list_aliases_v1_aliases_get(
         self,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included. Every stored entry is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -341,6 +343,8 @@ class AliasesApi:
 
         List every alias in force, from config.yml and from storage.  Every scope at once, global and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
+        :param workspace_id: Only stored entries in this workspace. Config-file entries are always included. Every stored entry is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -364,6 +368,7 @@ class AliasesApi:
         """ # noqa: E501
 
         _param = self._list_aliases_v1_aliases_get_serialize(
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -372,6 +377,7 @@ class AliasesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[AliasResponse]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -387,6 +393,7 @@ class AliasesApi:
     @validate_call
     def list_aliases_v1_aliases_get_with_http_info(
         self,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included. Every stored entry is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -404,6 +411,8 @@ class AliasesApi:
 
         List every alias in force, from config.yml and from storage.  Every scope at once, global and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
+        :param workspace_id: Only stored entries in this workspace. Config-file entries are always included. Every stored entry is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -427,6 +436,7 @@ class AliasesApi:
         """ # noqa: E501
 
         _param = self._list_aliases_v1_aliases_get_serialize(
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -435,6 +445,7 @@ class AliasesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[AliasResponse]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -450,6 +461,7 @@ class AliasesApi:
     @validate_call
     def list_aliases_v1_aliases_get_without_preload_content(
         self,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included. Every stored entry is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -467,6 +479,8 @@ class AliasesApi:
 
         List every alias in force, from config.yml and from storage.  Every scope at once, global and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
+        :param workspace_id: Only stored entries in this workspace. Config-file entries are always included. Every stored entry is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -490,6 +504,7 @@ class AliasesApi:
         """ # noqa: E501
 
         _param = self._list_aliases_v1_aliases_get_serialize(
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -498,6 +513,7 @@ class AliasesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[AliasResponse]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -508,6 +524,7 @@ class AliasesApi:
 
     def _list_aliases_v1_aliases_get_serialize(
         self,
+        workspace_id,
         _request_auth,
         _content_type,
         _headers,
@@ -530,6 +547,10 @@ class AliasesApi:
 
         # process the path parameters
         # process the query parameters
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
