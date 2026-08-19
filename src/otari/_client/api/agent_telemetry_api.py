@@ -15,8 +15,15 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
+from datetime import datetime
+from pydantic import Field, StrictStr, field_validator
+from typing import List, Optional
+from typing_extensions import Annotated
+from otari._client.models.agent_telemetry_count import AgentTelemetryCount
 from otari._client.models.agent_telemetry_delete_request import AgentTelemetryDeleteRequest
 from otari._client.models.agent_telemetry_delete_result import AgentTelemetryDeleteResult
+from otari._client.models.agent_telemetry_grouped_series import AgentTelemetryGroupedSeries
+from otari._client.models.agent_telemetry_summary import AgentTelemetrySummary
 
 from otari._client.api_client import ApiClient, RequestSerialized
 from otari._client.api_response import ApiResponse
@@ -34,6 +41,1122 @@ class AgentTelemetryApi:
         if api_client is None:
             api_client = ApiClient.get_default()
         self.api_client = api_client
+
+
+    @validate_call
+    def agent_telemetry_series_v1_agent_telemetry_series_get(
+        self,
+        group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
+        start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> AgentTelemetryGroupedSeries:
+        """Agent Telemetry Series
+
+        Row volume over time, split by user or API key (standalone).  Mirrors `/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
+
+        :param group_by: Dimension to split the series by (required)
+        :type group_by: str
+        :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
+        :param name: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type name: str
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._agent_telemetry_series_v1_agent_telemetry_series_get_serialize(
+            group_by=group_by,
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            api_key_id=api_key_id,
+            name=name,
+            bucket=bucket,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentTelemetryGroupedSeries",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def agent_telemetry_series_v1_agent_telemetry_series_get_with_http_info(
+        self,
+        group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
+        start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[AgentTelemetryGroupedSeries]:
+        """Agent Telemetry Series
+
+        Row volume over time, split by user or API key (standalone).  Mirrors `/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
+
+        :param group_by: Dimension to split the series by (required)
+        :type group_by: str
+        :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
+        :param name: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type name: str
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._agent_telemetry_series_v1_agent_telemetry_series_get_serialize(
+            group_by=group_by,
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            api_key_id=api_key_id,
+            name=name,
+            bucket=bucket,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentTelemetryGroupedSeries",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def agent_telemetry_series_v1_agent_telemetry_series_get_without_preload_content(
+        self,
+        group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
+        start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Agent Telemetry Series
+
+        Row volume over time, split by user or API key (standalone).  Mirrors `/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
+
+        :param group_by: Dimension to split the series by (required)
+        :type group_by: str
+        :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
+        :param name: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type name: str
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._agent_telemetry_series_v1_agent_telemetry_series_get_serialize(
+            group_by=group_by,
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            api_key_id=api_key_id,
+            name=name,
+            bucket=bucket,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentTelemetryGroupedSeries",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _agent_telemetry_series_v1_agent_telemetry_series_get_serialize(
+        self,
+        group_by,
+        start_date,
+        end_date,
+        user_id,
+        api_key_id,
+        name,
+        bucket,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'user_id': 'multi',
+            'api_key_id': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if group_by is not None:
+            
+            _query_params.append(('group_by', group_by))
+            
+        if start_date is not None:
+            if isinstance(start_date, datetime):
+                _query_params.append(
+                    (
+                        'start_date',
+                        start_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('start_date', start_date))
+            
+        if end_date is not None:
+            if isinstance(end_date, datetime):
+                _query_params.append(
+                    (
+                        'end_date',
+                        end_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('end_date', end_date))
+            
+        if user_id is not None:
+            
+            _query_params.append(('user_id', user_id))
+            
+        if api_key_id is not None:
+            
+            _query_params.append(('api_key_id', api_key_id))
+            
+        if name is not None:
+            
+            _query_params.append(('name', name))
+            
+        if bucket is not None:
+            
+            _query_params.append(('bucket', bucket))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v1/agent-telemetry/series',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def agent_telemetry_summary_v1_agent_telemetry_summary_get(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
+        session_label: Annotated[Optional[StrictStr], Field(description="Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> AgentTelemetrySummary:
+        """Agent Telemetry Summary
+
+        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
+
+        :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
+        :param session_label: Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on
+        :type session_label: str
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._agent_telemetry_summary_v1_agent_telemetry_summary_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            api_key_id=api_key_id,
+            session_label=session_label,
+            bucket=bucket,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentTelemetrySummary",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def agent_telemetry_summary_v1_agent_telemetry_summary_get_with_http_info(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
+        session_label: Annotated[Optional[StrictStr], Field(description="Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[AgentTelemetrySummary]:
+        """Agent Telemetry Summary
+
+        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
+
+        :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
+        :param session_label: Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on
+        :type session_label: str
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._agent_telemetry_summary_v1_agent_telemetry_summary_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            api_key_id=api_key_id,
+            session_label=session_label,
+            bucket=bucket,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentTelemetrySummary",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def agent_telemetry_summary_v1_agent_telemetry_summary_get_without_preload_content(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
+        session_label: Annotated[Optional[StrictStr], Field(description="Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Agent Telemetry Summary
+
+        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
+
+        :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
+        :param session_label: Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on
+        :type session_label: str
+        :param bucket: Time-series granularity: 'hour' or 'day'
+        :type bucket: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._agent_telemetry_summary_v1_agent_telemetry_summary_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            api_key_id=api_key_id,
+            session_label=session_label,
+            bucket=bucket,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentTelemetrySummary",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _agent_telemetry_summary_v1_agent_telemetry_summary_get_serialize(
+        self,
+        start_date,
+        end_date,
+        user_id,
+        api_key_id,
+        session_label,
+        bucket,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'user_id': 'multi',
+            'api_key_id': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if start_date is not None:
+            if isinstance(start_date, datetime):
+                _query_params.append(
+                    (
+                        'start_date',
+                        start_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('start_date', start_date))
+            
+        if end_date is not None:
+            if isinstance(end_date, datetime):
+                _query_params.append(
+                    (
+                        'end_date',
+                        end_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('end_date', end_date))
+            
+        if user_id is not None:
+            
+            _query_params.append(('user_id', user_id))
+            
+        if api_key_id is not None:
+            
+            _query_params.append(('api_key_id', api_key_id))
+            
+        if session_label is not None:
+            
+            _query_params.append(('session_label', session_label))
+            
+        if bucket is not None:
+            
+            _query_params.append(('bucket', bucket))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v1/agent-telemetry/summary',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def count_agent_telemetry_v1_agent_telemetry_count_get(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> AgentTelemetryCount:
+        """Count Agent Telemetry
+
+        Total agent_telemetry rows matching the given filters (standalone).  The filter set mirrors the purge endpoint's, so this sizes exactly what a \"delete all N matching\" would remove. Behavioral and metric rows are counted together: neither this nor the purge distinguishes them. Master-key only.
+
+        :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
+        :param name: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type name: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._count_agent_telemetry_v1_agent_telemetry_count_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            api_key_id=api_key_id,
+            name=name,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentTelemetryCount",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def count_agent_telemetry_v1_agent_telemetry_count_get_with_http_info(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[AgentTelemetryCount]:
+        """Count Agent Telemetry
+
+        Total agent_telemetry rows matching the given filters (standalone).  The filter set mirrors the purge endpoint's, so this sizes exactly what a \"delete all N matching\" would remove. Behavioral and metric rows are counted together: neither this nor the purge distinguishes them. Master-key only.
+
+        :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
+        :param name: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type name: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._count_agent_telemetry_v1_agent_telemetry_count_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            api_key_id=api_key_id,
+            name=name,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentTelemetryCount",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def count_agent_telemetry_v1_agent_telemetry_count_get_without_preload_content(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Count Agent Telemetry
+
+        Total agent_telemetry rows matching the given filters (standalone).  The filter set mirrors the purge endpoint's, so this sizes exactly what a \"delete all N matching\" would remove. Behavioral and metric rows are counted together: neither this nor the purge distinguishes them. Master-key only.
+
+        :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
+        :type api_key_id: List[str]
+        :param name: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type name: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._count_agent_telemetry_v1_agent_telemetry_count_get_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            user_id=user_id,
+            api_key_id=api_key_id,
+            name=name,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentTelemetryCount",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _count_agent_telemetry_v1_agent_telemetry_count_get_serialize(
+        self,
+        start_date,
+        end_date,
+        user_id,
+        api_key_id,
+        name,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'user_id': 'multi',
+            'api_key_id': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if start_date is not None:
+            if isinstance(start_date, datetime):
+                _query_params.append(
+                    (
+                        'start_date',
+                        start_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('start_date', start_date))
+            
+        if end_date is not None:
+            if isinstance(end_date, datetime):
+                _query_params.append(
+                    (
+                        'end_date',
+                        end_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('end_date', end_date))
+            
+        if user_id is not None:
+            
+            _query_params.append(('user_id', user_id))
+            
+        if api_key_id is not None:
+            
+            _query_params.append(('api_key_id', api_key_id))
+            
+        if name is not None:
+            
+            _query_params.append(('name', name))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v1/agent-telemetry/count',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
 
 
     @validate_call

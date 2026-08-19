@@ -33,7 +33,7 @@ from pydantic_core import to_jsonable_python
 
 class ChatCompletionRequest(BaseModel):
     """
-    OpenAI-compatible chat completion request.  The completion-param fields are derived from any-llm's ``CompletionParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. Fields below either tighten a derived field (``messages``, ``response_format``) or add gateway-internal behavior (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) that is stripped before the request is forwarded upstream.
+    OpenAI-compatible chat completion request.  The completion-param fields are derived from any-llm's ``CompletionParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. Fields below either tighten a derived field (``messages``, ``response_format``), declare an OpenAI wire param ``CompletionParams`` does not model (``service_tier``, forwarded as an any-llm ``**kwargs`` param), or add gateway-internal behavior (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) that is stripped before the request is forwarded upstream.
     """ # noqa: E501
     frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     guardrails: Optional[Annotated[List[GuardrailConfig], Field(max_length=8)]] = None
@@ -52,10 +52,11 @@ class ChatCompletionRequest(BaseModel):
     reasoning_effort: Optional[StrictStr] = None
     response_format: Optional[Dict[str, Any]] = None
     seed: Optional[StrictInt] = None
+    service_tier: Optional[StrictStr] = None
     session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     stop: Optional[Stop] = None
     stream: Optional[StrictBool] = False
-    stream_options: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    stream_options: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     tool_choice: Optional[ToolChoice] = None
     tools: Optional[List[ChatCompletionRequestToolsInner]] = None
@@ -63,7 +64,7 @@ class ChatCompletionRequest(BaseModel):
     top_logprobs: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     user: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "model", "n", "parallel_tool_calls", "presence_penalty", "reasoning_effort", "response_format", "seed", "session_label", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
+    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "model", "n", "parallel_tool_calls", "presence_penalty", "reasoning_effort", "response_format", "seed", "service_tier", "session_label", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
 
     @field_validator('reasoning_effort')
     def reasoning_effort_validate_enum(cls, value):
@@ -223,6 +224,11 @@ class ChatCompletionRequest(BaseModel):
         if self.seed is None and "seed" in self.model_fields_set:
             _dict['seed'] = None
 
+        # set to None if service_tier (nullable) is None
+        # and model_fields_set contains the field
+        if self.service_tier is None and "service_tier" in self.model_fields_set:
+            _dict['service_tier'] = None
+
         # set to None if session_label (nullable) is None
         # and model_fields_set contains the field
         if self.session_label is None and "session_label" in self.model_fields_set:
@@ -302,6 +308,7 @@ class ChatCompletionRequest(BaseModel):
             "reasoning_effort": obj.get("reasoning_effort"),
             "response_format": obj.get("response_format"),
             "seed": obj.get("seed"),
+            "service_tier": obj.get("service_tier"),
             "session_label": obj.get("session_label"),
             "stop": Stop.from_dict(obj["stop"]) if obj.get("stop") is not None else None,
             "stream": obj.get("stream") if obj.get("stream") is not None else False,

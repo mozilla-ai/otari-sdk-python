@@ -31,7 +31,7 @@ class ModerationResult(BaseModel):
     category_applied_input_types: Optional[Dict[str, List[StrictStr]]] = None
     category_scores: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = None
     flagged: StrictBool
-    provider_raw: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    provider_raw: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     __properties: ClassVar[List[str]] = ["categories", "category_applied_input_types", "category_scores", "flagged", "provider_raw"]
 
     model_config = ConfigDict(

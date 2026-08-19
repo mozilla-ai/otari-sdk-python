@@ -23,6 +23,7 @@ __all__ = [
     "AudioApi",
     "AuthApi",
     "BatchesApi",
+    "BootstrapApi",
     "BudgetsApi",
     "ChatApi",
     "EmbeddingsApi",
@@ -33,6 +34,7 @@ __all__ = [
     "MessagesApi",
     "ModelsApi",
     "ModerationsApi",
+    "OrganizationsApi",
     "OtelApi",
     "PricingApi",
     "ProvidersApi",
@@ -40,11 +42,13 @@ __all__ = [
     "ResponsesApi",
     "RoutingApi",
     "SearchApi",
+    "SearchToolsApi",
     "SettingsApi",
     "ToolSettingsApi",
     "ToolsApi",
     "UsageApi",
     "UsersApi",
+    "WorkspacesApi",
     "ApiResponse",
     "ApiClient",
     "Configuration",
@@ -54,14 +58,32 @@ __all__ = [
     "ApiKeyError",
     "ApiAttributeError",
     "ApiException",
+    "ActiveOrganizationMemberCreateRequest",
+    "ActiveOrganizationMemberCreateResultPublic",
+    "ActiveOrganizationMemberPublic",
+    "ActiveOrganizationMemberUpdateRequest",
+    "ActiveOrganizationMembersPublic",
+    "ActiveOrganizationUpdateRequest",
+    "AgentTelemetryBehavior",
+    "AgentTelemetryCount",
     "AgentTelemetryDeleteRequest",
     "AgentTelemetryDeleteResult",
+    "AgentTelemetryGroupRow",
+    "AgentTelemetryGroupedSeries",
+    "AgentTelemetryGroupedSeriesPoint",
+    "AgentTelemetryMeasures",
+    "AgentTelemetryOutcomes",
+    "AgentTelemetrySeriesPoint",
+    "AgentTelemetrySummary",
+    "AgentTelemetryToolRow",
+    "AgentTelemetryUsage",
     "AliasRequest",
     "AliasResponse",
     "ApiKeyId",
     "AppliedEditsInner",
     "AudioSpeechRequest",
     "BatchRequestItem",
+    "BillingMeters",
     "BudgetResetLogResponse",
     "BudgetResponse",
     "CCChatCompletionAudio",
@@ -99,6 +121,7 @@ __all__ = [
     "ChatCompletionRequestToolsInner",
     "ChatMessageInput",
     "ConfigField",
+    "ConfigSearchToolSchema",
     "Content",
     "Content1",
     "Content10",
@@ -126,9 +149,11 @@ __all__ = [
     "CreateEmbeddingResponse",
     "CreateKeyRequest",
     "CreateKeyResponse",
+    "CreateSearchToolRequest",
     "CreateSessionRequest",
     "CreateStoredProviderRequest",
     "CreateUserRequest",
+    "DeploymentBootstrap",
     "DiscoverableModel",
     "DiscoverableModelsResponse",
     "DiscoverableProvider",
@@ -286,6 +311,7 @@ __all__ = [
     "MSGInputAudio",
     "ManagedTool",
     "McpServerConfig",
+    "Message",
     "MessageResponse",
     "MessagesRequest",
     "Model",
@@ -298,6 +324,8 @@ __all__ = [
     "ModerationRequest",
     "ModerationResponse",
     "ModerationResult",
+    "OrganizationMembershipContextPublic",
+    "OrganizationPublic",
     "PolicyRequest",
     "PolicyResponse",
     "PoolStatus",
@@ -306,7 +334,8 @@ __all__ = [
     "PricingRefreshPreviewResponse",
     "PricingResponse",
     "PricingTier",
-    "PricingTiersInnerValue",
+    "PricingTiersInner",
+    "PricingTiersInnerAnyOfValue",
     "ProviderCapabilitiesSchema",
     "ProviderHealthResponse",
     "ProviderHealthSchema",
@@ -319,35 +348,45 @@ __all__ = [
     "RankResponse",
     "RecordedPool",
     "ReencryptProviderCredentialsResponse",
+    "ReencryptSearchToolsResponse",
     "RerankRequest",
     "RerankResponse",
     "ResponsesRequest",
     "RotateMasterKeyResponse",
     "RouterStatus",
     "ScoredExample",
+    "SearchProviderSchema",
     "SearchRequest",
     "SearchResponse",
     "SearchResultItem",
+    "SearchToolsResponse",
     "SessionResponse",
     "SetPricingRequest",
     "Source",
     "Source1",
     "Stop",
     "StoredProviderResponse",
+    "StoredSearchToolSchema",
     "System",
     "TaskPool",
     "TestProviderRequest",
     "TestProviderResponse",
     "TestServiceRequest",
     "TestServiceResponse",
+    "TokenChargeLine",
     "ToolCallsInner",
     "ToolChoice",
     "ToolChoice1",
+    "ToolMeter",
     "ToolSettingField",
     "ToolSettingsResponse",
     "ToolsResponse",
+    "UnitChargeLine",
+    "Units",
+    "Units1",
     "UpdateBudgetRequest",
     "UpdateKeyRequest",
+    "UpdateSearchToolRequest",
     "UpdateSettingsRequest",
     "UpdateStoredProviderRequest",
     "UpdateToolSettingsRequest",
@@ -356,7 +395,7 @@ __all__ = [
     "UsageDeleteRequest",
     "UsageDeleteResult",
     "UsageEntry",
-    "UsageEntryPricingBreakdownInnerValue",
+    "UsageEntryPricingBreakdownInner",
     "UsageErrorCodeRow",
     "UsageGroupRow",
     "UsageGroupedSeries",
@@ -373,6 +412,13 @@ __all__ = [
     "ValidationError",
     "Value",
     "Value1",
+    "WorkspaceAssignmentRequest",
+    "WorkspaceCreate",
+    "WorkspaceMemberPublic",
+    "WorkspaceMembersPublic",
+    "WorkspacePublic",
+    "WorkspaceUpdate",
+    "WorkspacesPublic",
 ]
 
 # import apis into sdk package
@@ -381,6 +427,7 @@ from otari._client.api.aliases_api import AliasesApi as AliasesApi
 from otari._client.api.audio_api import AudioApi as AudioApi
 from otari._client.api.auth_api import AuthApi as AuthApi
 from otari._client.api.batches_api import BatchesApi as BatchesApi
+from otari._client.api.bootstrap_api import BootstrapApi as BootstrapApi
 from otari._client.api.budgets_api import BudgetsApi as BudgetsApi
 from otari._client.api.chat_api import ChatApi as ChatApi
 from otari._client.api.embeddings_api import EmbeddingsApi as EmbeddingsApi
@@ -391,6 +438,7 @@ from otari._client.api.keys_api import KeysApi as KeysApi
 from otari._client.api.messages_api import MessagesApi as MessagesApi
 from otari._client.api.models_api import ModelsApi as ModelsApi
 from otari._client.api.moderations_api import ModerationsApi as ModerationsApi
+from otari._client.api.organizations_api import OrganizationsApi as OrganizationsApi
 from otari._client.api.otel_api import OtelApi as OtelApi
 from otari._client.api.pricing_api import PricingApi as PricingApi
 from otari._client.api.providers_api import ProvidersApi as ProvidersApi
@@ -398,11 +446,13 @@ from otari._client.api.rerank_api import RerankApi as RerankApi
 from otari._client.api.responses_api import ResponsesApi as ResponsesApi
 from otari._client.api.routing_api import RoutingApi as RoutingApi
 from otari._client.api.search_api import SearchApi as SearchApi
+from otari._client.api.search_tools_api import SearchToolsApi as SearchToolsApi
 from otari._client.api.settings_api import SettingsApi as SettingsApi
 from otari._client.api.tool_settings_api import ToolSettingsApi as ToolSettingsApi
 from otari._client.api.tools_api import ToolsApi as ToolsApi
 from otari._client.api.usage_api import UsageApi as UsageApi
 from otari._client.api.users_api import UsersApi as UsersApi
+from otari._client.api.workspaces_api import WorkspacesApi as WorkspacesApi
 
 # import ApiClient
 from otari._client.api_response import ApiResponse as ApiResponse
@@ -416,14 +466,32 @@ from otari._client.exceptions import ApiAttributeError as ApiAttributeError
 from otari._client.exceptions import ApiException as ApiException
 
 # import models into sdk package
+from otari._client.models.active_organization_member_create_request import ActiveOrganizationMemberCreateRequest as ActiveOrganizationMemberCreateRequest
+from otari._client.models.active_organization_member_create_result_public import ActiveOrganizationMemberCreateResultPublic as ActiveOrganizationMemberCreateResultPublic
+from otari._client.models.active_organization_member_public import ActiveOrganizationMemberPublic as ActiveOrganizationMemberPublic
+from otari._client.models.active_organization_member_update_request import ActiveOrganizationMemberUpdateRequest as ActiveOrganizationMemberUpdateRequest
+from otari._client.models.active_organization_members_public import ActiveOrganizationMembersPublic as ActiveOrganizationMembersPublic
+from otari._client.models.active_organization_update_request import ActiveOrganizationUpdateRequest as ActiveOrganizationUpdateRequest
+from otari._client.models.agent_telemetry_behavior import AgentTelemetryBehavior as AgentTelemetryBehavior
+from otari._client.models.agent_telemetry_count import AgentTelemetryCount as AgentTelemetryCount
 from otari._client.models.agent_telemetry_delete_request import AgentTelemetryDeleteRequest as AgentTelemetryDeleteRequest
 from otari._client.models.agent_telemetry_delete_result import AgentTelemetryDeleteResult as AgentTelemetryDeleteResult
+from otari._client.models.agent_telemetry_group_row import AgentTelemetryGroupRow as AgentTelemetryGroupRow
+from otari._client.models.agent_telemetry_grouped_series import AgentTelemetryGroupedSeries as AgentTelemetryGroupedSeries
+from otari._client.models.agent_telemetry_grouped_series_point import AgentTelemetryGroupedSeriesPoint as AgentTelemetryGroupedSeriesPoint
+from otari._client.models.agent_telemetry_measures import AgentTelemetryMeasures as AgentTelemetryMeasures
+from otari._client.models.agent_telemetry_outcomes import AgentTelemetryOutcomes as AgentTelemetryOutcomes
+from otari._client.models.agent_telemetry_series_point import AgentTelemetrySeriesPoint as AgentTelemetrySeriesPoint
+from otari._client.models.agent_telemetry_summary import AgentTelemetrySummary as AgentTelemetrySummary
+from otari._client.models.agent_telemetry_tool_row import AgentTelemetryToolRow as AgentTelemetryToolRow
+from otari._client.models.agent_telemetry_usage import AgentTelemetryUsage as AgentTelemetryUsage
 from otari._client.models.alias_request import AliasRequest as AliasRequest
 from otari._client.models.alias_response import AliasResponse as AliasResponse
 from otari._client.models.api_key_id import ApiKeyId as ApiKeyId
 from otari._client.models.applied_edits_inner import AppliedEditsInner as AppliedEditsInner
 from otari._client.models.audio_speech_request import AudioSpeechRequest as AudioSpeechRequest
 from otari._client.models.batch_request_item import BatchRequestItem as BatchRequestItem
+from otari._client.models.billing_meters import BillingMeters as BillingMeters
 from otari._client.models.budget_reset_log_response import BudgetResetLogResponse as BudgetResetLogResponse
 from otari._client.models.budget_response import BudgetResponse as BudgetResponse
 from otari._client.models.cc_chat_completion_audio import CCChatCompletionAudio as CCChatCompletionAudio
@@ -461,6 +529,7 @@ from otari._client.models.chat_completion_request import ChatCompletionRequest a
 from otari._client.models.chat_completion_request_tools_inner import ChatCompletionRequestToolsInner as ChatCompletionRequestToolsInner
 from otari._client.models.chat_message_input import ChatMessageInput as ChatMessageInput
 from otari._client.models.config_field import ConfigField as ConfigField
+from otari._client.models.config_search_tool_schema import ConfigSearchToolSchema as ConfigSearchToolSchema
 from otari._client.models.content import Content as Content
 from otari._client.models.content1 import Content1 as Content1
 from otari._client.models.content10 import Content10 as Content10
@@ -488,9 +557,11 @@ from otari._client.models.create_budget_request import CreateBudgetRequest as Cr
 from otari._client.models.create_embedding_response import CreateEmbeddingResponse as CreateEmbeddingResponse
 from otari._client.models.create_key_request import CreateKeyRequest as CreateKeyRequest
 from otari._client.models.create_key_response import CreateKeyResponse as CreateKeyResponse
+from otari._client.models.create_search_tool_request import CreateSearchToolRequest as CreateSearchToolRequest
 from otari._client.models.create_session_request import CreateSessionRequest as CreateSessionRequest
 from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest as CreateStoredProviderRequest
 from otari._client.models.create_user_request import CreateUserRequest as CreateUserRequest
+from otari._client.models.deployment_bootstrap import DeploymentBootstrap as DeploymentBootstrap
 from otari._client.models.discoverable_model import DiscoverableModel as DiscoverableModel
 from otari._client.models.discoverable_models_response import DiscoverableModelsResponse as DiscoverableModelsResponse
 from otari._client.models.discoverable_provider import DiscoverableProvider as DiscoverableProvider
@@ -648,6 +719,7 @@ from otari._client.models.msg_image_url import MSGImageURL as MSGImageURL
 from otari._client.models.msg_input_audio import MSGInputAudio as MSGInputAudio
 from otari._client.models.managed_tool import ManagedTool as ManagedTool
 from otari._client.models.mcp_server_config import McpServerConfig as McpServerConfig
+from otari._client.models.message import Message as Message
 from otari._client.models.message_response import MessageResponse as MessageResponse
 from otari._client.models.messages_request import MessagesRequest as MessagesRequest
 from otari._client.models.model import Model as Model
@@ -660,6 +732,8 @@ from otari._client.models.model_pricing_info import ModelPricingInfo as ModelPri
 from otari._client.models.moderation_request import ModerationRequest as ModerationRequest
 from otari._client.models.moderation_response import ModerationResponse as ModerationResponse
 from otari._client.models.moderation_result import ModerationResult as ModerationResult
+from otari._client.models.organization_membership_context_public import OrganizationMembershipContextPublic as OrganizationMembershipContextPublic
+from otari._client.models.organization_public import OrganizationPublic as OrganizationPublic
 from otari._client.models.policy_request import PolicyRequest as PolicyRequest
 from otari._client.models.policy_response import PolicyResponse as PolicyResponse
 from otari._client.models.pool_status import PoolStatus as PoolStatus
@@ -668,7 +742,8 @@ from otari._client.models.pricing_refresh_confirmation_response import PricingRe
 from otari._client.models.pricing_refresh_preview_response import PricingRefreshPreviewResponse as PricingRefreshPreviewResponse
 from otari._client.models.pricing_response import PricingResponse as PricingResponse
 from otari._client.models.pricing_tier import PricingTier as PricingTier
-from otari._client.models.pricing_tiers_inner_value import PricingTiersInnerValue as PricingTiersInnerValue
+from otari._client.models.pricing_tiers_inner import PricingTiersInner as PricingTiersInner
+from otari._client.models.pricing_tiers_inner_any_of_value import PricingTiersInnerAnyOfValue as PricingTiersInnerAnyOfValue
 from otari._client.models.provider_capabilities_schema import ProviderCapabilitiesSchema as ProviderCapabilitiesSchema
 from otari._client.models.provider_health_response import ProviderHealthResponse as ProviderHealthResponse
 from otari._client.models.provider_health_schema import ProviderHealthSchema as ProviderHealthSchema
@@ -681,35 +756,45 @@ from otari._client.models.rank_request import RankRequest as RankRequest
 from otari._client.models.rank_response import RankResponse as RankResponse
 from otari._client.models.recorded_pool import RecordedPool as RecordedPool
 from otari._client.models.reencrypt_provider_credentials_response import ReencryptProviderCredentialsResponse as ReencryptProviderCredentialsResponse
+from otari._client.models.reencrypt_search_tools_response import ReencryptSearchToolsResponse as ReencryptSearchToolsResponse
 from otari._client.models.rerank_request import RerankRequest as RerankRequest
 from otari._client.models.rerank_response import RerankResponse as RerankResponse
 from otari._client.models.responses_request import ResponsesRequest as ResponsesRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse as RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus as RouterStatus
 from otari._client.models.scored_example import ScoredExample as ScoredExample
+from otari._client.models.search_provider_schema import SearchProviderSchema as SearchProviderSchema
 from otari._client.models.search_request import SearchRequest as SearchRequest
 from otari._client.models.search_response import SearchResponse as SearchResponse
 from otari._client.models.search_result_item import SearchResultItem as SearchResultItem
+from otari._client.models.search_tools_response import SearchToolsResponse as SearchToolsResponse
 from otari._client.models.session_response import SessionResponse as SessionResponse
 from otari._client.models.set_pricing_request import SetPricingRequest as SetPricingRequest
 from otari._client.models.source import Source as Source
 from otari._client.models.source1 import Source1 as Source1
 from otari._client.models.stop import Stop as Stop
 from otari._client.models.stored_provider_response import StoredProviderResponse as StoredProviderResponse
+from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema as StoredSearchToolSchema
 from otari._client.models.system import System as System
 from otari._client.models.task_pool import TaskPool as TaskPool
 from otari._client.models.test_provider_request import TestProviderRequest as TestProviderRequest
 from otari._client.models.test_provider_response import TestProviderResponse as TestProviderResponse
 from otari._client.models.test_service_request import TestServiceRequest as TestServiceRequest
 from otari._client.models.test_service_response import TestServiceResponse as TestServiceResponse
+from otari._client.models.token_charge_line import TokenChargeLine as TokenChargeLine
 from otari._client.models.tool_calls_inner import ToolCallsInner as ToolCallsInner
 from otari._client.models.tool_choice import ToolChoice as ToolChoice
 from otari._client.models.tool_choice1 import ToolChoice1 as ToolChoice1
+from otari._client.models.tool_meter import ToolMeter as ToolMeter
 from otari._client.models.tool_setting_field import ToolSettingField as ToolSettingField
 from otari._client.models.tool_settings_response import ToolSettingsResponse as ToolSettingsResponse
 from otari._client.models.tools_response import ToolsResponse as ToolsResponse
+from otari._client.models.unit_charge_line import UnitChargeLine as UnitChargeLine
+from otari._client.models.units import Units as Units
+from otari._client.models.units1 import Units1 as Units1
 from otari._client.models.update_budget_request import UpdateBudgetRequest as UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest as UpdateKeyRequest
+from otari._client.models.update_search_tool_request import UpdateSearchToolRequest as UpdateSearchToolRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest as UpdateSettingsRequest
 from otari._client.models.update_stored_provider_request import UpdateStoredProviderRequest as UpdateStoredProviderRequest
 from otari._client.models.update_tool_settings_request import UpdateToolSettingsRequest as UpdateToolSettingsRequest
@@ -718,7 +803,7 @@ from otari._client.models.usage_count import UsageCount as UsageCount
 from otari._client.models.usage_delete_request import UsageDeleteRequest as UsageDeleteRequest
 from otari._client.models.usage_delete_result import UsageDeleteResult as UsageDeleteResult
 from otari._client.models.usage_entry import UsageEntry as UsageEntry
-from otari._client.models.usage_entry_pricing_breakdown_inner_value import UsageEntryPricingBreakdownInnerValue as UsageEntryPricingBreakdownInnerValue
+from otari._client.models.usage_entry_pricing_breakdown_inner import UsageEntryPricingBreakdownInner as UsageEntryPricingBreakdownInner
 from otari._client.models.usage_error_code_row import UsageErrorCodeRow as UsageErrorCodeRow
 from otari._client.models.usage_group_row import UsageGroupRow as UsageGroupRow
 from otari._client.models.usage_grouped_series import UsageGroupedSeries as UsageGroupedSeries
@@ -735,4 +820,11 @@ from otari._client.models.user_response import UserResponse as UserResponse
 from otari._client.models.validation_error import ValidationError as ValidationError
 from otari._client.models.value import Value as Value
 from otari._client.models.value1 import Value1 as Value1
+from otari._client.models.workspace_assignment_request import WorkspaceAssignmentRequest as WorkspaceAssignmentRequest
+from otari._client.models.workspace_create import WorkspaceCreate as WorkspaceCreate
+from otari._client.models.workspace_member_public import WorkspaceMemberPublic as WorkspaceMemberPublic
+from otari._client.models.workspace_members_public import WorkspaceMembersPublic as WorkspaceMembersPublic
+from otari._client.models.workspace_public import WorkspacePublic as WorkspacePublic
+from otari._client.models.workspace_update import WorkspaceUpdate as WorkspaceUpdate
+from otari._client.models.workspaces_public import WorkspacesPublic as WorkspacesPublic
 

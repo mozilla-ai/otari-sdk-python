@@ -37,8 +37,8 @@ class CCChatCompletionMessage(BaseModel):
     audio: Optional[CCChatCompletionAudio] = None
     function_call: Optional[CCFunctionCall] = None
     tool_calls: Optional[List[CCChatCompletionMessageToolCallsInner]] = None
-    reasoning: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
-    extra_content: Optional[Dict[str, Any]] = Field(default=None, description="An unsaved policy body to explain.")
+    reasoning: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
+    extra_content: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["content", "refusal", "role", "annotations", "audio", "function_call", "tool_calls", "reasoning", "extra_content"]
 

@@ -17,9 +17,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from otari._client.models.usage_entry_pricing_breakdown_inner_value import UsageEntryPricingBreakdownInnerValue
+from otari._client.models.billing_meters import BillingMeters
+from otari._client.models.usage_entry_pricing_breakdown_inner import UsageEntryPricingBreakdownInner
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,7 +33,7 @@ class UsageEntry(BaseModel):
     api_key_name: Optional[StrictStr] = None
     attempt_count: Optional[StrictInt] = None
     attempt_position: Optional[StrictInt] = None
-    billing_meters: Optional[Dict[str, Any]] = Field(description="An unsaved policy body to explain.")
+    billing_meters: Optional[BillingMeters]
     cache_read_tokens: Optional[StrictInt]
     cache_write_1h_tokens: Optional[StrictInt]
     cache_write_tokens: Optional[StrictInt]
@@ -45,7 +46,7 @@ class UsageEntry(BaseModel):
     latency_ms: Optional[StrictInt]
     model: StrictStr
     policy_name: Optional[StrictStr] = None
-    pricing_breakdown: Optional[List[Dict[str, UsageEntryPricingBreakdownInnerValue]]]
+    pricing_breakdown: Optional[List[UsageEntryPricingBreakdownInner]]
     prompt_tokens: Optional[StrictInt]
     provider: Optional[StrictStr]
     request_group_id: Optional[StrictStr] = None
@@ -99,14 +100,15 @@ class UsageEntry(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in pricing_breakdown (list of dict)
+        # override the default output from pydantic by calling `to_dict()` of billing_meters
+        if self.billing_meters:
+            _dict['billing_meters'] = self.billing_meters.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in pricing_breakdown (list)
         _items = []
         if self.pricing_breakdown:
             for _item_pricing_breakdown in self.pricing_breakdown:
                 if _item_pricing_breakdown:
-                    _items.append(
-                         {_inner_key: _inner_value.to_dict() for _inner_key, _inner_value in _item_pricing_breakdown.items()}
-                    )
+                    _items.append(_item_pricing_breakdown.to_dict())
             _dict['pricing_breakdown'] = _items
         # set to None if api_key_id (nullable) is None
         # and model_fields_set contains the field
@@ -239,7 +241,7 @@ class UsageEntry(BaseModel):
             "api_key_name": obj.get("api_key_name"),
             "attempt_count": obj.get("attempt_count"),
             "attempt_position": obj.get("attempt_position"),
-            "billing_meters": obj.get("billing_meters"),
+            "billing_meters": BillingMeters.from_dict(obj["billing_meters"]) if obj.get("billing_meters") is not None else None,
             "cache_read_tokens": obj.get("cache_read_tokens"),
             "cache_write_1h_tokens": obj.get("cache_write_1h_tokens"),
             "cache_write_tokens": obj.get("cache_write_tokens"),
@@ -252,10 +254,7 @@ class UsageEntry(BaseModel):
             "latency_ms": obj.get("latency_ms"),
             "model": obj.get("model"),
             "policy_name": obj.get("policy_name"),
-            "pricing_breakdown": [
-                    {_inner_key: UsageEntryPricingBreakdownInnerValue.from_dict(_inner_value) for _inner_key, _inner_value in _item.items()}
-                    for _item in obj["pricing_breakdown"]
-                ] if obj.get("pricing_breakdown") is not None else None,
+            "pricing_breakdown": [UsageEntryPricingBreakdownInner.from_dict(_item) for _item in obj["pricing_breakdown"]] if obj.get("pricing_breakdown") is not None else None,
             "prompt_tokens": obj.get("prompt_tokens"),
             "provider": obj.get("provider"),
             "request_group_id": obj.get("request_group_id"),

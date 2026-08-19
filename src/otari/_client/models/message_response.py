@@ -41,7 +41,7 @@ class MessageResponse(BaseModel):
     role: StrictStr
     stop_details: Optional[MRRefusalStopDetails] = None
     stop_reason: Optional[StrictStr] = None
-    stop_sequence: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
+    stop_sequence: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     type: StrictStr
     usage: MRMessageUsage
     context_management: Optional[MRBetaContextManagementResponse] = None

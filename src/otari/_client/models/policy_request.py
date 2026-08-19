@@ -28,9 +28,10 @@ class PolicyRequest(BaseModel):
     Request to create or update a routing policy.
     """ # noqa: E501
     name: StrictStr = Field(description="Model name callers send, e.g. 'fast'.")
+    rename_from: Optional[StrictStr] = Field(default=None, description="Current name of the policy to rename, in the same scope. The stored row keeps its id and created_at and takes `name` and `spec`. Sending it asserts that policy exists, so a name with no stored row is a 404 rather than a create, even when it equals `name`. Omit to create or update the policy named `name`. Renaming changes what callers must send as `model`; usage already recorded keeps the old name.")
     spec: Dict[str, Any] = Field(description="The policy body: select (with exactly one `default` entry, last), optional on_failure and guardrails. Same schema as a `routing.policies` entry in config.yml, and closed to unknown keys, so a typo is a 400 rather than a silently ignored setting.")
     user_id: Optional[StrictStr] = Field(default=None, description="User this policy belongs to. Omit for a global policy every caller sees. A user-scoped policy resolves only for that user and shadows a global one of the same name.")
-    __properties: ClassVar[List[str]] = ["name", "spec", "user_id"]
+    __properties: ClassVar[List[str]] = ["name", "rename_from", "spec", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -71,6 +72,11 @@ class PolicyRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if rename_from (nullable) is None
+        # and model_fields_set contains the field
+        if self.rename_from is None and "rename_from" in self.model_fields_set:
+            _dict['rename_from'] = None
+
         # set to None if user_id (nullable) is None
         # and model_fields_set contains the field
         if self.user_id is None and "user_id" in self.model_fields_set:
@@ -89,6 +95,7 @@ class PolicyRequest(BaseModel):
 
         _obj = cls.model_validate({
             "name": obj.get("name"),
+            "rename_from": obj.get("rename_from"),
             "spec": obj.get("spec"),
             "user_id": obj.get("user_id")
         })

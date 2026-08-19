@@ -33,7 +33,7 @@ class MRMessageUsage(BaseModel):
     cache_creation: Optional[MRCacheCreation] = None
     cache_creation_input_tokens: Optional[StrictInt] = Field(default=None, description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")
     cache_read_input_tokens: Optional[StrictInt] = Field(default=None, description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")
-    inference_geo: Optional[StrictStr] = Field(default=None, description="Delete the alias scoped to this user. Omit to delete the global alias of that name.")
+    inference_geo: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     input_tokens: StrictInt
     output_tokens: StrictInt
     server_tool_use: Optional[MRServerToolUsage] = None
