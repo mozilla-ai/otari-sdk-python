@@ -13,6 +13,7 @@ from otari._client.api.embeddings_api import EmbeddingsApi
 from otari._client.api.files_api import FilesApi
 from otari._client.api.health_api import HealthApi
 from otari._client.api.images_api import ImagesApi
+from otari._client.api.invitations_api import InvitationsApi
 from otari._client.api.keys_api import KeysApi
 from otari._client.api.messages_api import MessagesApi
 from otari._client.api.models_api import ModelsApi
@@ -33,5 +34,6 @@ from otari._client.api.tool_settings_api import ToolSettingsApi
 from otari._client.api.tools_api import ToolsApi
 from otari._client.api.usage_api import UsageApi
 from otari._client.api.users_api import UsersApi
+from otari._client.api.workspace_member_budget_policies_api import WorkspaceMemberBudgetPoliciesApi
 from otari._client.api.workspaces_api import WorkspacesApi
 

@@ -17,22 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, StrictInt
 from typing import Any, ClassVar, Dict, List
-from uuid import UUID
+from otari._client.models.workspace_member_budget_policy_public import WorkspaceMemberBudgetPolicyPublic
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SessionResponse(BaseModel):
+class WorkspaceMemberBudgetPoliciesPublic(BaseModel):
     """
-    A freshly minted dashboard session (the token travels only in the cookie).
+    WorkspaceMemberBudgetPoliciesPublic
     """ # noqa: E501
-    active_organization_id: UUID = Field(description="The organization that identity is acting in, which scopes every tenancy surface.")
-    expires_at: datetime = Field(description="When the session cookie stops being accepted.")
-    user_id: UUID = Field(description="The identity this session speaks for.")
-    __properties: ClassVar[List[str]] = ["active_organization_id", "expires_at", "user_id"]
+    count: StrictInt
+    data: List[WorkspaceMemberBudgetPolicyPublic]
+    __properties: ClassVar[List[str]] = ["count", "data"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +50,7 @@ class SessionResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SessionResponse from a JSON string"""
+        """Create an instance of WorkspaceMemberBudgetPoliciesPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,11 +71,18 @@ class SessionResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in data (list)
+        _items = []
+        if self.data:
+            for _item_data in self.data:
+                if _item_data:
+                    _items.append(_item_data.to_dict())
+            _dict['data'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SessionResponse from a dict"""
+        """Create an instance of WorkspaceMemberBudgetPoliciesPublic from a dict"""
         if obj is None:
             return None
 
@@ -85,9 +90,8 @@ class SessionResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "active_organization_id": obj.get("active_organization_id"),
-            "expires_at": obj.get("expires_at"),
-            "user_id": obj.get("user_id")
+            "count": obj.get("count"),
+            "data": [WorkspaceMemberBudgetPolicyPublic.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None
         })
         return _obj
 

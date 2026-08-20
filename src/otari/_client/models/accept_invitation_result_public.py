@@ -17,22 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
-from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SessionResponse(BaseModel):
+class AcceptInvitationResultPublic(BaseModel):
     """
-    A freshly minted dashboard session (the token travels only in the cookie).
+    What accepting produces: enough for the accept page to say where the visitor landed.  No session and no token: accepting resolves the membership to ``active`` and stops there. Otari has no per-user sign-in yet, so there is nothing to sign this visitor into; they see the sign-in screen next, the same as anyone else added to an organization before that flow exists.
     """ # noqa: E501
-    active_organization_id: UUID = Field(description="The organization that identity is acting in, which scopes every tenancy surface.")
-    expires_at: datetime = Field(description="When the session cookie stops being accepted.")
-    user_id: UUID = Field(description="The identity this session speaks for.")
-    __properties: ClassVar[List[str]] = ["active_organization_id", "expires_at", "user_id"]
+    organization_name: StrictStr
+    role: StrictStr
+    __properties: ClassVar[List[str]] = ["organization_name", "role"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +49,7 @@ class SessionResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SessionResponse from a JSON string"""
+        """Create an instance of AcceptInvitationResultPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,7 +74,7 @@ class SessionResponse(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SessionResponse from a dict"""
+        """Create an instance of AcceptInvitationResultPublic from a dict"""
         if obj is None:
             return None
 
@@ -85,9 +82,8 @@ class SessionResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "active_organization_id": obj.get("active_organization_id"),
-            "expires_at": obj.get("expires_at"),
-            "user_id": obj.get("user_id")
+            "organization_name": obj.get("organization_name"),
+            "role": obj.get("role")
         })
         return _obj
 

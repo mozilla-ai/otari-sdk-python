@@ -17,22 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
-from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SessionResponse(BaseModel):
+class AcceptInvitationRequest(BaseModel):
     """
-    A freshly minted dashboard session (the token travels only in the cookie).
+    AcceptInvitationRequest
     """ # noqa: E501
-    active_organization_id: UUID = Field(description="The organization that identity is acting in, which scopes every tenancy surface.")
-    expires_at: datetime = Field(description="When the session cookie stops being accepted.")
-    user_id: UUID = Field(description="The identity this session speaks for.")
-    __properties: ClassVar[List[str]] = ["active_organization_id", "expires_at", "user_id"]
+    token: StrictStr
+    __properties: ClassVar[List[str]] = ["token"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +48,7 @@ class SessionResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SessionResponse from a JSON string"""
+        """Create an instance of AcceptInvitationRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,7 +73,7 @@ class SessionResponse(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SessionResponse from a dict"""
+        """Create an instance of AcceptInvitationRequest from a dict"""
         if obj is None:
             return None
 
@@ -85,9 +81,7 @@ class SessionResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "active_organization_id": obj.get("active_organization_id"),
-            "expires_at": obj.get("expires_at"),
-            "user_id": obj.get("user_id")
+            "token": obj.get("token")
         })
         return _obj
 
