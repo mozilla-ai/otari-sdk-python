@@ -1186,7 +1186,7 @@ class ScopedBudgetsApi:
     ) -> ScopedBudgetResponse:
         """Update Scoped Budget
 
-        Update a scoped budget's label, limit, or period length.  The scope and the provider narrowing are not editable: changing either would move the ceiling to a different identity while carrying its spend, which is a delete and a create, not an update.
+        Update a scoped budget's label, limit, or period.  The scope and the provider narrowing are not editable: changing either would move the ceiling to a different identity while carrying its spend, which is a delete and a create, not an update.
 
         :param budget_id: (required)
         :type budget_id: str
@@ -1258,7 +1258,7 @@ class ScopedBudgetsApi:
     ) -> ApiResponse[ScopedBudgetResponse]:
         """Update Scoped Budget
 
-        Update a scoped budget's label, limit, or period length.  The scope and the provider narrowing are not editable: changing either would move the ceiling to a different identity while carrying its spend, which is a delete and a create, not an update.
+        Update a scoped budget's label, limit, or period.  The scope and the provider narrowing are not editable: changing either would move the ceiling to a different identity while carrying its spend, which is a delete and a create, not an update.
 
         :param budget_id: (required)
         :type budget_id: str
@@ -1330,7 +1330,7 @@ class ScopedBudgetsApi:
     ) -> RESTResponseType:
         """Update Scoped Budget
 
-        Update a scoped budget's label, limit, or period length.  The scope and the provider narrowing are not editable: changing either would move the ceiling to a different identity while carrying its spend, which is a delete and a create, not an update.
+        Update a scoped budget's label, limit, or period.  The scope and the provider narrowing are not editable: changing either would move the ceiling to a different identity while carrying its spend, which is a delete and a create, not an update.
 
         :param budget_id: (required)
         :type budget_id: str

@@ -37,10 +37,11 @@ class ScopedBudgetResponse(BaseModel):
     period_start: Optional[StrictStr]
     provider_key_id: Optional[StrictStr]
     reserved_spend: Union[StrictFloat, StrictInt]
+    reset_alignment: Optional[StrictStr]
     scope_id: StrictStr
     scope_type: StrictStr
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "created_at", "current_spend", "id", "max_budget", "name", "period_end", "period_start", "provider_key_id", "reserved_spend", "scope_id", "scope_type", "updated_at"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "created_at", "current_spend", "id", "max_budget", "name", "period_end", "period_start", "provider_key_id", "reserved_spend", "reset_alignment", "scope_id", "scope_type", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -111,6 +112,11 @@ class ScopedBudgetResponse(BaseModel):
         if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
             _dict['provider_key_id'] = None
 
+        # set to None if reset_alignment (nullable) is None
+        # and model_fields_set contains the field
+        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
+            _dict['reset_alignment'] = None
+
         return _dict
 
     @classmethod
@@ -133,6 +139,7 @@ class ScopedBudgetResponse(BaseModel):
             "period_start": obj.get("period_start"),
             "provider_key_id": obj.get("provider_key_id"),
             "reserved_spend": obj.get("reserved_spend"),
+            "reset_alignment": obj.get("reset_alignment"),
             "scope_id": obj.get("scope_id"),
             "scope_type": obj.get("scope_type"),
             "updated_at": obj.get("updated_at")

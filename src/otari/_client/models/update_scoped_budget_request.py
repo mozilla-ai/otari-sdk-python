@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -31,7 +31,18 @@ class UpdateScopedBudgetRequest(BaseModel):
     budget_duration_sec: Optional[Annotated[int, Field(strict=True, gt=0)]] = None
     max_budget: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = None
     name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = None
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name"]
+    reset_alignment: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "reset_alignment"]
+
+    @field_validator('reset_alignment')
+    def reset_alignment_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['calendar_day', 'calendar_week', 'calendar_month']):
+            raise ValueError("must be one of enum values ('calendar_day', 'calendar_week', 'calendar_month')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,6 +98,11 @@ class UpdateScopedBudgetRequest(BaseModel):
         if self.name is None and "name" in self.model_fields_set:
             _dict['name'] = None
 
+        # set to None if reset_alignment (nullable) is None
+        # and model_fields_set contains the field
+        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
+            _dict['reset_alignment'] = None
+
         return _dict
 
     @classmethod
@@ -101,7 +117,8 @@ class UpdateScopedBudgetRequest(BaseModel):
         _obj = cls.model_validate({
             "budget_duration_sec": obj.get("budget_duration_sec"),
             "max_budget": obj.get("max_budget"),
-            "name": obj.get("name")
+            "name": obj.get("name"),
+            "reset_alignment": obj.get("reset_alignment")
         })
         return _obj
 
