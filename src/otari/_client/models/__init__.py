@@ -282,6 +282,10 @@ from otari._client.models.moderation_request import ModerationRequest
 from otari._client.models.moderation_response import ModerationResponse
 from otari._client.models.moderation_result import ModerationResult
 from otari._client.models.organization_membership_context_public import OrganizationMembershipContextPublic
+from otari._client.models.organization_model_pricing_create import OrganizationModelPricingCreate
+from otari._client.models.organization_model_pricing_public import OrganizationModelPricingPublic
+from otari._client.models.organization_model_pricing_update import OrganizationModelPricingUpdate
+from otari._client.models.organization_model_pricings_public import OrganizationModelPricingsPublic
 from otari._client.models.organization_public import OrganizationPublic
 from otari._client.models.policy_request import PolicyRequest
 from otari._client.models.policy_response import PolicyResponse
