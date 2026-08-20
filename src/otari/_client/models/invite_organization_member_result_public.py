@@ -18,21 +18,37 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SessionResponse(BaseModel):
+class InviteOrganizationMemberResultPublic(BaseModel):
     """
-    A freshly minted dashboard session (the token travels only in the cookie).
+    What issuing an invitation produces, and whether the email actually went out.
     """ # noqa: E501
-    active_organization_id: UUID = Field(description="The organization that identity is acting in, which scopes every tenancy surface.")
-    expires_at: datetime = Field(description="When the session cookie stops being accepted.")
-    user_id: UUID = Field(description="The identity this session speaks for.")
-    __properties: ClassVar[List[str]] = ["active_organization_id", "expires_at", "user_id"]
+    accept_link: StrictStr
+    created_at: datetime
+    email: StrictStr
+    expires_at: datetime
+    invitation_id: UUID
+    mail_sent: StrictBool = Field(description="Whether the invitation email was actually dispatched. False when mail is not configured, or the send itself failed; accept_link is set either way, so the operator can share it themselves rather than the invitation being a dead end.")
+    organization_member_id: UUID
+    role: StrictStr
+    status: Optional[StrictStr] = 'invited'
+    __properties: ClassVar[List[str]] = ["accept_link", "created_at", "email", "expires_at", "invitation_id", "mail_sent", "organization_member_id", "role", "status"]
+
+    @field_validator('status')
+    def status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['invited']):
+            raise ValueError("must be one of enum values ('invited')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +68,7 @@ class SessionResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SessionResponse from a JSON string"""
+        """Create an instance of InviteOrganizationMemberResultPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,7 +93,7 @@ class SessionResponse(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SessionResponse from a dict"""
+        """Create an instance of InviteOrganizationMemberResultPublic from a dict"""
         if obj is None:
             return None
 
@@ -85,9 +101,15 @@ class SessionResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "active_organization_id": obj.get("active_organization_id"),
+            "accept_link": obj.get("accept_link"),
+            "created_at": obj.get("created_at"),
+            "email": obj.get("email"),
             "expires_at": obj.get("expires_at"),
-            "user_id": obj.get("user_id")
+            "invitation_id": obj.get("invitation_id"),
+            "mail_sent": obj.get("mail_sent"),
+            "organization_member_id": obj.get("organization_member_id"),
+            "role": obj.get("role"),
+            "status": obj.get("status") if obj.get("status") is not None else 'invited'
         })
         return _obj
 

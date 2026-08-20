@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,10 +28,11 @@ class DeploymentBootstrap(BaseModel):
     What the dashboard shell needs before it can render anything.
     """ # noqa: E501
     deployment_type: StrictStr = Field(description="Which deployment serves this URL. 'standalone' owns its own data; 'hosted' is otari.ai; 'hybrid' is a gateway attached to otari.ai, which is data-plane only and holds no management surface of its own.")
+    invitation_mail_ready: StrictBool = Field(description="Whether this deployment can actually deliver mail (an invitation's accept link), not merely whether an SMTP host is set: it also needs to know its own public URL to put in one. Named for the specific thing it gates rather than 'mail_enabled', since a deployment could one day have mail configured for something else while this is still false. Lets the dashboard hide or disable the invite affordance instead of offering one that would fail at send time. False for a hybrid gateway, which holds no tenancy state to invite anyone into.")
     management_url: Optional[StrictStr] = Field(description="Where the authoritative control plane lives when it is not this deployment. Set for a hybrid gateway so its landing page can link to otari.ai; null otherwise.")
     session_type: StrictStr = Field(description="The kind of session this deployment issues, not whether the caller holds one. 'local_operator' is the standalone master-key sign-in, 'hosted_user' an otari.ai account, and 'none' a deployment that issues no management session at all.")
     surfaces: List[StrictStr] = Field(description="Management API groups this deployment serves, sorted, which is what its dashboard pages gate on. Named surfaces, not capabilities: capability is otari.ai's word for the entitlement (licensing) axis, and this is the deployment (topology) axis. Empty for a hybrid gateway.")
-    __properties: ClassVar[List[str]] = ["deployment_type", "management_url", "session_type", "surfaces"]
+    __properties: ClassVar[List[str]] = ["deployment_type", "invitation_mail_ready", "management_url", "session_type", "surfaces"]
 
     @field_validator('deployment_type')
     def deployment_type_validate_enum(cls, value):
@@ -104,6 +105,7 @@ class DeploymentBootstrap(BaseModel):
 
         _obj = cls.model_validate({
             "deployment_type": obj.get("deployment_type"),
+            "invitation_mail_ready": obj.get("invitation_mail_ready"),
             "management_url": obj.get("management_url"),
             "session_type": obj.get("session_type"),
             "surfaces": obj.get("surfaces")
