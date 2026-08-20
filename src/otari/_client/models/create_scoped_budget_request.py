@@ -32,9 +32,20 @@ class CreateScopedBudgetRequest(BaseModel):
     max_budget: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Maximum USD spend in the period")
     name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = Field(default=None, description="Admin-facing label for the budget")
     provider_key_id: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Narrow the cap to one provider instance; null caps spend across every provider")
+    reset_alignment: Optional[StrictStr] = Field(default=None, description="Reset on a UTC calendar boundary instead of a fixed number of seconds, which is the only way to express a calendar month. Mutually exclusive with budget_duration_sec")
     scope_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="Id of the capped identity: an organization, workspace, membership row, or API key")
     scope_type: StrictStr = Field(description="Which kind of identity this ceiling caps")
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "provider_key_id", "scope_id", "scope_type"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "provider_key_id", "reset_alignment", "scope_id", "scope_type"]
+
+    @field_validator('reset_alignment')
+    def reset_alignment_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['calendar_day', 'calendar_week', 'calendar_month']):
+            raise ValueError("must be one of enum values ('calendar_day', 'calendar_week', 'calendar_month')")
+        return value
 
     @field_validator('scope_type')
     def scope_type_validate_enum(cls, value):
@@ -102,6 +113,11 @@ class CreateScopedBudgetRequest(BaseModel):
         if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
             _dict['provider_key_id'] = None
 
+        # set to None if reset_alignment (nullable) is None
+        # and model_fields_set contains the field
+        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
+            _dict['reset_alignment'] = None
+
         return _dict
 
     @classmethod
@@ -118,6 +134,7 @@ class CreateScopedBudgetRequest(BaseModel):
             "max_budget": obj.get("max_budget"),
             "name": obj.get("name"),
             "provider_key_id": obj.get("provider_key_id"),
+            "reset_alignment": obj.get("reset_alignment"),
             "scope_id": obj.get("scope_id"),
             "scope_type": obj.get("scope_type")
         })
