@@ -39,6 +39,7 @@ __all__ = [
     "OrganizationsApi",
     "OtelApi",
     "PricingApi",
+    "ProviderKeysApi",
     "ProvidersApi",
     "RerankApi",
     "ResponsesApi",
@@ -335,6 +336,10 @@ __all__ = [
     "ModerationRequest",
     "ModerationResponse",
     "ModerationResult",
+    "OrgProviderKeyCreateRequest",
+    "OrgProviderKeyPublic",
+    "OrgProviderKeyUpdateRequest",
+    "OrgProviderKeysPublic",
     "OrganizationMembershipContextPublic",
     "OrganizationModelPricingCreate",
     "OrganizationModelPricingPublic",
@@ -438,6 +443,11 @@ __all__ = [
     "WorkspaceMemberBudgetPolicyUpdate",
     "WorkspaceMemberPublic",
     "WorkspaceMembersPublic",
+    "WorkspaceProviderKeyOverridePublic",
+    "WorkspaceProviderKeyOverrideRequest",
+    "WorkspaceProviderKeyOverridesPublic",
+    "WorkspaceProviderModelRestrictionRequest",
+    "WorkspaceProviderModelRestrictionsPublic",
     "WorkspacePublic",
     "WorkspaceUpdate",
     "WorkspacesPublic",
@@ -465,6 +475,7 @@ from otari._client.api.organization_pricing_api import OrganizationPricingApi as
 from otari._client.api.organizations_api import OrganizationsApi as OrganizationsApi
 from otari._client.api.otel_api import OtelApi as OtelApi
 from otari._client.api.pricing_api import PricingApi as PricingApi
+from otari._client.api.provider_keys_api import ProviderKeysApi as ProviderKeysApi
 from otari._client.api.providers_api import ProvidersApi as ProvidersApi
 from otari._client.api.rerank_api import RerankApi as RerankApi
 from otari._client.api.responses_api import ResponsesApi as ResponsesApi
@@ -765,6 +776,10 @@ from otari._client.models.model_pricing_info import ModelPricingInfo as ModelPri
 from otari._client.models.moderation_request import ModerationRequest as ModerationRequest
 from otari._client.models.moderation_response import ModerationResponse as ModerationResponse
 from otari._client.models.moderation_result import ModerationResult as ModerationResult
+from otari._client.models.org_provider_key_create_request import OrgProviderKeyCreateRequest as OrgProviderKeyCreateRequest
+from otari._client.models.org_provider_key_public import OrgProviderKeyPublic as OrgProviderKeyPublic
+from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest as OrgProviderKeyUpdateRequest
+from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic as OrgProviderKeysPublic
 from otari._client.models.organization_membership_context_public import OrganizationMembershipContextPublic as OrganizationMembershipContextPublic
 from otari._client.models.organization_model_pricing_create import OrganizationModelPricingCreate as OrganizationModelPricingCreate
 from otari._client.models.organization_model_pricing_public import OrganizationModelPricingPublic as OrganizationModelPricingPublic
@@ -868,6 +883,11 @@ from otari._client.models.workspace_member_budget_policy_public import Workspace
 from otari._client.models.workspace_member_budget_policy_update import WorkspaceMemberBudgetPolicyUpdate as WorkspaceMemberBudgetPolicyUpdate
 from otari._client.models.workspace_member_public import WorkspaceMemberPublic as WorkspaceMemberPublic
 from otari._client.models.workspace_members_public import WorkspaceMembersPublic as WorkspaceMembersPublic
+from otari._client.models.workspace_provider_key_override_public import WorkspaceProviderKeyOverridePublic as WorkspaceProviderKeyOverridePublic
+from otari._client.models.workspace_provider_key_override_request import WorkspaceProviderKeyOverrideRequest as WorkspaceProviderKeyOverrideRequest
+from otari._client.models.workspace_provider_key_overrides_public import WorkspaceProviderKeyOverridesPublic as WorkspaceProviderKeyOverridesPublic
+from otari._client.models.workspace_provider_model_restriction_request import WorkspaceProviderModelRestrictionRequest as WorkspaceProviderModelRestrictionRequest
+from otari._client.models.workspace_provider_model_restrictions_public import WorkspaceProviderModelRestrictionsPublic as WorkspaceProviderModelRestrictionsPublic
 from otari._client.models.workspace_public import WorkspacePublic as WorkspacePublic
 from otari._client.models.workspace_update import WorkspaceUpdate as WorkspaceUpdate
 from otari._client.models.workspaces_public import WorkspacesPublic as WorkspacesPublic
