@@ -22,6 +22,7 @@ from otari._client.api.organization_pricing_api import OrganizationPricingApi
 from otari._client.api.organizations_api import OrganizationsApi
 from otari._client.api.otel_api import OtelApi
 from otari._client.api.pricing_api import PricingApi
+from otari._client.api.provider_keys_api import ProviderKeysApi
 from otari._client.api.providers_api import ProvidersApi
 from otari._client.api.rerank_api import RerankApi
 from otari._client.api.responses_api import ResponsesApi
