@@ -118,6 +118,14 @@ DELETE /v1/auth/session                         # dashboard-only
 # flow. An SDK authenticates with the master key or an API key and never holds
 # a password, so there is nothing here for one to wrap.
 PUT /v1/auth/password                           # dashboard-only
+# Signup, email verification, and password reset (otari#650): claiming a
+# roster identity's dashboard login and recovering it, the same browser-only
+# credential flow PUT /v1/auth/password is. No SDK caller holds a password.
+POST /v1/auth/signup                            # dashboard-only
+POST /v1/auth/verify-email                      # dashboard-only
+POST /v1/auth/resend-verification               # dashboard-only
+POST /v1/auth/password/reset                    # dashboard-only
+POST /v1/auth/password/reset/confirm            # dashboard-only
 # OTLP ingest: OpenTelemetry collector receivers, not an SDK surface.
 POST /v1/logs                                   # otel ingest
 POST /v1/traces                                 # otel ingest
@@ -214,6 +222,13 @@ DELETE /v1/workspaces/{workspace_id}/member-budget-policies/{default_id} # dashb
 GET /v1/workspaces/{workspace_id}/activation                # dashboard-only
 POST /v1/workspaces/{workspace_id}/activation/key           # dashboard-only
 POST /v1/workspaces/{workspace_id}/activation/dismiss       # dashboard-only
+# The workspace's code-execution policy (otari#657) is set by whoever administers
+# the workspace, not by the key-holder running code inside it, so it is the same
+# dashboard-side surface as the rows above. An SDK caller sees its effect on
+# `otari_code_execution` (a 403, a lower iteration ceiling), never the policy row.
+GET /v1/workspaces/{workspace_id}/code-execution-policy                  # dashboard-only
+PUT /v1/workspaces/{workspace_id}/code-execution-policy                  # dashboard-only
+DELETE /v1/workspaces/{workspace_id}/code-execution-policy               # dashboard-only
 # Organization-scoped provider keys (otari-ai#1748, otari#643): the same
 # tenancy-admin surface as the organization/workspace rows just above, and
 # excluded for the same reason. An SDK caller acts inside one workspace with a
@@ -232,3 +247,11 @@ DELETE /v1/workspaces/{workspace_id}/provider-keys/{key_id}               # dash
 GET /v1/workspaces/{workspace_id}/provider-keys/{key_id}/models           # dashboard-only
 POST /v1/workspaces/{workspace_id}/provider-keys/{key_id}/models          # dashboard-only
 DELETE /v1/workspaces/{workspace_id}/provider-keys/{key_id}/models/{model} # dashboard-only
+# Workspace-scoped MCP servers (otari#658): a master-key operator surface for
+# registering the endpoints a workspace's requests may reach, alongside the
+# tenancy admin rows above. An SDK caller does not manage these; it names them
+# by id in `mcp_server_ids` on a completion request, which is already covered.
+GET /v1/workspaces/{workspace_id}/mcp-servers                             # operator surface
+POST /v1/workspaces/{workspace_id}/mcp-servers                            # operator surface
+PATCH /v1/workspaces/{workspace_id}/mcp-servers/{server_id}               # operator surface
+DELETE /v1/workspaces/{workspace_id}/mcp-servers/{server_id}              # operator surface

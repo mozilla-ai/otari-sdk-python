@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
@@ -26,12 +26,10 @@ from pydantic_core import to_jsonable_python
 
 class WorkspaceMemberBudgetPolicyUpdate(BaseModel):
     """
-    Request body for updating a default.  Not retroactive: a member already materialized from this default keeps the value that was in effect when they were materialized. Only a member materialized after this update sees the new one.
+    Request body for pointing a default at a different budget.  Members already materialized from this default keep the budget they were given: their ceiling names it directly, and this only changes what a member joining afterwards is handed. Editing the *budget* is the retroactive act, and it moves everyone naming it, in this workspace and outside it.
     """ # noqa: E501
-    budget_duration_sec: Optional[Annotated[int, Field(le=315360000, strict=True, gt=0)]] = None
-    max_budget: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = None
-    name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = None
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name"]
+    budget_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)]
+    __properties: ClassVar[List[str]] = ["budget_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -72,21 +70,6 @@ class WorkspaceMemberBudgetPolicyUpdate(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if budget_duration_sec (nullable) is None
-        # and model_fields_set contains the field
-        if self.budget_duration_sec is None and "budget_duration_sec" in self.model_fields_set:
-            _dict['budget_duration_sec'] = None
-
-        # set to None if max_budget (nullable) is None
-        # and model_fields_set contains the field
-        if self.max_budget is None and "max_budget" in self.model_fields_set:
-            _dict['max_budget'] = None
-
-        # set to None if name (nullable) is None
-        # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict['name'] = None
-
         return _dict
 
     @classmethod
@@ -99,9 +82,7 @@ class WorkspaceMemberBudgetPolicyUpdate(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_duration_sec": obj.get("budget_duration_sec"),
-            "max_budget": obj.get("max_budget"),
-            "name": obj.get("name")
+            "budget_id": obj.get("budget_id")
         })
         return _obj
 

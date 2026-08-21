@@ -17,27 +17,27 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceMemberBudgetPolicyPublic(BaseModel):
+class WorkspaceCodeExecutionPolicyPublic(BaseModel):
     """
-    One default and its template values.
+    A workspace's policy, or the unconfigured policy it has without one.
     """ # noqa: E501
-    budget_duration_sec: Optional[StrictInt]
-    budget_id: StrictStr
-    created_at: StrictStr
-    id: StrictStr
-    max_budget: Optional[Union[StrictFloat, StrictInt]]
-    name: Optional[StrictStr]
-    provider_key_id: Optional[StrictStr]
-    updated_at: StrictStr
+    configured: StrictBool
+    created_at: Optional[StrictStr]
+    default_purpose_hint: Optional[StrictStr]
+    enabled: StrictBool
+    exec_timeout_s: Optional[StrictInt]
+    max_iterations: Optional[StrictInt]
+    sandbox_configured: StrictBool
+    updated_at: Optional[StrictStr]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "id", "max_budget", "name", "provider_key_id", "updated_at", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["configured", "created_at", "default_purpose_hint", "enabled", "exec_timeout_s", "max_iterations", "sandbox_configured", "updated_at", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -57,7 +57,7 @@ class WorkspaceMemberBudgetPolicyPublic(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyPublic from a JSON string"""
+        """Create an instance of WorkspaceCodeExecutionPolicyPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,31 +78,36 @@ class WorkspaceMemberBudgetPolicyPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if budget_duration_sec (nullable) is None
+        # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
-        if self.budget_duration_sec is None and "budget_duration_sec" in self.model_fields_set:
-            _dict['budget_duration_sec'] = None
+        if self.created_at is None and "created_at" in self.model_fields_set:
+            _dict['created_at'] = None
 
-        # set to None if max_budget (nullable) is None
+        # set to None if default_purpose_hint (nullable) is None
         # and model_fields_set contains the field
-        if self.max_budget is None and "max_budget" in self.model_fields_set:
-            _dict['max_budget'] = None
+        if self.default_purpose_hint is None and "default_purpose_hint" in self.model_fields_set:
+            _dict['default_purpose_hint'] = None
 
-        # set to None if name (nullable) is None
+        # set to None if exec_timeout_s (nullable) is None
         # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict['name'] = None
+        if self.exec_timeout_s is None and "exec_timeout_s" in self.model_fields_set:
+            _dict['exec_timeout_s'] = None
 
-        # set to None if provider_key_id (nullable) is None
+        # set to None if max_iterations (nullable) is None
         # and model_fields_set contains the field
-        if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
-            _dict['provider_key_id'] = None
+        if self.max_iterations is None and "max_iterations" in self.model_fields_set:
+            _dict['max_iterations'] = None
+
+        # set to None if updated_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.updated_at is None and "updated_at" in self.model_fields_set:
+            _dict['updated_at'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyPublic from a dict"""
+        """Create an instance of WorkspaceCodeExecutionPolicyPublic from a dict"""
         if obj is None:
             return None
 
@@ -110,13 +115,13 @@ class WorkspaceMemberBudgetPolicyPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_duration_sec": obj.get("budget_duration_sec"),
-            "budget_id": obj.get("budget_id"),
+            "configured": obj.get("configured"),
             "created_at": obj.get("created_at"),
-            "id": obj.get("id"),
-            "max_budget": obj.get("max_budget"),
-            "name": obj.get("name"),
-            "provider_key_id": obj.get("provider_key_id"),
+            "default_purpose_hint": obj.get("default_purpose_hint"),
+            "enabled": obj.get("enabled"),
+            "exec_timeout_s": obj.get("exec_timeout_s"),
+            "max_iterations": obj.get("max_iterations"),
+            "sandbox_configured": obj.get("sandbox_configured"),
             "updated_at": obj.get("updated_at"),
             "workspace_id": obj.get("workspace_id")
         })

@@ -32,11 +32,12 @@ class BudgetResponse(BaseModel):
     created_at: StrictStr
     max_budget: Optional[Union[StrictFloat, StrictInt]]
     name: Optional[StrictStr]
+    reset_alignment: Optional[StrictStr]
     total_reserved: Optional[Union[StrictFloat, StrictInt]] = 0.0
     total_spend: Optional[Union[StrictFloat, StrictInt]] = 0.0
     updated_at: StrictStr
     user_count: Optional[StrictInt] = 0
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "name", "total_reserved", "total_spend", "updated_at", "user_count"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "name", "reset_alignment", "total_reserved", "total_spend", "updated_at", "user_count"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -92,6 +93,11 @@ class BudgetResponse(BaseModel):
         if self.name is None and "name" in self.model_fields_set:
             _dict['name'] = None
 
+        # set to None if reset_alignment (nullable) is None
+        # and model_fields_set contains the field
+        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
+            _dict['reset_alignment'] = None
+
         return _dict
 
     @classmethod
@@ -109,6 +115,7 @@ class BudgetResponse(BaseModel):
             "created_at": obj.get("created_at"),
             "max_budget": obj.get("max_budget"),
             "name": obj.get("name"),
+            "reset_alignment": obj.get("reset_alignment"),
             "total_reserved": obj.get("total_reserved") if obj.get("total_reserved") is not None else 0.0,
             "total_spend": obj.get("total_spend") if obj.get("total_spend") is not None else 0.0,
             "updated_at": obj.get("updated_at"),

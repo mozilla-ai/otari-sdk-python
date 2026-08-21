@@ -17,32 +17,24 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateBudgetRequest(BaseModel):
+class WorkspaceMcpServerUpdate(BaseModel):
     """
-    Request model for updating a budget.
+    Partial update. Only the fields the caller sets are applied.  ``authorization_token`` has three states rather than two, which is what a write-only field needs: omit it to leave the stored token alone, send ``\"\"`` to clear it, send a value to rotate it. An explicit ``null`` also leaves it alone, matching the platform: a client that serializes its whole form back, with an empty token box it never filled in, must not destroy a token it was never shown.
     """ # noqa: E501
-    budget_duration_sec: Optional[Annotated[int, Field(strict=True, gt=0)]] = None
-    max_budget: Optional[Union[Annotated[float, Field(le=999999999999, strict=True, ge=0.0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None
-    name: Optional[StrictStr] = None
-    reset_alignment: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "reset_alignment"]
-
-    @field_validator('reset_alignment')
-    def reset_alignment_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['calendar_day', 'calendar_week', 'calendar_month']):
-            raise ValueError("must be one of enum values ('calendar_day', 'calendar_week', 'calendar_month')")
-        return value
+    allowed_tools: Optional[Annotated[List[Annotated[str, Field(strict=True, max_length=256)]], Field(max_length=200)]] = None
+    authorization_token: Optional[Annotated[str, Field(strict=True, max_length=8192)]] = None
+    enabled: Optional[StrictBool] = None
+    name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None
+    purpose_hint: Optional[Annotated[str, Field(strict=True, max_length=2000)]] = None
+    url: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=2048)]] = None
+    __properties: ClassVar[List[str]] = ["allowed_tools", "authorization_token", "enabled", "name", "purpose_hint", "url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -62,7 +54,7 @@ class UpdateBudgetRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateBudgetRequest from a JSON string"""
+        """Create an instance of WorkspaceMcpServerUpdate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -83,31 +75,26 @@ class UpdateBudgetRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if budget_duration_sec (nullable) is None
+        # set to None if allowed_tools (nullable) is None
         # and model_fields_set contains the field
-        if self.budget_duration_sec is None and "budget_duration_sec" in self.model_fields_set:
-            _dict['budget_duration_sec'] = None
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
 
-        # set to None if max_budget (nullable) is None
+        # set to None if authorization_token (nullable) is None
         # and model_fields_set contains the field
-        if self.max_budget is None and "max_budget" in self.model_fields_set:
-            _dict['max_budget'] = None
+        if self.authorization_token is None and "authorization_token" in self.model_fields_set:
+            _dict['authorization_token'] = None
 
-        # set to None if name (nullable) is None
+        # set to None if purpose_hint (nullable) is None
         # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict['name'] = None
-
-        # set to None if reset_alignment (nullable) is None
-        # and model_fields_set contains the field
-        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
-            _dict['reset_alignment'] = None
+        if self.purpose_hint is None and "purpose_hint" in self.model_fields_set:
+            _dict['purpose_hint'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateBudgetRequest from a dict"""
+        """Create an instance of WorkspaceMcpServerUpdate from a dict"""
         if obj is None:
             return None
 
@@ -115,10 +102,12 @@ class UpdateBudgetRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_duration_sec": obj.get("budget_duration_sec"),
-            "max_budget": obj.get("max_budget"),
+            "allowed_tools": obj.get("allowed_tools"),
+            "authorization_token": obj.get("authorization_token"),
+            "enabled": obj.get("enabled"),
             "name": obj.get("name"),
-            "reset_alignment": obj.get("reset_alignment")
+            "purpose_hint": obj.get("purpose_hint"),
+            "url": obj.get("url")
         })
         return _obj
 

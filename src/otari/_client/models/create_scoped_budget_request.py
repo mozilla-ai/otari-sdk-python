@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,24 +28,12 @@ class CreateScopedBudgetRequest(BaseModel):
     """
     Request model for creating a scoped budget.
     """ # noqa: E501
-    budget_duration_sec: Optional[Annotated[int, Field(strict=True, gt=0)]] = Field(default=None, description="Period length in seconds (e.g. 86400 for daily); null never resets")
-    max_budget: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Maximum USD spend in the period")
-    name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = Field(default=None, description="Admin-facing label for the budget")
+    budget_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="The budget this ceiling enforces; its limit and period are read through it")
+    name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = Field(default=None, description="Admin-facing label for this ceiling")
     provider_key_id: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Narrow the cap to one provider instance; null caps spend across every provider")
-    reset_alignment: Optional[StrictStr] = Field(default=None, description="Reset on a UTC calendar boundary instead of a fixed number of seconds, which is the only way to express a calendar month. Mutually exclusive with budget_duration_sec")
     scope_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="Id of the capped identity: an organization, workspace, membership row, or API key")
     scope_type: StrictStr = Field(description="Which kind of identity this ceiling caps")
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "provider_key_id", "reset_alignment", "scope_id", "scope_type"]
-
-    @field_validator('reset_alignment')
-    def reset_alignment_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['calendar_day', 'calendar_week', 'calendar_month']):
-            raise ValueError("must be one of enum values ('calendar_day', 'calendar_week', 'calendar_month')")
-        return value
+    __properties: ClassVar[List[str]] = ["budget_id", "name", "provider_key_id", "scope_id", "scope_type"]
 
     @field_validator('scope_type')
     def scope_type_validate_enum(cls, value):
@@ -93,16 +81,6 @@ class CreateScopedBudgetRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if budget_duration_sec (nullable) is None
-        # and model_fields_set contains the field
-        if self.budget_duration_sec is None and "budget_duration_sec" in self.model_fields_set:
-            _dict['budget_duration_sec'] = None
-
-        # set to None if max_budget (nullable) is None
-        # and model_fields_set contains the field
-        if self.max_budget is None and "max_budget" in self.model_fields_set:
-            _dict['max_budget'] = None
-
         # set to None if name (nullable) is None
         # and model_fields_set contains the field
         if self.name is None and "name" in self.model_fields_set:
@@ -112,11 +90,6 @@ class CreateScopedBudgetRequest(BaseModel):
         # and model_fields_set contains the field
         if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
             _dict['provider_key_id'] = None
-
-        # set to None if reset_alignment (nullable) is None
-        # and model_fields_set contains the field
-        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
-            _dict['reset_alignment'] = None
 
         return _dict
 
@@ -130,11 +103,9 @@ class CreateScopedBudgetRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_duration_sec": obj.get("budget_duration_sec"),
-            "max_budget": obj.get("max_budget"),
+            "budget_id": obj.get("budget_id"),
             "name": obj.get("name"),
             "provider_key_id": obj.get("provider_key_id"),
-            "reset_alignment": obj.get("reset_alignment"),
             "scope_id": obj.get("scope_id"),
             "scope_type": obj.get("scope_type")
         })

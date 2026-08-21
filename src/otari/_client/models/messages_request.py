@@ -38,7 +38,7 @@ class MessagesRequest(BaseModel):
     guardrails: Optional[Annotated[List[GuardrailConfig], Field(max_length=8)]] = None
     max_tokens: StrictInt
     max_tool_iterations: Optional[Annotated[int, Field(le=25, strict=True, ge=1)]] = None
-    mcp_server_ids: Optional[List[UUID]] = None
+    mcp_server_ids: Optional[Annotated[List[UUID], Field(max_length=50)]] = None
     mcp_servers: Optional[List[McpServerConfig]] = None
     messages: Annotated[List[Dict[str, Any]], Field(min_length=1)]
     metadata: Optional[Dict[str, Any]] = None

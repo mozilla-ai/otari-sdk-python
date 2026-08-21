@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,11 +28,9 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
     """
     Request body for creating a default.
     """ # noqa: E501
-    budget_duration_sec: Optional[Annotated[int, Field(le=315360000, strict=True, gt=0)]] = Field(default=None, description="Period length in seconds; null never resets")
-    max_budget: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Maximum USD spend per member in the period")
-    name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = Field(default=None, description="Admin-facing label")
+    budget_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="The budget this workspace hands to every member")
     provider_key_id: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Narrow the default to one provider instance; null applies to every provider")
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "provider_key_id"]
+    __properties: ClassVar[List[str]] = ["budget_id", "provider_key_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -73,21 +71,6 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if budget_duration_sec (nullable) is None
-        # and model_fields_set contains the field
-        if self.budget_duration_sec is None and "budget_duration_sec" in self.model_fields_set:
-            _dict['budget_duration_sec'] = None
-
-        # set to None if max_budget (nullable) is None
-        # and model_fields_set contains the field
-        if self.max_budget is None and "max_budget" in self.model_fields_set:
-            _dict['max_budget'] = None
-
-        # set to None if name (nullable) is None
-        # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict['name'] = None
-
         # set to None if provider_key_id (nullable) is None
         # and model_fields_set contains the field
         if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
@@ -105,9 +88,7 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_duration_sec": obj.get("budget_duration_sec"),
-            "max_budget": obj.get("max_budget"),
-            "name": obj.get("name"),
+            "budget_id": obj.get("budget_id"),
             "provider_key_id": obj.get("provider_key_id")
         })
         return _obj

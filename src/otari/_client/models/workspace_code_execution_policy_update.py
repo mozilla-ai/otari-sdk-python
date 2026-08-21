@@ -17,32 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateBudgetRequest(BaseModel):
+class WorkspaceCodeExecutionPolicyUpdate(BaseModel):
     """
-    Request model for updating a budget.
+    The policy to store for a workspace, as a whole.  ``PUT`` semantics, ported from the hosted ``CodeExecutionConfigUpsert``: what is sent is what the workspace has afterwards, so an omitted limit is cleared rather than left as it was.
     """ # noqa: E501
-    budget_duration_sec: Optional[Annotated[int, Field(strict=True, gt=0)]] = None
-    max_budget: Optional[Union[Annotated[float, Field(le=999999999999, strict=True, ge=0.0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None
-    name: Optional[StrictStr] = None
-    reset_alignment: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "reset_alignment"]
-
-    @field_validator('reset_alignment')
-    def reset_alignment_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['calendar_day', 'calendar_week', 'calendar_month']):
-            raise ValueError("must be one of enum values ('calendar_day', 'calendar_week', 'calendar_month')")
-        return value
+    default_purpose_hint: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = Field(default=None, description="Hint used when a request declares otari_code_execution without one of its own")
+    enabled: StrictBool = Field(description="False refuses code execution for this workspace")
+    exec_timeout_s: Optional[Annotated[int, Field(le=60, strict=True, gt=0)]] = Field(default=None, description="Ceiling on one execution's runtime in seconds; only ever lowers the effective limit, so at most 60")
+    max_iterations: Optional[Annotated[int, Field(le=25, strict=True, gt=0)]] = Field(default=None, description="Ceiling on tool-loop iterations; only ever lowers the effective limit, so at most 25")
+    __properties: ClassVar[List[str]] = ["default_purpose_hint", "enabled", "exec_timeout_s", "max_iterations"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -62,7 +52,7 @@ class UpdateBudgetRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateBudgetRequest from a JSON string"""
+        """Create an instance of WorkspaceCodeExecutionPolicyUpdate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -83,31 +73,26 @@ class UpdateBudgetRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if budget_duration_sec (nullable) is None
+        # set to None if default_purpose_hint (nullable) is None
         # and model_fields_set contains the field
-        if self.budget_duration_sec is None and "budget_duration_sec" in self.model_fields_set:
-            _dict['budget_duration_sec'] = None
+        if self.default_purpose_hint is None and "default_purpose_hint" in self.model_fields_set:
+            _dict['default_purpose_hint'] = None
 
-        # set to None if max_budget (nullable) is None
+        # set to None if exec_timeout_s (nullable) is None
         # and model_fields_set contains the field
-        if self.max_budget is None and "max_budget" in self.model_fields_set:
-            _dict['max_budget'] = None
+        if self.exec_timeout_s is None and "exec_timeout_s" in self.model_fields_set:
+            _dict['exec_timeout_s'] = None
 
-        # set to None if name (nullable) is None
+        # set to None if max_iterations (nullable) is None
         # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict['name'] = None
-
-        # set to None if reset_alignment (nullable) is None
-        # and model_fields_set contains the field
-        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
-            _dict['reset_alignment'] = None
+        if self.max_iterations is None and "max_iterations" in self.model_fields_set:
+            _dict['max_iterations'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateBudgetRequest from a dict"""
+        """Create an instance of WorkspaceCodeExecutionPolicyUpdate from a dict"""
         if obj is None:
             return None
 
@@ -115,10 +100,10 @@ class UpdateBudgetRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_duration_sec": obj.get("budget_duration_sec"),
-            "max_budget": obj.get("max_budget"),
-            "name": obj.get("name"),
-            "reset_alignment": obj.get("reset_alignment")
+            "default_purpose_hint": obj.get("default_purpose_hint"),
+            "enabled": obj.get("enabled"),
+            "exec_timeout_s": obj.get("exec_timeout_s"),
+            "max_iterations": obj.get("max_iterations")
         })
         return _obj
 

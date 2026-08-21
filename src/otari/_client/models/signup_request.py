@@ -17,20 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateScopedBudgetRequest(BaseModel):
+class SignupRequest(BaseModel):
     """
-    Request model for updating a scoped budget.
+    Claim an identity already on the roster by setting its password.
     """ # noqa: E501
-    budget_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = None
-    name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = None
-    __properties: ClassVar[List[str]] = ["budget_id", "name"]
+    email: Annotated[str, Field(strict=True, max_length=255)] = Field(description="The address an admin added or invited.")
+    full_name: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Filled in only if not already set.")
+    password: Annotated[str, Field(min_length=8, strict=True, max_length=1024)] = Field(description="The password to sign in with once verified. At least 8 characters, at most 72 bytes.")
+    terms_accepted: Optional[StrictBool] = Field(default=False, description="Whether the caller accepted this deployment's terms.")
+    __properties: ClassVar[List[str]] = ["email", "full_name", "password", "terms_accepted"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -50,7 +52,7 @@ class UpdateScopedBudgetRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateScopedBudgetRequest from a JSON string"""
+        """Create an instance of SignupRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,21 +73,16 @@ class UpdateScopedBudgetRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if budget_id (nullable) is None
+        # set to None if full_name (nullable) is None
         # and model_fields_set contains the field
-        if self.budget_id is None and "budget_id" in self.model_fields_set:
-            _dict['budget_id'] = None
-
-        # set to None if name (nullable) is None
-        # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict['name'] = None
+        if self.full_name is None and "full_name" in self.model_fields_set:
+            _dict['full_name'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateScopedBudgetRequest from a dict"""
+        """Create an instance of SignupRequest from a dict"""
         if obj is None:
             return None
 
@@ -93,8 +90,10 @@ class UpdateScopedBudgetRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_id": obj.get("budget_id"),
-            "name": obj.get("name")
+            "email": obj.get("email"),
+            "full_name": obj.get("full_name"),
+            "password": obj.get("password"),
+            "terms_accepted": obj.get("terms_accepted") if obj.get("terms_accepted") is not None else False
         })
         return _obj
 
