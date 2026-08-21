@@ -271,6 +271,7 @@ from otari._client.models.msg_function import MSGFunction
 from otari._client.models.msg_function_call import MSGFunctionCall
 from otari._client.models.msg_image_url import MSGImageURL
 from otari._client.models.msg_input_audio import MSGInputAudio
+from otari._client.models.mail_settings import MailSettings
 from otari._client.models.managed_tool import ManagedTool
 from otari._client.models.mcp_server_config import McpServerConfig
 from otari._client.models.message import Message
@@ -331,6 +332,8 @@ from otari._client.models.search_request import SearchRequest
 from otari._client.models.search_response import SearchResponse
 from otari._client.models.search_result_item import SearchResultItem
 from otari._client.models.search_tools_response import SearchToolsResponse
+from otari._client.models.send_test_mail_request import SendTestMailRequest
+from otari._client.models.send_test_mail_response import SendTestMailResponse
 from otari._client.models.session_response import SessionResponse
 from otari._client.models.set_pricing_request import SetPricingRequest
 from otari._client.models.source import Source

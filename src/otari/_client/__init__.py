@@ -321,6 +321,7 @@ __all__ = [
     "MSGFunctionCall",
     "MSGImageURL",
     "MSGInputAudio",
+    "MailSettings",
     "ManagedTool",
     "McpServerConfig",
     "Message",
@@ -381,6 +382,8 @@ __all__ = [
     "SearchResponse",
     "SearchResultItem",
     "SearchToolsResponse",
+    "SendTestMailRequest",
+    "SendTestMailResponse",
     "SessionResponse",
     "SetPricingRequest",
     "Source",
@@ -761,6 +764,7 @@ from otari._client.models.msg_function import MSGFunction as MSGFunction
 from otari._client.models.msg_function_call import MSGFunctionCall as MSGFunctionCall
 from otari._client.models.msg_image_url import MSGImageURL as MSGImageURL
 from otari._client.models.msg_input_audio import MSGInputAudio as MSGInputAudio
+from otari._client.models.mail_settings import MailSettings as MailSettings
 from otari._client.models.managed_tool import ManagedTool as ManagedTool
 from otari._client.models.mcp_server_config import McpServerConfig as McpServerConfig
 from otari._client.models.message import Message as Message
@@ -821,6 +825,8 @@ from otari._client.models.search_request import SearchRequest as SearchRequest
 from otari._client.models.search_response import SearchResponse as SearchResponse
 from otari._client.models.search_result_item import SearchResultItem as SearchResultItem
 from otari._client.models.search_tools_response import SearchToolsResponse as SearchToolsResponse
+from otari._client.models.send_test_mail_request import SendTestMailRequest as SendTestMailRequest
+from otari._client.models.send_test_mail_response import SendTestMailResponse as SendTestMailResponse
 from otari._client.models.session_response import SessionResponse as SessionResponse
 from otari._client.models.set_pricing_request import SetPricingRequest as SetPricingRequest
 from otari._client.models.source import Source as Source
