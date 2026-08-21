@@ -347,6 +347,7 @@ __all__ = [
     "OrganizationModelPricingUpdate",
     "OrganizationModelPricingsPublic",
     "OrganizationPublic",
+    "PasswordResponse",
     "PolicyRequest",
     "PolicyResponse",
     "PoolStatus",
@@ -385,6 +386,7 @@ __all__ = [
     "SendTestMailRequest",
     "SendTestMailResponse",
     "SessionResponse",
+    "SetPasswordRequest",
     "SetPricingRequest",
     "Source",
     "Source1",
@@ -790,6 +792,7 @@ from otari._client.models.organization_model_pricing_public import OrganizationM
 from otari._client.models.organization_model_pricing_update import OrganizationModelPricingUpdate as OrganizationModelPricingUpdate
 from otari._client.models.organization_model_pricings_public import OrganizationModelPricingsPublic as OrganizationModelPricingsPublic
 from otari._client.models.organization_public import OrganizationPublic as OrganizationPublic
+from otari._client.models.password_response import PasswordResponse as PasswordResponse
 from otari._client.models.policy_request import PolicyRequest as PolicyRequest
 from otari._client.models.policy_response import PolicyResponse as PolicyResponse
 from otari._client.models.pool_status import PoolStatus as PoolStatus
@@ -828,6 +831,7 @@ from otari._client.models.search_tools_response import SearchToolsResponse as Se
 from otari._client.models.send_test_mail_request import SendTestMailRequest as SendTestMailRequest
 from otari._client.models.send_test_mail_response import SendTestMailResponse as SendTestMailResponse
 from otari._client.models.session_response import SessionResponse as SessionResponse
+from otari._client.models.set_password_request import SetPasswordRequest as SetPasswordRequest
 from otari._client.models.set_pricing_request import SetPricingRequest as SetPricingRequest
 from otari._client.models.source import Source as Source
 from otari._client.models.source1 import Source1 as Source1

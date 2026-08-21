@@ -297,6 +297,7 @@ from otari._client.models.organization_model_pricing_public import OrganizationM
 from otari._client.models.organization_model_pricing_update import OrganizationModelPricingUpdate
 from otari._client.models.organization_model_pricings_public import OrganizationModelPricingsPublic
 from otari._client.models.organization_public import OrganizationPublic
+from otari._client.models.password_response import PasswordResponse
 from otari._client.models.policy_request import PolicyRequest
 from otari._client.models.policy_response import PolicyResponse
 from otari._client.models.pool_status import PoolStatus
@@ -335,6 +336,7 @@ from otari._client.models.search_tools_response import SearchToolsResponse
 from otari._client.models.send_test_mail_request import SendTestMailRequest
 from otari._client.models.send_test_mail_response import SendTestMailResponse
 from otari._client.models.session_response import SessionResponse
+from otari._client.models.set_password_request import SetPasswordRequest
 from otari._client.models.set_pricing_request import SetPricingRequest
 from otari._client.models.source import Source
 from otari._client.models.source1 import Source1

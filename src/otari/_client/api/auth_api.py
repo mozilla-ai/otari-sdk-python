@@ -16,7 +16,9 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from otari._client.models.create_session_request import CreateSessionRequest
+from otari._client.models.password_response import PasswordResponse
 from otari._client.models.session_response import SessionResponse
+from otari._client.models.set_password_request import SetPasswordRequest
 
 from otari._client.api_client import ApiClient, RequestSerialized
 from otari._client.api_response import ApiResponse
@@ -55,7 +57,7 @@ class AuthApi:
     ) -> SessionResponse:
         """Create Session
 
-        Verify the master key and set the HttpOnly session cookie.  The session is bound to the bootstrap operator identity, so every request it later authenticates resolves a user and that user's active organization rather than only \"the master key was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. The issue this implements explicitly rules that out. The DB/hash lookup this exposes to repeated attempts only runs when no fixed master_key is configured (the auto-generated bootstrap-key path); with a configured master_key, verification is a constant-time string compare, not a DB round trip.
+        Verify a sign-in credential and set the HttpOnly session cookie.  The session is bound to the identity that authenticated, so every request it later authenticates resolves a user and that user's active organization rather than only \"a credential was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. Running after verification also means the throttle bounds how many verdicts an IP gets, not how much work it can cause: a password attempt pays for a bcrypt verification (cost 12, on the order of 200ms of CPU, and one is burned against a stand-in hash even for an address nobody holds) before the limit is consulted, so a 429 costs the same as a 401. A gateway exposed to the internet should rate-limit this path at the proxy as well.
 
         :param create_session_request: (required)
         :type create_session_request: CreateSessionRequest
@@ -123,7 +125,7 @@ class AuthApi:
     ) -> ApiResponse[SessionResponse]:
         """Create Session
 
-        Verify the master key and set the HttpOnly session cookie.  The session is bound to the bootstrap operator identity, so every request it later authenticates resolves a user and that user's active organization rather than only \"the master key was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. The issue this implements explicitly rules that out. The DB/hash lookup this exposes to repeated attempts only runs when no fixed master_key is configured (the auto-generated bootstrap-key path); with a configured master_key, verification is a constant-time string compare, not a DB round trip.
+        Verify a sign-in credential and set the HttpOnly session cookie.  The session is bound to the identity that authenticated, so every request it later authenticates resolves a user and that user's active organization rather than only \"a credential was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. Running after verification also means the throttle bounds how many verdicts an IP gets, not how much work it can cause: a password attempt pays for a bcrypt verification (cost 12, on the order of 200ms of CPU, and one is burned against a stand-in hash even for an address nobody holds) before the limit is consulted, so a 429 costs the same as a 401. A gateway exposed to the internet should rate-limit this path at the proxy as well.
 
         :param create_session_request: (required)
         :type create_session_request: CreateSessionRequest
@@ -191,7 +193,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Create Session
 
-        Verify the master key and set the HttpOnly session cookie.  The session is bound to the bootstrap operator identity, so every request it later authenticates resolves a user and that user's active organization rather than only \"the master key was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. The issue this implements explicitly rules that out. The DB/hash lookup this exposes to repeated attempts only runs when no fixed master_key is configured (the auto-generated bootstrap-key path); with a configured master_key, verification is a constant-time string compare, not a DB round trip.
+        Verify a sign-in credential and set the HttpOnly session cookie.  The session is bound to the identity that authenticated, so every request it later authenticates resolves a user and that user's active organization rather than only \"a credential was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. Running after verification also means the throttle bounds how many verdicts an IP gets, not how much work it can cause: a password attempt pays for a bcrypt verification (cost 12, on the order of 200ms of CPU, and one is burned against a stand-in hash even for an address nobody holds) before the limit is consulted, so a 429 costs the same as a 401. A gateway exposed to the internet should rate-limit this path at the proxy as well.
 
         :param create_session_request: (required)
         :type create_session_request: CreateSessionRequest
@@ -535,6 +537,284 @@ class AuthApi:
         return self.api_client.param_serialize(
             method='DELETE',
             resource_path='/v1/auth/session',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def set_dashboard_password_v1_auth_password_put(
+        self,
+        set_password_request: SetPasswordRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> PasswordResponse:
+        """Set Dashboard Password
+
+        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. Setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
+
+        :param set_password_request: (required)
+        :type set_password_request: SetPasswordRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_dashboard_password_v1_auth_password_put_serialize(
+            set_password_request=set_password_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PasswordResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def set_dashboard_password_v1_auth_password_put_with_http_info(
+        self,
+        set_password_request: SetPasswordRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[PasswordResponse]:
+        """Set Dashboard Password
+
+        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. Setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
+
+        :param set_password_request: (required)
+        :type set_password_request: SetPasswordRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_dashboard_password_v1_auth_password_put_serialize(
+            set_password_request=set_password_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PasswordResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def set_dashboard_password_v1_auth_password_put_without_preload_content(
+        self,
+        set_password_request: SetPasswordRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Set Dashboard Password
+
+        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. Setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
+
+        :param set_password_request: (required)
+        :type set_password_request: SetPasswordRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_dashboard_password_v1_auth_password_put_serialize(
+            set_password_request=set_password_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PasswordResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _set_dashboard_password_v1_auth_password_put_serialize(
+        self,
+        set_password_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if set_password_request is not None:
+            _body_params = set_password_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PUT',
+            resource_path='/v1/auth/password',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
