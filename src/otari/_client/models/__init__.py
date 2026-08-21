@@ -15,6 +15,8 @@
 # import models into model package
 from otari._client.models.accept_invitation_request import AcceptInvitationRequest
 from otari._client.models.accept_invitation_result_public import AcceptInvitationResultPublic
+from otari._client.models.activation_api_key_public import ActivationApiKeyPublic
+from otari._client.models.activation_attempt_public import ActivationAttemptPublic
 from otari._client.models.active_organization_member_create_request import ActiveOrganizationMemberCreateRequest
 from otari._client.models.active_organization_member_create_result_public import ActiveOrganizationMemberCreateResultPublic
 from otari._client.models.active_organization_member_public import ActiveOrganizationMemberPublic
@@ -390,6 +392,7 @@ from otari._client.models.validate_invitation_request import ValidateInvitationR
 from otari._client.models.validation_error import ValidationError
 from otari._client.models.value import Value
 from otari._client.models.value1 import Value1
+from otari._client.models.workspace_activation_public import WorkspaceActivationPublic
 from otari._client.models.workspace_assignment_request import WorkspaceAssignmentRequest
 from otari._client.models.workspace_create import WorkspaceCreate
 from otari._client.models.workspace_member_budget_policies_public import WorkspaceMemberBudgetPoliciesPublic

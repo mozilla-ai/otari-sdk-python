@@ -52,6 +52,7 @@ __all__ = [
     "ToolsApi",
     "UsageApi",
     "UsersApi",
+    "WorkspaceActivationApi",
     "WorkspaceMemberBudgetPoliciesApi",
     "WorkspacesApi",
     "ApiResponse",
@@ -65,6 +66,8 @@ __all__ = [
     "ApiException",
     "AcceptInvitationRequest",
     "AcceptInvitationResultPublic",
+    "ActivationApiKeyPublic",
+    "ActivationAttemptPublic",
     "ActiveOrganizationMemberCreateRequest",
     "ActiveOrganizationMemberCreateResultPublic",
     "ActiveOrganizationMemberPublic",
@@ -440,6 +443,7 @@ __all__ = [
     "ValidationError",
     "Value",
     "Value1",
+    "WorkspaceActivationPublic",
     "WorkspaceAssignmentRequest",
     "WorkspaceCreate",
     "WorkspaceMemberBudgetPoliciesPublic",
@@ -493,6 +497,7 @@ from otari._client.api.tool_settings_api import ToolSettingsApi as ToolSettingsA
 from otari._client.api.tools_api import ToolsApi as ToolsApi
 from otari._client.api.usage_api import UsageApi as UsageApi
 from otari._client.api.users_api import UsersApi as UsersApi
+from otari._client.api.workspace_activation_api import WorkspaceActivationApi as WorkspaceActivationApi
 from otari._client.api.workspace_member_budget_policies_api import WorkspaceMemberBudgetPoliciesApi as WorkspaceMemberBudgetPoliciesApi
 from otari._client.api.workspaces_api import WorkspacesApi as WorkspacesApi
 
@@ -510,6 +515,8 @@ from otari._client.exceptions import ApiException as ApiException
 # import models into sdk package
 from otari._client.models.accept_invitation_request import AcceptInvitationRequest as AcceptInvitationRequest
 from otari._client.models.accept_invitation_result_public import AcceptInvitationResultPublic as AcceptInvitationResultPublic
+from otari._client.models.activation_api_key_public import ActivationApiKeyPublic as ActivationApiKeyPublic
+from otari._client.models.activation_attempt_public import ActivationAttemptPublic as ActivationAttemptPublic
 from otari._client.models.active_organization_member_create_request import ActiveOrganizationMemberCreateRequest as ActiveOrganizationMemberCreateRequest
 from otari._client.models.active_organization_member_create_result_public import ActiveOrganizationMemberCreateResultPublic as ActiveOrganizationMemberCreateResultPublic
 from otari._client.models.active_organization_member_public import ActiveOrganizationMemberPublic as ActiveOrganizationMemberPublic
@@ -885,6 +892,7 @@ from otari._client.models.validate_invitation_request import ValidateInvitationR
 from otari._client.models.validation_error import ValidationError as ValidationError
 from otari._client.models.value import Value as Value
 from otari._client.models.value1 import Value1 as Value1
+from otari._client.models.workspace_activation_public import WorkspaceActivationPublic as WorkspaceActivationPublic
 from otari._client.models.workspace_assignment_request import WorkspaceAssignmentRequest as WorkspaceAssignmentRequest
 from otari._client.models.workspace_create import WorkspaceCreate as WorkspaceCreate
 from otari._client.models.workspace_member_budget_policies_public import WorkspaceMemberBudgetPoliciesPublic as WorkspaceMemberBudgetPoliciesPublic
