@@ -32,6 +32,7 @@ __all__ = [
     "ImagesApi",
     "InvitationsApi",
     "KeysApi",
+    "McpServersApi",
     "MessagesApi",
     "ModelsApi",
     "ModerationsApi",
@@ -53,6 +54,7 @@ __all__ = [
     "UsageApi",
     "UsersApi",
     "WorkspaceActivationApi",
+    "WorkspaceCodeExecutionPolicyApi",
     "WorkspaceMemberBudgetPoliciesApi",
     "WorkspacesApi",
     "ApiResponse",
@@ -374,8 +376,13 @@ __all__ = [
     "RecordedPool",
     "ReencryptProviderCredentialsResponse",
     "ReencryptSearchToolsResponse",
+    "RequestPasswordResetRequest",
+    "RequestPasswordResetResponse",
     "RerankRequest",
     "RerankResponse",
+    "ResendVerificationRequest",
+    "ResendVerificationResponse",
+    "ResetPasswordRequest",
     "ResponsesRequest",
     "RotateMasterKeyResponse",
     "RouterStatus",
@@ -391,6 +398,8 @@ __all__ = [
     "SessionResponse",
     "SetPasswordRequest",
     "SetPricingRequest",
+    "SignupRequest",
+    "SignupResponse",
     "Source",
     "Source1",
     "Stop",
@@ -443,9 +452,17 @@ __all__ = [
     "ValidationError",
     "Value",
     "Value1",
+    "VerifyEmailRequest",
+    "VerifyEmailResponse",
     "WorkspaceActivationPublic",
     "WorkspaceAssignmentRequest",
+    "WorkspaceCodeExecutionPolicyPublic",
+    "WorkspaceCodeExecutionPolicyUpdate",
     "WorkspaceCreate",
+    "WorkspaceMcpServerCreate",
+    "WorkspaceMcpServerPublic",
+    "WorkspaceMcpServerUpdate",
+    "WorkspaceMcpServersPublic",
     "WorkspaceMemberBudgetPoliciesPublic",
     "WorkspaceMemberBudgetPolicyCreate",
     "WorkspaceMemberBudgetPolicyPublic",
@@ -477,6 +494,7 @@ from otari._client.api.health_api import HealthApi as HealthApi
 from otari._client.api.images_api import ImagesApi as ImagesApi
 from otari._client.api.invitations_api import InvitationsApi as InvitationsApi
 from otari._client.api.keys_api import KeysApi as KeysApi
+from otari._client.api.mcp_servers_api import McpServersApi as McpServersApi
 from otari._client.api.messages_api import MessagesApi as MessagesApi
 from otari._client.api.models_api import ModelsApi as ModelsApi
 from otari._client.api.moderations_api import ModerationsApi as ModerationsApi
@@ -498,6 +516,7 @@ from otari._client.api.tools_api import ToolsApi as ToolsApi
 from otari._client.api.usage_api import UsageApi as UsageApi
 from otari._client.api.users_api import UsersApi as UsersApi
 from otari._client.api.workspace_activation_api import WorkspaceActivationApi as WorkspaceActivationApi
+from otari._client.api.workspace_code_execution_policy_api import WorkspaceCodeExecutionPolicyApi as WorkspaceCodeExecutionPolicyApi
 from otari._client.api.workspace_member_budget_policies_api import WorkspaceMemberBudgetPoliciesApi as WorkspaceMemberBudgetPoliciesApi
 from otari._client.api.workspaces_api import WorkspacesApi as WorkspacesApi
 
@@ -823,8 +842,13 @@ from otari._client.models.rank_response import RankResponse as RankResponse
 from otari._client.models.recorded_pool import RecordedPool as RecordedPool
 from otari._client.models.reencrypt_provider_credentials_response import ReencryptProviderCredentialsResponse as ReencryptProviderCredentialsResponse
 from otari._client.models.reencrypt_search_tools_response import ReencryptSearchToolsResponse as ReencryptSearchToolsResponse
+from otari._client.models.request_password_reset_request import RequestPasswordResetRequest as RequestPasswordResetRequest
+from otari._client.models.request_password_reset_response import RequestPasswordResetResponse as RequestPasswordResetResponse
 from otari._client.models.rerank_request import RerankRequest as RerankRequest
 from otari._client.models.rerank_response import RerankResponse as RerankResponse
+from otari._client.models.resend_verification_request import ResendVerificationRequest as ResendVerificationRequest
+from otari._client.models.resend_verification_response import ResendVerificationResponse as ResendVerificationResponse
+from otari._client.models.reset_password_request import ResetPasswordRequest as ResetPasswordRequest
 from otari._client.models.responses_request import ResponsesRequest as ResponsesRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse as RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus as RouterStatus
@@ -840,6 +864,8 @@ from otari._client.models.send_test_mail_response import SendTestMailResponse as
 from otari._client.models.session_response import SessionResponse as SessionResponse
 from otari._client.models.set_password_request import SetPasswordRequest as SetPasswordRequest
 from otari._client.models.set_pricing_request import SetPricingRequest as SetPricingRequest
+from otari._client.models.signup_request import SignupRequest as SignupRequest
+from otari._client.models.signup_response import SignupResponse as SignupResponse
 from otari._client.models.source import Source as Source
 from otari._client.models.source1 import Source1 as Source1
 from otari._client.models.stop import Stop as Stop
@@ -892,9 +918,17 @@ from otari._client.models.validate_invitation_request import ValidateInvitationR
 from otari._client.models.validation_error import ValidationError as ValidationError
 from otari._client.models.value import Value as Value
 from otari._client.models.value1 import Value1 as Value1
+from otari._client.models.verify_email_request import VerifyEmailRequest as VerifyEmailRequest
+from otari._client.models.verify_email_response import VerifyEmailResponse as VerifyEmailResponse
 from otari._client.models.workspace_activation_public import WorkspaceActivationPublic as WorkspaceActivationPublic
 from otari._client.models.workspace_assignment_request import WorkspaceAssignmentRequest as WorkspaceAssignmentRequest
+from otari._client.models.workspace_code_execution_policy_public import WorkspaceCodeExecutionPolicyPublic as WorkspaceCodeExecutionPolicyPublic
+from otari._client.models.workspace_code_execution_policy_update import WorkspaceCodeExecutionPolicyUpdate as WorkspaceCodeExecutionPolicyUpdate
 from otari._client.models.workspace_create import WorkspaceCreate as WorkspaceCreate
+from otari._client.models.workspace_mcp_server_create import WorkspaceMcpServerCreate as WorkspaceMcpServerCreate
+from otari._client.models.workspace_mcp_server_public import WorkspaceMcpServerPublic as WorkspaceMcpServerPublic
+from otari._client.models.workspace_mcp_server_update import WorkspaceMcpServerUpdate as WorkspaceMcpServerUpdate
+from otari._client.models.workspace_mcp_servers_public import WorkspaceMcpServersPublic as WorkspaceMcpServersPublic
 from otari._client.models.workspace_member_budget_policies_public import WorkspaceMemberBudgetPoliciesPublic as WorkspaceMemberBudgetPoliciesPublic
 from otari._client.models.workspace_member_budget_policy_create import WorkspaceMemberBudgetPolicyCreate as WorkspaceMemberBudgetPolicyCreate
 from otari._client.models.workspace_member_budget_policy_public import WorkspaceMemberBudgetPolicyPublic as WorkspaceMemberBudgetPolicyPublic

@@ -42,7 +42,7 @@ class ChatCompletionRequest(BaseModel):
     max_completion_tokens: Optional[StrictInt] = None
     max_tokens: Optional[StrictInt] = None
     max_tool_iterations: Optional[Annotated[int, Field(le=25, strict=True, ge=1)]] = None
-    mcp_server_ids: Optional[List[UUID]] = None
+    mcp_server_ids: Optional[Annotated[List[UUID], Field(max_length=50)]] = None
     mcp_servers: Optional[List[McpServerConfig]] = None
     messages: Annotated[List[ChatMessageInput], Field(min_length=1)]
     model: StrictStr

@@ -18,19 +18,18 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateScopedBudgetRequest(BaseModel):
+class ResendVerificationRequest(BaseModel):
     """
-    Request model for updating a scoped budget.
+    ResendVerificationRequest
     """ # noqa: E501
-    budget_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = None
-    name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = None
-    __properties: ClassVar[List[str]] = ["budget_id", "name"]
+    email: Annotated[str, Field(strict=True, max_length=255)] = Field(description="The address to resend a verification link to.")
+    __properties: ClassVar[List[str]] = ["email"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -50,7 +49,7 @@ class UpdateScopedBudgetRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateScopedBudgetRequest from a JSON string"""
+        """Create an instance of ResendVerificationRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,21 +70,11 @@ class UpdateScopedBudgetRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if budget_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.budget_id is None and "budget_id" in self.model_fields_set:
-            _dict['budget_id'] = None
-
-        # set to None if name (nullable) is None
-        # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict['name'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateScopedBudgetRequest from a dict"""
+        """Create an instance of ResendVerificationRequest from a dict"""
         if obj is None:
             return None
 
@@ -93,8 +82,7 @@ class UpdateScopedBudgetRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_id": obj.get("budget_id"),
-            "name": obj.get("name")
+            "email": obj.get("email")
         })
         return _obj
 

@@ -17,27 +17,28 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceMemberBudgetPolicyPublic(BaseModel):
+class WorkspaceMcpServerPublic(BaseModel):
     """
-    One default and its template values.
+    The API-facing shape. Never carries the token, only whether one is set.  No ``last4``-style prefix either, unlike `OrgProviderKeyPublic`: a provider key's last four digits let an operator match a stored key against the one in their provider's console, and there is no equivalent workflow for an MCP bearer token.
     """ # noqa: E501
-    budget_duration_sec: Optional[StrictInt]
-    budget_id: StrictStr
+    allowed_tools: Optional[List[StrictStr]]
     created_at: StrictStr
-    id: StrictStr
-    max_budget: Optional[Union[StrictFloat, StrictInt]]
-    name: Optional[StrictStr]
-    provider_key_id: Optional[StrictStr]
+    enabled: StrictBool
+    has_token: StrictBool
+    id: UUID
+    name: StrictStr
+    purpose_hint: Optional[StrictStr]
     updated_at: StrictStr
+    url: StrictStr
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "id", "max_budget", "name", "provider_key_id", "updated_at", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_tools", "created_at", "enabled", "has_token", "id", "name", "purpose_hint", "updated_at", "url", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -57,7 +58,7 @@ class WorkspaceMemberBudgetPolicyPublic(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyPublic from a JSON string"""
+        """Create an instance of WorkspaceMcpServerPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,31 +79,21 @@ class WorkspaceMemberBudgetPolicyPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if budget_duration_sec (nullable) is None
+        # set to None if allowed_tools (nullable) is None
         # and model_fields_set contains the field
-        if self.budget_duration_sec is None and "budget_duration_sec" in self.model_fields_set:
-            _dict['budget_duration_sec'] = None
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
 
-        # set to None if max_budget (nullable) is None
+        # set to None if purpose_hint (nullable) is None
         # and model_fields_set contains the field
-        if self.max_budget is None and "max_budget" in self.model_fields_set:
-            _dict['max_budget'] = None
-
-        # set to None if name (nullable) is None
-        # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict['name'] = None
-
-        # set to None if provider_key_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
-            _dict['provider_key_id'] = None
+        if self.purpose_hint is None and "purpose_hint" in self.model_fields_set:
+            _dict['purpose_hint'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyPublic from a dict"""
+        """Create an instance of WorkspaceMcpServerPublic from a dict"""
         if obj is None:
             return None
 
@@ -110,14 +101,15 @@ class WorkspaceMemberBudgetPolicyPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_duration_sec": obj.get("budget_duration_sec"),
-            "budget_id": obj.get("budget_id"),
+            "allowed_tools": obj.get("allowed_tools"),
             "created_at": obj.get("created_at"),
+            "enabled": obj.get("enabled"),
+            "has_token": obj.get("has_token"),
             "id": obj.get("id"),
-            "max_budget": obj.get("max_budget"),
             "name": obj.get("name"),
-            "provider_key_id": obj.get("provider_key_id"),
+            "purpose_hint": obj.get("purpose_hint"),
             "updated_at": obj.get("updated_at"),
+            "url": obj.get("url"),
             "workspace_id": obj.get("workspace_id")
         })
         return _obj

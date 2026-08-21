@@ -44,7 +44,7 @@ class ResponsesRequest(BaseModel):
     max_output_tokens: Optional[StrictInt] = None
     max_tool_calls: Optional[StrictInt] = None
     max_tool_iterations: Optional[Annotated[int, Field(le=25, strict=True, ge=1)]] = None
-    mcp_server_ids: Optional[List[UUID]] = None
+    mcp_server_ids: Optional[Annotated[List[UUID], Field(max_length=50)]] = None
     mcp_servers: Optional[List[McpServerConfig]] = None
     metadata: Optional[Dict[str, StrictStr]] = None
     model: StrictStr

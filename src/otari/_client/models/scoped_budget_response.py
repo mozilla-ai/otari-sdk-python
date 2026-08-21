@@ -25,9 +25,10 @@ from pydantic_core import to_jsonable_python
 
 class ScopedBudgetResponse(BaseModel):
     """
-    One scoped ceiling and its live counters.  Unlike ``/v1/budgets``, the counters are the row's own: a scoped ceiling is enforced against ``current_spend + reserved_spend``, so there is no rollup over users to compute.
+    One scoped ceiling and its live counters.  Unlike ``/v1/budgets``, the counters are the row's own: a scoped ceiling is enforced against ``current_spend + reserved_spend``, so there is no rollup over users to compute.  ``max_budget``, ``budget_duration_sec`` and ``reset_alignment`` are read off the budget rather than stored here, and are carried on the wire so a caller can render a ceiling without fetching every budget to resolve one id.
     """ # noqa: E501
     budget_duration_sec: Optional[StrictInt]
+    budget_id: StrictStr
     created_at: StrictStr
     current_spend: Union[StrictFloat, StrictInt]
     id: StrictStr
@@ -41,7 +42,7 @@ class ScopedBudgetResponse(BaseModel):
     scope_id: StrictStr
     scope_type: StrictStr
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "created_at", "current_spend", "id", "max_budget", "name", "period_end", "period_start", "provider_key_id", "reserved_spend", "reset_alignment", "scope_id", "scope_type", "updated_at"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "current_spend", "id", "max_budget", "name", "period_end", "period_start", "provider_key_id", "reserved_spend", "reset_alignment", "scope_id", "scope_type", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -130,6 +131,7 @@ class ScopedBudgetResponse(BaseModel):
 
         _obj = cls.model_validate({
             "budget_duration_sec": obj.get("budget_duration_sec"),
+            "budget_id": obj.get("budget_id"),
             "created_at": obj.get("created_at"),
             "current_spend": obj.get("current_spend"),
             "id": obj.get("id"),

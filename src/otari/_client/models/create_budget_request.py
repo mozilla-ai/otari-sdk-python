@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -29,9 +29,20 @@ class CreateBudgetRequest(BaseModel):
     Request model for creating a new budget.
     """ # noqa: E501
     budget_duration_sec: Optional[Annotated[int, Field(strict=True, gt=0)]] = Field(default=None, description="Budget duration in seconds (e.g., 86400 for daily, 604800 for weekly)")
-    max_budget: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Maximum spending limit")
+    max_budget: Optional[Union[Annotated[float, Field(le=999999999999, strict=True, ge=0.0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = Field(default=None, description="Maximum spending limit")
     name: Optional[StrictStr] = Field(default=None, description="Admin-facing label for the budget")
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name"]
+    reset_alignment: Optional[StrictStr] = Field(default=None, description="Reset on a UTC calendar boundary instead of a fixed number of seconds, which is the only way to express a calendar month. Mutually exclusive with budget_duration_sec")
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "reset_alignment"]
+
+    @field_validator('reset_alignment')
+    def reset_alignment_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['calendar_day', 'calendar_week', 'calendar_month']):
+            raise ValueError("must be one of enum values ('calendar_day', 'calendar_week', 'calendar_month')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,6 +98,11 @@ class CreateBudgetRequest(BaseModel):
         if self.name is None and "name" in self.model_fields_set:
             _dict['name'] = None
 
+        # set to None if reset_alignment (nullable) is None
+        # and model_fields_set contains the field
+        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
+            _dict['reset_alignment'] = None
+
         return _dict
 
     @classmethod
@@ -101,7 +117,8 @@ class CreateBudgetRequest(BaseModel):
         _obj = cls.model_validate({
             "budget_duration_sec": obj.get("budget_duration_sec"),
             "max_budget": obj.get("max_budget"),
-            "name": obj.get("name")
+            "name": obj.get("name"),
+            "reset_alignment": obj.get("reset_alignment")
         })
         return _obj
 
