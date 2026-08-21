@@ -53,7 +53,7 @@ class BootstrapApi:
     ) -> DeploymentBootstrap:
         """Get Bootstrap
 
-        Return the deployment context the dashboard shell renders from.  Public: the shell fetches this before it knows whether it can authenticate.
+        Return the deployment context the dashboard shell renders from.  Public: the shell fetches this before it knows whether it can authenticate. That is also why ``sign_in_methods`` is answered here rather than behind a credential, and it publishes nothing an unauthenticated caller could not already learn by trying both credentials against the sign-in endpoint.  The one database read is a ``LIMIT 1`` probe for any identity holding a password, over a table a standalone deployment keeps one row per person in. It runs only in standalone mode: a hybrid gateway has no session to describe, and ``get_db_if_needed`` hands it no session to read one from.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -116,7 +116,7 @@ class BootstrapApi:
     ) -> ApiResponse[DeploymentBootstrap]:
         """Get Bootstrap
 
-        Return the deployment context the dashboard shell renders from.  Public: the shell fetches this before it knows whether it can authenticate.
+        Return the deployment context the dashboard shell renders from.  Public: the shell fetches this before it knows whether it can authenticate. That is also why ``sign_in_methods`` is answered here rather than behind a credential, and it publishes nothing an unauthenticated caller could not already learn by trying both credentials against the sign-in endpoint.  The one database read is a ``LIMIT 1`` probe for any identity holding a password, over a table a standalone deployment keeps one row per person in. It runs only in standalone mode: a hybrid gateway has no session to describe, and ``get_db_if_needed`` hands it no session to read one from.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -179,7 +179,7 @@ class BootstrapApi:
     ) -> RESTResponseType:
         """Get Bootstrap
 
-        Return the deployment context the dashboard shell renders from.  Public: the shell fetches this before it knows whether it can authenticate.
+        Return the deployment context the dashboard shell renders from.  Public: the shell fetches this before it knows whether it can authenticate. That is also why ``sign_in_methods`` is answered here rather than behind a credential, and it publishes nothing an unauthenticated caller could not already learn by trying both credentials against the sign-in endpoint.  The one database read is a ``LIMIT 1`` probe for any identity holding a password, over a table a standalone deployment keeps one row per person in. It runs only in standalone mode: a hybrid gateway has no session to describe, and ``get_db_if_needed`` hands it no session to read one from.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

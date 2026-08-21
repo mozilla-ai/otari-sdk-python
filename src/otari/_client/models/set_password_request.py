@@ -24,14 +24,14 @@ from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CreateSessionRequest(BaseModel):
+class SetPasswordRequest(BaseModel):
     """
-    Sign in to the dashboard with exactly one credential.  A flat body with an optional field per credential, rather than a tagged union: it is one extra key on the wire, it generates a client type a hand-written form can fill in, and the validator below makes the two forms exclusive anyway.  The example carries one credential, because a generated example is a body somebody will post: the schema alone would produce every field at once, which is the one shape the validator below refuses.
+    Set or change the signed-in identity's password.  The example is the first-boot claim, because that is the call an operator makes first and the one whose required fields are not obvious from the schema: ``email`` is optional here in general and *required* when the identity has no address yet. Without it the generated Postman body carries only ``new_password``, which is the one shape that cannot complete the flow the docs walk through.
     """ # noqa: E501
-    email: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="The identity's sign-in address.")
-    master_key: Optional[Annotated[str, Field(strict=True, max_length=512)]] = Field(default=None, description="The gateway master key; verified once and never stored by the browser. Accepted only while no identity on this deployment has a password (see GET /v1/bootstrap).")
-    password: Optional[Annotated[str, Field(strict=True, max_length=72)]] = Field(default=None, description="The identity's password.")
-    __properties: ClassVar[List[str]] = ["email", "master_key", "password"]
+    current_password: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = Field(default=None, description="The password being replaced. Required when the identity already has one and the request is authenticated by the session cookie; ignored when the master key is sent in a header, which needs no proof of the old password (it still needs `email` when the identity has no sign-in address yet).")
+    email: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="The address to sign in with. Required when the identity has none, which is the state first boot leaves the operator in, including when the master key is what authenticates the call. Resubmitting the address the identity already holds is accepted and ignored; only a *different* address is refused, because changing one is not supported yet.")
+    new_password: Annotated[str, Field(min_length=8, strict=True, max_length=1024)] = Field(description="The password to sign in with from now on. At least 8 characters, and at most 72 bytes, which is bcrypt's ceiling.")
+    __properties: ClassVar[List[str]] = ["current_password", "email", "new_password"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +51,7 @@ class CreateSessionRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CreateSessionRequest from a JSON string"""
+        """Create an instance of SetPasswordRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,26 +72,21 @@ class CreateSessionRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if current_password (nullable) is None
+        # and model_fields_set contains the field
+        if self.current_password is None and "current_password" in self.model_fields_set:
+            _dict['current_password'] = None
+
         # set to None if email (nullable) is None
         # and model_fields_set contains the field
         if self.email is None and "email" in self.model_fields_set:
             _dict['email'] = None
 
-        # set to None if master_key (nullable) is None
-        # and model_fields_set contains the field
-        if self.master_key is None and "master_key" in self.model_fields_set:
-            _dict['master_key'] = None
-
-        # set to None if password (nullable) is None
-        # and model_fields_set contains the field
-        if self.password is None and "password" in self.model_fields_set:
-            _dict['password'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CreateSessionRequest from a dict"""
+        """Create an instance of SetPasswordRequest from a dict"""
         if obj is None:
             return None
 
@@ -99,9 +94,9 @@ class CreateSessionRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "current_password": obj.get("current_password"),
             "email": obj.get("email"),
-            "master_key": obj.get("master_key"),
-            "password": obj.get("password")
+            "new_password": obj.get("new_password")
         })
         return _obj
 

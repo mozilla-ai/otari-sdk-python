@@ -30,9 +30,10 @@ class DeploymentBootstrap(BaseModel):
     deployment_type: StrictStr = Field(description="Which deployment serves this URL. 'standalone' owns its own data; 'hosted' is otari.ai; 'hybrid' is a gateway attached to otari.ai, which is data-plane only and holds no management surface of its own.")
     mail_ready: StrictBool = Field(description="Whether this deployment can deliver a message carrying a link back to itself (an invitation's accept link, and the verification and reset links to come), not merely whether a transport is configured: it also needs to know its own public URL to put in one. Lets the dashboard disable or hide a mail-dependent affordance instead of offering one that would fail at send time. Every message this control plane sends carries such a link, which is why this is one flag and not one per feature. False for a hybrid gateway, whose control plane is otari.ai and which sends no mail of its own.")
     management_url: Optional[StrictStr] = Field(description="Where the authoritative control plane lives when it is not this deployment. Set for a hybrid gateway so its landing page can link to otari.ai; null otherwise.")
-    session_type: StrictStr = Field(description="The kind of session this deployment issues, not whether the caller holds one. 'local_operator' is the standalone master-key sign-in, 'hosted_user' an otari.ai account, and 'none' a deployment that issues no management session at all.")
+    session_type: StrictStr = Field(description="The kind of session this deployment issues, not whether the caller holds one. 'local_operator' is the standalone operator sign-in (see sign_in_methods for which credential it currently accepts), 'hosted_user' an otari.ai account, and 'none' a deployment that issues no management session at all.")
+    sign_in_methods: List[StrictStr] = Field(description="How POST /v1/auth/session may be authenticated right now, sorted. 'master_key' is the first-boot credential and is offered until some identity on this deployment has a password; 'password' replaces it from then on, and the master key stays the credential for the management API. Empty for a hybrid gateway, which issues no session. The login page renders from this rather than trying a credential to find out.")
     surfaces: List[StrictStr] = Field(description="Management API groups this deployment serves, sorted, which is what its dashboard pages gate on. Named surfaces, not capabilities: capability is otari.ai's word for the entitlement (licensing) axis, and this is the deployment (topology) axis. Empty for a hybrid gateway.")
-    __properties: ClassVar[List[str]] = ["deployment_type", "mail_ready", "management_url", "session_type", "surfaces"]
+    __properties: ClassVar[List[str]] = ["deployment_type", "mail_ready", "management_url", "session_type", "sign_in_methods", "surfaces"]
 
     @field_validator('deployment_type')
     def deployment_type_validate_enum(cls, value):
@@ -46,6 +47,14 @@ class DeploymentBootstrap(BaseModel):
         """Validates the enum"""
         if value not in set(['local_operator', 'hosted_user', 'none']):
             raise ValueError("must be one of enum values ('local_operator', 'hosted_user', 'none')")
+        return value
+
+    @field_validator('sign_in_methods')
+    def sign_in_methods_validate_enum(cls, value):
+        """Validates the enum"""
+        for i in value:
+            if i not in set(['master_key', 'password']):
+                raise ValueError("each list item must be one of ('master_key', 'password')")
         return value
 
     model_config = ConfigDict(
@@ -108,6 +117,7 @@ class DeploymentBootstrap(BaseModel):
             "mail_ready": obj.get("mail_ready"),
             "management_url": obj.get("management_url"),
             "session_type": obj.get("session_type"),
+            "sign_in_methods": obj.get("sign_in_methods"),
             "surfaces": obj.get("surfaces")
         })
         return _obj
