@@ -1408,7 +1408,7 @@ class AuthApi:
     ) -> PasswordResponse:
         """Set Dashboard Password
 
-        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. Setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
+        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. The operator setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
 
         :param set_password_request: (required)
         :type set_password_request: SetPasswordRequest
@@ -1476,7 +1476,7 @@ class AuthApi:
     ) -> ApiResponse[PasswordResponse]:
         """Set Dashboard Password
 
-        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. Setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
+        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. The operator setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
 
         :param set_password_request: (required)
         :type set_password_request: SetPasswordRequest
@@ -1544,7 +1544,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Set Dashboard Password
 
-        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. Setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
+        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. The operator setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
 
         :param set_password_request: (required)
         :type set_password_request: SetPasswordRequest

@@ -29,7 +29,7 @@ class CreateSessionRequest(BaseModel):
     Sign in to the dashboard with exactly one credential.  A flat body with an optional field per credential, rather than a tagged union: it is one extra key on the wire, it generates a client type a hand-written form can fill in, and the validator below makes the two forms exclusive anyway.  The example carries one credential, because a generated example is a body somebody will post: the schema alone would produce every field at once, which is the one shape the validator below refuses.
     """ # noqa: E501
     email: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="The identity's sign-in address.")
-    master_key: Optional[Annotated[str, Field(strict=True, max_length=512)]] = Field(default=None, description="The gateway master key; verified once and never stored by the browser. Accepted only while no identity on this deployment has a password (see GET /v1/bootstrap).")
+    master_key: Optional[Annotated[str, Field(strict=True, max_length=512)]] = Field(default=None, description="The gateway master key; verified once and never stored by the browser. Accepted only while the operator identity has no password, which is to say while nobody has claimed this deployment (see GET /v1/bootstrap).")
     password: Optional[Annotated[str, Field(strict=True, max_length=72)]] = Field(default=None, description="The identity's password.")
     __properties: ClassVar[List[str]] = ["email", "master_key", "password"]
 
