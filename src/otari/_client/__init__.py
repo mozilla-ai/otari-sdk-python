@@ -36,6 +36,7 @@ __all__ = [
     "MessagesApi",
     "ModelsApi",
     "ModerationsApi",
+    "OrganizationGuardrailsApi",
     "OrganizationPricingApi",
     "OrganizationsApi",
     "OtelApi",
@@ -349,6 +350,10 @@ __all__ = [
     "OrgProviderKeyPublic",
     "OrgProviderKeyUpdateRequest",
     "OrgProviderKeysPublic",
+    "OrganizationGuardrailCreate",
+    "OrganizationGuardrailPublic",
+    "OrganizationGuardrailUpdate",
+    "OrganizationGuardrailsPublic",
     "OrganizationMembershipContextPublic",
     "OrganizationModelPricingCreate",
     "OrganizationModelPricingPublic",
@@ -509,6 +514,7 @@ from otari._client.api.mcp_servers_api import McpServersApi as McpServersApi
 from otari._client.api.messages_api import MessagesApi as MessagesApi
 from otari._client.api.models_api import ModelsApi as ModelsApi
 from otari._client.api.moderations_api import ModerationsApi as ModerationsApi
+from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi as OrganizationGuardrailsApi
 from otari._client.api.organization_pricing_api import OrganizationPricingApi as OrganizationPricingApi
 from otari._client.api.organizations_api import OrganizationsApi as OrganizationsApi
 from otari._client.api.otel_api import OtelApi as OtelApi
@@ -826,6 +832,10 @@ from otari._client.models.org_provider_key_create_request import OrgProviderKeyC
 from otari._client.models.org_provider_key_public import OrgProviderKeyPublic as OrgProviderKeyPublic
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest as OrgProviderKeyUpdateRequest
 from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic as OrgProviderKeysPublic
+from otari._client.models.organization_guardrail_create import OrganizationGuardrailCreate as OrganizationGuardrailCreate
+from otari._client.models.organization_guardrail_public import OrganizationGuardrailPublic as OrganizationGuardrailPublic
+from otari._client.models.organization_guardrail_update import OrganizationGuardrailUpdate as OrganizationGuardrailUpdate
+from otari._client.models.organization_guardrails_public import OrganizationGuardrailsPublic as OrganizationGuardrailsPublic
 from otari._client.models.organization_membership_context_public import OrganizationMembershipContextPublic as OrganizationMembershipContextPublic
 from otari._client.models.organization_model_pricing_create import OrganizationModelPricingCreate as OrganizationModelPricingCreate
 from otari._client.models.organization_model_pricing_public import OrganizationModelPricingPublic as OrganizationModelPricingPublic
