@@ -29,11 +29,13 @@ class DeploymentBootstrap(BaseModel):
     """ # noqa: E501
     deployment_type: StrictStr = Field(description="Which deployment serves this URL. 'standalone' owns its own data; 'hosted' is otari.ai; 'hybrid' is a gateway attached to otari.ai, which is data-plane only and holds no management surface of its own.")
     mail_ready: StrictBool = Field(description="Whether this deployment can deliver a message carrying a link back to itself (an invitation's accept link, and the verification and reset links to come), not merely whether a transport is configured: it also needs to know its own public URL to put in one. Lets the dashboard disable or hide a mail-dependent affordance instead of offering one that would fail at send time. Every message this control plane sends carries such a link, which is why this is one flag and not one per feature. False for a hybrid gateway, whose control plane is otari.ai and which sends no mail of its own.")
+    maintenance_mode: StrictBool = Field(description="Whether this deployment is refusing new dashboard sign-ins while an operator redeploys it. The sign-in screen says so rather than presenting a form whose only outcome is a 503. Sessions already issued keep working, and the management API and the data plane are unaffected. False for a hybrid gateway, which issues no session.")
     management_url: Optional[StrictStr] = Field(description="Where the authoritative control plane lives when it is not this deployment. Set for a hybrid gateway so its landing page can link to otari.ai; null otherwise.")
+    passkeys_ready: StrictBool = Field(description="Whether this deployment can run a passkey ceremony at all: it has a relying-party ID (webauthn_rp_id, or derived from public_base_url) and an origin to serve one from. Distinct from 'passkey' in sign_in_methods, which is narrower and answers whether a registered passkey could sign somebody in *right now*: an operator with none yet needs this one, or the page that registers the first would be hidden from them. False for a hybrid gateway, which issues no session of its own.")
     session_type: StrictStr = Field(description="The kind of session this deployment issues, not whether the caller holds one. 'local_operator' is the standalone operator sign-in (see sign_in_methods for which credential it currently accepts), 'hosted_user' an otari.ai account, and 'none' a deployment that issues no management session at all.")
-    sign_in_methods: List[StrictStr] = Field(description="How POST /v1/auth/session may be authenticated right now, sorted. 'master_key' is the first-boot credential and is offered until the operator identity has a password, which is what claiming the deployment means; 'password' replaces it from then on, and the master key stays the credential for the management API. Empty for a hybrid gateway, which issues no session. The login page renders from this rather than trying a credential to find out.")
+    sign_in_methods: List[StrictStr] = Field(description="How POST /v1/auth/session may be authenticated right now, sorted. 'master_key' is the first-boot credential and is offered until the operator identity has a password, which is what claiming the deployment means; 'password' replaces it from then on, and the master key stays the credential for the management API. 'passkey' appears alongside either one when this deployment is configured for WebAuthn and holds at least one passkey that its current relying-party ID can assert. Empty for a hybrid gateway, which issues no session. The login page renders from this rather than trying a credential to find out.")
     surfaces: List[StrictStr] = Field(description="Management API groups this deployment serves, sorted, which is what its dashboard pages gate on. Named surfaces, not capabilities: capability is otari.ai's word for the entitlement (licensing) axis, and this is the deployment (topology) axis. Empty for a hybrid gateway.")
-    __properties: ClassVar[List[str]] = ["deployment_type", "mail_ready", "management_url", "session_type", "sign_in_methods", "surfaces"]
+    __properties: ClassVar[List[str]] = ["deployment_type", "mail_ready", "maintenance_mode", "management_url", "passkeys_ready", "session_type", "sign_in_methods", "surfaces"]
 
     @field_validator('deployment_type')
     def deployment_type_validate_enum(cls, value):
@@ -53,8 +55,8 @@ class DeploymentBootstrap(BaseModel):
     def sign_in_methods_validate_enum(cls, value):
         """Validates the enum"""
         for i in value:
-            if i not in set(['master_key', 'password']):
-                raise ValueError("each list item must be one of ('master_key', 'password')")
+            if i not in set(['master_key', 'password', 'passkey']):
+                raise ValueError("each list item must be one of ('master_key', 'password', 'passkey')")
         return value
 
     model_config = ConfigDict(
@@ -115,7 +117,9 @@ class DeploymentBootstrap(BaseModel):
         _obj = cls.model_validate({
             "deployment_type": obj.get("deployment_type"),
             "mail_ready": obj.get("mail_ready"),
+            "maintenance_mode": obj.get("maintenance_mode"),
             "management_url": obj.get("management_url"),
+            "passkeys_ready": obj.get("passkeys_ready"),
             "session_type": obj.get("session_type"),
             "sign_in_methods": obj.get("sign_in_methods"),
             "surfaces": obj.get("surfaces")

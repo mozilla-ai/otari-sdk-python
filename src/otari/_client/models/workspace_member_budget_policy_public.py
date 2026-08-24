@@ -35,9 +35,10 @@ class WorkspaceMemberBudgetPolicyPublic(BaseModel):
     max_budget: Optional[Union[StrictFloat, StrictInt]]
     name: Optional[StrictStr]
     provider_key_id: Optional[StrictStr]
+    reset_alignment: Optional[StrictStr]
     updated_at: StrictStr
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "id", "max_budget", "name", "provider_key_id", "updated_at", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "id", "max_budget", "name", "provider_key_id", "reset_alignment", "updated_at", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -98,6 +99,11 @@ class WorkspaceMemberBudgetPolicyPublic(BaseModel):
         if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
             _dict['provider_key_id'] = None
 
+        # set to None if reset_alignment (nullable) is None
+        # and model_fields_set contains the field
+        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
+            _dict['reset_alignment'] = None
+
         return _dict
 
     @classmethod
@@ -117,6 +123,7 @@ class WorkspaceMemberBudgetPolicyPublic(BaseModel):
             "max_budget": obj.get("max_budget"),
             "name": obj.get("name"),
             "provider_key_id": obj.get("provider_key_id"),
+            "reset_alignment": obj.get("reset_alignment"),
             "updated_at": obj.get("updated_at"),
             "workspace_id": obj.get("workspace_id")
         })
