@@ -41,6 +41,7 @@ from otari._client.models.alias_response import AliasResponse
 from otari._client.models.api_key_id import ApiKeyId
 from otari._client.models.applied_edits_inner import AppliedEditsInner
 from otari._client.models.audio_speech_request import AudioSpeechRequest
+from otari._client.models.authenticate_passkey_request import AuthenticatePasskeyRequest
 from otari._client.models.batch_request_item import BatchRequestItem
 from otari._client.models.billing_meters import BillingMeters
 from otari._client.models.budget_reset_log_response import BudgetResetLogResponse
@@ -274,6 +275,7 @@ from otari._client.models.msg_function_call import MSGFunctionCall
 from otari._client.models.msg_image_url import MSGImageURL
 from otari._client.models.msg_input_audio import MSGInputAudio
 from otari._client.models.mail_settings import MailSettings
+from otari._client.models.maintenance_mode import MaintenanceMode
 from otari._client.models.managed_tool import ManagedTool
 from otari._client.models.mcp_server_config import McpServerConfig
 from otari._client.models.message import Message
@@ -299,6 +301,7 @@ from otari._client.models.organization_model_pricing_public import OrganizationM
 from otari._client.models.organization_model_pricing_update import OrganizationModelPricingUpdate
 from otari._client.models.organization_model_pricings_public import OrganizationModelPricingsPublic
 from otari._client.models.organization_public import OrganizationPublic
+from otari._client.models.passkey_session_response import PasskeySessionResponse
 from otari._client.models.password_response import PasswordResponse
 from otari._client.models.policy_request import PolicyRequest
 from otari._client.models.policy_response import PolicyResponse
@@ -323,6 +326,7 @@ from otari._client.models.rank_response import RankResponse
 from otari._client.models.recorded_pool import RecordedPool
 from otari._client.models.reencrypt_provider_credentials_response import ReencryptProviderCredentialsResponse
 from otari._client.models.reencrypt_search_tools_response import ReencryptSearchToolsResponse
+from otari._client.models.register_passkey_request import RegisterPasskeyRequest
 from otari._client.models.request_password_reset_request import RequestPasswordResetRequest
 from otari._client.models.request_password_reset_response import RequestPasswordResetResponse
 from otari._client.models.rerank_request import RerankRequest
@@ -371,6 +375,7 @@ from otari._client.models.units import Units
 from otari._client.models.units1 import Units1
 from otari._client.models.update_budget_request import UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest
+from otari._client.models.update_maintenance_mode_request import UpdateMaintenanceModeRequest
 from otari._client.models.update_scoped_budget_request import UpdateScopedBudgetRequest
 from otari._client.models.update_search_tool_request import UpdateSearchToolRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest
@@ -401,6 +406,9 @@ from otari._client.models.value import Value
 from otari._client.models.value1 import Value1
 from otari._client.models.verify_email_request import VerifyEmailRequest
 from otari._client.models.verify_email_response import VerifyEmailResponse
+from otari._client.models.web_authn_credential_public import WebAuthnCredentialPublic
+from otari._client.models.web_authn_credential_update import WebAuthnCredentialUpdate
+from otari._client.models.web_authn_credentials_public import WebAuthnCredentialsPublic
 from otari._client.models.workspace_activation_public import WorkspaceActivationPublic
 from otari._client.models.workspace_assignment_request import WorkspaceAssignmentRequest
 from otari._client.models.workspace_code_execution_policy_public import WorkspaceCodeExecutionPolicyPublic
@@ -423,5 +431,7 @@ from otari._client.models.workspace_provider_model_restriction_request import Wo
 from otari._client.models.workspace_provider_model_restrictions_public import WorkspaceProviderModelRestrictionsPublic
 from otari._client.models.workspace_public import WorkspacePublic
 from otari._client.models.workspace_update import WorkspaceUpdate
+from otari._client.models.workspace_web_search_config_public import WorkspaceWebSearchConfigPublic
+from otari._client.models.workspace_web_search_config_update import WorkspaceWebSearchConfigUpdate
 from otari._client.models.workspaces_public import WorkspacesPublic
 
