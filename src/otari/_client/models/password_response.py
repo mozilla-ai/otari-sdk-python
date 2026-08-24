@@ -28,7 +28,7 @@ class PasswordResponse(BaseModel):
     What the identity signs in with now.
     """ # noqa: E501
     email: StrictStr = Field(description="The address this identity signs in with.")
-    master_key_sign_in_retired: StrictBool = Field(description="Always true once this succeeds: some identity on this deployment now has a password, so POST /v1/auth/session no longer accepts the master key. It stays the credential for the management API.")
+    master_key_sign_in_retired: StrictBool = Field(description="Whether POST /v1/auth/session has stopped accepting the master key as a dashboard login. True once the operator identity has a password, which is what claiming the deployment means; a member setting their own password leaves an unclaimed deployment on the master key. Either way the master key stays the credential for the management API.")
     __properties: ClassVar[List[str]] = ["email", "master_key_sign_in_retired"]
 
     model_config = ConfigDict(
