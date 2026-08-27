@@ -18,6 +18,7 @@ __version__ = "1.0.0"
 
 # Define package exports
 __all__ = [
+    "AdminApi",
     "AgentTelemetryApi",
     "AliasesApi",
     "AudioApi",
@@ -97,6 +98,7 @@ __all__ = [
     "AppliedEditsInner",
     "AudioSpeechRequest",
     "AuthenticatePasskeyRequest",
+    "AuthorizeResponse",
     "BatchRequestItem",
     "BillingMeters",
     "BudgetResetLogResponse",
@@ -129,6 +131,8 @@ __all__ = [
     "CCTopLogprob",
     "Caller",
     "Caller1",
+    "CallerOrganizationMembershipPublic",
+    "CallerOrganizationMembershipsPublic",
     "CallerWorkspaceMembershipPublic",
     "CandidateResponse",
     "ChatCompletion",
@@ -170,7 +174,12 @@ __all__ = [
     "CreateSessionRequest",
     "CreateStoredProviderRequest",
     "CreateUserRequest",
+    "DeploymentAdminAccessPublic",
     "DeploymentBootstrap",
+    "DeploymentUserOrganizationPublic",
+    "DeploymentUserPublic",
+    "DeploymentUserUpdateRequest",
+    "DeploymentUsersPublic",
     "DiscoverableModel",
     "DiscoverableModelsResponse",
     "DiscoverableProvider",
@@ -346,10 +355,13 @@ __all__ = [
     "ModerationRequest",
     "ModerationResponse",
     "ModerationResult",
+    "OAuthCallbackRequest",
+    "OAuthSessionResponse",
     "OrgProviderKeyCreateRequest",
     "OrgProviderKeyPublic",
     "OrgProviderKeyUpdateRequest",
     "OrgProviderKeysPublic",
+    "OrganizationCreateRequest",
     "OrganizationGuardrailCreate",
     "OrganizationGuardrailPublic",
     "OrganizationGuardrailUpdate",
@@ -415,6 +427,7 @@ __all__ = [
     "Stop",
     "StoredProviderResponse",
     "StoredSearchToolSchema",
+    "SwitchActiveOrganizationRequest",
     "System",
     "TaskPool",
     "TestProviderRequest",
@@ -496,6 +509,7 @@ __all__ = [
 ]
 
 # import apis into sdk package
+from otari._client.api.admin_api import AdminApi as AdminApi
 from otari._client.api.agent_telemetry_api import AgentTelemetryApi as AgentTelemetryApi
 from otari._client.api.aliases_api import AliasesApi as AliasesApi
 from otari._client.api.audio_api import AudioApi as AudioApi
@@ -579,6 +593,7 @@ from otari._client.models.api_key_id import ApiKeyId as ApiKeyId
 from otari._client.models.applied_edits_inner import AppliedEditsInner as AppliedEditsInner
 from otari._client.models.audio_speech_request import AudioSpeechRequest as AudioSpeechRequest
 from otari._client.models.authenticate_passkey_request import AuthenticatePasskeyRequest as AuthenticatePasskeyRequest
+from otari._client.models.authorize_response import AuthorizeResponse as AuthorizeResponse
 from otari._client.models.batch_request_item import BatchRequestItem as BatchRequestItem
 from otari._client.models.billing_meters import BillingMeters as BillingMeters
 from otari._client.models.budget_reset_log_response import BudgetResetLogResponse as BudgetResetLogResponse
@@ -611,6 +626,8 @@ from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails 
 from otari._client.models.cc_top_logprob import CCTopLogprob as CCTopLogprob
 from otari._client.models.caller import Caller as Caller
 from otari._client.models.caller1 import Caller1 as Caller1
+from otari._client.models.caller_organization_membership_public import CallerOrganizationMembershipPublic as CallerOrganizationMembershipPublic
+from otari._client.models.caller_organization_memberships_public import CallerOrganizationMembershipsPublic as CallerOrganizationMembershipsPublic
 from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic as CallerWorkspaceMembershipPublic
 from otari._client.models.candidate_response import CandidateResponse as CandidateResponse
 from otari._client.models.chat_completion import ChatCompletion as ChatCompletion
@@ -652,7 +669,12 @@ from otari._client.models.create_search_tool_request import CreateSearchToolRequ
 from otari._client.models.create_session_request import CreateSessionRequest as CreateSessionRequest
 from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest as CreateStoredProviderRequest
 from otari._client.models.create_user_request import CreateUserRequest as CreateUserRequest
+from otari._client.models.deployment_admin_access_public import DeploymentAdminAccessPublic as DeploymentAdminAccessPublic
 from otari._client.models.deployment_bootstrap import DeploymentBootstrap as DeploymentBootstrap
+from otari._client.models.deployment_user_organization_public import DeploymentUserOrganizationPublic as DeploymentUserOrganizationPublic
+from otari._client.models.deployment_user_public import DeploymentUserPublic as DeploymentUserPublic
+from otari._client.models.deployment_user_update_request import DeploymentUserUpdateRequest as DeploymentUserUpdateRequest
+from otari._client.models.deployment_users_public import DeploymentUsersPublic as DeploymentUsersPublic
 from otari._client.models.discoverable_model import DiscoverableModel as DiscoverableModel
 from otari._client.models.discoverable_models_response import DiscoverableModelsResponse as DiscoverableModelsResponse
 from otari._client.models.discoverable_provider import DiscoverableProvider as DiscoverableProvider
@@ -828,10 +850,13 @@ from otari._client.models.model_pricing_info import ModelPricingInfo as ModelPri
 from otari._client.models.moderation_request import ModerationRequest as ModerationRequest
 from otari._client.models.moderation_response import ModerationResponse as ModerationResponse
 from otari._client.models.moderation_result import ModerationResult as ModerationResult
+from otari._client.models.o_auth_callback_request import OAuthCallbackRequest as OAuthCallbackRequest
+from otari._client.models.o_auth_session_response import OAuthSessionResponse as OAuthSessionResponse
 from otari._client.models.org_provider_key_create_request import OrgProviderKeyCreateRequest as OrgProviderKeyCreateRequest
 from otari._client.models.org_provider_key_public import OrgProviderKeyPublic as OrgProviderKeyPublic
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest as OrgProviderKeyUpdateRequest
 from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic as OrgProviderKeysPublic
+from otari._client.models.organization_create_request import OrganizationCreateRequest as OrganizationCreateRequest
 from otari._client.models.organization_guardrail_create import OrganizationGuardrailCreate as OrganizationGuardrailCreate
 from otari._client.models.organization_guardrail_public import OrganizationGuardrailPublic as OrganizationGuardrailPublic
 from otari._client.models.organization_guardrail_update import OrganizationGuardrailUpdate as OrganizationGuardrailUpdate
@@ -897,6 +922,7 @@ from otari._client.models.source1 import Source1 as Source1
 from otari._client.models.stop import Stop as Stop
 from otari._client.models.stored_provider_response import StoredProviderResponse as StoredProviderResponse
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema as StoredSearchToolSchema
+from otari._client.models.switch_active_organization_request import SwitchActiveOrganizationRequest as SwitchActiveOrganizationRequest
 from otari._client.models.system import System as System
 from otari._client.models.task_pool import TaskPool as TaskPool
 from otari._client.models.test_provider_request import TestProviderRequest as TestProviderRequest

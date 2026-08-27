@@ -338,7 +338,7 @@ class UsersApi:
     ) -> None:
         """Delete User
 
-        Delete a user.
+        Delete a user, and erase the telemetry captured under their name.
 
         :param user_id: (required)
         :type user_id: str
@@ -406,7 +406,7 @@ class UsersApi:
     ) -> ApiResponse[None]:
         """Delete User
 
-        Delete a user.
+        Delete a user, and erase the telemetry captured under their name.
 
         :param user_id: (required)
         :type user_id: str
@@ -474,7 +474,7 @@ class UsersApi:
     ) -> RESTResponseType:
         """Delete User
 
-        Delete a user.
+        Delete a user, and erase the telemetry captured under their name.
 
         :param user_id: (required)
         :type user_id: str

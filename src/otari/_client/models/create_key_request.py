@@ -37,7 +37,7 @@ class CreateKeyRequest(BaseModel):
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata")
     reject_user_mismatch: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide reject_user_mismatch setting: null (default) inherits it, true always rejects a request naming a different 'user', false always accepts it. Spend binds to this key's own user either way.")
     user_id: Optional[StrictStr] = Field(default=None, description="Optional user ID to associate with this key")
-    workspace_id: Optional[UUID] = Field(default=None, description="Workspace this key belongs to. Omitted means the deployment's default workspace. A key belongs to exactly one workspace: requests on it are scoped and billed there, so the workspace is read off the key rather than off a request header.")
+    workspace_id: Optional[UUID] = Field(default=None, description="Workspace this key belongs to, which must be one in the caller's organization. Omitted means that organization's default workspace. A key belongs to exactly one workspace: requests on it are scoped and billed there, so the workspace is read off the key rather than off a request header.")
     __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "exclude_from_budget", "expires_at", "key_name", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(

@@ -44,6 +44,7 @@ class MessagesRequest(BaseModel):
     metadata: Optional[Dict[str, Any]] = None
     model: StrictStr
     output_format: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    prompt_cache_key: Optional[StrictStr] = None
     session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     stop_sequences: Optional[List[StrictStr]] = None
     stream: Optional[StrictBool] = False
@@ -55,7 +56,7 @@ class MessagesRequest(BaseModel):
     tools_header: Optional[StrictStr] = None
     top_k: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["betas", "cache_control", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_format", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
+    __properties: ClassVar[List[str]] = ["betas", "cache_control", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_format", "prompt_cache_key", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -158,6 +159,11 @@ class MessagesRequest(BaseModel):
         if self.output_format is None and "output_format" in self.model_fields_set:
             _dict['output_format'] = None
 
+        # set to None if prompt_cache_key (nullable) is None
+        # and model_fields_set contains the field
+        if self.prompt_cache_key is None and "prompt_cache_key" in self.model_fields_set:
+            _dict['prompt_cache_key'] = None
+
         # set to None if session_label (nullable) is None
         # and model_fields_set contains the field
         if self.session_label is None and "session_label" in self.model_fields_set:
@@ -232,6 +238,7 @@ class MessagesRequest(BaseModel):
             "metadata": obj.get("metadata"),
             "model": obj.get("model"),
             "output_format": obj.get("output_format"),
+            "prompt_cache_key": obj.get("prompt_cache_key"),
             "session_label": obj.get("session_label"),
             "stop_sequences": obj.get("stop_sequences"),
             "stream": obj.get("stream") if obj.get("stream") is not None else False,

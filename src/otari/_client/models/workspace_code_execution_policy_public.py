@@ -28,16 +28,20 @@ class WorkspaceCodeExecutionPolicyPublic(BaseModel):
     """
     A workspace's policy, or the unconfigured policy it has without one.
     """ # noqa: E501
+    allowed_images: List[StrictStr]
+    available_tools: List[StrictStr]
     configured: StrictBool
     created_at: Optional[StrictStr]
     default_purpose_hint: Optional[StrictStr]
     enabled: StrictBool
     exec_timeout_s: Optional[StrictInt]
+    image: Optional[StrictStr]
     max_iterations: Optional[StrictInt]
     sandbox_configured: StrictBool
+    tools: Optional[List[StrictStr]]
     updated_at: Optional[StrictStr]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["configured", "created_at", "default_purpose_hint", "enabled", "exec_timeout_s", "max_iterations", "sandbox_configured", "updated_at", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_images", "available_tools", "configured", "created_at", "default_purpose_hint", "enabled", "exec_timeout_s", "image", "max_iterations", "sandbox_configured", "tools", "updated_at", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -93,10 +97,20 @@ class WorkspaceCodeExecutionPolicyPublic(BaseModel):
         if self.exec_timeout_s is None and "exec_timeout_s" in self.model_fields_set:
             _dict['exec_timeout_s'] = None
 
+        # set to None if image (nullable) is None
+        # and model_fields_set contains the field
+        if self.image is None and "image" in self.model_fields_set:
+            _dict['image'] = None
+
         # set to None if max_iterations (nullable) is None
         # and model_fields_set contains the field
         if self.max_iterations is None and "max_iterations" in self.model_fields_set:
             _dict['max_iterations'] = None
+
+        # set to None if tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.tools is None and "tools" in self.model_fields_set:
+            _dict['tools'] = None
 
         # set to None if updated_at (nullable) is None
         # and model_fields_set contains the field
@@ -115,13 +129,17 @@ class WorkspaceCodeExecutionPolicyPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "allowed_images": obj.get("allowed_images"),
+            "available_tools": obj.get("available_tools"),
             "configured": obj.get("configured"),
             "created_at": obj.get("created_at"),
             "default_purpose_hint": obj.get("default_purpose_hint"),
             "enabled": obj.get("enabled"),
             "exec_timeout_s": obj.get("exec_timeout_s"),
+            "image": obj.get("image"),
             "max_iterations": obj.get("max_iterations"),
             "sandbox_configured": obj.get("sandbox_configured"),
+            "tools": obj.get("tools"),
             "updated_at": obj.get("updated_at"),
             "workspace_id": obj.get("workspace_id")
         })

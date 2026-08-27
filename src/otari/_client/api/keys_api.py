@@ -61,7 +61,7 @@ class KeysApi:
     ) -> CreateKeyResponse:
         """Create Key
 
-        Create a new API key.  Requires master key authentication.  If user_id is provided, the key will be associated with that user (creates user if it doesn't exist). If user_id is not provided, the key is associated with the shared \"default\" user, which is created on first use. Keys without an explicit owner therefore share one identity, and so share budget, usage, and files.
+        Create a new API key in the caller's organization.  Requires master key authentication.  If user_id is provided, the key will be associated with that user (creates user if it doesn't exist). If user_id is not provided, the key is associated with the shared \"default\" user, which is created on first use. Keys without an explicit owner therefore share one identity, and so share budget, usage, and files.  ``workspace_id`` names a workspace in the caller's organization, and omitting it mints into that organization's default workspace. A key resolves that organization's provider credentials and bills there, so minting into another organization's workspace would spend its budget on its credentials.
 
         :param create_key_request: (required)
         :type create_key_request: CreateKeyRequest
@@ -129,7 +129,7 @@ class KeysApi:
     ) -> ApiResponse[CreateKeyResponse]:
         """Create Key
 
-        Create a new API key.  Requires master key authentication.  If user_id is provided, the key will be associated with that user (creates user if it doesn't exist). If user_id is not provided, the key is associated with the shared \"default\" user, which is created on first use. Keys without an explicit owner therefore share one identity, and so share budget, usage, and files.
+        Create a new API key in the caller's organization.  Requires master key authentication.  If user_id is provided, the key will be associated with that user (creates user if it doesn't exist). If user_id is not provided, the key is associated with the shared \"default\" user, which is created on first use. Keys without an explicit owner therefore share one identity, and so share budget, usage, and files.  ``workspace_id`` names a workspace in the caller's organization, and omitting it mints into that organization's default workspace. A key resolves that organization's provider credentials and bills there, so minting into another organization's workspace would spend its budget on its credentials.
 
         :param create_key_request: (required)
         :type create_key_request: CreateKeyRequest
@@ -197,7 +197,7 @@ class KeysApi:
     ) -> RESTResponseType:
         """Create Key
 
-        Create a new API key.  Requires master key authentication.  If user_id is provided, the key will be associated with that user (creates user if it doesn't exist). If user_id is not provided, the key is associated with the shared \"default\" user, which is created on first use. Keys without an explicit owner therefore share one identity, and so share budget, usage, and files.
+        Create a new API key in the caller's organization.  Requires master key authentication.  If user_id is provided, the key will be associated with that user (creates user if it doesn't exist). If user_id is not provided, the key is associated with the shared \"default\" user, which is created on first use. Keys without an explicit owner therefore share one identity, and so share budget, usage, and files.  ``workspace_id`` names a workspace in the caller's organization, and omitting it mints into that organization's default workspace. A key resolves that organization's provider credentials and bills there, so minting into another organization's workspace would spend its budget on its credentials.
 
         :param create_key_request: (required)
         :type create_key_request: CreateKeyRequest
@@ -339,7 +339,7 @@ class KeysApi:
     ) -> None:
         """Delete Key
 
-        Delete (revoke) an API key.  Requires master key authentication.
+        Delete (revoke) an API key in the caller's organization.  Requires master key authentication.
 
         :param key_id: (required)
         :type key_id: str
@@ -407,7 +407,7 @@ class KeysApi:
     ) -> ApiResponse[None]:
         """Delete Key
 
-        Delete (revoke) an API key.  Requires master key authentication.
+        Delete (revoke) an API key in the caller's organization.  Requires master key authentication.
 
         :param key_id: (required)
         :type key_id: str
@@ -475,7 +475,7 @@ class KeysApi:
     ) -> RESTResponseType:
         """Delete Key
 
-        Delete (revoke) an API key.  Requires master key authentication.
+        Delete (revoke) an API key in the caller's organization.  Requires master key authentication.
 
         :param key_id: (required)
         :type key_id: str
@@ -604,7 +604,7 @@ class KeysApi:
     ) -> KeyInfo:
         """Get Key
 
-        Get details of a specific API key.  Requires master key authentication.
+        Get details of a specific API key in the caller's organization.  Requires master key authentication.
 
         :param key_id: (required)
         :type key_id: str
@@ -672,7 +672,7 @@ class KeysApi:
     ) -> ApiResponse[KeyInfo]:
         """Get Key
 
-        Get details of a specific API key.  Requires master key authentication.
+        Get details of a specific API key in the caller's organization.  Requires master key authentication.
 
         :param key_id: (required)
         :type key_id: str
@@ -740,7 +740,7 @@ class KeysApi:
     ) -> RESTResponseType:
         """Get Key
 
-        Get details of a specific API key.  Requires master key authentication.
+        Get details of a specific API key in the caller's organization.  Requires master key authentication.
 
         :param key_id: (required)
         :type key_id: str
@@ -871,7 +871,7 @@ class KeysApi:
     ) -> List[KeyInfo]:
         """List Keys
 
-        List all API keys.  Requires master key authentication. An unset ``workspace_id`` lists every key on the deployment, which keeps the pre-workspace view working unchanged.
+        List the API keys in the caller's organization.  Requires master key authentication. An unset ``workspace_id`` lists every key in that organization; naming a workspace in another one lists nothing rather than refusing, so the filter reports no more than the unfiltered read does.
 
         :param skip:
         :type skip: int
@@ -947,7 +947,7 @@ class KeysApi:
     ) -> ApiResponse[List[KeyInfo]]:
         """List Keys
 
-        List all API keys.  Requires master key authentication. An unset ``workspace_id`` lists every key on the deployment, which keeps the pre-workspace view working unchanged.
+        List the API keys in the caller's organization.  Requires master key authentication. An unset ``workspace_id`` lists every key in that organization; naming a workspace in another one lists nothing rather than refusing, so the filter reports no more than the unfiltered read does.
 
         :param skip:
         :type skip: int
@@ -1023,7 +1023,7 @@ class KeysApi:
     ) -> RESTResponseType:
         """List Keys
 
-        List all API keys.  Requires master key authentication. An unset ``workspace_id`` lists every key on the deployment, which keeps the pre-workspace view working unchanged.
+        List the API keys in the caller's organization.  Requires master key authentication. An unset ``workspace_id`` lists every key in that organization; naming a workspace in another one lists nothing rather than refusing, so the filter reports no more than the unfiltered read does.
 
         :param skip:
         :type skip: int
@@ -1170,7 +1170,7 @@ class KeysApi:
     ) -> CreateKeyResponse:
         """Rotate Key
 
-        Rotate an API key's secret in place.  Requires master key authentication.  Generates a new secret for the same key row (id, user, name, expiry, and metadata are preserved) and returns the new raw key once, using the same response shape as key creation. The previous secret stops authenticating immediately; there is no grace window.
+        Rotate an API key's secret in place, within the caller's organization.  Requires master key authentication.  Generates a new secret for the same key row (id, user, name, expiry, and metadata are preserved) and returns the new raw key once, using the same response shape as key creation. The previous secret stops authenticating immediately; there is no grace window.
 
         :param key_id: (required)
         :type key_id: str
@@ -1238,7 +1238,7 @@ class KeysApi:
     ) -> ApiResponse[CreateKeyResponse]:
         """Rotate Key
 
-        Rotate an API key's secret in place.  Requires master key authentication.  Generates a new secret for the same key row (id, user, name, expiry, and metadata are preserved) and returns the new raw key once, using the same response shape as key creation. The previous secret stops authenticating immediately; there is no grace window.
+        Rotate an API key's secret in place, within the caller's organization.  Requires master key authentication.  Generates a new secret for the same key row (id, user, name, expiry, and metadata are preserved) and returns the new raw key once, using the same response shape as key creation. The previous secret stops authenticating immediately; there is no grace window.
 
         :param key_id: (required)
         :type key_id: str
@@ -1306,7 +1306,7 @@ class KeysApi:
     ) -> RESTResponseType:
         """Rotate Key
 
-        Rotate an API key's secret in place.  Requires master key authentication.  Generates a new secret for the same key row (id, user, name, expiry, and metadata are preserved) and returns the new raw key once, using the same response shape as key creation. The previous secret stops authenticating immediately; there is no grace window.
+        Rotate an API key's secret in place, within the caller's organization.  Requires master key authentication.  Generates a new secret for the same key row (id, user, name, expiry, and metadata are preserved) and returns the new raw key once, using the same response shape as key creation. The previous secret stops authenticating immediately; there is no grace window.
 
         :param key_id: (required)
         :type key_id: str
@@ -1436,7 +1436,7 @@ class KeysApi:
     ) -> KeyInfo:
         """Update Key
 
-        Update an API key.  Requires master key authentication.
+        Update an API key in the caller's organization.  Requires master key authentication.
 
         :param key_id: (required)
         :type key_id: str
@@ -1508,7 +1508,7 @@ class KeysApi:
     ) -> ApiResponse[KeyInfo]:
         """Update Key
 
-        Update an API key.  Requires master key authentication.
+        Update an API key in the caller's organization.  Requires master key authentication.
 
         :param key_id: (required)
         :type key_id: str
@@ -1580,7 +1580,7 @@ class KeysApi:
     ) -> RESTResponseType:
         """Update Key
 
-        Update an API key.  Requires master key authentication.
+        Update an API key in the caller's organization.  Requires master key authentication.
 
         :param key_id: (required)
         :type key_id: str

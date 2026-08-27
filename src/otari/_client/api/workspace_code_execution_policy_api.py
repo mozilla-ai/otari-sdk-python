@@ -587,7 +587,7 @@ class WorkspaceCodeExecutionPolicyApi:
     ) -> WorkspaceCodeExecutionPolicyPublic:
         """Set Workspace Code Execution Policy
 
-        Set a workspace's code-execution policy, replacing any existing one.  An organization owner/admin, or an owner/admin of this workspace, may write it. The policy can only narrow what the deployment permits: turning code execution off for the workspace, and lowering the loop and execution ceilings. It never turns a sandbox the deployment has not configured on.
+        Set a workspace's code-execution policy, replacing any existing one.  An organization owner/admin, or an owner/admin of this workspace, may write it. The policy can only narrow what the deployment permits: turning code execution off for the workspace, lowering the loop and execution ceilings, and removing tool kinds from what the sandbox backend serves. It never turns a sandbox the deployment has not configured on, and ``image`` may only name one the operator curated (``allowed_images`` on the response reports the set); anything else is refused with 400.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -659,7 +659,7 @@ class WorkspaceCodeExecutionPolicyApi:
     ) -> ApiResponse[WorkspaceCodeExecutionPolicyPublic]:
         """Set Workspace Code Execution Policy
 
-        Set a workspace's code-execution policy, replacing any existing one.  An organization owner/admin, or an owner/admin of this workspace, may write it. The policy can only narrow what the deployment permits: turning code execution off for the workspace, and lowering the loop and execution ceilings. It never turns a sandbox the deployment has not configured on.
+        Set a workspace's code-execution policy, replacing any existing one.  An organization owner/admin, or an owner/admin of this workspace, may write it. The policy can only narrow what the deployment permits: turning code execution off for the workspace, lowering the loop and execution ceilings, and removing tool kinds from what the sandbox backend serves. It never turns a sandbox the deployment has not configured on, and ``image`` may only name one the operator curated (``allowed_images`` on the response reports the set); anything else is refused with 400.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -731,7 +731,7 @@ class WorkspaceCodeExecutionPolicyApi:
     ) -> RESTResponseType:
         """Set Workspace Code Execution Policy
 
-        Set a workspace's code-execution policy, replacing any existing one.  An organization owner/admin, or an owner/admin of this workspace, may write it. The policy can only narrow what the deployment permits: turning code execution off for the workspace, and lowering the loop and execution ceilings. It never turns a sandbox the deployment has not configured on.
+        Set a workspace's code-execution policy, replacing any existing one.  An organization owner/admin, or an owner/admin of this workspace, may write it. The policy can only narrow what the deployment permits: turning code execution off for the workspace, lowering the loop and execution ceilings, and removing tool kinds from what the sandbox backend serves. It never turns a sandbox the deployment has not configured on, and ``image`` may only name one the operator curated (``allowed_images`` on the response reports the set); anything else is refused with 400.
 
         :param workspace_id: (required)
         :type workspace_id: UUID

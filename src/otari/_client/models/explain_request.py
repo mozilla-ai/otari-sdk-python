@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -34,7 +35,8 @@ class ExplainRequest(BaseModel):
     name: Optional[StrictStr] = Field(default=None, description="An existing policy to explain.")
     spec: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     user_id: Optional[StrictStr] = Field(default=None, description="Evaluate conditions as this user.")
-    __properties: ClassVar[List[str]] = ["allowed_models", "budget_remaining_usd", "budget_used_pct", "key_id", "name", "spec", "user_id"]
+    workspace_id: Optional[UUID] = Field(default=None, description="Resolve `name` and the policy's candidate selectors in this workspace. Omit for the deployment's default workspace.")
+    __properties: ClassVar[List[str]] = ["allowed_models", "budget_remaining_usd", "budget_used_pct", "key_id", "name", "spec", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -110,6 +112,11 @@ class ExplainRequest(BaseModel):
         if self.user_id is None and "user_id" in self.model_fields_set:
             _dict['user_id'] = None
 
+        # set to None if workspace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
+            _dict['workspace_id'] = None
+
         return _dict
 
     @classmethod
@@ -128,7 +135,8 @@ class ExplainRequest(BaseModel):
             "key_id": obj.get("key_id"),
             "name": obj.get("name"),
             "spec": obj.get("spec"),
-            "user_id": obj.get("user_id")
+            "user_id": obj.get("user_id"),
+            "workspace_id": obj.get("workspace_id")
         })
         return _obj
 

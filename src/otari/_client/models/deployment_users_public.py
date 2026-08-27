@@ -17,25 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from uuid import UUID
+from pydantic import BaseModel, ConfigDict, StrictInt
+from typing import Any, ClassVar, Dict, List
+from otari._client.models.deployment_user_public import DeploymentUserPublic
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class AliasResponse(BaseModel):
+class DeploymentUsersPublic(BaseModel):
     """
-    A model alias and where it is defined.
+    DeploymentUsersPublic
     """ # noqa: E501
-    created_at: Optional[StrictStr] = None
-    name: StrictStr
-    source: StrictStr
-    target: StrictStr
-    updated_at: Optional[StrictStr] = None
-    user_id: Optional[StrictStr] = None
-    workspace_id: Optional[UUID] = None
-    __properties: ClassVar[List[str]] = ["created_at", "name", "source", "target", "updated_at", "user_id", "workspace_id"]
+    count: StrictInt
+    data: List[DeploymentUserPublic]
+    __properties: ClassVar[List[str]] = ["count", "data"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +50,7 @@ class AliasResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AliasResponse from a JSON string"""
+        """Create an instance of DeploymentUsersPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,31 +71,18 @@ class AliasResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict['created_at'] = None
-
-        # set to None if updated_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.updated_at is None and "updated_at" in self.model_fields_set:
-            _dict['updated_at'] = None
-
-        # set to None if user_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.user_id is None and "user_id" in self.model_fields_set:
-            _dict['user_id'] = None
-
-        # set to None if workspace_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
-            _dict['workspace_id'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of each item in data (list)
+        _items = []
+        if self.data:
+            for _item_data in self.data:
+                if _item_data:
+                    _items.append(_item_data.to_dict())
+            _dict['data'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AliasResponse from a dict"""
+        """Create an instance of DeploymentUsersPublic from a dict"""
         if obj is None:
             return None
 
@@ -108,13 +90,8 @@ class AliasResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "created_at": obj.get("created_at"),
-            "name": obj.get("name"),
-            "source": obj.get("source"),
-            "target": obj.get("target"),
-            "updated_at": obj.get("updated_at"),
-            "user_id": obj.get("user_id"),
-            "workspace_id": obj.get("workspace_id")
+            "count": obj.get("count"),
+            "data": [DeploymentUserPublic.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None
         })
         return _obj
 

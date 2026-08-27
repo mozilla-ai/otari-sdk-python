@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Union
+from uuid import UUID
 from otari._client.models.learned_policy import LearnedPolicy
 from otari._client.models.pool_status import PoolStatus
 from otari._client.models.task_pool import TaskPool
@@ -28,7 +29,7 @@ from pydantic_core import to_jsonable_python
 
 class RouterStatus(BaseModel):
     """
-    How warm this user's routing memory is, and what depends on it.  Routing memory has no single warmth: it is a set of independent pools. ``default_pool`` is what a request with no ``Otari-Router-Task`` header votes over (every record the user has, labeled or not) and ``tasks`` lists each partition, which only requests carrying that label use. Each crosses ``seed_count`` on its own.
+    How warm this user's routing memory is, and what depends on it.  Routing memory has no single warmth: it is a set of independent pools. ``default_pool`` is what a request with no ``Otari-Router-Task`` header votes over (every record the user has in this workspace, labeled or not) and ``tasks`` lists each partition, which only requests carrying that label use. Each crosses ``seed_count`` on its own.
     """ # noqa: E501
     alpha: Union[StrictFloat, StrictInt]
     confidence_floor: Union[StrictFloat, StrictInt]
@@ -40,7 +41,8 @@ class RouterStatus(BaseModel):
     seed_count: StrictInt
     tasks: List[TaskPool]
     user_id: StrictStr
-    __properties: ClassVar[List[str]] = ["alpha", "confidence_floor", "default_pool", "embedding_model", "granularity", "k", "policies", "seed_count", "tasks", "user_id"]
+    workspace_id: UUID
+    __properties: ClassVar[List[str]] = ["alpha", "confidence_floor", "default_pool", "embedding_model", "granularity", "k", "policies", "seed_count", "tasks", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -119,7 +121,8 @@ class RouterStatus(BaseModel):
             "policies": [LearnedPolicy.from_dict(_item) for _item in obj["policies"]] if obj.get("policies") is not None else None,
             "seed_count": obj.get("seed_count"),
             "tasks": [TaskPool.from_dict(_item) for _item in obj["tasks"]] if obj.get("tasks") is not None else None,
-            "user_id": obj.get("user_id")
+            "user_id": obj.get("user_id"),
+            "workspace_id": obj.get("workspace_id")
         })
         return _obj
 

@@ -42,6 +42,7 @@ from otari._client.models.api_key_id import ApiKeyId
 from otari._client.models.applied_edits_inner import AppliedEditsInner
 from otari._client.models.audio_speech_request import AudioSpeechRequest
 from otari._client.models.authenticate_passkey_request import AuthenticatePasskeyRequest
+from otari._client.models.authorize_response import AuthorizeResponse
 from otari._client.models.batch_request_item import BatchRequestItem
 from otari._client.models.billing_meters import BillingMeters
 from otari._client.models.budget_reset_log_response import BudgetResetLogResponse
@@ -74,6 +75,8 @@ from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails
 from otari._client.models.cc_top_logprob import CCTopLogprob
 from otari._client.models.caller import Caller
 from otari._client.models.caller1 import Caller1
+from otari._client.models.caller_organization_membership_public import CallerOrganizationMembershipPublic
+from otari._client.models.caller_organization_memberships_public import CallerOrganizationMembershipsPublic
 from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic
 from otari._client.models.candidate_response import CandidateResponse
 from otari._client.models.chat_completion import ChatCompletion
@@ -115,7 +118,12 @@ from otari._client.models.create_search_tool_request import CreateSearchToolRequ
 from otari._client.models.create_session_request import CreateSessionRequest
 from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest
 from otari._client.models.create_user_request import CreateUserRequest
+from otari._client.models.deployment_admin_access_public import DeploymentAdminAccessPublic
 from otari._client.models.deployment_bootstrap import DeploymentBootstrap
+from otari._client.models.deployment_user_organization_public import DeploymentUserOrganizationPublic
+from otari._client.models.deployment_user_public import DeploymentUserPublic
+from otari._client.models.deployment_user_update_request import DeploymentUserUpdateRequest
+from otari._client.models.deployment_users_public import DeploymentUsersPublic
 from otari._client.models.discoverable_model import DiscoverableModel
 from otari._client.models.discoverable_models_response import DiscoverableModelsResponse
 from otari._client.models.discoverable_provider import DiscoverableProvider
@@ -291,10 +299,13 @@ from otari._client.models.model_pricing_info import ModelPricingInfo
 from otari._client.models.moderation_request import ModerationRequest
 from otari._client.models.moderation_response import ModerationResponse
 from otari._client.models.moderation_result import ModerationResult
+from otari._client.models.o_auth_callback_request import OAuthCallbackRequest
+from otari._client.models.o_auth_session_response import OAuthSessionResponse
 from otari._client.models.org_provider_key_create_request import OrgProviderKeyCreateRequest
 from otari._client.models.org_provider_key_public import OrgProviderKeyPublic
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest
 from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic
+from otari._client.models.organization_create_request import OrganizationCreateRequest
 from otari._client.models.organization_guardrail_create import OrganizationGuardrailCreate
 from otari._client.models.organization_guardrail_public import OrganizationGuardrailPublic
 from otari._client.models.organization_guardrail_update import OrganizationGuardrailUpdate
@@ -360,6 +371,7 @@ from otari._client.models.source1 import Source1
 from otari._client.models.stop import Stop
 from otari._client.models.stored_provider_response import StoredProviderResponse
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
+from otari._client.models.switch_active_organization_request import SwitchActiveOrganizationRequest
 from otari._client.models.system import System
 from otari._client.models.task_pool import TaskPool
 from otari._client.models.test_provider_request import TestProviderRequest

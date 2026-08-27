@@ -33,13 +33,13 @@ from pydantic_core import to_jsonable_python
 
 class ChatCompletionRequest(BaseModel):
     """
-    OpenAI-compatible chat completion request.  The completion-param fields are derived from any-llm's ``CompletionParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. Fields below either tighten a derived field (``messages``, ``response_format``), declare an OpenAI wire param ``CompletionParams`` does not model (``service_tier``, forwarded as an any-llm ``**kwargs`` param), or add gateway-internal behavior (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) that is stripped before the request is forwarded upstream.
+    OpenAI-compatible chat completion request.  The completion-param fields are derived from any-llm's ``CompletionParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. Fields below either tighten a derived field (``messages``, ``response_format``), declare an OpenAI wire param ``CompletionParams`` does not model (``service_tier``, forwarded as an any-llm ``**kwargs`` param), add gateway-internal behavior (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) that is stripped before the request is forwarded upstream, or restate a derived field unchanged to document it (``max_completion_tokens``), which is only worth doing where the wire contract is not guessable from the field itself.
     """ # noqa: E501
     frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     guardrails: Optional[Annotated[List[GuardrailConfig], Field(max_length=8)]] = None
     logit_bias: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = None
     logprobs: Optional[StrictBool] = None
-    max_completion_tokens: Optional[StrictInt] = None
+    max_completion_tokens: Optional[StrictInt] = Field(default=None, description="Upper bound on generated tokens. OpenAI's current name for the cap `max_tokens` used to carry; either field is accepted, and this one wins when a request sends both.")
     max_tokens: Optional[StrictInt] = None
     max_tool_iterations: Optional[Annotated[int, Field(le=25, strict=True, ge=1)]] = None
     mcp_server_ids: Optional[Annotated[List[UUID], Field(max_length=50)]] = None
@@ -49,6 +49,7 @@ class ChatCompletionRequest(BaseModel):
     n: Optional[StrictInt] = None
     parallel_tool_calls: Optional[StrictBool] = None
     presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
+    prompt_cache_key: Optional[StrictStr] = None
     reasoning_effort: Optional[StrictStr] = None
     response_format: Optional[Dict[str, Any]] = None
     seed: Optional[StrictInt] = None
@@ -64,7 +65,7 @@ class ChatCompletionRequest(BaseModel):
     top_logprobs: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     user: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "model", "n", "parallel_tool_calls", "presence_penalty", "reasoning_effort", "response_format", "seed", "service_tier", "session_label", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
+    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "model", "n", "parallel_tool_calls", "presence_penalty", "prompt_cache_key", "reasoning_effort", "response_format", "seed", "service_tier", "session_label", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
 
     @field_validator('reasoning_effort')
     def reasoning_effort_validate_enum(cls, value):
@@ -209,6 +210,11 @@ class ChatCompletionRequest(BaseModel):
         if self.presence_penalty is None and "presence_penalty" in self.model_fields_set:
             _dict['presence_penalty'] = None
 
+        # set to None if prompt_cache_key (nullable) is None
+        # and model_fields_set contains the field
+        if self.prompt_cache_key is None and "prompt_cache_key" in self.model_fields_set:
+            _dict['prompt_cache_key'] = None
+
         # set to None if reasoning_effort (nullable) is None
         # and model_fields_set contains the field
         if self.reasoning_effort is None and "reasoning_effort" in self.model_fields_set:
@@ -305,6 +311,7 @@ class ChatCompletionRequest(BaseModel):
             "n": obj.get("n"),
             "parallel_tool_calls": obj.get("parallel_tool_calls"),
             "presence_penalty": obj.get("presence_penalty"),
+            "prompt_cache_key": obj.get("prompt_cache_key"),
             "reasoning_effort": obj.get("reasoning_effort"),
             "response_format": obj.get("response_format"),
             "seed": obj.get("seed"),

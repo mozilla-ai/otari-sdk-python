@@ -618,7 +618,7 @@ class BatchesApi:
     ) -> object:
         """List Batches
 
-        List batches for a provider.  Non-master keys only see batches they own (plus legacy batches without an ownership marker); the page is filtered after the provider call, so a page may contain fewer than ``limit`` items.
+        List batches for a provider.  Non-master keys only see batches they own in their own workspace (plus legacy batches without an ownership marker, or without a recorded workspace); the page is filtered after the provider call, so a page may contain fewer than ``limit`` items.
 
         :param provider: (required)
         :type provider: str
@@ -694,7 +694,7 @@ class BatchesApi:
     ) -> ApiResponse[object]:
         """List Batches
 
-        List batches for a provider.  Non-master keys only see batches they own (plus legacy batches without an ownership marker); the page is filtered after the provider call, so a page may contain fewer than ``limit`` items.
+        List batches for a provider.  Non-master keys only see batches they own in their own workspace (plus legacy batches without an ownership marker, or without a recorded workspace); the page is filtered after the provider call, so a page may contain fewer than ``limit`` items.
 
         :param provider: (required)
         :type provider: str
@@ -770,7 +770,7 @@ class BatchesApi:
     ) -> RESTResponseType:
         """List Batches
 
-        List batches for a provider.  Non-master keys only see batches they own (plus legacy batches without an ownership marker); the page is filtered after the provider call, so a page may contain fewer than ``limit`` items.
+        List batches for a provider.  Non-master keys only see batches they own in their own workspace (plus legacy batches without an ownership marker, or without a recorded workspace); the page is filtered after the provider call, so a page may contain fewer than ``limit`` items.
 
         :param provider: (required)
         :type provider: str

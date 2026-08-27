@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,8 +30,9 @@ class AliasRequest(BaseModel):
     """ # noqa: E501
     name: StrictStr = Field(description="Display name callers use as the model, e.g. 'fast-model'.")
     target: StrictStr = Field(description="Selector the alias resolves to, as 'provider:model' or 'instance:model'.")
-    user_id: Optional[StrictStr] = Field(default=None, description="User this alias belongs to. Omit for a global alias every caller sees. A user-scoped alias resolves only for that user and shadows a global one of the same name.")
-    __properties: ClassVar[List[str]] = ["name", "target", "user_id"]
+    user_id: Optional[StrictStr] = Field(default=None, description="User this alias belongs to. Omit for an alias every caller in the workspace sees. A user-scoped alias resolves only for that user and shadows the workspace-wide one of the same name.")
+    workspace_id: Optional[UUID] = Field(default=None, description="Workspace this alias belongs to. Omit for the deployment's default workspace. The alias resolves only for requests in that workspace, so two workspaces can each point the same name at a different model.")
+    __properties: ClassVar[List[str]] = ["name", "target", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -76,6 +78,11 @@ class AliasRequest(BaseModel):
         if self.user_id is None and "user_id" in self.model_fields_set:
             _dict['user_id'] = None
 
+        # set to None if workspace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
+            _dict['workspace_id'] = None
+
         return _dict
 
     @classmethod
@@ -90,7 +97,8 @@ class AliasRequest(BaseModel):
         _obj = cls.model_validate({
             "name": obj.get("name"),
             "target": obj.get("target"),
-            "user_id": obj.get("user_id")
+            "user_id": obj.get("user_id"),
+            "workspace_id": obj.get("workspace_id")
         })
         return _obj
 

@@ -17,6 +17,7 @@ from typing_extensions import Annotated
 
 from pydantic import StrictStr
 from typing import Any, Dict, Optional
+from uuid import UUID
 
 from otari._client.api_client import ApiClient, RequestSerialized
 from otari._client.api_response import ApiResponse
@@ -1195,6 +1196,7 @@ class FilesApi:
         self,
         user: Optional[StrictStr] = None,
         purpose: Optional[StrictStr] = None,
+        workspace_id: Optional[UUID] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1210,12 +1212,14 @@ class FilesApi:
     ) -> Dict[str, object]:
         """List Files
 
-        List the authenticated user's uploaded files.
+        List the authenticated user's uploaded files in the request's workspace.  ``workspace_id`` narrows a master-key listing to one workspace; a keyed request is already confined to its key's own and cannot widen or move it.
 
         :param user:
         :type user: str
         :param purpose:
         :type purpose: str
+        :param workspace_id:
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1241,6 +1245,7 @@ class FilesApi:
         _param = self._list_files_v1_files_get_serialize(
             user=user,
             purpose=purpose,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1267,6 +1272,7 @@ class FilesApi:
         self,
         user: Optional[StrictStr] = None,
         purpose: Optional[StrictStr] = None,
+        workspace_id: Optional[UUID] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1282,12 +1288,14 @@ class FilesApi:
     ) -> ApiResponse[Dict[str, object]]:
         """List Files
 
-        List the authenticated user's uploaded files.
+        List the authenticated user's uploaded files in the request's workspace.  ``workspace_id`` narrows a master-key listing to one workspace; a keyed request is already confined to its key's own and cannot widen or move it.
 
         :param user:
         :type user: str
         :param purpose:
         :type purpose: str
+        :param workspace_id:
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1313,6 +1321,7 @@ class FilesApi:
         _param = self._list_files_v1_files_get_serialize(
             user=user,
             purpose=purpose,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1339,6 +1348,7 @@ class FilesApi:
         self,
         user: Optional[StrictStr] = None,
         purpose: Optional[StrictStr] = None,
+        workspace_id: Optional[UUID] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1354,12 +1364,14 @@ class FilesApi:
     ) -> RESTResponseType:
         """List Files
 
-        List the authenticated user's uploaded files.
+        List the authenticated user's uploaded files in the request's workspace.  ``workspace_id`` narrows a master-key listing to one workspace; a keyed request is already confined to its key's own and cannot widen or move it.
 
         :param user:
         :type user: str
         :param purpose:
         :type purpose: str
+        :param workspace_id:
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1385,6 +1397,7 @@ class FilesApi:
         _param = self._list_files_v1_files_get_serialize(
             user=user,
             purpose=purpose,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1406,6 +1419,7 @@ class FilesApi:
         self,
         user,
         purpose,
+        workspace_id,
         _request_auth,
         _content_type,
         _headers,
@@ -1435,6 +1449,10 @@ class FilesApi:
         if purpose is not None:
             
             _query_params.append(('purpose', purpose))
+            
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
             
         # process the header parameters
         # process the form parameters
