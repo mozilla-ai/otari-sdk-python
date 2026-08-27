@@ -25,7 +25,7 @@ from pydantic_core import to_jsonable_python
 
 class AcceptInvitationResultPublic(BaseModel):
     """
-    What accepting produces: enough for the accept page to say where the visitor landed.  No session and no token: accepting resolves the membership to ``active`` and stops there. Otari has no per-user sign-in yet, so there is nothing to sign this visitor into; they see the sign-in screen next, the same as anyone else added to an organization before that flow exists.
+    What accepting produces: enough for the accept page to say where the visitor landed.  No session and no token: accepting resolves the membership to ``active`` and stops there. The identity it resolves to is password-less on the roster until it is claimed, so the next step is ``POST /v1/auth/signup`` on the invited address, not a sign-in.
     """ # noqa: E501
     organization_name: StrictStr
     role: StrictStr
