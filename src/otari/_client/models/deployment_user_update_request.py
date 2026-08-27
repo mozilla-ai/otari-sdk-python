@@ -17,26 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
-from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PolicyResponse(BaseModel):
+class DeploymentUserUpdateRequest(BaseModel):
     """
-    A routing policy and where it is defined.
+    The two flags the operator surface may flip, each optional.  Omitting a field leaves it alone, so deactivating an account and changing what it may administer stay separate decisions even though one endpoint carries both. A body that sets neither is refused rather than treated as a no-op: it is a request that meant something and lost it.
     """ # noqa: E501
-    created_at: Optional[StrictStr] = None
-    is_dynamic: Optional[StrictBool] = False
-    name: StrictStr
-    source: StrictStr
-    spec: Dict[str, Any]
-    updated_at: Optional[StrictStr] = None
-    user_id: Optional[StrictStr] = None
-    workspace_id: Optional[UUID] = None
-    __properties: ClassVar[List[str]] = ["created_at", "is_dynamic", "name", "source", "spec", "updated_at", "user_id", "workspace_id"]
+    is_active: Optional[StrictBool] = None
+    is_superuser: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["is_active", "is_superuser"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +49,7 @@ class PolicyResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PolicyResponse from a JSON string"""
+        """Create an instance of DeploymentUserUpdateRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,31 +70,21 @@ class PolicyResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if created_at (nullable) is None
+        # set to None if is_active (nullable) is None
         # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict['created_at'] = None
+        if self.is_active is None and "is_active" in self.model_fields_set:
+            _dict['is_active'] = None
 
-        # set to None if updated_at (nullable) is None
+        # set to None if is_superuser (nullable) is None
         # and model_fields_set contains the field
-        if self.updated_at is None and "updated_at" in self.model_fields_set:
-            _dict['updated_at'] = None
-
-        # set to None if user_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.user_id is None and "user_id" in self.model_fields_set:
-            _dict['user_id'] = None
-
-        # set to None if workspace_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
-            _dict['workspace_id'] = None
+        if self.is_superuser is None and "is_superuser" in self.model_fields_set:
+            _dict['is_superuser'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PolicyResponse from a dict"""
+        """Create an instance of DeploymentUserUpdateRequest from a dict"""
         if obj is None:
             return None
 
@@ -109,14 +92,8 @@ class PolicyResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "created_at": obj.get("created_at"),
-            "is_dynamic": obj.get("is_dynamic") if obj.get("is_dynamic") is not None else False,
-            "name": obj.get("name"),
-            "source": obj.get("source"),
-            "spec": obj.get("spec"),
-            "updated_at": obj.get("updated_at"),
-            "user_id": obj.get("user_id"),
-            "workspace_id": obj.get("workspace_id")
+            "is_active": obj.get("is_active"),
+            "is_superuser": obj.get("is_superuser")
         })
         return _obj
 

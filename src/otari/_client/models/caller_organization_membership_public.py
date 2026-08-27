@@ -20,23 +20,21 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
+from otari._client.models.organization_public import OrganizationPublic
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PolicyResponse(BaseModel):
+class CallerOrganizationMembershipPublic(BaseModel):
     """
-    A routing policy and where it is defined.
+    One organization the caller belongs to, and their standing in it.  What an organization switcher renders. Deliberately not ``OrganizationMembershipContextPublic``: that one answers \"the organization this request is acting in\" and carries the caller's workspaces in it, which for an organization they are not currently in would be a second read per row.
     """ # noqa: E501
-    created_at: Optional[StrictStr] = None
-    is_dynamic: Optional[StrictBool] = False
-    name: StrictStr
-    source: StrictStr
-    spec: Dict[str, Any]
-    updated_at: Optional[StrictStr] = None
-    user_id: Optional[StrictStr] = None
-    workspace_id: Optional[UUID] = None
-    __properties: ClassVar[List[str]] = ["created_at", "is_dynamic", "name", "source", "spec", "updated_at", "user_id", "workspace_id"]
+    is_active_organization: Optional[StrictBool] = False
+    organization: OrganizationPublic
+    organization_member_id: UUID
+    role: StrictStr
+    status: StrictStr
+    __properties: ClassVar[List[str]] = ["is_active_organization", "organization", "organization_member_id", "role", "status"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +54,7 @@ class PolicyResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PolicyResponse from a JSON string"""
+        """Create an instance of CallerOrganizationMembershipPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,31 +75,14 @@ class PolicyResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict['created_at'] = None
-
-        # set to None if updated_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.updated_at is None and "updated_at" in self.model_fields_set:
-            _dict['updated_at'] = None
-
-        # set to None if user_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.user_id is None and "user_id" in self.model_fields_set:
-            _dict['user_id'] = None
-
-        # set to None if workspace_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
-            _dict['workspace_id'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of organization
+        if self.organization:
+            _dict['organization'] = self.organization.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PolicyResponse from a dict"""
+        """Create an instance of CallerOrganizationMembershipPublic from a dict"""
         if obj is None:
             return None
 
@@ -109,14 +90,11 @@ class PolicyResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "created_at": obj.get("created_at"),
-            "is_dynamic": obj.get("is_dynamic") if obj.get("is_dynamic") is not None else False,
-            "name": obj.get("name"),
-            "source": obj.get("source"),
-            "spec": obj.get("spec"),
-            "updated_at": obj.get("updated_at"),
-            "user_id": obj.get("user_id"),
-            "workspace_id": obj.get("workspace_id")
+            "is_active_organization": obj.get("is_active_organization") if obj.get("is_active_organization") is not None else False,
+            "organization": OrganizationPublic.from_dict(obj["organization"]) if obj.get("organization") is not None else None,
+            "organization_member_id": obj.get("organization_member_id"),
+            "role": obj.get("role"),
+            "status": obj.get("status")
         })
         return _obj
 

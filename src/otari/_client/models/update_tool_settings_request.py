@@ -30,6 +30,7 @@ class UpdateToolSettingsRequest(BaseModel):
     """ # noqa: E501
     guardrails_url: Optional[StrictStr] = None
     sandbox_purpose_hint: Optional[StrictStr] = None
+    sandbox_session_image: Optional[StrictStr] = None
     sandbox_url: Optional[StrictStr] = None
     web_search_engines: Optional[StrictStr] = None
     web_search_extract: Optional[StrictBool] = None
@@ -37,7 +38,7 @@ class UpdateToolSettingsRequest(BaseModel):
     web_search_max_results: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
     web_search_purpose_hint: Optional[StrictStr] = None
     web_search_url: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["guardrails_url", "sandbox_purpose_hint", "sandbox_url", "web_search_engines", "web_search_extract", "web_search_intercept", "web_search_max_results", "web_search_purpose_hint", "web_search_url"]
+    __properties: ClassVar[List[str]] = ["guardrails_url", "sandbox_purpose_hint", "sandbox_session_image", "sandbox_url", "web_search_engines", "web_search_extract", "web_search_intercept", "web_search_max_results", "web_search_purpose_hint", "web_search_url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -88,6 +89,11 @@ class UpdateToolSettingsRequest(BaseModel):
         if self.sandbox_purpose_hint is None and "sandbox_purpose_hint" in self.model_fields_set:
             _dict['sandbox_purpose_hint'] = None
 
+        # set to None if sandbox_session_image (nullable) is None
+        # and model_fields_set contains the field
+        if self.sandbox_session_image is None and "sandbox_session_image" in self.model_fields_set:
+            _dict['sandbox_session_image'] = None
+
         # set to None if sandbox_url (nullable) is None
         # and model_fields_set contains the field
         if self.sandbox_url is None and "sandbox_url" in self.model_fields_set:
@@ -137,6 +143,7 @@ class UpdateToolSettingsRequest(BaseModel):
         _obj = cls.model_validate({
             "guardrails_url": obj.get("guardrails_url"),
             "sandbox_purpose_hint": obj.get("sandbox_purpose_hint"),
+            "sandbox_session_image": obj.get("sandbox_session_image"),
             "sandbox_url": obj.get("sandbox_url"),
             "web_search_engines": obj.get("web_search_engines"),
             "web_search_extract": obj.get("web_search_extract"),

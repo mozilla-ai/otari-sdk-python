@@ -49,7 +49,8 @@ class RoutingApi:
     def delete_policy_v1_routing_policies_name_delete(
         self,
         name: StrictStr,
-        user_id: Annotated[Optional[StrictStr], Field(description="Delete the policy scoped to this user. Omit to delete the global one.")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Delete the policy scoped to this user. Omit to delete the workspace-wide one.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Delete the policy in this workspace. Omit for the deployment's default workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -65,12 +66,14 @@ class RoutingApi:
     ) -> None:
         """Delete Policy
 
-        Delete a stored policy in one scope.  Scoped by ``user_id`` for the same reason the upsert is: deleting the global policy must not take a user's override with it, and deleting an override must leave the global one serving everyone else.
+        Delete a stored policy in one scope.  Scoped by ``workspace_id`` and ``user_id`` for the same reason the upsert is: deleting one workspace's policy must not touch another's, deleting the workspace-wide policy must not take a user's override with it, and deleting an override must leave the workspace-wide one serving everyone else.
 
         :param name: (required)
         :type name: str
-        :param user_id: Delete the policy scoped to this user. Omit to delete the global one.
+        :param user_id: Delete the policy scoped to this user. Omit to delete the workspace-wide one.
         :type user_id: str
+        :param workspace_id: Delete the policy in this workspace. Omit for the deployment's default workspace.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -96,6 +99,7 @@ class RoutingApi:
         _param = self._delete_policy_v1_routing_policies_name_delete_serialize(
             name=name,
             user_id=user_id,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -121,7 +125,8 @@ class RoutingApi:
     def delete_policy_v1_routing_policies_name_delete_with_http_info(
         self,
         name: StrictStr,
-        user_id: Annotated[Optional[StrictStr], Field(description="Delete the policy scoped to this user. Omit to delete the global one.")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Delete the policy scoped to this user. Omit to delete the workspace-wide one.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Delete the policy in this workspace. Omit for the deployment's default workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -137,12 +142,14 @@ class RoutingApi:
     ) -> ApiResponse[None]:
         """Delete Policy
 
-        Delete a stored policy in one scope.  Scoped by ``user_id`` for the same reason the upsert is: deleting the global policy must not take a user's override with it, and deleting an override must leave the global one serving everyone else.
+        Delete a stored policy in one scope.  Scoped by ``workspace_id`` and ``user_id`` for the same reason the upsert is: deleting one workspace's policy must not touch another's, deleting the workspace-wide policy must not take a user's override with it, and deleting an override must leave the workspace-wide one serving everyone else.
 
         :param name: (required)
         :type name: str
-        :param user_id: Delete the policy scoped to this user. Omit to delete the global one.
+        :param user_id: Delete the policy scoped to this user. Omit to delete the workspace-wide one.
         :type user_id: str
+        :param workspace_id: Delete the policy in this workspace. Omit for the deployment's default workspace.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -168,6 +175,7 @@ class RoutingApi:
         _param = self._delete_policy_v1_routing_policies_name_delete_serialize(
             name=name,
             user_id=user_id,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -193,7 +201,8 @@ class RoutingApi:
     def delete_policy_v1_routing_policies_name_delete_without_preload_content(
         self,
         name: StrictStr,
-        user_id: Annotated[Optional[StrictStr], Field(description="Delete the policy scoped to this user. Omit to delete the global one.")] = None,
+        user_id: Annotated[Optional[StrictStr], Field(description="Delete the policy scoped to this user. Omit to delete the workspace-wide one.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Delete the policy in this workspace. Omit for the deployment's default workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -209,12 +218,14 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Delete Policy
 
-        Delete a stored policy in one scope.  Scoped by ``user_id`` for the same reason the upsert is: deleting the global policy must not take a user's override with it, and deleting an override must leave the global one serving everyone else.
+        Delete a stored policy in one scope.  Scoped by ``workspace_id`` and ``user_id`` for the same reason the upsert is: deleting one workspace's policy must not touch another's, deleting the workspace-wide policy must not take a user's override with it, and deleting an override must leave the workspace-wide one serving everyone else.
 
         :param name: (required)
         :type name: str
-        :param user_id: Delete the policy scoped to this user. Omit to delete the global one.
+        :param user_id: Delete the policy scoped to this user. Omit to delete the workspace-wide one.
         :type user_id: str
+        :param workspace_id: Delete the policy in this workspace. Omit for the deployment's default workspace.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -240,6 +251,7 @@ class RoutingApi:
         _param = self._delete_policy_v1_routing_policies_name_delete_serialize(
             name=name,
             user_id=user_id,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -261,6 +273,7 @@ class RoutingApi:
         self,
         name,
         user_id,
+        workspace_id,
         _request_auth,
         _content_type,
         _headers,
@@ -288,6 +301,10 @@ class RoutingApi:
         if user_id is not None:
             
             _query_params.append(('user_id', user_id))
+            
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
             
         # process the header parameters
         # process the form parameters
@@ -608,7 +625,7 @@ class RoutingApi:
     @validate_call
     def list_policies_v1_routing_policies_get(
         self,
-        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included. Every stored policy is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -624,9 +641,9 @@ class RoutingApi:
     ) -> List[PolicyResponse]:
         """List Policies
 
-        List every routing policy in force, from config.yml and from storage.  Every scope at once, global and user-scoped alike: this is the master-key management view, not what any one caller resolves.
+        List every routing policy in force, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
-        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included. Every stored policy is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).
+        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.
         :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -676,7 +693,7 @@ class RoutingApi:
     @validate_call
     def list_policies_v1_routing_policies_get_with_http_info(
         self,
-        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included. Every stored policy is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -692,9 +709,9 @@ class RoutingApi:
     ) -> ApiResponse[List[PolicyResponse]]:
         """List Policies
 
-        List every routing policy in force, from config.yml and from storage.  Every scope at once, global and user-scoped alike: this is the master-key management view, not what any one caller resolves.
+        List every routing policy in force, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
-        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included. Every stored policy is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).
+        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.
         :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -744,7 +761,7 @@ class RoutingApi:
     @validate_call
     def list_policies_v1_routing_policies_get_without_preload_content(
         self,
-        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included. Every stored policy is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -760,9 +777,9 @@ class RoutingApi:
     ) -> RESTResponseType:
         """List Policies
 
-        List every routing policy in force, from config.yml and from storage.  Every scope at once, global and user-scoped alike: this is the master-key management view, not what any one caller resolves.
+        List every routing policy in force, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
-        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included. Every stored policy is in the deployment's default workspace today, because name uniqueness and the resolution cache are both deployment-wide, so this narrows to one workspace and finds the rest empty until those are scoped (otari-ai#1643).
+        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.
         :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1154,6 +1171,7 @@ class RoutingApi:
     def routing_memory_status_v1_routing_status_get(
         self,
         user_id: Annotated[StrictStr, Field(description="Whose routing memory to report on.")],
+        workspace_id: Annotated[Optional[UUID], Field(description="Which workspace's routing memory to report on. Omit for the default workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1169,10 +1187,12 @@ class RoutingApi:
     ) -> RouterStatus:
         """Routing Memory Status
 
-        Report how warm one user's routing memory is, per pool.  ``user_id`` is required rather than optional because there is no aggregate answer: warmth is per user, and a total across users would describe a pool that no request ever votes over.
+        Report how warm one user's routing memory is in one workspace, per pool.  ``user_id`` is required rather than optional because there is no aggregate answer: warmth is per user, and a total across users would describe a pool that no request ever votes over. The same holds across workspaces, which is why ``workspace_id`` narrows rather than aggregating; it merely defaults instead of being required, because a single-workspace deployment has one answer.
 
         :param user_id: Whose routing memory to report on. (required)
         :type user_id: str
+        :param workspace_id: Which workspace's routing memory to report on. Omit for the default workspace.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1197,6 +1217,7 @@ class RoutingApi:
 
         _param = self._routing_memory_status_v1_routing_status_get_serialize(
             user_id=user_id,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1222,6 +1243,7 @@ class RoutingApi:
     def routing_memory_status_v1_routing_status_get_with_http_info(
         self,
         user_id: Annotated[StrictStr, Field(description="Whose routing memory to report on.")],
+        workspace_id: Annotated[Optional[UUID], Field(description="Which workspace's routing memory to report on. Omit for the default workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1237,10 +1259,12 @@ class RoutingApi:
     ) -> ApiResponse[RouterStatus]:
         """Routing Memory Status
 
-        Report how warm one user's routing memory is, per pool.  ``user_id`` is required rather than optional because there is no aggregate answer: warmth is per user, and a total across users would describe a pool that no request ever votes over.
+        Report how warm one user's routing memory is in one workspace, per pool.  ``user_id`` is required rather than optional because there is no aggregate answer: warmth is per user, and a total across users would describe a pool that no request ever votes over. The same holds across workspaces, which is why ``workspace_id`` narrows rather than aggregating; it merely defaults instead of being required, because a single-workspace deployment has one answer.
 
         :param user_id: Whose routing memory to report on. (required)
         :type user_id: str
+        :param workspace_id: Which workspace's routing memory to report on. Omit for the default workspace.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1265,6 +1289,7 @@ class RoutingApi:
 
         _param = self._routing_memory_status_v1_routing_status_get_serialize(
             user_id=user_id,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1290,6 +1315,7 @@ class RoutingApi:
     def routing_memory_status_v1_routing_status_get_without_preload_content(
         self,
         user_id: Annotated[StrictStr, Field(description="Whose routing memory to report on.")],
+        workspace_id: Annotated[Optional[UUID], Field(description="Which workspace's routing memory to report on. Omit for the default workspace.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1305,10 +1331,12 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Routing Memory Status
 
-        Report how warm one user's routing memory is, per pool.  ``user_id`` is required rather than optional because there is no aggregate answer: warmth is per user, and a total across users would describe a pool that no request ever votes over.
+        Report how warm one user's routing memory is in one workspace, per pool.  ``user_id`` is required rather than optional because there is no aggregate answer: warmth is per user, and a total across users would describe a pool that no request ever votes over. The same holds across workspaces, which is why ``workspace_id`` narrows rather than aggregating; it merely defaults instead of being required, because a single-workspace deployment has one answer.
 
         :param user_id: Whose routing memory to report on. (required)
         :type user_id: str
+        :param workspace_id: Which workspace's routing memory to report on. Omit for the default workspace.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1333,6 +1361,7 @@ class RoutingApi:
 
         _param = self._routing_memory_status_v1_routing_status_get_serialize(
             user_id=user_id,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1353,6 +1382,7 @@ class RoutingApi:
     def _routing_memory_status_v1_routing_status_get_serialize(
         self,
         user_id,
+        workspace_id,
         _request_auth,
         _content_type,
         _headers,
@@ -1378,6 +1408,10 @@ class RoutingApi:
         if user_id is not None:
             
             _query_params.append(('user_id', user_id))
+            
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
             
         # process the header parameters
         # process the form parameters
@@ -1436,7 +1470,7 @@ class RoutingApi:
     ) -> PolicyResponse:
         """Set Policy
 
-        Create or update a stored policy, global or scoped to one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
+        Create or update a stored policy in one workspace, optionally for one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
 
         :param policy_request: (required)
         :type policy_request: PolicyRequest
@@ -1504,7 +1538,7 @@ class RoutingApi:
     ) -> ApiResponse[PolicyResponse]:
         """Set Policy
 
-        Create or update a stored policy, global or scoped to one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
+        Create or update a stored policy in one workspace, optionally for one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
 
         :param policy_request: (required)
         :type policy_request: PolicyRequest
@@ -1572,7 +1606,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Set Policy
 
-        Create or update a stored policy, global or scoped to one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
+        Create or update a stored policy in one workspace, optionally for one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
 
         :param policy_request: (required)
         :type policy_request: PolicyRequest

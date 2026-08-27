@@ -18,8 +18,9 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from uuid import UUID
 from otari._client.models.scored_example import ScoredExample
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,7 +32,8 @@ class RankRequest(BaseModel):
     """ # noqa: E501
     examples: Annotated[List[ScoredExample], Field(min_length=1, max_length=100)] = Field(description="The scored prompts to record.")
     user_id: StrictStr = Field(description="Whose routing memory these examples belong to.")
-    __properties: ClassVar[List[str]] = ["examples", "user_id"]
+    workspace_id: Optional[UUID] = Field(default=None, description="Which workspace's routing memory these examples belong to. Omit for the deployment's default workspace. Only requests billing to that workspace vote over them.")
+    __properties: ClassVar[List[str]] = ["examples", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -79,6 +81,11 @@ class RankRequest(BaseModel):
                 if _item_examples:
                     _items.append(_item_examples.to_dict())
             _dict['examples'] = _items
+        # set to None if workspace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
+            _dict['workspace_id'] = None
+
         return _dict
 
     @classmethod
@@ -92,7 +99,8 @@ class RankRequest(BaseModel):
 
         _obj = cls.model_validate({
             "examples": [ScoredExample.from_dict(_item) for _item in obj["examples"]] if obj.get("examples") is not None else None,
-            "user_id": obj.get("user_id")
+            "user_id": obj.get("user_id"),
+            "workspace_id": obj.get("workspace_id")
         })
         return _obj
 

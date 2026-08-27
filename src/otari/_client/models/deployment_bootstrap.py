@@ -27,15 +27,18 @@ class DeploymentBootstrap(BaseModel):
     """
     What the dashboard shell needs before it can render anything.
     """ # noqa: E501
-    deployment_type: StrictStr = Field(description="Which deployment serves this URL. 'standalone' owns its own data; 'hosted' is otari.ai; 'hybrid' is a gateway attached to otari.ai, which is data-plane only and holds no management surface of its own.")
+    data_plane_url: Optional[StrictStr] = Field(description="Where this deployment's inference traffic belongs, when it is not served here. The mirror of management_url: that one says where management lives when this deployment is not the control plane, this one says where the data plane is when this deployment is not it. Set only by a hosted control plane, which serves the dashboard but not inference (otari#822); null for standalone and hybrid, both of which serve inference at the address that reached this page. Not a human link target like management_url: it is the base URL a client suffixes with /v1, which is what the dashboard builds its request snippets from. Null on a hosted deployment means unconfigured, and the dashboard then shows no snippet rather than one naming this host.")
+    deployment_type: StrictStr = Field(description="Which deployment serves this URL. 'standalone' owns its own data and serves one tenant; 'hosted' owns its own data and serves many (otari.ai, or any deployment run as a control plane), which is why its management surfaces are the per-organization ones; 'hybrid' is a gateway attached to otari.ai, which is data-plane only and holds no management surface of its own.")
+    docs_url: Optional[StrictStr] = Field(description="Where this deployment's documentation lives, when it is not the operator guide bundled with the gateway. Set, the dashboard's Documentation links open it in a new tab; null, they go to the bundled guide at /#/docs, which stays served either way. A link target an operator configured, validated at startup as an absolute http(s) URL.")
     mail_ready: StrictBool = Field(description="Whether this deployment can deliver a message carrying a link back to itself (an invitation's accept link, and the verification and reset links to come), not merely whether a transport is configured: it also needs to know its own public URL to put in one. Lets the dashboard disable or hide a mail-dependent affordance instead of offering one that would fail at send time. Every message this control plane sends carries such a link, which is why this is one flag and not one per feature. False for a hybrid gateway, whose control plane is otari.ai and which sends no mail of its own.")
     maintenance_mode: StrictBool = Field(description="Whether this deployment is refusing new dashboard sign-ins while an operator redeploys it. The sign-in screen says so rather than presenting a form whose only outcome is a 503. Sessions already issued keep working, and the management API and the data plane are unaffected. False for a hybrid gateway, which issues no session.")
     management_url: Optional[StrictStr] = Field(description="Where the authoritative control plane lives when it is not this deployment. Set for a hybrid gateway so its landing page can link to otari.ai; null otherwise.")
+    oauth_providers: List[StrictStr] = Field(description="OAuth providers this deployment can sign somebody in with, sorted, one entry per provider with a client ID, a client secret and a public_base_url to build a redirect URI from. The sign-in screen renders a button per entry and none at all when the list is empty, so a provider nobody configured is absent rather than offered and then refused. Additive to sign_in_methods rather than part of it: an OAuth sign-in coexists with whichever typed credential is current, the way a passkey does. Empty for a hybrid gateway, which issues no session.")
     passkeys_ready: StrictBool = Field(description="Whether this deployment can run a passkey ceremony at all: it has a relying-party ID (webauthn_rp_id, or derived from public_base_url) and an origin to serve one from. Distinct from 'passkey' in sign_in_methods, which is narrower and answers whether a registered passkey could sign somebody in *right now*: an operator with none yet needs this one, or the page that registers the first would be hidden from them. False for a hybrid gateway, which issues no session of its own.")
     session_type: StrictStr = Field(description="The kind of session this deployment issues, not whether the caller holds one. 'local_operator' is the standalone operator sign-in (see sign_in_methods for which credential it currently accepts), 'hosted_user' an otari.ai account, and 'none' a deployment that issues no management session at all.")
     sign_in_methods: List[StrictStr] = Field(description="How POST /v1/auth/session may be authenticated right now, sorted. 'master_key' is the first-boot credential and is offered until the operator identity has a password, which is what claiming the deployment means; 'password' replaces it from then on, and the master key stays the credential for the management API. 'passkey' appears alongside either one when this deployment is configured for WebAuthn and holds at least one passkey that its current relying-party ID can assert. Empty for a hybrid gateway, which issues no session. The login page renders from this rather than trying a credential to find out.")
     surfaces: List[StrictStr] = Field(description="Management API groups this deployment serves, sorted, which is what its dashboard pages gate on. Named surfaces, not capabilities: capability is otari.ai's word for the entitlement (licensing) axis, and this is the deployment (topology) axis. Empty for a hybrid gateway.")
-    __properties: ClassVar[List[str]] = ["deployment_type", "mail_ready", "maintenance_mode", "management_url", "passkeys_ready", "session_type", "sign_in_methods", "surfaces"]
+    __properties: ClassVar[List[str]] = ["data_plane_url", "deployment_type", "docs_url", "mail_ready", "maintenance_mode", "management_url", "oauth_providers", "passkeys_ready", "session_type", "sign_in_methods", "surfaces"]
 
     @field_validator('deployment_type')
     def deployment_type_validate_enum(cls, value):
@@ -98,6 +101,16 @@ class DeploymentBootstrap(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if data_plane_url (nullable) is None
+        # and model_fields_set contains the field
+        if self.data_plane_url is None and "data_plane_url" in self.model_fields_set:
+            _dict['data_plane_url'] = None
+
+        # set to None if docs_url (nullable) is None
+        # and model_fields_set contains the field
+        if self.docs_url is None and "docs_url" in self.model_fields_set:
+            _dict['docs_url'] = None
+
         # set to None if management_url (nullable) is None
         # and model_fields_set contains the field
         if self.management_url is None and "management_url" in self.model_fields_set:
@@ -115,10 +128,13 @@ class DeploymentBootstrap(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "data_plane_url": obj.get("data_plane_url"),
             "deployment_type": obj.get("deployment_type"),
+            "docs_url": obj.get("docs_url"),
             "mail_ready": obj.get("mail_ready"),
             "maintenance_mode": obj.get("maintenance_mode"),
             "management_url": obj.get("management_url"),
+            "oauth_providers": obj.get("oauth_providers"),
             "passkeys_ready": obj.get("passkeys_ready"),
             "session_type": obj.get("session_type"),
             "sign_in_methods": obj.get("sign_in_methods"),

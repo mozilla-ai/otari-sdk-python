@@ -17,25 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from uuid import UUID
+from pydantic import BaseModel, ConfigDict, StrictBool
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class AliasResponse(BaseModel):
+class DeploymentAdminAccessPublic(BaseModel):
     """
-    A model alias and where it is defined.
+    Whether the caller may reach the deployment administration surface.  The one endpoint in that surface that answers 200 for everybody, and deliberately: the rest refuse with 404 so they do not confirm they exist, which leaves the dashboard nothing to gate its navigation on but a failed request. This says the same thing a caller could learn by trying, without the try.
     """ # noqa: E501
-    created_at: Optional[StrictStr] = None
-    name: StrictStr
-    source: StrictStr
-    target: StrictStr
-    updated_at: Optional[StrictStr] = None
-    user_id: Optional[StrictStr] = None
-    workspace_id: Optional[UUID] = None
-    __properties: ClassVar[List[str]] = ["created_at", "name", "source", "target", "updated_at", "user_id", "workspace_id"]
+    granted: StrictBool
+    __properties: ClassVar[List[str]] = ["granted"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +48,7 @@ class AliasResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AliasResponse from a JSON string"""
+        """Create an instance of DeploymentAdminAccessPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,31 +69,11 @@ class AliasResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict['created_at'] = None
-
-        # set to None if updated_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.updated_at is None and "updated_at" in self.model_fields_set:
-            _dict['updated_at'] = None
-
-        # set to None if user_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.user_id is None and "user_id" in self.model_fields_set:
-            _dict['user_id'] = None
-
-        # set to None if workspace_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
-            _dict['workspace_id'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AliasResponse from a dict"""
+        """Create an instance of DeploymentAdminAccessPublic from a dict"""
         if obj is None:
             return None
 
@@ -108,13 +81,7 @@ class AliasResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "created_at": obj.get("created_at"),
-            "name": obj.get("name"),
-            "source": obj.get("source"),
-            "target": obj.get("target"),
-            "updated_at": obj.get("updated_at"),
-            "user_id": obj.get("user_id"),
-            "workspace_id": obj.get("workspace_id")
+            "granted": obj.get("granted")
         })
         return _obj
 

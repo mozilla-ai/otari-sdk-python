@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,10 +29,11 @@ class PolicyRequest(BaseModel):
     Request to create or update a routing policy.
     """ # noqa: E501
     name: StrictStr = Field(description="Model name callers send, e.g. 'fast'.")
-    rename_from: Optional[StrictStr] = Field(default=None, description="Current name of the policy to rename, in the same scope. The stored row keeps its id and created_at and takes `name` and `spec`. Sending it asserts that policy exists, so a name with no stored row is a 404 rather than a create, even when it equals `name`. Omit to create or update the policy named `name`. Renaming changes what callers must send as `model`; usage already recorded keeps the old name.")
+    rename_from: Optional[StrictStr] = Field(default=None, description="Current name of the policy to rename, in the same scope, meaning the same workspace and the same user. A rename never moves a policy between them. The stored row keeps its id and created_at and takes `name` and `spec`. Sending it asserts that policy exists, so a name with no stored row is a 404 rather than a create, even when it equals `name`. Omit to create or update the policy named `name`. Renaming changes what callers must send as `model`; usage already recorded keeps the old name.")
     spec: Dict[str, Any] = Field(description="The policy body: select (with exactly one `default` entry, last), optional on_failure and guardrails. Same schema as a `routing.policies` entry in config.yml, and closed to unknown keys, so a typo is a 400 rather than a silently ignored setting.")
-    user_id: Optional[StrictStr] = Field(default=None, description="User this policy belongs to. Omit for a global policy every caller sees. A user-scoped policy resolves only for that user and shadows a global one of the same name.")
-    __properties: ClassVar[List[str]] = ["name", "rename_from", "spec", "user_id"]
+    user_id: Optional[StrictStr] = Field(default=None, description="User this policy belongs to. Omit for a policy every caller in the workspace sees. A user-scoped policy resolves only for that user and shadows the workspace-wide one of the same name.")
+    workspace_id: Optional[UUID] = Field(default=None, description="Workspace this policy belongs to. Omit for the deployment's default workspace. The policy resolves only for requests in that workspace, so two workspaces can each define their own 'fast'.")
+    __properties: ClassVar[List[str]] = ["name", "rename_from", "spec", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -82,6 +84,11 @@ class PolicyRequest(BaseModel):
         if self.user_id is None and "user_id" in self.model_fields_set:
             _dict['user_id'] = None
 
+        # set to None if workspace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
+            _dict['workspace_id'] = None
+
         return _dict
 
     @classmethod
@@ -97,7 +104,8 @@ class PolicyRequest(BaseModel):
             "name": obj.get("name"),
             "rename_from": obj.get("rename_from"),
             "spec": obj.get("spec"),
-            "user_id": obj.get("user_id")
+            "user_id": obj.get("user_id"),
+            "workspace_id": obj.get("workspace_id")
         })
         return _obj
 
