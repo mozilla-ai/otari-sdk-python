@@ -22,6 +22,7 @@ from otari._client.api.models_api import ModelsApi
 from otari._client.api.moderations_api import ModerationsApi
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi
 from otari._client.api.organization_pricing_api import OrganizationPricingApi
+from otari._client.api.organization_usage_api import OrganizationUsageApi
 from otari._client.api.organizations_api import OrganizationsApi
 from otari._client.api.otel_api import OtelApi
 from otari._client.api.pricing_api import PricingApi

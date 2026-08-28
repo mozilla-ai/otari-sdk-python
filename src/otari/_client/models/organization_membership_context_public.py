@@ -31,12 +31,14 @@ class OrganizationMembershipContextPublic(BaseModel):
     An organization plus the caller's standing in it.  What every tenancy page reads first: which organization it is looking at, and what the caller may do there.
     """ # noqa: E501
     byo_provider_keys_allowed: Optional[StrictBool] = False
+    deployment_operator: Optional[StrictBool] = False
     organization: OrganizationPublic
     organization_member_id: UUID
+    provider_key_encryption_available: Optional[StrictBool] = False
     role: StrictStr
     status: StrictStr
     workspace_memberships: Optional[List[CallerWorkspaceMembershipPublic]] = None
-    __properties: ClassVar[List[str]] = ["byo_provider_keys_allowed", "organization", "organization_member_id", "role", "status", "workspace_memberships"]
+    __properties: ClassVar[List[str]] = ["byo_provider_keys_allowed", "deployment_operator", "organization", "organization_member_id", "provider_key_encryption_available", "role", "status", "workspace_memberships"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -100,8 +102,10 @@ class OrganizationMembershipContextPublic(BaseModel):
 
         _obj = cls.model_validate({
             "byo_provider_keys_allowed": obj.get("byo_provider_keys_allowed") if obj.get("byo_provider_keys_allowed") is not None else False,
+            "deployment_operator": obj.get("deployment_operator") if obj.get("deployment_operator") is not None else False,
             "organization": OrganizationPublic.from_dict(obj["organization"]) if obj.get("organization") is not None else None,
             "organization_member_id": obj.get("organization_member_id"),
+            "provider_key_encryption_available": obj.get("provider_key_encryption_available") if obj.get("provider_key_encryption_available") is not None else False,
             "role": obj.get("role"),
             "status": obj.get("status"),
             "workspace_memberships": [CallerWorkspaceMembershipPublic.from_dict(_item) for _item in obj["workspace_memberships"]] if obj.get("workspace_memberships") is not None else None
