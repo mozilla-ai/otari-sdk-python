@@ -39,6 +39,7 @@ __all__ = [
     "ModerationsApi",
     "OrganizationGuardrailsApi",
     "OrganizationPricingApi",
+    "OrganizationUsageApi",
     "OrganizationsApi",
     "OtelApi",
     "PricingApi",
@@ -530,6 +531,7 @@ from otari._client.api.models_api import ModelsApi as ModelsApi
 from otari._client.api.moderations_api import ModerationsApi as ModerationsApi
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi as OrganizationGuardrailsApi
 from otari._client.api.organization_pricing_api import OrganizationPricingApi as OrganizationPricingApi
+from otari._client.api.organization_usage_api import OrganizationUsageApi as OrganizationUsageApi
 from otari._client.api.organizations_api import OrganizationsApi as OrganizationsApi
 from otari._client.api.otel_api import OtelApi as OtelApi
 from otari._client.api.pricing_api import PricingApi as PricingApi
