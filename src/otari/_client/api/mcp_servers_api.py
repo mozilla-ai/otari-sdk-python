@@ -637,7 +637,7 @@ class McpServersApi:
     ) -> WorkspaceMcpServersPublic:
         """List Workspace Mcp Servers
 
-        List the MCP servers configured for a workspace.  Organization owners/admins or this workspace's owners/admins. Reads are gated like writes because these rows name the endpoints the gateway connects to on the workspace's behalf. Authorization tokens are never included; each server reports only whether it has one.
+        List the MCP servers configured for a workspace.  Readable by any member who can see the workspace: these servers act on every request a member sends through it, so what they are is a member's to view (otari-ai#1942). Changing them stays with organization owners/admins or this workspace's owners/admins. Authorization tokens are never included; each server reports only whether it has one.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -713,7 +713,7 @@ class McpServersApi:
     ) -> ApiResponse[WorkspaceMcpServersPublic]:
         """List Workspace Mcp Servers
 
-        List the MCP servers configured for a workspace.  Organization owners/admins or this workspace's owners/admins. Reads are gated like writes because these rows name the endpoints the gateway connects to on the workspace's behalf. Authorization tokens are never included; each server reports only whether it has one.
+        List the MCP servers configured for a workspace.  Readable by any member who can see the workspace: these servers act on every request a member sends through it, so what they are is a member's to view (otari-ai#1942). Changing them stays with organization owners/admins or this workspace's owners/admins. Authorization tokens are never included; each server reports only whether it has one.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -789,7 +789,7 @@ class McpServersApi:
     ) -> RESTResponseType:
         """List Workspace Mcp Servers
 
-        List the MCP servers configured for a workspace.  Organization owners/admins or this workspace's owners/admins. Reads are gated like writes because these rows name the endpoints the gateway connects to on the workspace's behalf. Authorization tokens are never included; each server reports only whether it has one.
+        List the MCP servers configured for a workspace.  Readable by any member who can see the workspace: these servers act on every request a member sends through it, so what they are is a member's to view (otari-ai#1942). Changing them stays with organization owners/admins or this workspace's owners/admins. Authorization tokens are never included; each server reports only whether it has one.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
