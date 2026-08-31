@@ -307,6 +307,10 @@ from otari._client.models.org_provider_key_create_request import OrgProviderKeyC
 from otari._client.models.org_provider_key_public import OrgProviderKeyPublic
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest
 from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic
+from otari._client.models.organization_budget_create import OrganizationBudgetCreate
+from otari._client.models.organization_budget_public import OrganizationBudgetPublic
+from otari._client.models.organization_budget_update import OrganizationBudgetUpdate
+from otari._client.models.organization_budgets_public import OrganizationBudgetsPublic
 from otari._client.models.organization_create_request import OrganizationCreateRequest
 from otari._client.models.organization_guardrail_create import OrganizationGuardrailCreate
 from otari._client.models.organization_guardrail_public import OrganizationGuardrailPublic
@@ -318,6 +322,10 @@ from otari._client.models.organization_model_pricing_public import OrganizationM
 from otari._client.models.organization_model_pricing_update import OrganizationModelPricingUpdate
 from otari._client.models.organization_model_pricings_public import OrganizationModelPricingsPublic
 from otari._client.models.organization_public import OrganizationPublic
+from otari._client.models.organization_scoped_budget_create import OrganizationScopedBudgetCreate
+from otari._client.models.organization_scoped_budget_public import OrganizationScopedBudgetPublic
+from otari._client.models.organization_scoped_budget_update import OrganizationScopedBudgetUpdate
+from otari._client.models.organization_scoped_budgets_public import OrganizationScopedBudgetsPublic
 from otari._client.models.passkey_session_response import PasskeySessionResponse
 from otari._client.models.password_response import PasswordResponse
 from otari._client.models.policy_request import PolicyRequest

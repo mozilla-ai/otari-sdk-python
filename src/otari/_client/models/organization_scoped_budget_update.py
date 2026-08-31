@@ -17,33 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceMemberBudgetPolicyCreate(BaseModel):
+class OrganizationScopedBudgetUpdate(BaseModel):
     """
-    Request body for creating a default.
+    Relabel a ceiling, or point it at a different budget of this organization's.  The scope and the provider narrowing are not editable, for the reason ``PATCH /v1/scoped-budgets/{id}`` gives: changing either moves the ceiling to a different identity while carrying its spend, which is a delete and a create, not an update.
     """ # noqa: E501
-    budget_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="The budget this workspace hands to every member")
-    provider_key_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = Field(default=None, description="Narrow the default to one provider instance; omit or null to apply to every provider. Must name a real instance: a blank value would materialize ceilings that never bind")
-    __properties: ClassVar[List[str]] = ["budget_id", "provider_key_id"]
-
-    @field_validator('provider_key_id')
-    def provider_key_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^\S+$", value):
-            raise ValueError(r"must validate the regular expression /^\S+$/")
-        return value
+    budget_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = None
+    name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = None
+    __properties: ClassVar[List[str]] = ["budget_id", "name"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -63,7 +50,7 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyCreate from a JSON string"""
+        """Create an instance of OrganizationScopedBudgetUpdate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -84,16 +71,21 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if provider_key_id (nullable) is None
+        # set to None if budget_id (nullable) is None
         # and model_fields_set contains the field
-        if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
-            _dict['provider_key_id'] = None
+        if self.budget_id is None and "budget_id" in self.model_fields_set:
+            _dict['budget_id'] = None
+
+        # set to None if name (nullable) is None
+        # and model_fields_set contains the field
+        if self.name is None and "name" in self.model_fields_set:
+            _dict['name'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyCreate from a dict"""
+        """Create an instance of OrganizationScopedBudgetUpdate from a dict"""
         if obj is None:
             return None
 
@@ -102,7 +94,7 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
 
         _obj = cls.model_validate({
             "budget_id": obj.get("budget_id"),
-            "provider_key_id": obj.get("provider_key_id")
+            "name": obj.get("name")
         })
         return _obj
 

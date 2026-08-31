@@ -17,20 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceMemberBudgetPolicyCreate(BaseModel):
+class OrganizationScopedBudgetCreate(BaseModel):
     """
-    Request body for creating a default.
+    Attach one of the organization's budgets to a scope inside it.
     """ # noqa: E501
-    budget_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="The budget this workspace hands to every member")
-    provider_key_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = Field(default=None, description="Narrow the default to one provider instance; omit or null to apply to every provider. Must name a real instance: a blank value would materialize ceilings that never bind")
-    __properties: ClassVar[List[str]] = ["budget_id", "provider_key_id"]
+    budget_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="The budget this ceiling enforces, which must be one this organization owns")
+    name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = Field(default=None, description="Admin-facing label for this ceiling")
+    provider_key_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = Field(default=None, description="Narrow the cap to one provider instance; omit or null to cap spend across every provider. Must name a real instance: a blank value would store a ceiling that never binds")
+    scope_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="Id of the capped identity: this organization, one of its workspaces, a membership in either, or an API key in one")
+    scope_type: StrictStr = Field(description="Which kind of identity this ceiling caps")
+    __properties: ClassVar[List[str]] = ["budget_id", "name", "provider_key_id", "scope_id", "scope_type"]
 
     @field_validator('provider_key_id')
     def provider_key_id_validate_regular_expression(cls, value):
@@ -43,6 +46,13 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
 
         if not re.match(r"^\S+$", value):
             raise ValueError(r"must validate the regular expression /^\S+$/")
+        return value
+
+    @field_validator('scope_type')
+    def scope_type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['organization', 'workspace', 'workspace_member', 'org_member', 'api_token']):
+            raise ValueError("must be one of enum values ('organization', 'workspace', 'workspace_member', 'org_member', 'api_token')")
         return value
 
     model_config = ConfigDict(
@@ -63,7 +73,7 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyCreate from a JSON string"""
+        """Create an instance of OrganizationScopedBudgetCreate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -84,6 +94,11 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if name (nullable) is None
+        # and model_fields_set contains the field
+        if self.name is None and "name" in self.model_fields_set:
+            _dict['name'] = None
+
         # set to None if provider_key_id (nullable) is None
         # and model_fields_set contains the field
         if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
@@ -93,7 +108,7 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyCreate from a dict"""
+        """Create an instance of OrganizationScopedBudgetCreate from a dict"""
         if obj is None:
             return None
 
@@ -102,7 +117,10 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
 
         _obj = cls.model_validate({
             "budget_id": obj.get("budget_id"),
-            "provider_key_id": obj.get("provider_key_id")
+            "name": obj.get("name"),
+            "provider_key_id": obj.get("provider_key_id"),
+            "scope_id": obj.get("scope_id"),
+            "scope_type": obj.get("scope_type")
         })
         return _obj
 

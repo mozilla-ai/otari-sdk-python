@@ -1185,7 +1185,7 @@ class ProviderKeysApi:
     ) -> OrgProviderKeysPublic:
         """List Org Provider Keys
 
-        List the caller's organization's provider keys. Any active member may read it.
+        List the caller's organization's provider keys. Organization owners and admins only.
 
         :param include_archived: Include archived keys.
         :type include_archived: bool
@@ -1261,7 +1261,7 @@ class ProviderKeysApi:
     ) -> ApiResponse[OrgProviderKeysPublic]:
         """List Org Provider Keys
 
-        List the caller's organization's provider keys. Any active member may read it.
+        List the caller's organization's provider keys. Organization owners and admins only.
 
         :param include_archived: Include archived keys.
         :type include_archived: bool
@@ -1337,7 +1337,7 @@ class ProviderKeysApi:
     ) -> RESTResponseType:
         """List Org Provider Keys
 
-        List the caller's organization's provider keys. Any active member may read it.
+        List the caller's organization's provider keys. Organization owners and admins only.
 
         :param include_archived: Include archived keys.
         :type include_archived: bool
