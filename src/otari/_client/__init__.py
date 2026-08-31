@@ -38,6 +38,7 @@ __all__ = [
     "ModelsApi",
     "ModerationsApi",
     "OrganizationGuardrailsApi",
+    "OrganizationKeysApi",
     "OrganizationPricingApi",
     "OrganizationUsageApi",
     "OrganizationsApi",
@@ -171,6 +172,7 @@ __all__ = [
     "CreateEmbeddingResponse",
     "CreateKeyRequest",
     "CreateKeyResponse",
+    "CreateOwnKeyRequest",
     "CreateScopedBudgetRequest",
     "CreateSearchToolRequest",
     "CreateSessionRequest",
@@ -450,6 +452,7 @@ __all__ = [
     "UpdateBudgetRequest",
     "UpdateKeyRequest",
     "UpdateMaintenanceModeRequest",
+    "UpdateOwnKeyRequest",
     "UpdateScopedBudgetRequest",
     "UpdateSearchToolRequest",
     "UpdateSettingsRequest",
@@ -531,6 +534,7 @@ from otari._client.api.messages_api import MessagesApi as MessagesApi
 from otari._client.api.models_api import ModelsApi as ModelsApi
 from otari._client.api.moderations_api import ModerationsApi as ModerationsApi
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi as OrganizationGuardrailsApi
+from otari._client.api.organization_keys_api import OrganizationKeysApi as OrganizationKeysApi
 from otari._client.api.organization_pricing_api import OrganizationPricingApi as OrganizationPricingApi
 from otari._client.api.organization_usage_api import OrganizationUsageApi as OrganizationUsageApi
 from otari._client.api.organizations_api import OrganizationsApi as OrganizationsApi
@@ -668,6 +672,7 @@ from otari._client.models.create_budget_request import CreateBudgetRequest as Cr
 from otari._client.models.create_embedding_response import CreateEmbeddingResponse as CreateEmbeddingResponse
 from otari._client.models.create_key_request import CreateKeyRequest as CreateKeyRequest
 from otari._client.models.create_key_response import CreateKeyResponse as CreateKeyResponse
+from otari._client.models.create_own_key_request import CreateOwnKeyRequest as CreateOwnKeyRequest
 from otari._client.models.create_scoped_budget_request import CreateScopedBudgetRequest as CreateScopedBudgetRequest
 from otari._client.models.create_search_tool_request import CreateSearchToolRequest as CreateSearchToolRequest
 from otari._client.models.create_session_request import CreateSessionRequest as CreateSessionRequest
@@ -947,6 +952,7 @@ from otari._client.models.units1 import Units1 as Units1
 from otari._client.models.update_budget_request import UpdateBudgetRequest as UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest as UpdateKeyRequest
 from otari._client.models.update_maintenance_mode_request import UpdateMaintenanceModeRequest as UpdateMaintenanceModeRequest
+from otari._client.models.update_own_key_request import UpdateOwnKeyRequest as UpdateOwnKeyRequest
 from otari._client.models.update_scoped_budget_request import UpdateScopedBudgetRequest as UpdateScopedBudgetRequest
 from otari._client.models.update_search_tool_request import UpdateSearchToolRequest as UpdateSearchToolRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest as UpdateSettingsRequest
