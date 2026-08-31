@@ -114,6 +114,7 @@ from otari._client.models.create_budget_request import CreateBudgetRequest
 from otari._client.models.create_embedding_response import CreateEmbeddingResponse
 from otari._client.models.create_key_request import CreateKeyRequest
 from otari._client.models.create_key_response import CreateKeyResponse
+from otari._client.models.create_own_key_request import CreateOwnKeyRequest
 from otari._client.models.create_scoped_budget_request import CreateScopedBudgetRequest
 from otari._client.models.create_search_tool_request import CreateSearchToolRequest
 from otari._client.models.create_session_request import CreateSessionRequest
@@ -393,6 +394,7 @@ from otari._client.models.units1 import Units1
 from otari._client.models.update_budget_request import UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest
 from otari._client.models.update_maintenance_mode_request import UpdateMaintenanceModeRequest
+from otari._client.models.update_own_key_request import UpdateOwnKeyRequest
 from otari._client.models.update_scoped_budget_request import UpdateScopedBudgetRequest
 from otari._client.models.update_search_tool_request import UpdateSearchToolRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest
