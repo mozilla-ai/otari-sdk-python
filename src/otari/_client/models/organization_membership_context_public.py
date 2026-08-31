@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
+from otari._client.models.caller_identity_public import CallerIdentityPublic
 from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic
 from otari._client.models.organization_public import OrganizationPublic
 from typing import Optional, Set
@@ -31,6 +32,7 @@ class OrganizationMembershipContextPublic(BaseModel):
     An organization plus the caller's standing in it.  What every tenancy page reads first: which organization it is looking at, and what the caller may do there.
     """ # noqa: E501
     byo_provider_keys_allowed: Optional[StrictBool] = False
+    caller: Optional[CallerIdentityPublic] = None
     deployment_operator: Optional[StrictBool] = False
     organization: OrganizationPublic
     organization_member_id: UUID
@@ -38,7 +40,7 @@ class OrganizationMembershipContextPublic(BaseModel):
     role: StrictStr
     status: StrictStr
     workspace_memberships: Optional[List[CallerWorkspaceMembershipPublic]] = None
-    __properties: ClassVar[List[str]] = ["byo_provider_keys_allowed", "deployment_operator", "organization", "organization_member_id", "provider_key_encryption_available", "role", "status", "workspace_memberships"]
+    __properties: ClassVar[List[str]] = ["byo_provider_keys_allowed", "caller", "deployment_operator", "organization", "organization_member_id", "provider_key_encryption_available", "role", "status", "workspace_memberships"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -79,6 +81,9 @@ class OrganizationMembershipContextPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of caller
+        if self.caller:
+            _dict['caller'] = self.caller.to_dict()
         # override the default output from pydantic by calling `to_dict()` of organization
         if self.organization:
             _dict['organization'] = self.organization.to_dict()
@@ -89,6 +94,11 @@ class OrganizationMembershipContextPublic(BaseModel):
                 if _item_workspace_memberships:
                     _items.append(_item_workspace_memberships.to_dict())
             _dict['workspace_memberships'] = _items
+        # set to None if caller (nullable) is None
+        # and model_fields_set contains the field
+        if self.caller is None and "caller" in self.model_fields_set:
+            _dict['caller'] = None
+
         return _dict
 
     @classmethod
@@ -102,6 +112,7 @@ class OrganizationMembershipContextPublic(BaseModel):
 
         _obj = cls.model_validate({
             "byo_provider_keys_allowed": obj.get("byo_provider_keys_allowed") if obj.get("byo_provider_keys_allowed") is not None else False,
+            "caller": CallerIdentityPublic.from_dict(obj["caller"]) if obj.get("caller") is not None else None,
             "deployment_operator": obj.get("deployment_operator") if obj.get("deployment_operator") is not None else False,
             "organization": OrganizationPublic.from_dict(obj["organization"]) if obj.get("organization") is not None else None,
             "organization_member_id": obj.get("organization_member_id"),

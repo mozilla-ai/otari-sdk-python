@@ -132,6 +132,7 @@ __all__ = [
     "CCTopLogprob",
     "Caller",
     "Caller1",
+    "CallerIdentityPublic",
     "CallerOrganizationMembershipPublic",
     "CallerOrganizationMembershipsPublic",
     "CallerWorkspaceMembershipPublic",
@@ -628,6 +629,7 @@ from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails 
 from otari._client.models.cc_top_logprob import CCTopLogprob as CCTopLogprob
 from otari._client.models.caller import Caller as Caller
 from otari._client.models.caller1 import Caller1 as Caller1
+from otari._client.models.caller_identity_public import CallerIdentityPublic as CallerIdentityPublic
 from otari._client.models.caller_organization_membership_public import CallerOrganizationMembershipPublic as CallerOrganizationMembershipPublic
 from otari._client.models.caller_organization_memberships_public import CallerOrganizationMembershipsPublic as CallerOrganizationMembershipsPublic
 from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic as CallerWorkspaceMembershipPublic
