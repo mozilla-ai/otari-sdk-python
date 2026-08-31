@@ -37,6 +37,7 @@ __all__ = [
     "MessagesApi",
     "ModelsApi",
     "ModerationsApi",
+    "OrganizationBudgetsApi",
     "OrganizationGuardrailsApi",
     "OrganizationKeysApi",
     "OrganizationPricingApi",
@@ -365,6 +366,10 @@ __all__ = [
     "OrgProviderKeyPublic",
     "OrgProviderKeyUpdateRequest",
     "OrgProviderKeysPublic",
+    "OrganizationBudgetCreate",
+    "OrganizationBudgetPublic",
+    "OrganizationBudgetUpdate",
+    "OrganizationBudgetsPublic",
     "OrganizationCreateRequest",
     "OrganizationGuardrailCreate",
     "OrganizationGuardrailPublic",
@@ -376,6 +381,10 @@ __all__ = [
     "OrganizationModelPricingUpdate",
     "OrganizationModelPricingsPublic",
     "OrganizationPublic",
+    "OrganizationScopedBudgetCreate",
+    "OrganizationScopedBudgetPublic",
+    "OrganizationScopedBudgetUpdate",
+    "OrganizationScopedBudgetsPublic",
     "PasskeySessionResponse",
     "PasswordResponse",
     "PolicyRequest",
@@ -533,6 +542,7 @@ from otari._client.api.mcp_servers_api import McpServersApi as McpServersApi
 from otari._client.api.messages_api import MessagesApi as MessagesApi
 from otari._client.api.models_api import ModelsApi as ModelsApi
 from otari._client.api.moderations_api import ModerationsApi as ModerationsApi
+from otari._client.api.organization_budgets_api import OrganizationBudgetsApi as OrganizationBudgetsApi
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi as OrganizationGuardrailsApi
 from otari._client.api.organization_keys_api import OrganizationKeysApi as OrganizationKeysApi
 from otari._client.api.organization_pricing_api import OrganizationPricingApi as OrganizationPricingApi
@@ -865,6 +875,10 @@ from otari._client.models.org_provider_key_create_request import OrgProviderKeyC
 from otari._client.models.org_provider_key_public import OrgProviderKeyPublic as OrgProviderKeyPublic
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest as OrgProviderKeyUpdateRequest
 from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic as OrgProviderKeysPublic
+from otari._client.models.organization_budget_create import OrganizationBudgetCreate as OrganizationBudgetCreate
+from otari._client.models.organization_budget_public import OrganizationBudgetPublic as OrganizationBudgetPublic
+from otari._client.models.organization_budget_update import OrganizationBudgetUpdate as OrganizationBudgetUpdate
+from otari._client.models.organization_budgets_public import OrganizationBudgetsPublic as OrganizationBudgetsPublic
 from otari._client.models.organization_create_request import OrganizationCreateRequest as OrganizationCreateRequest
 from otari._client.models.organization_guardrail_create import OrganizationGuardrailCreate as OrganizationGuardrailCreate
 from otari._client.models.organization_guardrail_public import OrganizationGuardrailPublic as OrganizationGuardrailPublic
@@ -876,6 +890,10 @@ from otari._client.models.organization_model_pricing_public import OrganizationM
 from otari._client.models.organization_model_pricing_update import OrganizationModelPricingUpdate as OrganizationModelPricingUpdate
 from otari._client.models.organization_model_pricings_public import OrganizationModelPricingsPublic as OrganizationModelPricingsPublic
 from otari._client.models.organization_public import OrganizationPublic as OrganizationPublic
+from otari._client.models.organization_scoped_budget_create import OrganizationScopedBudgetCreate as OrganizationScopedBudgetCreate
+from otari._client.models.organization_scoped_budget_public import OrganizationScopedBudgetPublic as OrganizationScopedBudgetPublic
+from otari._client.models.organization_scoped_budget_update import OrganizationScopedBudgetUpdate as OrganizationScopedBudgetUpdate
+from otari._client.models.organization_scoped_budgets_public import OrganizationScopedBudgetsPublic as OrganizationScopedBudgetsPublic
 from otari._client.models.passkey_session_response import PasskeySessionResponse as PasskeySessionResponse
 from otari._client.models.password_response import PasswordResponse as PasswordResponse
 from otari._client.models.policy_request import PolicyRequest as PolicyRequest
