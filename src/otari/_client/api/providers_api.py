@@ -607,7 +607,7 @@ class ProvidersApi:
     ) -> ProvidersResponse:
         """List Providers
 
-        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and genai-prices datasets. No provider is contacted, so this is cheap and always available. Master-key gated because it describes the gateway's own configuration.
+        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and genai-prices datasets. No provider is contacted, so this is cheap and always available.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -670,7 +670,7 @@ class ProvidersApi:
     ) -> ApiResponse[ProvidersResponse]:
         """List Providers
 
-        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and genai-prices datasets. No provider is contacted, so this is cheap and always available. Master-key gated because it describes the gateway's own configuration.
+        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and genai-prices datasets. No provider is contacted, so this is cheap and always available.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -733,7 +733,7 @@ class ProvidersApi:
     ) -> RESTResponseType:
         """List Providers
 
-        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and genai-prices datasets. No provider is contacted, so this is cheap and always available. Master-key gated because it describes the gateway's own configuration.
+        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and genai-prices datasets. No provider is contacted, so this is cheap and always available.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1102,7 +1102,7 @@ class ProvidersApi:
     ) -> KnownProviderSchema:
         """Provider Catalog Detail
 
-        Autofill hints for one provider the add-provider form has selected.  Imports only the selected provider's any-llm module (not the whole catalog) to report its credential env var, default endpoint, whether a key is required, and whether that env var is already set on the server. Returns 404 for an unknown provider id. Master-key gated because it is operator-facing.  The SDK import is offloaded to a worker thread: the first fetch for a given provider imports that provider's module, which would otherwise block the event loop (and thus every concurrent request) for the import's duration.
+        Autofill hints for one provider the add-provider form has selected.  Imports only the selected provider's any-llm module (not the whole catalog) to report its credential env var, default endpoint, whether a key is required, and whether that env var is already set on the server. Returns 404 for an unknown provider id.  The SDK import is offloaded to a worker thread: the first fetch for a given provider imports that provider's module, which would otherwise block the event loop (and thus every concurrent request) for the import's duration.
 
         :param provider_id: (required)
         :type provider_id: str
@@ -1170,7 +1170,7 @@ class ProvidersApi:
     ) -> ApiResponse[KnownProviderSchema]:
         """Provider Catalog Detail
 
-        Autofill hints for one provider the add-provider form has selected.  Imports only the selected provider's any-llm module (not the whole catalog) to report its credential env var, default endpoint, whether a key is required, and whether that env var is already set on the server. Returns 404 for an unknown provider id. Master-key gated because it is operator-facing.  The SDK import is offloaded to a worker thread: the first fetch for a given provider imports that provider's module, which would otherwise block the event loop (and thus every concurrent request) for the import's duration.
+        Autofill hints for one provider the add-provider form has selected.  Imports only the selected provider's any-llm module (not the whole catalog) to report its credential env var, default endpoint, whether a key is required, and whether that env var is already set on the server. Returns 404 for an unknown provider id.  The SDK import is offloaded to a worker thread: the first fetch for a given provider imports that provider's module, which would otherwise block the event loop (and thus every concurrent request) for the import's duration.
 
         :param provider_id: (required)
         :type provider_id: str
@@ -1238,7 +1238,7 @@ class ProvidersApi:
     ) -> RESTResponseType:
         """Provider Catalog Detail
 
-        Autofill hints for one provider the add-provider form has selected.  Imports only the selected provider's any-llm module (not the whole catalog) to report its credential env var, default endpoint, whether a key is required, and whether that env var is already set on the server. Returns 404 for an unknown provider id. Master-key gated because it is operator-facing.  The SDK import is offloaded to a worker thread: the first fetch for a given provider imports that provider's module, which would otherwise block the event loop (and thus every concurrent request) for the import's duration.
+        Autofill hints for one provider the add-provider form has selected.  Imports only the selected provider's any-llm module (not the whole catalog) to report its credential env var, default endpoint, whether a key is required, and whether that env var is already set on the server. Returns 404 for an unknown provider id.  The SDK import is offloaded to a worker thread: the first fetch for a given provider imports that provider's module, which would otherwise block the event loop (and thus every concurrent request) for the import's duration.
 
         :param provider_id: (required)
         :type provider_id: str
@@ -1366,7 +1366,7 @@ class ProvidersApi:
     ) -> List[KnownProviderSummarySchema]:
         """Provider Catalog
 
-        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /v1/providers/catalog/{provider_id}, which imports only that one SDK. Master-key gated because it is operator-facing dashboard data.
+        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /v1/providers/catalog/{provider_id}, which imports only that one SDK.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1429,7 +1429,7 @@ class ProvidersApi:
     ) -> ApiResponse[List[KnownProviderSummarySchema]]:
         """Provider Catalog
 
-        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /v1/providers/catalog/{provider_id}, which imports only that one SDK. Master-key gated because it is operator-facing dashboard data.
+        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /v1/providers/catalog/{provider_id}, which imports only that one SDK.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1492,7 +1492,7 @@ class ProvidersApi:
     ) -> RESTResponseType:
         """Provider Catalog
 
-        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /v1/providers/catalog/{provider_id}, which imports only that one SDK. Master-key gated because it is operator-facing dashboard data.
+        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /v1/providers/catalog/{provider_id}, which imports only that one SDK.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1614,7 +1614,7 @@ class ProvidersApi:
     ) -> ProviderHealthResponse:
         """Provider Health
 
-        Report every configured provider's reachability, with a last-checked time.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider. Master-key gated because it describes the gateway's own providers.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
+        Report every configured provider's reachability, with a last-checked time.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
 
         :param refresh:
         :type refresh: bool
@@ -1682,7 +1682,7 @@ class ProvidersApi:
     ) -> ApiResponse[ProviderHealthResponse]:
         """Provider Health
 
-        Report every configured provider's reachability, with a last-checked time.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider. Master-key gated because it describes the gateway's own providers.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
+        Report every configured provider's reachability, with a last-checked time.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
 
         :param refresh:
         :type refresh: bool
@@ -1750,7 +1750,7 @@ class ProvidersApi:
     ) -> RESTResponseType:
         """Provider Health
 
-        Report every configured provider's reachability, with a last-checked time.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider. Master-key gated because it describes the gateway's own providers.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
+        Report every configured provider's reachability, with a last-checked time.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
 
         :param refresh:
         :type refresh: bool
