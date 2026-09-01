@@ -41,6 +41,7 @@ from otari._client.api.tool_settings_api import ToolSettingsApi
 from otari._client.api.tools_api import ToolsApi
 from otari._client.api.usage_api import UsageApi
 from otari._client.api.users_api import UsersApi
+from otari._client.api.web_search_api import WebSearchApi
 from otari._client.api.workspace_activation_api import WorkspaceActivationApi
 from otari._client.api.workspace_code_execution_policy_api import WorkspaceCodeExecutionPolicyApi
 from otari._client.api.workspace_member_budget_policies_api import WorkspaceMemberBudgetPoliciesApi
