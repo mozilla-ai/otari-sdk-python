@@ -436,6 +436,8 @@ from otari._client.models.verify_email_response import VerifyEmailResponse
 from otari._client.models.web_authn_credential_public import WebAuthnCredentialPublic
 from otari._client.models.web_authn_credential_update import WebAuthnCredentialUpdate
 from otari._client.models.web_authn_credentials_public import WebAuthnCredentialsPublic
+from otari._client.models.web_search_backend_response import WebSearchBackendResponse
+from otari._client.models.web_search_backend_result import WebSearchBackendResult
 from otari._client.models.workspace_activation_public import WorkspaceActivationPublic
 from otari._client.models.workspace_assignment_request import WorkspaceAssignmentRequest
 from otari._client.models.workspace_code_execution_policy_public import WorkspaceCodeExecutionPolicyPublic

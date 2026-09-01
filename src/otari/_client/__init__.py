@@ -58,6 +58,7 @@ __all__ = [
     "ToolsApi",
     "UsageApi",
     "UsersApi",
+    "WebSearchApi",
     "WorkspaceActivationApi",
     "WorkspaceCodeExecutionPolicyApi",
     "WorkspaceMemberBudgetPoliciesApi",
@@ -495,6 +496,8 @@ __all__ = [
     "WebAuthnCredentialPublic",
     "WebAuthnCredentialUpdate",
     "WebAuthnCredentialsPublic",
+    "WebSearchBackendResponse",
+    "WebSearchBackendResult",
     "WorkspaceActivationPublic",
     "WorkspaceAssignmentRequest",
     "WorkspaceCodeExecutionPolicyPublic",
@@ -563,6 +566,7 @@ from otari._client.api.tool_settings_api import ToolSettingsApi as ToolSettingsA
 from otari._client.api.tools_api import ToolsApi as ToolsApi
 from otari._client.api.usage_api import UsageApi as UsageApi
 from otari._client.api.users_api import UsersApi as UsersApi
+from otari._client.api.web_search_api import WebSearchApi as WebSearchApi
 from otari._client.api.workspace_activation_api import WorkspaceActivationApi as WorkspaceActivationApi
 from otari._client.api.workspace_code_execution_policy_api import WorkspaceCodeExecutionPolicyApi as WorkspaceCodeExecutionPolicyApi
 from otari._client.api.workspace_member_budget_policies_api import WorkspaceMemberBudgetPoliciesApi as WorkspaceMemberBudgetPoliciesApi
@@ -1004,6 +1008,8 @@ from otari._client.models.verify_email_response import VerifyEmailResponse as Ve
 from otari._client.models.web_authn_credential_public import WebAuthnCredentialPublic as WebAuthnCredentialPublic
 from otari._client.models.web_authn_credential_update import WebAuthnCredentialUpdate as WebAuthnCredentialUpdate
 from otari._client.models.web_authn_credentials_public import WebAuthnCredentialsPublic as WebAuthnCredentialsPublic
+from otari._client.models.web_search_backend_response import WebSearchBackendResponse as WebSearchBackendResponse
+from otari._client.models.web_search_backend_result import WebSearchBackendResult as WebSearchBackendResult
 from otari._client.models.workspace_activation_public import WorkspaceActivationPublic as WorkspaceActivationPublic
 from otari._client.models.workspace_assignment_request import WorkspaceAssignmentRequest as WorkspaceAssignmentRequest
 from otari._client.models.workspace_code_execution_policy_public import WorkspaceCodeExecutionPolicyPublic as WorkspaceCodeExecutionPolicyPublic
