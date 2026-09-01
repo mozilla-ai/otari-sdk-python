@@ -363,7 +363,7 @@ class RoutingApi:
     ) -> ExplainResponse:
         """Explain Policy
 
-        Compile a policy and return the plan, without dispatching anything.  Master-key gated, and deliberately so: the response enumerates the policy's targets, which is exactly the information a policy exists to keep off the wire. It is a management surface, not a caller-facing one.  Accepts an unsaved ``spec`` as well as a saved ``name``, so a form can validate what the operator is about to save. The response includes dropped candidates with reasons, which is the part that catches a \"failover\" policy that has quietly compiled down to a single attempt.
+        Compile a policy and return the plan, without dispatching anything.  Operator-gated, and deliberately so: the response enumerates the policy's targets, which is exactly the information a policy exists to keep off the wire. It is a management surface, not a caller-facing one.  Accepts an unsaved ``spec`` as well as a saved ``name``, so a form can validate what the operator is about to save. The response includes dropped candidates with reasons, which is the part that catches a \"failover\" policy that has quietly compiled down to a single attempt.
 
         :param explain_request: (required)
         :type explain_request: ExplainRequest
@@ -431,7 +431,7 @@ class RoutingApi:
     ) -> ApiResponse[ExplainResponse]:
         """Explain Policy
 
-        Compile a policy and return the plan, without dispatching anything.  Master-key gated, and deliberately so: the response enumerates the policy's targets, which is exactly the information a policy exists to keep off the wire. It is a management surface, not a caller-facing one.  Accepts an unsaved ``spec`` as well as a saved ``name``, so a form can validate what the operator is about to save. The response includes dropped candidates with reasons, which is the part that catches a \"failover\" policy that has quietly compiled down to a single attempt.
+        Compile a policy and return the plan, without dispatching anything.  Operator-gated, and deliberately so: the response enumerates the policy's targets, which is exactly the information a policy exists to keep off the wire. It is a management surface, not a caller-facing one.  Accepts an unsaved ``spec`` as well as a saved ``name``, so a form can validate what the operator is about to save. The response includes dropped candidates with reasons, which is the part that catches a \"failover\" policy that has quietly compiled down to a single attempt.
 
         :param explain_request: (required)
         :type explain_request: ExplainRequest
@@ -499,7 +499,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Explain Policy
 
-        Compile a policy and return the plan, without dispatching anything.  Master-key gated, and deliberately so: the response enumerates the policy's targets, which is exactly the information a policy exists to keep off the wire. It is a management surface, not a caller-facing one.  Accepts an unsaved ``spec`` as well as a saved ``name``, so a form can validate what the operator is about to save. The response includes dropped candidates with reasons, which is the part that catches a \"failover\" policy that has quietly compiled down to a single attempt.
+        Compile a policy and return the plan, without dispatching anything.  Operator-gated, and deliberately so: the response enumerates the policy's targets, which is exactly the information a policy exists to keep off the wire. It is a management surface, not a caller-facing one.  Accepts an unsaved ``spec`` as well as a saved ``name``, so a form can validate what the operator is about to save. The response includes dropped candidates with reasons, which is the part that catches a \"failover\" policy that has quietly compiled down to a single attempt.
 
         :param explain_request: (required)
         :type explain_request: ExplainRequest

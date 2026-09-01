@@ -325,7 +325,7 @@ class ModelsApi:
     ) -> DiscoverableModelsResponse:
         """List Discoverable Models
 
-        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is master-key gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
+        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is operator-gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
 
         :param refresh: Re-dial every provider instead of answering from the discovery cache.
         :type refresh: bool
@@ -393,7 +393,7 @@ class ModelsApi:
     ) -> ApiResponse[DiscoverableModelsResponse]:
         """List Discoverable Models
 
-        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is master-key gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
+        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is operator-gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
 
         :param refresh: Re-dial every provider instead of answering from the discovery cache.
         :type refresh: bool
@@ -461,7 +461,7 @@ class ModelsApi:
     ) -> RESTResponseType:
         """List Discoverable Models
 
-        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is master-key gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
+        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is operator-gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
 
         :param refresh: Re-dial every provider instead of answering from the discovery cache.
         :type refresh: bool
@@ -591,7 +591,7 @@ class ModelsApi:
     ) -> ModelMetadataResponse:
         """List Model Metadata
 
-        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Master-key gated: it describes the gateway's configured providers.  Answers from the cached catalog, kept warm by a background refresher, so the dashboard never waits on the models.dev fetch timeout.
+        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Operator-gated: it describes the gateway's configured providers.  Answers from the cached catalog, kept warm by a background refresher, so the dashboard never waits on the models.dev fetch timeout.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -654,7 +654,7 @@ class ModelsApi:
     ) -> ApiResponse[ModelMetadataResponse]:
         """List Model Metadata
 
-        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Master-key gated: it describes the gateway's configured providers.  Answers from the cached catalog, kept warm by a background refresher, so the dashboard never waits on the models.dev fetch timeout.
+        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Operator-gated: it describes the gateway's configured providers.  Answers from the cached catalog, kept warm by a background refresher, so the dashboard never waits on the models.dev fetch timeout.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -717,7 +717,7 @@ class ModelsApi:
     ) -> RESTResponseType:
         """List Model Metadata
 
-        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Master-key gated: it describes the gateway's configured providers.  Answers from the cached catalog, kept warm by a background refresher, so the dashboard never waits on the models.dev fetch timeout.
+        Per-model metadata for the dashboard's detail view, from models.dev.  Covers every model models.dev lists under a configured provider, keyed by the ``instance:model`` selector the dashboard uses. ``available`` is false when enrichment is disabled (``models_dev_metadata``) or models.dev could not be reached; the response is then empty and the UI falls back to bundled data. Operator-gated: it describes the gateway's configured providers.  Answers from the cached catalog, kept warm by a background refresher, so the dashboard never waits on the models.dev fetch timeout.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

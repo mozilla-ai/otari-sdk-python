@@ -1605,7 +1605,7 @@ class SettingsApi:
     ) -> GatewaySettings:
         """Update Settings
 
-        Persist and apply runtime setting changes.  Each provided field is stored as an override (winning over config/env) and applied to the running gateway immediately. Master-key gated: these change how the gateway meters and lists models.
+        Persist and apply runtime setting changes.  Each provided field is stored as an override (winning over config/env) and applied to the running gateway immediately. Operator-gated: these change how the gateway meters and lists models.
 
         :param update_settings_request: (required)
         :type update_settings_request: UpdateSettingsRequest
@@ -1673,7 +1673,7 @@ class SettingsApi:
     ) -> ApiResponse[GatewaySettings]:
         """Update Settings
 
-        Persist and apply runtime setting changes.  Each provided field is stored as an override (winning over config/env) and applied to the running gateway immediately. Master-key gated: these change how the gateway meters and lists models.
+        Persist and apply runtime setting changes.  Each provided field is stored as an override (winning over config/env) and applied to the running gateway immediately. Operator-gated: these change how the gateway meters and lists models.
 
         :param update_settings_request: (required)
         :type update_settings_request: UpdateSettingsRequest
@@ -1741,7 +1741,7 @@ class SettingsApi:
     ) -> RESTResponseType:
         """Update Settings
 
-        Persist and apply runtime setting changes.  Each provided field is stored as an override (winning over config/env) and applied to the running gateway immediately. Master-key gated: these change how the gateway meters and lists models.
+        Persist and apply runtime setting changes.  Each provided field is stored as an override (winning over config/env) and applied to the running gateway immediately. Operator-gated: these change how the gateway meters and lists models.
 
         :param update_settings_request: (required)
         :type update_settings_request: UpdateSettingsRequest

@@ -598,7 +598,7 @@ class ToolSettingsApi:
     ) -> ToolSettingsResponse:
         """Update Tool Settings
 
-        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Master-key gated and standalone-only.
+        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Operator-gated and standalone-only.
 
         :param update_tool_settings_request: (required)
         :type update_tool_settings_request: UpdateToolSettingsRequest
@@ -666,7 +666,7 @@ class ToolSettingsApi:
     ) -> ApiResponse[ToolSettingsResponse]:
         """Update Tool Settings
 
-        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Master-key gated and standalone-only.
+        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Operator-gated and standalone-only.
 
         :param update_tool_settings_request: (required)
         :type update_tool_settings_request: UpdateToolSettingsRequest
@@ -734,7 +734,7 @@ class ToolSettingsApi:
     ) -> RESTResponseType:
         """Update Tool Settings
 
-        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Master-key gated and standalone-only.
+        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Operator-gated and standalone-only.
 
         :param update_tool_settings_request: (required)
         :type update_tool_settings_request: UpdateToolSettingsRequest
