@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,12 +33,13 @@ class BudgetResponse(BaseModel):
     created_at: StrictStr
     max_budget: Optional[Union[StrictFloat, StrictInt]]
     name: Optional[StrictStr]
+    organization_id: Optional[UUID]
     reset_alignment: Optional[StrictStr]
     total_reserved: Optional[Union[StrictFloat, StrictInt]] = 0.0
     total_spend: Optional[Union[StrictFloat, StrictInt]] = 0.0
     updated_at: StrictStr
     user_count: Optional[StrictInt] = 0
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "name", "reset_alignment", "total_reserved", "total_spend", "updated_at", "user_count"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "name", "organization_id", "reset_alignment", "total_reserved", "total_spend", "updated_at", "user_count"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -93,6 +95,11 @@ class BudgetResponse(BaseModel):
         if self.name is None and "name" in self.model_fields_set:
             _dict['name'] = None
 
+        # set to None if organization_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.organization_id is None and "organization_id" in self.model_fields_set:
+            _dict['organization_id'] = None
+
         # set to None if reset_alignment (nullable) is None
         # and model_fields_set contains the field
         if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
@@ -115,6 +122,7 @@ class BudgetResponse(BaseModel):
             "created_at": obj.get("created_at"),
             "max_budget": obj.get("max_budget"),
             "name": obj.get("name"),
+            "organization_id": obj.get("organization_id"),
             "reset_alignment": obj.get("reset_alignment"),
             "total_reserved": obj.get("total_reserved") if obj.get("total_reserved") is not None else 0.0,
             "total_spend": obj.get("total_spend") if obj.get("total_spend") is not None else 0.0,
