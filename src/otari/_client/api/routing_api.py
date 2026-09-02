@@ -46,6 +46,288 @@ class RoutingApi:
 
 
     @validate_call
+    def delete_organization_routing_policy_v1_organizations_me_routing_policies_name_delete(
+        self,
+        name: StrictStr,
+        workspace_id: Annotated[Optional[UUID], Field(description="Delete the policy in this workspace of the caller's organization.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> None:
+        """Delete Organization Routing Policy
+
+        Delete a stored policy from one of the organization's workspaces. Owners and admins only.
+
+        :param name: (required)
+        :type name: str
+        :param workspace_id: Delete the policy in this workspace of the caller's organization.
+        :type workspace_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._delete_organization_routing_policy_v1_organizations_me_routing_policies_name_delete_serialize(
+            name=name,
+            workspace_id=workspace_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '204': None,
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def delete_organization_routing_policy_v1_organizations_me_routing_policies_name_delete_with_http_info(
+        self,
+        name: StrictStr,
+        workspace_id: Annotated[Optional[UUID], Field(description="Delete the policy in this workspace of the caller's organization.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[None]:
+        """Delete Organization Routing Policy
+
+        Delete a stored policy from one of the organization's workspaces. Owners and admins only.
+
+        :param name: (required)
+        :type name: str
+        :param workspace_id: Delete the policy in this workspace of the caller's organization.
+        :type workspace_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._delete_organization_routing_policy_v1_organizations_me_routing_policies_name_delete_serialize(
+            name=name,
+            workspace_id=workspace_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '204': None,
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def delete_organization_routing_policy_v1_organizations_me_routing_policies_name_delete_without_preload_content(
+        self,
+        name: StrictStr,
+        workspace_id: Annotated[Optional[UUID], Field(description="Delete the policy in this workspace of the caller's organization.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Delete Organization Routing Policy
+
+        Delete a stored policy from one of the organization's workspaces. Owners and admins only.
+
+        :param name: (required)
+        :type name: str
+        :param workspace_id: Delete the policy in this workspace of the caller's organization.
+        :type workspace_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._delete_organization_routing_policy_v1_organizations_me_routing_policies_name_delete_serialize(
+            name=name,
+            workspace_id=workspace_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '204': None,
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _delete_organization_routing_policy_v1_organizations_me_routing_policies_name_delete_serialize(
+        self,
+        name,
+        workspace_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if name is not None:
+            _path_params['name'] = name
+        # process the query parameters
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='DELETE',
+            resource_path='/v1/organizations/me/routing-policies/{name}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def delete_policy_v1_routing_policies_name_delete(
         self,
         name: StrictStr,
@@ -66,7 +348,7 @@ class RoutingApi:
     ) -> None:
         """Delete Policy
 
-        Delete a stored policy in one scope.  Scoped by ``workspace_id`` and ``user_id`` for the same reason the upsert is: deleting one workspace's policy must not touch another's, deleting the workspace-wide policy must not take a user's override with it, and deleting an override must leave the workspace-wide one serving everyone else.
+        Delete a stored policy in one scope.
 
         :param name: (required)
         :type name: str
@@ -142,7 +424,7 @@ class RoutingApi:
     ) -> ApiResponse[None]:
         """Delete Policy
 
-        Delete a stored policy in one scope.  Scoped by ``workspace_id`` and ``user_id`` for the same reason the upsert is: deleting one workspace's policy must not touch another's, deleting the workspace-wide policy must not take a user's override with it, and deleting an override must leave the workspace-wide one serving everyone else.
+        Delete a stored policy in one scope.
 
         :param name: (required)
         :type name: str
@@ -218,7 +500,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Delete Policy
 
-        Delete a stored policy in one scope.  Scoped by ``workspace_id`` and ``user_id`` for the same reason the upsert is: deleting one workspace's policy must not touch another's, deleting the workspace-wide policy must not take a user's override with it, and deleting an override must leave the workspace-wide one serving everyone else.
+        Delete a stored policy in one scope.
 
         :param name: (required)
         :type name: str
@@ -892,6 +1174,7 @@ class RoutingApi:
     @validate_call
     def list_visible_routing_policies_v1_organizations_me_routing_policies_get(
         self,
+        limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum entries to return, stored and config-file together.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -907,8 +1190,10 @@ class RoutingApi:
     ) -> List[PolicyResponse]:
         """List Visible Routing Policies
 
-        List the routing policies in force in the workspaces this caller may see.  Stored policies from the caller's visible workspaces plus the config-file policies, which are deployment-wide and resolve in every workspace. The response is the shape ``GET /v1/routing/policies`` answers, narrowed to the caller's own organization; only an operator can write any of it.
+        List the routing policies in force in the workspaces this caller may see.  Stored policies from the caller's visible workspaces plus the config-file policies, which are deployment-wide and resolve in every workspace. The response is the shape ``GET /v1/routing/policies`` answers, narrowed to the caller's own organization.
 
+        :param limit: Maximum entries to return, stored and config-file together.
+        :type limit: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -932,6 +1217,7 @@ class RoutingApi:
         """ # noqa: E501
 
         _param = self._list_visible_routing_policies_v1_organizations_me_routing_policies_get_serialize(
+            limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -940,6 +1226,7 @@ class RoutingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[PolicyResponse]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -955,6 +1242,7 @@ class RoutingApi:
     @validate_call
     def list_visible_routing_policies_v1_organizations_me_routing_policies_get_with_http_info(
         self,
+        limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum entries to return, stored and config-file together.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -970,8 +1258,10 @@ class RoutingApi:
     ) -> ApiResponse[List[PolicyResponse]]:
         """List Visible Routing Policies
 
-        List the routing policies in force in the workspaces this caller may see.  Stored policies from the caller's visible workspaces plus the config-file policies, which are deployment-wide and resolve in every workspace. The response is the shape ``GET /v1/routing/policies`` answers, narrowed to the caller's own organization; only an operator can write any of it.
+        List the routing policies in force in the workspaces this caller may see.  Stored policies from the caller's visible workspaces plus the config-file policies, which are deployment-wide and resolve in every workspace. The response is the shape ``GET /v1/routing/policies`` answers, narrowed to the caller's own organization.
 
+        :param limit: Maximum entries to return, stored and config-file together.
+        :type limit: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -995,6 +1285,7 @@ class RoutingApi:
         """ # noqa: E501
 
         _param = self._list_visible_routing_policies_v1_organizations_me_routing_policies_get_serialize(
+            limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1003,6 +1294,7 @@ class RoutingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[PolicyResponse]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1018,6 +1310,7 @@ class RoutingApi:
     @validate_call
     def list_visible_routing_policies_v1_organizations_me_routing_policies_get_without_preload_content(
         self,
+        limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum entries to return, stored and config-file together.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1033,8 +1326,10 @@ class RoutingApi:
     ) -> RESTResponseType:
         """List Visible Routing Policies
 
-        List the routing policies in force in the workspaces this caller may see.  Stored policies from the caller's visible workspaces plus the config-file policies, which are deployment-wide and resolve in every workspace. The response is the shape ``GET /v1/routing/policies`` answers, narrowed to the caller's own organization; only an operator can write any of it.
+        List the routing policies in force in the workspaces this caller may see.  Stored policies from the caller's visible workspaces plus the config-file policies, which are deployment-wide and resolve in every workspace. The response is the shape ``GET /v1/routing/policies`` answers, narrowed to the caller's own organization.
 
+        :param limit: Maximum entries to return, stored and config-file together.
+        :type limit: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1058,6 +1353,7 @@ class RoutingApi:
         """ # noqa: E501
 
         _param = self._list_visible_routing_policies_v1_organizations_me_routing_policies_get_serialize(
+            limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1066,6 +1362,7 @@ class RoutingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[PolicyResponse]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1076,6 +1373,7 @@ class RoutingApi:
 
     def _list_visible_routing_policies_v1_organizations_me_routing_policies_get_serialize(
         self,
+        limit,
         _request_auth,
         _content_type,
         _headers,
@@ -1098,6 +1396,10 @@ class RoutingApi:
 
         # process the path parameters
         # process the query parameters
+        if limit is not None:
+            
+            _query_params.append(('limit', limit))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1699,6 +2001,284 @@ class RoutingApi:
 
 
     @validate_call
+    def set_organization_routing_policy_v1_organizations_me_routing_policies_post(
+        self,
+        policy_request: PolicyRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> PolicyResponse:
+        """Set Organization Routing Policy
+
+        Create or update a stored policy in one of the organization's workspaces.  Organization owners and admins only. ``workspace_id`` is required and must name a workspace of the caller's own organization; ``user_id`` is not accepted here.
+
+        :param policy_request: (required)
+        :type policy_request: PolicyRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_organization_routing_policy_v1_organizations_me_routing_policies_post_serialize(
+            policy_request=policy_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PolicyResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def set_organization_routing_policy_v1_organizations_me_routing_policies_post_with_http_info(
+        self,
+        policy_request: PolicyRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[PolicyResponse]:
+        """Set Organization Routing Policy
+
+        Create or update a stored policy in one of the organization's workspaces.  Organization owners and admins only. ``workspace_id`` is required and must name a workspace of the caller's own organization; ``user_id`` is not accepted here.
+
+        :param policy_request: (required)
+        :type policy_request: PolicyRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_organization_routing_policy_v1_organizations_me_routing_policies_post_serialize(
+            policy_request=policy_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PolicyResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def set_organization_routing_policy_v1_organizations_me_routing_policies_post_without_preload_content(
+        self,
+        policy_request: PolicyRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Set Organization Routing Policy
+
+        Create or update a stored policy in one of the organization's workspaces.  Organization owners and admins only. ``workspace_id`` is required and must name a workspace of the caller's own organization; ``user_id`` is not accepted here.
+
+        :param policy_request: (required)
+        :type policy_request: PolicyRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._set_organization_routing_policy_v1_organizations_me_routing_policies_post_serialize(
+            policy_request=policy_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "PolicyResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _set_organization_routing_policy_v1_organizations_me_routing_policies_post_serialize(
+        self,
+        policy_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if policy_request is not None:
+            _body_params = policy_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/v1/organizations/me/routing-policies',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def set_policy_v1_routing_policies_post(
         self,
         policy_request: PolicyRequest,
@@ -1717,7 +2297,7 @@ class RoutingApi:
     ) -> PolicyResponse:
         """Set Policy
 
-        Create or update a stored policy in one workspace, optionally for one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
+        Create or update a stored policy in one workspace, optionally for one user.  Omitting ``workspace_id`` means the deployment's default workspace, which is where an operator acting deployment-wide writes.
 
         :param policy_request: (required)
         :type policy_request: PolicyRequest
@@ -1785,7 +2365,7 @@ class RoutingApi:
     ) -> ApiResponse[PolicyResponse]:
         """Set Policy
 
-        Create or update a stored policy in one workspace, optionally for one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
+        Create or update a stored policy in one workspace, optionally for one user.  Omitting ``workspace_id`` means the deployment's default workspace, which is where an operator acting deployment-wide writes.
 
         :param policy_request: (required)
         :type policy_request: PolicyRequest
@@ -1853,7 +2433,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Set Policy
 
-        Create or update a stored policy in one workspace, optionally for one user.  The spec is validated here and stored as given, so a row can never contain a body this build would refuse at load. The cache is refreshed twice: once before validating (so the shadowing checks see other writers' policies) and once after committing (so this worker serves the new policy immediately).  ``rename_from`` renames the row instead of keying on ``name``. It is part of this write rather than an endpoint of its own so that an edit which both renames a policy and re-targets it cannot land half-applied, leaving the old name serving the new spec. The new name is validated exactly as a fresh one is, because a rename can walk a policy into every collision a create can. Sending the field asserts the named policy is stored, so it never falls back to creating one.
+        Create or update a stored policy in one workspace, optionally for one user.  Omitting ``workspace_id`` means the deployment's default workspace, which is where an operator acting deployment-wide writes.
 
         :param policy_request: (required)
         :type policy_request: PolicyRequest

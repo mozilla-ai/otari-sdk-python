@@ -57,7 +57,7 @@ class ToolSettingsApi:
     ) -> ToolSettingsResponse:
         """Get Tool Settings
 
-        Return the effective tool/guardrail settings for the dashboard.
+        Return the effective tool/guardrail settings for the dashboard.  Authentication only on the router: the role decides *how much* rather than whether, so this is not the deployment-wide gate ``require_deployment_operator`` names. A header master key is the deployment credential and reads everything; a session reads everything only while it operates the deployment, and otherwise gets the fields without the service endpoints in them.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -120,7 +120,7 @@ class ToolSettingsApi:
     ) -> ApiResponse[ToolSettingsResponse]:
         """Get Tool Settings
 
-        Return the effective tool/guardrail settings for the dashboard.
+        Return the effective tool/guardrail settings for the dashboard.  Authentication only on the router: the role decides *how much* rather than whether, so this is not the deployment-wide gate ``require_deployment_operator`` names. A header master key is the deployment credential and reads everything; a session reads everything only while it operates the deployment, and otherwise gets the fields without the service endpoints in them.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -183,7 +183,7 @@ class ToolSettingsApi:
     ) -> RESTResponseType:
         """Get Tool Settings
 
-        Return the effective tool/guardrail settings for the dashboard.
+        Return the effective tool/guardrail settings for the dashboard.  Authentication only on the router: the role decides *how much* rather than whether, so this is not the deployment-wide gate ``require_deployment_operator`` names. A header master key is the deployment credential and reads everything; a session reads everything only while it operates the deployment, and otherwise gets the fields without the service endpoints in them.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
