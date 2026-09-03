@@ -30,10 +30,11 @@ from pydantic_core import to_jsonable_python
 
 class MessagesRequest(BaseModel):
     """
-    Anthropic Messages API-compatible request.  The wire fields are derived from any-llm's ``MessagesParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. Gateway-internal fields (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) opt the request into gateway-managed MCP / sandbox / web_search / guardrails without changing the upstream wire shape. They're stripped before the request is forwarded.
+    Anthropic Messages API-compatible request.  The wire fields are derived from any-llm's ``MessagesParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. ``container`` is an Anthropic wire param ``MessagesParams`` does not model, declared here and forwarded as an any-llm ``**kwargs`` param. Gateway-internal fields (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) opt the request into gateway-managed MCP / sandbox / web_search / guardrails without changing the upstream wire shape. They're stripped before the request is forwarded.
     """ # noqa: E501
     betas: Optional[List[StrictStr]] = None
     cache_control: Optional[Dict[str, Any]] = None
+    container: Optional[StrictStr] = None
     context_management: Optional[Dict[str, Any]] = None
     guardrails: Optional[Annotated[List[GuardrailConfig], Field(max_length=8)]] = None
     max_tokens: StrictInt
@@ -56,7 +57,7 @@ class MessagesRequest(BaseModel):
     tools_header: Optional[StrictStr] = None
     top_k: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["betas", "cache_control", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_format", "prompt_cache_key", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
+    __properties: ClassVar[List[str]] = ["betas", "cache_control", "container", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_format", "prompt_cache_key", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -123,6 +124,11 @@ class MessagesRequest(BaseModel):
         # and model_fields_set contains the field
         if self.cache_control is None and "cache_control" in self.model_fields_set:
             _dict['cache_control'] = None
+
+        # set to None if container (nullable) is None
+        # and model_fields_set contains the field
+        if self.container is None and "container" in self.model_fields_set:
+            _dict['container'] = None
 
         # set to None if context_management (nullable) is None
         # and model_fields_set contains the field
@@ -228,6 +234,7 @@ class MessagesRequest(BaseModel):
         _obj = cls.model_validate({
             "betas": obj.get("betas"),
             "cache_control": obj.get("cache_control"),
+            "container": obj.get("container"),
             "context_management": obj.get("context_management"),
             "guardrails": [GuardrailConfig.from_dict(_item) for _item in obj["guardrails"]] if obj.get("guardrails") is not None else None,
             "max_tokens": obj.get("max_tokens"),
