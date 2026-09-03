@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class BudgetResponse(BaseModel):
     """
-    Response model for budget information.  ``max_budget`` is the per-user spending limit, and multiple users can share one budget, so the usage rollup is an aggregate over the users assigned to this budget: how many there are and their combined ``spend`` / ``reserved``. Assigning users to a budget is done through the users API (dashboard support lands with user management), so a fresh gateway reports zeros here.
+    Response model for budget information.  ``max_budget``, ``token_limit`` and ``request_limit`` are the per-user ceilings, each independent and each unlimited when null, and multiple users can share one budget, so the usage rollup is an aggregate over the users assigned to this budget: how many there are and their combined ``spend`` / ``reserved``. Assigning users to a budget is done through the users API (dashboard support lands with user management), so a fresh gateway reports zeros here.
     """ # noqa: E501
     budget_duration_sec: Optional[StrictInt]
     budget_id: StrictStr
@@ -34,12 +34,14 @@ class BudgetResponse(BaseModel):
     max_budget: Optional[Union[StrictFloat, StrictInt]]
     name: Optional[StrictStr]
     organization_id: Optional[UUID]
+    request_limit: Optional[StrictInt]
     reset_alignment: Optional[StrictStr]
+    token_limit: Optional[StrictInt]
     total_reserved: Optional[Union[StrictFloat, StrictInt]] = 0.0
     total_spend: Optional[Union[StrictFloat, StrictInt]] = 0.0
     updated_at: StrictStr
     user_count: Optional[StrictInt] = 0
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "name", "organization_id", "reset_alignment", "total_reserved", "total_spend", "updated_at", "user_count"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "name", "organization_id", "request_limit", "reset_alignment", "token_limit", "total_reserved", "total_spend", "updated_at", "user_count"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -100,10 +102,20 @@ class BudgetResponse(BaseModel):
         if self.organization_id is None and "organization_id" in self.model_fields_set:
             _dict['organization_id'] = None
 
+        # set to None if request_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.request_limit is None and "request_limit" in self.model_fields_set:
+            _dict['request_limit'] = None
+
         # set to None if reset_alignment (nullable) is None
         # and model_fields_set contains the field
         if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
             _dict['reset_alignment'] = None
+
+        # set to None if token_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.token_limit is None and "token_limit" in self.model_fields_set:
+            _dict['token_limit'] = None
 
         return _dict
 
@@ -123,7 +135,9 @@ class BudgetResponse(BaseModel):
             "max_budget": obj.get("max_budget"),
             "name": obj.get("name"),
             "organization_id": obj.get("organization_id"),
+            "request_limit": obj.get("request_limit"),
             "reset_alignment": obj.get("reset_alignment"),
+            "token_limit": obj.get("token_limit"),
             "total_reserved": obj.get("total_reserved") if obj.get("total_reserved") is not None else 0.0,
             "total_spend": obj.get("total_spend") if obj.get("total_spend") is not None else 0.0,
             "updated_at": obj.get("updated_at"),

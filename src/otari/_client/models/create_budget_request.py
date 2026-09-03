@@ -31,8 +31,10 @@ class CreateBudgetRequest(BaseModel):
     budget_duration_sec: Optional[Annotated[int, Field(strict=True, gt=0)]] = Field(default=None, description="Budget duration in seconds (e.g., 86400 for daily, 604800 for weekly)")
     max_budget: Optional[Union[Annotated[float, Field(le=999999999999, strict=True, ge=0.0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = Field(default=None, description="Maximum spending limit")
     name: Optional[StrictStr] = Field(default=None, description="Admin-facing label for the budget")
+    request_limit: Optional[Annotated[int, Field(le=1000000000000000, strict=True, ge=0)]] = Field(default=None, description="Maximum requests over the period. Independent of max_budget; null is unlimited")
     reset_alignment: Optional[StrictStr] = Field(default=None, description="Reset on a UTC calendar boundary instead of a fixed number of seconds, which is the only way to express a calendar month. Mutually exclusive with budget_duration_sec")
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "reset_alignment"]
+    token_limit: Optional[Annotated[int, Field(le=1000000000000000, strict=True, ge=0)]] = Field(default=None, description="Maximum tokens over the period. Independent of max_budget; null is unlimited")
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "max_budget", "name", "request_limit", "reset_alignment", "token_limit"]
 
     @field_validator('reset_alignment')
     def reset_alignment_validate_enum(cls, value):
@@ -98,10 +100,20 @@ class CreateBudgetRequest(BaseModel):
         if self.name is None and "name" in self.model_fields_set:
             _dict['name'] = None
 
+        # set to None if request_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.request_limit is None and "request_limit" in self.model_fields_set:
+            _dict['request_limit'] = None
+
         # set to None if reset_alignment (nullable) is None
         # and model_fields_set contains the field
         if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
             _dict['reset_alignment'] = None
+
+        # set to None if token_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.token_limit is None and "token_limit" in self.model_fields_set:
+            _dict['token_limit'] = None
 
         return _dict
 
@@ -118,7 +130,9 @@ class CreateBudgetRequest(BaseModel):
             "budget_duration_sec": obj.get("budget_duration_sec"),
             "max_budget": obj.get("max_budget"),
             "name": obj.get("name"),
-            "reset_alignment": obj.get("reset_alignment")
+            "request_limit": obj.get("request_limit"),
+            "reset_alignment": obj.get("reset_alignment"),
+            "token_limit": obj.get("token_limit")
         })
         return _obj
 
