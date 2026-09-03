@@ -30,10 +30,23 @@ class CreateScopedBudgetRequest(BaseModel):
     """ # noqa: E501
     budget_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="The budget this ceiling enforces; its limit and period are read through it")
     name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = Field(default=None, description="Admin-facing label for this ceiling")
-    provider_key_id: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Narrow the cap to one provider instance; null caps spend across every provider")
+    provider_key_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = Field(default=None, description="Narrow the cap to one provider instance; omit or null to cap spend across every provider. A blank value would store a ceiling that never binds, so it is refused; this does not check that the value names a configured provider instance")
     scope_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="Id of the capped identity: an organization, workspace, membership row, or API key")
     scope_type: StrictStr = Field(description="Which kind of identity this ceiling caps")
     __properties: ClassVar[List[str]] = ["budget_id", "name", "provider_key_id", "scope_id", "scope_type"]
+
+    @field_validator('provider_key_id')
+    def provider_key_id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^\S+$", value):
+            raise ValueError(r"must validate the regular expression /^\S+$/")
+        return value
 
     @field_validator('scope_type')
     def scope_type_validate_enum(cls, value):
