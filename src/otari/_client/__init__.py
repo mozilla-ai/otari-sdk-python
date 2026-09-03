@@ -372,6 +372,10 @@ __all__ = [
     "OrganizationBudgetUpdate",
     "OrganizationBudgetsPublic",
     "OrganizationCreateRequest",
+    "OrganizationDomainCreateRequest",
+    "OrganizationDomainPublic",
+    "OrganizationDomainUpdateRequest",
+    "OrganizationDomainsPublic",
     "OrganizationGuardrailCreate",
     "OrganizationGuardrailPublic",
     "OrganizationGuardrailUpdate",
@@ -886,6 +890,10 @@ from otari._client.models.organization_budget_public import OrganizationBudgetPu
 from otari._client.models.organization_budget_update import OrganizationBudgetUpdate as OrganizationBudgetUpdate
 from otari._client.models.organization_budgets_public import OrganizationBudgetsPublic as OrganizationBudgetsPublic
 from otari._client.models.organization_create_request import OrganizationCreateRequest as OrganizationCreateRequest
+from otari._client.models.organization_domain_create_request import OrganizationDomainCreateRequest as OrganizationDomainCreateRequest
+from otari._client.models.organization_domain_public import OrganizationDomainPublic as OrganizationDomainPublic
+from otari._client.models.organization_domain_update_request import OrganizationDomainUpdateRequest as OrganizationDomainUpdateRequest
+from otari._client.models.organization_domains_public import OrganizationDomainsPublic as OrganizationDomainsPublic
 from otari._client.models.organization_guardrail_create import OrganizationGuardrailCreate as OrganizationGuardrailCreate
 from otari._client.models.organization_guardrail_public import OrganizationGuardrailPublic as OrganizationGuardrailPublic
 from otari._client.models.organization_guardrail_update import OrganizationGuardrailUpdate as OrganizationGuardrailUpdate
