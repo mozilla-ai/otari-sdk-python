@@ -35,9 +35,11 @@ class OrganizationBudgetPublic(BaseModel):
     max_budget: Optional[Union[StrictFloat, StrictInt]]
     name: Optional[StrictStr]
     organization_id: UUID
+    request_limit: Optional[StrictInt]
     reset_alignment: Optional[StrictStr]
+    token_limit: Optional[StrictInt]
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "ceiling_count", "created_at", "max_budget", "name", "organization_id", "reset_alignment", "updated_at"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "ceiling_count", "created_at", "max_budget", "name", "organization_id", "request_limit", "reset_alignment", "token_limit", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -93,10 +95,20 @@ class OrganizationBudgetPublic(BaseModel):
         if self.name is None and "name" in self.model_fields_set:
             _dict['name'] = None
 
+        # set to None if request_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.request_limit is None and "request_limit" in self.model_fields_set:
+            _dict['request_limit'] = None
+
         # set to None if reset_alignment (nullable) is None
         # and model_fields_set contains the field
         if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
             _dict['reset_alignment'] = None
+
+        # set to None if token_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.token_limit is None and "token_limit" in self.model_fields_set:
+            _dict['token_limit'] = None
 
         return _dict
 
@@ -117,7 +129,9 @@ class OrganizationBudgetPublic(BaseModel):
             "max_budget": obj.get("max_budget"),
             "name": obj.get("name"),
             "organization_id": obj.get("organization_id"),
+            "request_limit": obj.get("request_limit"),
             "reset_alignment": obj.get("reset_alignment"),
+            "token_limit": obj.get("token_limit"),
             "updated_at": obj.get("updated_at")
         })
         return _obj

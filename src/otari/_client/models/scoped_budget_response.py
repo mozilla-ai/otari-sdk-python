@@ -25,24 +25,30 @@ from pydantic_core import to_jsonable_python
 
 class ScopedBudgetResponse(BaseModel):
     """
-    One scoped ceiling and its live counters.  Unlike ``/v1/budgets``, the counters are the row's own: a scoped ceiling is enforced against ``current_spend + reserved_spend``, so there is no rollup over users to compute.  ``max_budget``, ``budget_duration_sec`` and ``reset_alignment`` are read off the budget rather than stored here, and are carried on the wire so a caller can render a ceiling without fetching every budget to resolve one id.
+    One scoped ceiling and its live counters.  Unlike ``/v1/budgets``, the counters are the row's own: a scoped ceiling is enforced against ``current_spend + reserved_spend``, so there is no rollup over users to compute.  Every limit, along with ``budget_duration_sec`` and ``reset_alignment``, is read off the budget rather than stored here, and carried on the wire so a caller can render a ceiling without fetching every budget to resolve one id.
     """ # noqa: E501
     budget_duration_sec: Optional[StrictInt]
     budget_id: StrictStr
     created_at: StrictStr
+    current_requests: StrictInt
     current_spend: Union[StrictFloat, StrictInt]
+    current_tokens: StrictInt
     id: StrictStr
     max_budget: Optional[Union[StrictFloat, StrictInt]]
     name: Optional[StrictStr]
     period_end: Optional[StrictStr]
     period_start: Optional[StrictStr]
     provider_key_id: Optional[StrictStr]
+    request_limit: Optional[StrictInt]
+    reserved_requests: StrictInt
     reserved_spend: Union[StrictFloat, StrictInt]
+    reserved_tokens: StrictInt
     reset_alignment: Optional[StrictStr]
     scope_id: StrictStr
     scope_type: StrictStr
+    token_limit: Optional[StrictInt]
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "current_spend", "id", "max_budget", "name", "period_end", "period_start", "provider_key_id", "reserved_spend", "reset_alignment", "scope_id", "scope_type", "updated_at"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "current_requests", "current_spend", "current_tokens", "id", "max_budget", "name", "period_end", "period_start", "provider_key_id", "request_limit", "reserved_requests", "reserved_spend", "reserved_tokens", "reset_alignment", "scope_id", "scope_type", "token_limit", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -113,10 +119,20 @@ class ScopedBudgetResponse(BaseModel):
         if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
             _dict['provider_key_id'] = None
 
+        # set to None if request_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.request_limit is None and "request_limit" in self.model_fields_set:
+            _dict['request_limit'] = None
+
         # set to None if reset_alignment (nullable) is None
         # and model_fields_set contains the field
         if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
             _dict['reset_alignment'] = None
+
+        # set to None if token_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.token_limit is None and "token_limit" in self.model_fields_set:
+            _dict['token_limit'] = None
 
         return _dict
 
@@ -133,17 +149,23 @@ class ScopedBudgetResponse(BaseModel):
             "budget_duration_sec": obj.get("budget_duration_sec"),
             "budget_id": obj.get("budget_id"),
             "created_at": obj.get("created_at"),
+            "current_requests": obj.get("current_requests"),
             "current_spend": obj.get("current_spend"),
+            "current_tokens": obj.get("current_tokens"),
             "id": obj.get("id"),
             "max_budget": obj.get("max_budget"),
             "name": obj.get("name"),
             "period_end": obj.get("period_end"),
             "period_start": obj.get("period_start"),
             "provider_key_id": obj.get("provider_key_id"),
+            "request_limit": obj.get("request_limit"),
+            "reserved_requests": obj.get("reserved_requests"),
             "reserved_spend": obj.get("reserved_spend"),
+            "reserved_tokens": obj.get("reserved_tokens"),
             "reset_alignment": obj.get("reset_alignment"),
             "scope_id": obj.get("scope_id"),
             "scope_type": obj.get("scope_type"),
+            "token_limit": obj.get("token_limit"),
             "updated_at": obj.get("updated_at")
         })
         return _obj

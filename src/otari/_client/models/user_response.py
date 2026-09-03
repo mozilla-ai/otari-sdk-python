@@ -33,13 +33,17 @@ class UserResponse(BaseModel):
     budget_id: Optional[StrictStr]
     budget_started_at: Optional[StrictStr]
     created_at: StrictStr
+    current_requests: StrictInt
+    current_tokens: StrictInt
     metadata: Dict[str, Any]
     next_budget_reset_at: Optional[StrictStr]
     reserved: Union[StrictFloat, StrictInt]
+    reserved_requests: StrictInt
+    reserved_tokens: StrictInt
     spend: Union[StrictFloat, StrictInt]
     updated_at: StrictStr
     user_id: StrictStr
-    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "blocked", "budget_id", "budget_started_at", "created_at", "metadata", "next_budget_reset_at", "reserved", "spend", "updated_at", "user_id"]
+    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "blocked", "budget_id", "budget_started_at", "created_at", "current_requests", "current_tokens", "metadata", "next_budget_reset_at", "reserved", "reserved_requests", "reserved_tokens", "spend", "updated_at", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -123,9 +127,13 @@ class UserResponse(BaseModel):
             "budget_id": obj.get("budget_id"),
             "budget_started_at": obj.get("budget_started_at"),
             "created_at": obj.get("created_at"),
+            "current_requests": obj.get("current_requests"),
+            "current_tokens": obj.get("current_tokens"),
             "metadata": obj.get("metadata"),
             "next_budget_reset_at": obj.get("next_budget_reset_at"),
             "reserved": obj.get("reserved"),
+            "reserved_requests": obj.get("reserved_requests"),
+            "reserved_tokens": obj.get("reserved_tokens"),
             "spend": obj.get("spend"),
             "updated_at": obj.get("updated_at"),
             "user_id": obj.get("user_id")

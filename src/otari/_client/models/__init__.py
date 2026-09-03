@@ -328,6 +328,8 @@ from otari._client.models.organization_scoped_budget_update import OrganizationS
 from otari._client.models.organization_scoped_budgets_public import OrganizationScopedBudgetsPublic
 from otari._client.models.passkey_session_response import PasskeySessionResponse
 from otari._client.models.password_response import PasswordResponse
+from otari._client.models.pending_organization_invitation_public import PendingOrganizationInvitationPublic
+from otari._client.models.pending_organization_invitations_public import PendingOrganizationInvitationsPublic
 from otari._client.models.policy_request import PolicyRequest
 from otari._client.models.policy_response import PolicyResponse
 from otari._client.models.pool_status import PoolStatus
