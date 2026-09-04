@@ -17,19 +17,34 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.model1 import Model1
+from otari._client.models.mr_beta_cache_creation import MRBetaCacheCreation
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class MRBetaDiagnosticsFallback(BaseModel):
+class MRBetaAdvisorMessageIterationUsage(BaseModel):
     """
-    MRBetaDiagnosticsFallback
+    Token usage for an advisor sub-inference iteration.
     """ # noqa: E501
-    cache_miss_reason: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    cache_creation: Optional[MRBetaCacheCreation] = None
+    cache_creation_input_tokens: StrictInt
+    cache_read_input_tokens: StrictInt
+    input_tokens: StrictInt
+    model: Model1
+    output_tokens: StrictInt
+    type: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["cache_miss_reason"]
+    __properties: ClassVar[List[str]] = ["cache_creation", "cache_creation_input_tokens", "cache_read_input_tokens", "input_tokens", "model", "output_tokens", "type"]
+
+    @field_validator('type')
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['advisor_message']):
+            raise ValueError("must be one of enum values ('advisor_message')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -49,7 +64,7 @@ class MRBetaDiagnosticsFallback(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of MRBetaDiagnosticsFallback from a JSON string"""
+        """Create an instance of MRBetaAdvisorMessageIterationUsage from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,21 +87,27 @@ class MRBetaDiagnosticsFallback(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of cache_creation
+        if self.cache_creation:
+            _dict['cache_creation'] = self.cache_creation.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of model
+        if self.model:
+            _dict['model'] = self.model.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
-        # set to None if cache_miss_reason (nullable) is None
+        # set to None if cache_creation (nullable) is None
         # and model_fields_set contains the field
-        if self.cache_miss_reason is None and "cache_miss_reason" in self.model_fields_set:
-            _dict['cache_miss_reason'] = None
+        if self.cache_creation is None and "cache_creation" in self.model_fields_set:
+            _dict['cache_creation'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of MRBetaDiagnosticsFallback from a dict"""
+        """Create an instance of MRBetaAdvisorMessageIterationUsage from a dict"""
         if obj is None:
             return None
 
@@ -94,7 +115,13 @@ class MRBetaDiagnosticsFallback(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "cache_miss_reason": obj.get("cache_miss_reason")
+            "cache_creation": MRBetaCacheCreation.from_dict(obj["cache_creation"]) if obj.get("cache_creation") is not None else None,
+            "cache_creation_input_tokens": obj.get("cache_creation_input_tokens"),
+            "cache_read_input_tokens": obj.get("cache_read_input_tokens"),
+            "input_tokens": obj.get("input_tokens"),
+            "model": Model1.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "output_tokens": obj.get("output_tokens"),
+            "type": obj.get("type")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

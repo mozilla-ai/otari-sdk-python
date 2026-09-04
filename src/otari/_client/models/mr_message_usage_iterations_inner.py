@@ -19,13 +19,15 @@ import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Optional
+from otari._client.models.mr_beta_advisor_message_iteration_usage import MRBetaAdvisorMessageIterationUsage
 from otari._client.models.mr_beta_compaction_iteration_usage import MRBetaCompactionIterationUsage
+from otari._client.models.mr_beta_fallback_message_iteration_usage import MRBetaFallbackMessageIterationUsage
 from otari._client.models.mr_beta_message_iteration_usage import MRBetaMessageIterationUsage
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-MRMESSAGEUSAGEITERATIONSINNER_ANY_OF_SCHEMAS = ["MRBetaCompactionIterationUsage", "MRBetaMessageIterationUsage"]
+MRMESSAGEUSAGEITERATIONSINNER_ANY_OF_SCHEMAS = ["MRBetaAdvisorMessageIterationUsage", "MRBetaCompactionIterationUsage", "MRBetaFallbackMessageIterationUsage", "MRBetaMessageIterationUsage"]
 
 class MRMessageUsageIterationsInner(BaseModel):
     """
@@ -36,11 +38,15 @@ class MRMessageUsageIterationsInner(BaseModel):
     anyof_schema_1_validator: Optional[MRBetaMessageIterationUsage] = None
     # data type: MRBetaCompactionIterationUsage
     anyof_schema_2_validator: Optional[MRBetaCompactionIterationUsage] = None
+    # data type: MRBetaAdvisorMessageIterationUsage
+    anyof_schema_3_validator: Optional[MRBetaAdvisorMessageIterationUsage] = None
+    # data type: MRBetaFallbackMessageIterationUsage
+    anyof_schema_4_validator: Optional[MRBetaFallbackMessageIterationUsage] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[MRBetaCompactionIterationUsage, MRBetaMessageIterationUsage]] = None
+        actual_instance: Optional[Union[MRBetaAdvisorMessageIterationUsage, MRBetaCompactionIterationUsage, MRBetaFallbackMessageIterationUsage, MRBetaMessageIterationUsage]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "MRBetaCompactionIterationUsage", "MRBetaMessageIterationUsage" }
+    any_of_schemas: Set[str] = { "MRBetaAdvisorMessageIterationUsage", "MRBetaCompactionIterationUsage", "MRBetaFallbackMessageIterationUsage", "MRBetaMessageIterationUsage" }
 
     model_config = {
         "validate_assignment": True,
@@ -73,9 +79,21 @@ class MRMessageUsageIterationsInner(BaseModel):
         else:
             return v
 
+        # validate data type: MRBetaAdvisorMessageIterationUsage
+        if not isinstance(v, MRBetaAdvisorMessageIterationUsage):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaAdvisorMessageIterationUsage`")
+        else:
+            return v
+
+        # validate data type: MRBetaFallbackMessageIterationUsage
+        if not isinstance(v, MRBetaFallbackMessageIterationUsage):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaFallbackMessageIterationUsage`")
+        else:
+            return v
+
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in MRMessageUsageIterationsInner with anyOf schemas: MRBetaCompactionIterationUsage, MRBetaMessageIterationUsage. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in MRMessageUsageIterationsInner with anyOf schemas: MRBetaAdvisorMessageIterationUsage, MRBetaCompactionIterationUsage, MRBetaFallbackMessageIterationUsage, MRBetaMessageIterationUsage. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -100,10 +118,22 @@ class MRMessageUsageIterationsInner(BaseModel):
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
+        # anyof_schema_3_validator: Optional[MRBetaAdvisorMessageIterationUsage] = None
+        try:
+            instance.actual_instance = MRBetaAdvisorMessageIterationUsage.from_json(json_str)
+            return instance
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
+        # anyof_schema_4_validator: Optional[MRBetaFallbackMessageIterationUsage] = None
+        try:
+            instance.actual_instance = MRBetaFallbackMessageIterationUsage.from_json(json_str)
+            return instance
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into MRMessageUsageIterationsInner with anyOf schemas: MRBetaCompactionIterationUsage, MRBetaMessageIterationUsage. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into MRMessageUsageIterationsInner with anyOf schemas: MRBetaAdvisorMessageIterationUsage, MRBetaCompactionIterationUsage, MRBetaFallbackMessageIterationUsage, MRBetaMessageIterationUsage. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -117,7 +147,7 @@ class MRMessageUsageIterationsInner(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], MRBetaCompactionIterationUsage, MRBetaMessageIterationUsage]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], MRBetaAdvisorMessageIterationUsage, MRBetaCompactionIterationUsage, MRBetaFallbackMessageIterationUsage, MRBetaMessageIterationUsage]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

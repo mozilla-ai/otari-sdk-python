@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.cc_function import CCFunction
 from typing import Optional, Set
 from typing_extensions import Self
@@ -26,13 +26,14 @@ from pydantic_core import to_jsonable_python
 
 class CCChatCompletionMessageFunctionToolCall(BaseModel):
     """
-    A call to a function tool created by the model.
+    Extended tool call type that includes extra_content for provider-specific data.  The extra_content field is used to store provider-specific metadata that needs to be preserved across multi-turn conversations. For example, Gemini 3 models require thought_signature to be passed back with function calls.  Example extra_content structure for Gemini:     {\"google\": {\"thought_signature\": \"<base64-encoded-signature>\"}}
     """ # noqa: E501
     id: StrictStr
     function: CCFunction
     type: StrictStr
+    extra_content: Optional[Dict[str, Any]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "function", "type"]
+    __properties: ClassVar[List[str]] = ["id", "function", "type", "extra_content"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -90,6 +91,11 @@ class CCChatCompletionMessageFunctionToolCall(BaseModel):
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
+        # set to None if extra_content (nullable) is None
+        # and model_fields_set contains the field
+        if self.extra_content is None and "extra_content" in self.model_fields_set:
+            _dict['extra_content'] = None
+
         return _dict
 
     @classmethod
@@ -104,7 +110,8 @@ class CCChatCompletionMessageFunctionToolCall(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "function": CCFunction.from_dict(obj["function"]) if obj.get("function") is not None else None,
-            "type": obj.get("type")
+            "type": obj.get("type"),
+            "extra_content": obj.get("extra_content")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

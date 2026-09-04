@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
-from otari._client.models.content6 import Content6
+from otari._client.models.content7 import Content7
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +28,7 @@ class MRBetaMCPToolResultBlock(BaseModel):
     """
     MRBetaMCPToolResultBlock
     """ # noqa: E501
-    content: Content6
+    content: Content7
     is_error: StrictBool
     tool_use_id: StrictStr
     type: StrictStr
@@ -103,7 +103,7 @@ class MRBetaMCPToolResultBlock(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "content": Content6.from_dict(obj["content"]) if obj.get("content") is not None else None,
+            "content": Content7.from_dict(obj["content"]) if obj.get("content") is not None else None,
             "is_error": obj.get("is_error"),
             "tool_use_id": obj.get("tool_use_id"),
             "type": obj.get("type")

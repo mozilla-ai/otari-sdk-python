@@ -19,34 +19,31 @@ import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Optional
-from otari._client.models.mr_text_editor_code_execution_create_result_block import MRTextEditorCodeExecutionCreateResultBlock
-from otari._client.models.mr_text_editor_code_execution_str_replace_result_block import MRTextEditorCodeExecutionStrReplaceResultBlock
-from otari._client.models.mr_text_editor_code_execution_tool_result_error import MRTextEditorCodeExecutionToolResultError
-from otari._client.models.mr_text_editor_code_execution_view_result_block import MRTextEditorCodeExecutionViewResultBlock
+from otari._client.models.mr_code_execution_result_block import MRCodeExecutionResultBlock
+from otari._client.models.mr_code_execution_tool_result_error import MRCodeExecutionToolResultError
+from otari._client.models.mr_encrypted_code_execution_result_block import MREncryptedCodeExecutionResultBlock
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-CONTENT12_ANY_OF_SCHEMAS = ["MRTextEditorCodeExecutionCreateResultBlock", "MRTextEditorCodeExecutionStrReplaceResultBlock", "MRTextEditorCodeExecutionToolResultError", "MRTextEditorCodeExecutionViewResultBlock"]
+CONTENT12_ANY_OF_SCHEMAS = ["MRCodeExecutionResultBlock", "MRCodeExecutionToolResultError", "MREncryptedCodeExecutionResultBlock"]
 
 class Content12(BaseModel):
     """
     Content12
     """
 
-    # data type: MRTextEditorCodeExecutionToolResultError
-    anyof_schema_1_validator: Optional[MRTextEditorCodeExecutionToolResultError] = None
-    # data type: MRTextEditorCodeExecutionViewResultBlock
-    anyof_schema_2_validator: Optional[MRTextEditorCodeExecutionViewResultBlock] = None
-    # data type: MRTextEditorCodeExecutionCreateResultBlock
-    anyof_schema_3_validator: Optional[MRTextEditorCodeExecutionCreateResultBlock] = None
-    # data type: MRTextEditorCodeExecutionStrReplaceResultBlock
-    anyof_schema_4_validator: Optional[MRTextEditorCodeExecutionStrReplaceResultBlock] = None
+    # data type: MRCodeExecutionToolResultError
+    anyof_schema_1_validator: Optional[MRCodeExecutionToolResultError] = None
+    # data type: MRCodeExecutionResultBlock
+    anyof_schema_2_validator: Optional[MRCodeExecutionResultBlock] = None
+    # data type: MREncryptedCodeExecutionResultBlock
+    anyof_schema_3_validator: Optional[MREncryptedCodeExecutionResultBlock] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[MRTextEditorCodeExecutionCreateResultBlock, MRTextEditorCodeExecutionStrReplaceResultBlock, MRTextEditorCodeExecutionToolResultError, MRTextEditorCodeExecutionViewResultBlock]] = None
+        actual_instance: Optional[Union[MRCodeExecutionResultBlock, MRCodeExecutionToolResultError, MREncryptedCodeExecutionResultBlock]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "MRTextEditorCodeExecutionCreateResultBlock", "MRTextEditorCodeExecutionStrReplaceResultBlock", "MRTextEditorCodeExecutionToolResultError", "MRTextEditorCodeExecutionViewResultBlock" }
+    any_of_schemas: Set[str] = { "MRCodeExecutionResultBlock", "MRCodeExecutionToolResultError", "MREncryptedCodeExecutionResultBlock" }
 
     model_config = {
         "validate_assignment": True,
@@ -67,33 +64,27 @@ class Content12(BaseModel):
     def actual_instance_must_validate_anyof(cls, v):
         instance = Content12.model_construct()
         error_messages = []
-        # validate data type: MRTextEditorCodeExecutionToolResultError
-        if not isinstance(v, MRTextEditorCodeExecutionToolResultError):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRTextEditorCodeExecutionToolResultError`")
+        # validate data type: MRCodeExecutionToolResultError
+        if not isinstance(v, MRCodeExecutionToolResultError):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRCodeExecutionToolResultError`")
         else:
             return v
 
-        # validate data type: MRTextEditorCodeExecutionViewResultBlock
-        if not isinstance(v, MRTextEditorCodeExecutionViewResultBlock):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRTextEditorCodeExecutionViewResultBlock`")
+        # validate data type: MRCodeExecutionResultBlock
+        if not isinstance(v, MRCodeExecutionResultBlock):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRCodeExecutionResultBlock`")
         else:
             return v
 
-        # validate data type: MRTextEditorCodeExecutionCreateResultBlock
-        if not isinstance(v, MRTextEditorCodeExecutionCreateResultBlock):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRTextEditorCodeExecutionCreateResultBlock`")
-        else:
-            return v
-
-        # validate data type: MRTextEditorCodeExecutionStrReplaceResultBlock
-        if not isinstance(v, MRTextEditorCodeExecutionStrReplaceResultBlock):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRTextEditorCodeExecutionStrReplaceResultBlock`")
+        # validate data type: MREncryptedCodeExecutionResultBlock
+        if not isinstance(v, MREncryptedCodeExecutionResultBlock):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MREncryptedCodeExecutionResultBlock`")
         else:
             return v
 
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Content12 with anyOf schemas: MRTextEditorCodeExecutionCreateResultBlock, MRTextEditorCodeExecutionStrReplaceResultBlock, MRTextEditorCodeExecutionToolResultError, MRTextEditorCodeExecutionViewResultBlock. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Content12 with anyOf schemas: MRCodeExecutionResultBlock, MRCodeExecutionToolResultError, MREncryptedCodeExecutionResultBlock. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -106,34 +97,28 @@ class Content12(BaseModel):
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
         error_messages = []
-        # anyof_schema_1_validator: Optional[MRTextEditorCodeExecutionToolResultError] = None
+        # anyof_schema_1_validator: Optional[MRCodeExecutionToolResultError] = None
         try:
-            instance.actual_instance = MRTextEditorCodeExecutionToolResultError.from_json(json_str)
+            instance.actual_instance = MRCodeExecutionToolResultError.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
-        # anyof_schema_2_validator: Optional[MRTextEditorCodeExecutionViewResultBlock] = None
+        # anyof_schema_2_validator: Optional[MRCodeExecutionResultBlock] = None
         try:
-            instance.actual_instance = MRTextEditorCodeExecutionViewResultBlock.from_json(json_str)
+            instance.actual_instance = MRCodeExecutionResultBlock.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
-        # anyof_schema_3_validator: Optional[MRTextEditorCodeExecutionCreateResultBlock] = None
+        # anyof_schema_3_validator: Optional[MREncryptedCodeExecutionResultBlock] = None
         try:
-            instance.actual_instance = MRTextEditorCodeExecutionCreateResultBlock.from_json(json_str)
-            return instance
-        except (ValidationError, ValueError) as e:
-             error_messages.append(str(e))
-        # anyof_schema_4_validator: Optional[MRTextEditorCodeExecutionStrReplaceResultBlock] = None
-        try:
-            instance.actual_instance = MRTextEditorCodeExecutionStrReplaceResultBlock.from_json(json_str)
+            instance.actual_instance = MREncryptedCodeExecutionResultBlock.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Content12 with anyOf schemas: MRTextEditorCodeExecutionCreateResultBlock, MRTextEditorCodeExecutionStrReplaceResultBlock, MRTextEditorCodeExecutionToolResultError, MRTextEditorCodeExecutionViewResultBlock. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Content12 with anyOf schemas: MRCodeExecutionResultBlock, MRCodeExecutionToolResultError, MREncryptedCodeExecutionResultBlock. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -147,7 +132,7 @@ class Content12(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], MRTextEditorCodeExecutionCreateResultBlock, MRTextEditorCodeExecutionStrReplaceResultBlock, MRTextEditorCodeExecutionToolResultError, MRTextEditorCodeExecutionViewResultBlock]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], MRCodeExecutionResultBlock, MRCodeExecutionToolResultError, MREncryptedCodeExecutionResultBlock]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.caller1 import Caller1
-from otari._client.models.content15 import Content15
+from otari._client.models.content16 import Content16
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,7 +30,7 @@ class MRWebSearchToolResultBlock(BaseModel):
     MRWebSearchToolResultBlock
     """ # noqa: E501
     caller: Optional[Caller1] = None
-    content: Content15
+    content: Content16
     tool_use_id: StrictStr
     type: StrictStr
     additional_properties: Dict[str, Any] = {}
@@ -113,7 +113,7 @@ class MRWebSearchToolResultBlock(BaseModel):
 
         _obj = cls.model_validate({
             "caller": Caller1.from_dict(obj["caller"]) if obj.get("caller") is not None else None,
-            "content": Content15.from_dict(obj["content"]) if obj.get("content") is not None else None,
+            "content": Content16.from_dict(obj["content"]) if obj.get("content") is not None else None,
             "tool_use_id": obj.get("tool_use_id"),
             "type": obj.get("type")
         })

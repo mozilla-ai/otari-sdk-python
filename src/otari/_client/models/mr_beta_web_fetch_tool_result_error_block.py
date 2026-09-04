@@ -35,8 +35,8 @@ class MRBetaWebFetchToolResultErrorBlock(BaseModel):
     @field_validator('error_code')
     def error_code_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['invalid_tool_input', 'url_too_long', 'url_not_allowed', 'url_not_accessible', 'unsupported_content_type', 'too_many_requests', 'max_uses_exceeded', 'unavailable']):
-            raise ValueError("must be one of enum values ('invalid_tool_input', 'url_too_long', 'url_not_allowed', 'url_not_accessible', 'unsupported_content_type', 'too_many_requests', 'max_uses_exceeded', 'unavailable')")
+        if value not in set(['invalid_tool_input', 'url_too_long', 'url_not_allowed', 'url_not_in_prior_context', 'url_not_accessible', 'unsupported_content_type', 'too_many_requests', 'max_uses_exceeded', 'unavailable']):
+            raise ValueError("must be one of enum values ('invalid_tool_input', 'url_too_long', 'url_not_allowed', 'url_not_in_prior_context', 'url_not_accessible', 'unsupported_content_type', 'too_many_requests', 'max_uses_exceeded', 'unavailable')")
         return value
 
     @field_validator('type')

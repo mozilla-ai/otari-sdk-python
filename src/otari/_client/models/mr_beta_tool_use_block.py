@@ -33,8 +33,9 @@ class MRBetaToolUseBlock(BaseModel):
     name: StrictStr
     type: StrictStr
     caller: Optional[Caller] = None
+    toolset_name: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "input", "name", "type", "caller"]
+    __properties: ClassVar[List[str]] = ["id", "input", "name", "type", "caller", "toolset_name"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -97,6 +98,11 @@ class MRBetaToolUseBlock(BaseModel):
         if self.caller is None and "caller" in self.model_fields_set:
             _dict['caller'] = None
 
+        # set to None if toolset_name (nullable) is None
+        # and model_fields_set contains the field
+        if self.toolset_name is None and "toolset_name" in self.model_fields_set:
+            _dict['toolset_name'] = None
+
         return _dict
 
     @classmethod
@@ -113,7 +119,8 @@ class MRBetaToolUseBlock(BaseModel):
             "input": obj.get("input"),
             "name": obj.get("name"),
             "type": obj.get("type"),
-            "caller": Caller.from_dict(obj["caller"]) if obj.get("caller") is not None else None
+            "caller": Caller.from_dict(obj["caller"]) if obj.get("caller") is not None else None,
+            "toolset_name": obj.get("toolset_name")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

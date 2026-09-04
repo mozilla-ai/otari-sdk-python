@@ -19,11 +19,11 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.content16_inner import Content16Inner
+from otari._client.models.content17_inner import Content17Inner
 from otari._client.models.model1 import Model1
 from otari._client.models.mr_beta_container import MRBetaContainer
 from otari._client.models.mr_beta_context_management_response import MRBetaContextManagementResponse
-from otari._client.models.mr_beta_diagnostics_fallback import MRBetaDiagnosticsFallback
+from otari._client.models.mr_beta_diagnostics import MRBetaDiagnostics
 from otari._client.models.mr_message_usage import MRMessageUsage
 from otari._client.models.mr_refusal_stop_details import MRRefusalStopDetails
 from typing import Optional, Set
@@ -36,7 +36,7 @@ class MessageResponse(BaseModel):
     """ # noqa: E501
     id: StrictStr
     container: Optional[MRBetaContainer] = None
-    content: List[Content16Inner]
+    content: List[Content17Inner]
     model: Model1
     role: StrictStr
     stop_details: Optional[MRRefusalStopDetails] = None
@@ -44,10 +44,11 @@ class MessageResponse(BaseModel):
     stop_sequence: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     type: StrictStr
     usage: MRMessageUsage
+    request_id: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     context_management: Optional[MRBetaContextManagementResponse] = None
-    diagnostics: Optional[MRBetaDiagnosticsFallback] = None
+    diagnostics: Optional[MRBetaDiagnostics] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "container", "content", "model", "role", "stop_details", "stop_reason", "stop_sequence", "type", "usage", "context_management", "diagnostics"]
+    __properties: ClassVar[List[str]] = ["id", "container", "content", "model", "role", "stop_details", "stop_reason", "stop_sequence", "type", "usage", "request_id", "context_management", "diagnostics"]
 
     @field_validator('role')
     def role_validate_enum(cls, value):
@@ -164,6 +165,11 @@ class MessageResponse(BaseModel):
         if self.stop_sequence is None and "stop_sequence" in self.model_fields_set:
             _dict['stop_sequence'] = None
 
+        # set to None if request_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.request_id is None and "request_id" in self.model_fields_set:
+            _dict['request_id'] = None
+
         # set to None if context_management (nullable) is None
         # and model_fields_set contains the field
         if self.context_management is None and "context_management" in self.model_fields_set:
@@ -188,7 +194,7 @@ class MessageResponse(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "container": MRBetaContainer.from_dict(obj["container"]) if obj.get("container") is not None else None,
-            "content": [Content16Inner.from_dict(_item) for _item in obj["content"]] if obj.get("content") is not None else None,
+            "content": [Content17Inner.from_dict(_item) for _item in obj["content"]] if obj.get("content") is not None else None,
             "model": Model1.from_dict(obj["model"]) if obj.get("model") is not None else None,
             "role": obj.get("role"),
             "stop_details": MRRefusalStopDetails.from_dict(obj["stop_details"]) if obj.get("stop_details") is not None else None,
@@ -196,8 +202,9 @@ class MessageResponse(BaseModel):
             "stop_sequence": obj.get("stop_sequence"),
             "type": obj.get("type"),
             "usage": MRMessageUsage.from_dict(obj["usage"]) if obj.get("usage") is not None else None,
+            "request_id": obj.get("request_id"),
             "context_management": MRBetaContextManagementResponse.from_dict(obj["context_management"]) if obj.get("context_management") is not None else None,
-            "diagnostics": MRBetaDiagnosticsFallback.from_dict(obj["diagnostics"]) if obj.get("diagnostics") is not None else None
+            "diagnostics": MRBetaDiagnostics.from_dict(obj["diagnostics"]) if obj.get("diagnostics") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

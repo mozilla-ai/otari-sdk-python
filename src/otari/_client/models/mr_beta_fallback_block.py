@@ -17,37 +17,30 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.caller import Caller
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List
+from otari._client.models.mr_beta_fallback_info import MRBetaFallbackInfo
+from otari._client.models.mr_beta_fallback_refusal_trigger import MRBetaFallbackRefusalTrigger
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class MRBetaServerToolUseBlock(BaseModel):
+class MRBetaFallbackBlock(BaseModel):
     """
-    MRBetaServerToolUseBlock
+    Marks the point in `content` where one model's output gives way to the next.  One block appears per hop where a preceding model actually ran this turn and declined. A turn where no preceding model ran and declined has no such boundary and carries no block — the signal for whether a fallback model served the response is the presence of a `fallback_message` entry in `usage.iterations`, not this block.  The block is treated like a server-tool content block for streaming: it arrives via the standard `content_block_start` / `content_block_stop` pair and carries no deltas.
     """ # noqa: E501
-    id: StrictStr
-    input: Dict[str, Any]
-    name: StrictStr
+    var_from: MRBetaFallbackInfo = Field(alias="from")
+    to: MRBetaFallbackInfo
+    trigger: MRBetaFallbackRefusalTrigger
     type: StrictStr
-    caller: Optional[Caller] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "input", "name", "type", "caller"]
-
-    @field_validator('name')
-    def name_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['advisor', 'web_search', 'web_fetch', 'code_execution', 'bash_code_execution', 'text_editor_code_execution', 'tool_search_tool_regex', 'tool_search_tool_bm25']):
-            raise ValueError("must be one of enum values ('advisor', 'web_search', 'web_fetch', 'code_execution', 'bash_code_execution', 'text_editor_code_execution', 'tool_search_tool_regex', 'tool_search_tool_bm25')")
-        return value
+    __properties: ClassVar[List[str]] = ["from", "to", "trigger", "type"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['server_tool_use']):
-            raise ValueError("must be one of enum values ('server_tool_use')")
+        if value not in set(['fallback']):
+            raise ValueError("must be one of enum values ('fallback')")
         return value
 
     model_config = ConfigDict(
@@ -68,7 +61,7 @@ class MRBetaServerToolUseBlock(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of MRBetaServerToolUseBlock from a JSON string"""
+        """Create an instance of MRBetaFallbackBlock from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -91,24 +84,25 @@ class MRBetaServerToolUseBlock(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of caller
-        if self.caller:
-            _dict['caller'] = self.caller.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of var_from
+        if self.var_from:
+            _dict['from'] = self.var_from.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of to
+        if self.to:
+            _dict['to'] = self.to.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of trigger
+        if self.trigger:
+            _dict['trigger'] = self.trigger.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
-        # set to None if caller (nullable) is None
-        # and model_fields_set contains the field
-        if self.caller is None and "caller" in self.model_fields_set:
-            _dict['caller'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of MRBetaServerToolUseBlock from a dict"""
+        """Create an instance of MRBetaFallbackBlock from a dict"""
         if obj is None:
             return None
 
@@ -116,11 +110,10 @@ class MRBetaServerToolUseBlock(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "input": obj.get("input"),
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "caller": Caller.from_dict(obj["caller"]) if obj.get("caller") is not None else None
+            "from": MRBetaFallbackInfo.from_dict(obj["from"]) if obj.get("from") is not None else None,
+            "to": MRBetaFallbackInfo.from_dict(obj["to"]) if obj.get("to") is not None else None,
+            "trigger": MRBetaFallbackRefusalTrigger.from_dict(obj["trigger"]) if obj.get("trigger") is not None else None,
+            "type": obj.get("type")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
