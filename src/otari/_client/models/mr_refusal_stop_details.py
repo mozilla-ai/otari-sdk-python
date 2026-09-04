@@ -39,8 +39,8 @@ class MRRefusalStopDetails(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['cyber', 'bio']):
-            raise ValueError("must be one of enum values ('cyber', 'bio')")
+        if value not in set(['cyber', 'bio', 'frontier_llm', 'reasoning_extraction', 'general_harms']):
+            raise ValueError("must be one of enum values ('cyber', 'bio', 'frontier_llm', 'reasoning_extraction', 'general_harms')")
         return value
 
     @field_validator('type')

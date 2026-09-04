@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_v
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.mr_cache_creation import MRCacheCreation
 from otari._client.models.mr_message_usage_iterations_inner import MRMessageUsageIterationsInner
+from otari._client.models.mr_output_tokens_details import MROutputTokensDetails
 from otari._client.models.mr_server_tool_usage import MRServerToolUsage
 from typing import Optional, Set
 from typing_extensions import Self
@@ -36,12 +37,13 @@ class MRMessageUsage(BaseModel):
     inference_geo: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     input_tokens: StrictInt
     output_tokens: StrictInt
+    output_tokens_details: Optional[MROutputTokensDetails] = None
     server_tool_use: Optional[MRServerToolUsage] = None
     service_tier: Optional[StrictStr] = None
     iterations: Optional[List[MRMessageUsageIterationsInner]] = None
     speed: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["cache_creation", "cache_creation_input_tokens", "cache_read_input_tokens", "inference_geo", "input_tokens", "output_tokens", "server_tool_use", "service_tier", "iterations", "speed"]
+    __properties: ClassVar[List[str]] = ["cache_creation", "cache_creation_input_tokens", "cache_read_input_tokens", "inference_geo", "input_tokens", "output_tokens", "output_tokens_details", "server_tool_use", "service_tier", "iterations", "speed"]
 
     @field_validator('service_tier')
     def service_tier_validate_enum(cls, value):
@@ -107,6 +109,9 @@ class MRMessageUsage(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of cache_creation
         if self.cache_creation:
             _dict['cache_creation'] = self.cache_creation.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of output_tokens_details
+        if self.output_tokens_details:
+            _dict['output_tokens_details'] = self.output_tokens_details.to_dict()
         # override the default output from pydantic by calling `to_dict()` of server_tool_use
         if self.server_tool_use:
             _dict['server_tool_use'] = self.server_tool_use.to_dict()
@@ -141,6 +146,11 @@ class MRMessageUsage(BaseModel):
         # and model_fields_set contains the field
         if self.inference_geo is None and "inference_geo" in self.model_fields_set:
             _dict['inference_geo'] = None
+
+        # set to None if output_tokens_details (nullable) is None
+        # and model_fields_set contains the field
+        if self.output_tokens_details is None and "output_tokens_details" in self.model_fields_set:
+            _dict['output_tokens_details'] = None
 
         # set to None if server_tool_use (nullable) is None
         # and model_fields_set contains the field
@@ -180,6 +190,7 @@ class MRMessageUsage(BaseModel):
             "inference_geo": obj.get("inference_geo"),
             "input_tokens": obj.get("input_tokens"),
             "output_tokens": obj.get("output_tokens"),
+            "output_tokens_details": MROutputTokensDetails.from_dict(obj["output_tokens_details"]) if obj.get("output_tokens_details") is not None else None,
             "server_tool_use": MRServerToolUsage.from_dict(obj["server_tool_use"]) if obj.get("server_tool_use") is not None else None,
             "service_tier": obj.get("service_tier"),
             "iterations": [MRMessageUsageIterationsInner.from_dict(_item) for _item in obj["iterations"]] if obj.get("iterations") is not None else None,

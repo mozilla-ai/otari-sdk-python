@@ -133,6 +133,7 @@ __all__ = [
     "CCKTopLogprob",
     "CCPromptTokensDetails",
     "CCTopLogprob",
+    "CacheMissReason",
     "Caller",
     "Caller1",
     "CallerIdentityPublic",
@@ -155,7 +156,8 @@ __all__ = [
     "Content13",
     "Content14",
     "Content15",
-    "Content16Inner",
+    "Content16",
+    "Content17Inner",
     "Content2",
     "Content2AnyOfInner",
     "Content3",
@@ -227,12 +229,23 @@ __all__ = [
     "MRBashCodeExecutionResultBlock",
     "MRBashCodeExecutionToolResultBlock",
     "MRBashCodeExecutionToolResultError",
+    "MRBetaAdvisorMessageIterationUsage",
+    "MRBetaAdvisorRedactedResultBlock",
+    "MRBetaAdvisorResultBlock",
+    "MRBetaAdvisorToolResultBlock",
+    "MRBetaAdvisorToolResultError",
     "MRBetaBase64PDFSource",
     "MRBetaBashCodeExecutionOutputBlock",
     "MRBetaBashCodeExecutionResultBlock",
     "MRBetaBashCodeExecutionToolResultBlock",
     "MRBetaBashCodeExecutionToolResultError",
     "MRBetaCacheCreation",
+    "MRBetaCacheMissMessagesChanged",
+    "MRBetaCacheMissModelChanged",
+    "MRBetaCacheMissPreviousMessageNotFound",
+    "MRBetaCacheMissSystemChanged",
+    "MRBetaCacheMissToolsChanged",
+    "MRBetaCacheMissUnavailable",
     "MRBetaCitationCharLocation",
     "MRBetaCitationConfig",
     "MRBetaCitationContentBlockLocation",
@@ -250,10 +263,14 @@ __all__ = [
     "MRBetaContainer",
     "MRBetaContainerUploadBlock",
     "MRBetaContextManagementResponse",
-    "MRBetaDiagnosticsFallback",
+    "MRBetaDiagnostics",
     "MRBetaDirectCaller",
     "MRBetaDocumentBlock",
     "MRBetaEncryptedCodeExecutionResultBlock",
+    "MRBetaFallbackBlock",
+    "MRBetaFallbackInfo",
+    "MRBetaFallbackMessageIterationUsage",
+    "MRBetaFallbackRefusalTrigger",
     "MRBetaMCPToolResultBlock",
     "MRBetaMCPToolUseBlock",
     "MRBetaMessageIterationUsage",
@@ -299,6 +316,7 @@ __all__ = [
     "MREncryptedCodeExecutionResultBlock",
     "MRMessageUsage",
     "MRMessageUsageIterationsInner",
+    "MROutputTokensDetails",
     "MRPlainTextSource",
     "MRRedactedThinkingBlock",
     "MRRefusalStopDetails",
@@ -651,6 +669,7 @@ from otari._client.models.cck_prompt_tokens_details import CCKPromptTokensDetail
 from otari._client.models.cck_top_logprob import CCKTopLogprob as CCKTopLogprob
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails as CCPromptTokensDetails
 from otari._client.models.cc_top_logprob import CCTopLogprob as CCTopLogprob
+from otari._client.models.cache_miss_reason import CacheMissReason as CacheMissReason
 from otari._client.models.caller import Caller as Caller
 from otari._client.models.caller1 import Caller1 as Caller1
 from otari._client.models.caller_identity_public import CallerIdentityPublic as CallerIdentityPublic
@@ -673,7 +692,8 @@ from otari._client.models.content12 import Content12 as Content12
 from otari._client.models.content13 import Content13 as Content13
 from otari._client.models.content14 import Content14 as Content14
 from otari._client.models.content15 import Content15 as Content15
-from otari._client.models.content16_inner import Content16Inner as Content16Inner
+from otari._client.models.content16 import Content16 as Content16
+from otari._client.models.content17_inner import Content17Inner as Content17Inner
 from otari._client.models.content2 import Content2 as Content2
 from otari._client.models.content2_any_of_inner import Content2AnyOfInner as Content2AnyOfInner
 from otari._client.models.content3 import Content3 as Content3
@@ -745,12 +765,23 @@ from otari._client.models.mr_bash_code_execution_output_block import MRBashCodeE
 from otari._client.models.mr_bash_code_execution_result_block import MRBashCodeExecutionResultBlock as MRBashCodeExecutionResultBlock
 from otari._client.models.mr_bash_code_execution_tool_result_block import MRBashCodeExecutionToolResultBlock as MRBashCodeExecutionToolResultBlock
 from otari._client.models.mr_bash_code_execution_tool_result_error import MRBashCodeExecutionToolResultError as MRBashCodeExecutionToolResultError
+from otari._client.models.mr_beta_advisor_message_iteration_usage import MRBetaAdvisorMessageIterationUsage as MRBetaAdvisorMessageIterationUsage
+from otari._client.models.mr_beta_advisor_redacted_result_block import MRBetaAdvisorRedactedResultBlock as MRBetaAdvisorRedactedResultBlock
+from otari._client.models.mr_beta_advisor_result_block import MRBetaAdvisorResultBlock as MRBetaAdvisorResultBlock
+from otari._client.models.mr_beta_advisor_tool_result_block import MRBetaAdvisorToolResultBlock as MRBetaAdvisorToolResultBlock
+from otari._client.models.mr_beta_advisor_tool_result_error import MRBetaAdvisorToolResultError as MRBetaAdvisorToolResultError
 from otari._client.models.mr_beta_base64_pdf_source import MRBetaBase64PDFSource as MRBetaBase64PDFSource
 from otari._client.models.mr_beta_bash_code_execution_output_block import MRBetaBashCodeExecutionOutputBlock as MRBetaBashCodeExecutionOutputBlock
 from otari._client.models.mr_beta_bash_code_execution_result_block import MRBetaBashCodeExecutionResultBlock as MRBetaBashCodeExecutionResultBlock
 from otari._client.models.mr_beta_bash_code_execution_tool_result_block import MRBetaBashCodeExecutionToolResultBlock as MRBetaBashCodeExecutionToolResultBlock
 from otari._client.models.mr_beta_bash_code_execution_tool_result_error import MRBetaBashCodeExecutionToolResultError as MRBetaBashCodeExecutionToolResultError
 from otari._client.models.mr_beta_cache_creation import MRBetaCacheCreation as MRBetaCacheCreation
+from otari._client.models.mr_beta_cache_miss_messages_changed import MRBetaCacheMissMessagesChanged as MRBetaCacheMissMessagesChanged
+from otari._client.models.mr_beta_cache_miss_model_changed import MRBetaCacheMissModelChanged as MRBetaCacheMissModelChanged
+from otari._client.models.mr_beta_cache_miss_previous_message_not_found import MRBetaCacheMissPreviousMessageNotFound as MRBetaCacheMissPreviousMessageNotFound
+from otari._client.models.mr_beta_cache_miss_system_changed import MRBetaCacheMissSystemChanged as MRBetaCacheMissSystemChanged
+from otari._client.models.mr_beta_cache_miss_tools_changed import MRBetaCacheMissToolsChanged as MRBetaCacheMissToolsChanged
+from otari._client.models.mr_beta_cache_miss_unavailable import MRBetaCacheMissUnavailable as MRBetaCacheMissUnavailable
 from otari._client.models.mr_beta_citation_char_location import MRBetaCitationCharLocation as MRBetaCitationCharLocation
 from otari._client.models.mr_beta_citation_config import MRBetaCitationConfig as MRBetaCitationConfig
 from otari._client.models.mr_beta_citation_content_block_location import MRBetaCitationContentBlockLocation as MRBetaCitationContentBlockLocation
@@ -768,10 +799,14 @@ from otari._client.models.mr_beta_compaction_iteration_usage import MRBetaCompac
 from otari._client.models.mr_beta_container import MRBetaContainer as MRBetaContainer
 from otari._client.models.mr_beta_container_upload_block import MRBetaContainerUploadBlock as MRBetaContainerUploadBlock
 from otari._client.models.mr_beta_context_management_response import MRBetaContextManagementResponse as MRBetaContextManagementResponse
-from otari._client.models.mr_beta_diagnostics_fallback import MRBetaDiagnosticsFallback as MRBetaDiagnosticsFallback
+from otari._client.models.mr_beta_diagnostics import MRBetaDiagnostics as MRBetaDiagnostics
 from otari._client.models.mr_beta_direct_caller import MRBetaDirectCaller as MRBetaDirectCaller
 from otari._client.models.mr_beta_document_block import MRBetaDocumentBlock as MRBetaDocumentBlock
 from otari._client.models.mr_beta_encrypted_code_execution_result_block import MRBetaEncryptedCodeExecutionResultBlock as MRBetaEncryptedCodeExecutionResultBlock
+from otari._client.models.mr_beta_fallback_block import MRBetaFallbackBlock as MRBetaFallbackBlock
+from otari._client.models.mr_beta_fallback_info import MRBetaFallbackInfo as MRBetaFallbackInfo
+from otari._client.models.mr_beta_fallback_message_iteration_usage import MRBetaFallbackMessageIterationUsage as MRBetaFallbackMessageIterationUsage
+from otari._client.models.mr_beta_fallback_refusal_trigger import MRBetaFallbackRefusalTrigger as MRBetaFallbackRefusalTrigger
 from otari._client.models.mr_beta_mcp_tool_result_block import MRBetaMCPToolResultBlock as MRBetaMCPToolResultBlock
 from otari._client.models.mr_beta_mcp_tool_use_block import MRBetaMCPToolUseBlock as MRBetaMCPToolUseBlock
 from otari._client.models.mr_beta_message_iteration_usage import MRBetaMessageIterationUsage as MRBetaMessageIterationUsage
@@ -817,6 +852,7 @@ from otari._client.models.mr_document_block import MRDocumentBlock as MRDocument
 from otari._client.models.mr_encrypted_code_execution_result_block import MREncryptedCodeExecutionResultBlock as MREncryptedCodeExecutionResultBlock
 from otari._client.models.mr_message_usage import MRMessageUsage as MRMessageUsage
 from otari._client.models.mr_message_usage_iterations_inner import MRMessageUsageIterationsInner as MRMessageUsageIterationsInner
+from otari._client.models.mr_output_tokens_details import MROutputTokensDetails as MROutputTokensDetails
 from otari._client.models.mr_plain_text_source import MRPlainTextSource as MRPlainTextSource
 from otari._client.models.mr_redacted_thinking_block import MRRedactedThinkingBlock as MRRedactedThinkingBlock
 from otari._client.models.mr_refusal_stop_details import MRRefusalStopDetails as MRRefusalStopDetails

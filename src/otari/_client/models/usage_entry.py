@@ -34,6 +34,7 @@ class UsageEntry(BaseModel):
     attempt_count: Optional[StrictInt] = None
     attempt_position: Optional[StrictInt] = None
     billing_meters: Optional[BillingMeters]
+    bulk_editable: StrictBool
     cache_read_tokens: Optional[StrictInt]
     cache_write_1h_tokens: Optional[StrictInt]
     cache_write_tokens: Optional[StrictInt]
@@ -59,7 +60,7 @@ class UsageEntry(BaseModel):
     total_tokens: Optional[StrictInt]
     user_alias: Optional[StrictStr] = None
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "timestamp", "total_tokens", "user_alias", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "timestamp", "total_tokens", "user_alias", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -242,6 +243,7 @@ class UsageEntry(BaseModel):
             "attempt_count": obj.get("attempt_count"),
             "attempt_position": obj.get("attempt_position"),
             "billing_meters": BillingMeters.from_dict(obj["billing_meters"]) if obj.get("billing_meters") is not None else None,
+            "bulk_editable": obj.get("bulk_editable"),
             "cache_read_tokens": obj.get("cache_read_tokens"),
             "cache_write_1h_tokens": obj.get("cache_write_1h_tokens"),
             "cache_write_tokens": obj.get("cache_write_tokens"),

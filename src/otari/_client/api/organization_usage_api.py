@@ -59,7 +59,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         _request_timeout: Union[
@@ -77,7 +77,7 @@ class OrganizationUsageApi:
     ) -> UsageCount:
         """Count Organization Usage
 
-        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.
+        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -105,7 +105,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
         :type request_group_id: List[str]
@@ -187,7 +187,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         _request_timeout: Union[
@@ -205,7 +205,7 @@ class OrganizationUsageApi:
     ) -> ApiResponse[UsageCount]:
         """Count Organization Usage
 
-        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.
+        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -233,7 +233,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
         :type request_group_id: List[str]
@@ -315,7 +315,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         _request_timeout: Union[
@@ -333,7 +333,7 @@ class OrganizationUsageApi:
     ) -> RESTResponseType:
         """Count Organization Usage
 
-        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.
+        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -361,7 +361,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
         :type request_group_id: List[str]
@@ -603,7 +603,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -651,7 +651,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
         :type request_group_id: List[str]
@@ -739,7 +739,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -787,7 +787,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
         :type request_group_id: List[str]
@@ -875,7 +875,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -923,7 +923,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
         :type request_group_id: List[str]
@@ -1182,7 +1182,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         _request_timeout: Union[
@@ -1230,7 +1230,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param workspace_id: Only usage recorded in this workspace.
         :type workspace_id: UUID
@@ -1314,7 +1314,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         _request_timeout: Union[
@@ -1362,7 +1362,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param workspace_id: Only usage recorded in this workspace.
         :type workspace_id: UUID
@@ -1446,7 +1446,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         _request_timeout: Union[
@@ -1494,7 +1494,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param workspace_id: Only usage recorded in this workspace.
         :type workspace_id: UUID
@@ -1741,7 +1741,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         dimensions: Annotated[Optional[List[StrictStr]], Field(description="Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.")] = None,
@@ -1788,7 +1788,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param workspace_id: Only usage recorded in this workspace.
         :type workspace_id: UUID
@@ -1873,7 +1873,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         dimensions: Annotated[Optional[List[StrictStr]], Field(description="Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.")] = None,
@@ -1920,7 +1920,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param workspace_id: Only usage recorded in this workspace.
         :type workspace_id: UUID
@@ -2005,7 +2005,7 @@ class OrganizationUsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         dimensions: Annotated[Optional[List[StrictStr]], Field(description="Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.")] = None,
@@ -2052,7 +2052,7 @@ class OrganizationUsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows that never touch a budget
+        :param counts_toward_budget: Filter by budget participation, which is not the same question as provenance: true = only enforced gateway rows, false = every row that never touches a budget, meaning imported usage and also gateway traffic on a budget-exempt key
         :type counts_toward_budget: bool
         :param workspace_id: Only usage recorded in this workspace.
         :type workspace_id: UUID

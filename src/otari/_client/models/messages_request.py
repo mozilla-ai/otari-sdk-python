@@ -30,7 +30,7 @@ from pydantic_core import to_jsonable_python
 
 class MessagesRequest(BaseModel):
     """
-    Anthropic Messages API-compatible request.  The wire fields are derived from any-llm's ``MessagesParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. ``container`` is an Anthropic wire param ``MessagesParams`` does not model, declared here and forwarded as an any-llm ``**kwargs`` param. Gateway-internal fields (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) opt the request into gateway-managed MCP / sandbox / web_search / guardrails without changing the upstream wire shape. They're stripped before the request is forwarded.
+    Anthropic Messages API-compatible request.  The wire fields are derived from any-llm's ``MessagesParams`` (see ``_schema_derive``) so the schema cannot silently drop a param any-llm forwards. Gateway-internal fields (``mcp_servers``, ``mcp_server_ids``, ``guardrails``, ``tools_header``, ``max_tool_iterations``) opt the request into gateway-managed MCP / sandbox / web_search / guardrails without changing the upstream wire shape. They're stripped before the request is forwarded.
     """ # noqa: E501
     betas: Optional[List[StrictStr]] = None
     cache_control: Optional[Dict[str, Any]] = None
@@ -46,6 +46,7 @@ class MessagesRequest(BaseModel):
     model: StrictStr
     output_format: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     prompt_cache_key: Optional[StrictStr] = None
+    service_tier: Optional[StrictStr] = None
     session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     stop_sequences: Optional[List[StrictStr]] = None
     stream: Optional[StrictBool] = False
@@ -57,7 +58,7 @@ class MessagesRequest(BaseModel):
     tools_header: Optional[StrictStr] = None
     top_k: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["betas", "cache_control", "container", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_format", "prompt_cache_key", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
+    __properties: ClassVar[List[str]] = ["betas", "cache_control", "container", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_format", "prompt_cache_key", "service_tier", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -170,6 +171,11 @@ class MessagesRequest(BaseModel):
         if self.prompt_cache_key is None and "prompt_cache_key" in self.model_fields_set:
             _dict['prompt_cache_key'] = None
 
+        # set to None if service_tier (nullable) is None
+        # and model_fields_set contains the field
+        if self.service_tier is None and "service_tier" in self.model_fields_set:
+            _dict['service_tier'] = None
+
         # set to None if session_label (nullable) is None
         # and model_fields_set contains the field
         if self.session_label is None and "session_label" in self.model_fields_set:
@@ -246,6 +252,7 @@ class MessagesRequest(BaseModel):
             "model": obj.get("model"),
             "output_format": obj.get("output_format"),
             "prompt_cache_key": obj.get("prompt_cache_key"),
+            "service_tier": obj.get("service_tier"),
             "session_label": obj.get("session_label"),
             "stop_sequences": obj.get("stop_sequences"),
             "stream": obj.get("stream") if obj.get("stream") is not None else False,

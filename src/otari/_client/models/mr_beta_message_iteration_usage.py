@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.model1 import Model1
 from otari._client.models.mr_beta_cache_creation import MRBetaCacheCreation
 from typing import Optional, Set
 from typing_extensions import Self
@@ -32,10 +33,11 @@ class MRBetaMessageIterationUsage(BaseModel):
     cache_creation_input_tokens: StrictInt
     cache_read_input_tokens: StrictInt
     input_tokens: StrictInt
+    model: Model1
     output_tokens: StrictInt
     type: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["cache_creation", "cache_creation_input_tokens", "cache_read_input_tokens", "input_tokens", "output_tokens", "type"]
+    __properties: ClassVar[List[str]] = ["cache_creation", "cache_creation_input_tokens", "cache_read_input_tokens", "input_tokens", "model", "output_tokens", "type"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -88,6 +90,9 @@ class MRBetaMessageIterationUsage(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of cache_creation
         if self.cache_creation:
             _dict['cache_creation'] = self.cache_creation.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of model
+        if self.model:
+            _dict['model'] = self.model.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -114,6 +119,7 @@ class MRBetaMessageIterationUsage(BaseModel):
             "cache_creation_input_tokens": obj.get("cache_creation_input_tokens"),
             "cache_read_input_tokens": obj.get("cache_read_input_tokens"),
             "input_tokens": obj.get("input_tokens"),
+            "model": Model1.from_dict(obj["model"]) if obj.get("model") is not None else None,
             "output_tokens": obj.get("output_tokens"),
             "type": obj.get("type")
         })

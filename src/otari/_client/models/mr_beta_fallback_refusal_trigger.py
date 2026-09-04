@@ -19,35 +19,34 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.caller import Caller
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class MRBetaServerToolUseBlock(BaseModel):
+class MRBetaFallbackRefusalTrigger(BaseModel):
     """
-    MRBetaServerToolUseBlock
+    The `from` model declined for policy reasons.
     """ # noqa: E501
-    id: StrictStr
-    input: Dict[str, Any]
-    name: StrictStr
+    category: Optional[StrictStr] = None
     type: StrictStr
-    caller: Optional[Caller] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "input", "name", "type", "caller"]
+    __properties: ClassVar[List[str]] = ["category", "type"]
 
-    @field_validator('name')
-    def name_validate_enum(cls, value):
+    @field_validator('category')
+    def category_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['advisor', 'web_search', 'web_fetch', 'code_execution', 'bash_code_execution', 'text_editor_code_execution', 'tool_search_tool_regex', 'tool_search_tool_bm25']):
-            raise ValueError("must be one of enum values ('advisor', 'web_search', 'web_fetch', 'code_execution', 'bash_code_execution', 'text_editor_code_execution', 'tool_search_tool_regex', 'tool_search_tool_bm25')")
+        if value is None:
+            return value
+
+        if value not in set(['cyber', 'bio', 'frontier_llm', 'reasoning_extraction', 'general_harms']):
+            raise ValueError("must be one of enum values ('cyber', 'bio', 'frontier_llm', 'reasoning_extraction', 'general_harms')")
         return value
 
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['server_tool_use']):
-            raise ValueError("must be one of enum values ('server_tool_use')")
+        if value not in set(['refusal']):
+            raise ValueError("must be one of enum values ('refusal')")
         return value
 
     model_config = ConfigDict(
@@ -68,7 +67,7 @@ class MRBetaServerToolUseBlock(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of MRBetaServerToolUseBlock from a JSON string"""
+        """Create an instance of MRBetaFallbackRefusalTrigger from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -91,24 +90,21 @@ class MRBetaServerToolUseBlock(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of caller
-        if self.caller:
-            _dict['caller'] = self.caller.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
-        # set to None if caller (nullable) is None
+        # set to None if category (nullable) is None
         # and model_fields_set contains the field
-        if self.caller is None and "caller" in self.model_fields_set:
-            _dict['caller'] = None
+        if self.category is None and "category" in self.model_fields_set:
+            _dict['category'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of MRBetaServerToolUseBlock from a dict"""
+        """Create an instance of MRBetaFallbackRefusalTrigger from a dict"""
         if obj is None:
             return None
 
@@ -116,11 +112,8 @@ class MRBetaServerToolUseBlock(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "input": obj.get("input"),
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "caller": Caller.from_dict(obj["caller"]) if obj.get("caller") is not None else None
+            "category": obj.get("category"),
+            "type": obj.get("type")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

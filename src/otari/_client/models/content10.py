@@ -18,29 +18,29 @@ import json
 import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
-from typing import List, Optional
-from otari._client.models.mr_beta_web_search_result_block import MRBetaWebSearchResultBlock
-from otari._client.models.mr_beta_web_search_tool_result_error import MRBetaWebSearchToolResultError
+from typing import Optional
+from otari._client.models.mr_beta_web_fetch_block import MRBetaWebFetchBlock
+from otari._client.models.mr_beta_web_fetch_tool_result_error_block import MRBetaWebFetchToolResultErrorBlock
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-CONTENT10_ANY_OF_SCHEMAS = ["List[MRBetaWebSearchResultBlock]", "MRBetaWebSearchToolResultError"]
+CONTENT10_ANY_OF_SCHEMAS = ["MRBetaWebFetchBlock", "MRBetaWebFetchToolResultErrorBlock"]
 
 class Content10(BaseModel):
     """
     Content10
     """
 
-    # data type: MRBetaWebSearchToolResultError
-    anyof_schema_1_validator: Optional[MRBetaWebSearchToolResultError] = None
-    # data type: List[MRBetaWebSearchResultBlock]
-    anyof_schema_2_validator: Optional[List[MRBetaWebSearchResultBlock]] = None
+    # data type: MRBetaWebFetchToolResultErrorBlock
+    anyof_schema_1_validator: Optional[MRBetaWebFetchToolResultErrorBlock] = None
+    # data type: MRBetaWebFetchBlock
+    anyof_schema_2_validator: Optional[MRBetaWebFetchBlock] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[List[MRBetaWebSearchResultBlock], MRBetaWebSearchToolResultError]] = None
+        actual_instance: Optional[Union[MRBetaWebFetchBlock, MRBetaWebFetchToolResultErrorBlock]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "List[MRBetaWebSearchResultBlock]", "MRBetaWebSearchToolResultError" }
+    any_of_schemas: Set[str] = { "MRBetaWebFetchBlock", "MRBetaWebFetchToolResultErrorBlock" }
 
     model_config = {
         "validate_assignment": True,
@@ -61,21 +61,21 @@ class Content10(BaseModel):
     def actual_instance_must_validate_anyof(cls, v):
         instance = Content10.model_construct()
         error_messages = []
-        # validate data type: MRBetaWebSearchToolResultError
-        if not isinstance(v, MRBetaWebSearchToolResultError):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaWebSearchToolResultError`")
+        # validate data type: MRBetaWebFetchToolResultErrorBlock
+        if not isinstance(v, MRBetaWebFetchToolResultErrorBlock):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaWebFetchToolResultErrorBlock`")
         else:
             return v
 
-        # validate data type: List[MRBetaWebSearchResultBlock]
-        try:
-            instance.anyof_schema_2_validator = v
+        # validate data type: MRBetaWebFetchBlock
+        if not isinstance(v, MRBetaWebFetchBlock):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaWebFetchBlock`")
+        else:
             return v
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
+
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Content10 with anyOf schemas: List[MRBetaWebSearchResultBlock], MRBetaWebSearchToolResultError. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Content10 with anyOf schemas: MRBetaWebFetchBlock, MRBetaWebFetchToolResultErrorBlock. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -88,25 +88,22 @@ class Content10(BaseModel):
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
         error_messages = []
-        # anyof_schema_1_validator: Optional[MRBetaWebSearchToolResultError] = None
+        # anyof_schema_1_validator: Optional[MRBetaWebFetchToolResultErrorBlock] = None
         try:
-            instance.actual_instance = MRBetaWebSearchToolResultError.from_json(json_str)
+            instance.actual_instance = MRBetaWebFetchToolResultErrorBlock.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
-        # deserialize data into List[MRBetaWebSearchResultBlock]
+        # anyof_schema_2_validator: Optional[MRBetaWebFetchBlock] = None
         try:
-            # validation
-            instance.anyof_schema_2_validator = json.loads(json_str)
-            # assign value to actual_instance
-            instance.actual_instance = instance.anyof_schema_2_validator
+            instance.actual_instance = MRBetaWebFetchBlock.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
+             error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Content10 with anyOf schemas: List[MRBetaWebSearchResultBlock], MRBetaWebSearchToolResultError. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Content10 with anyOf schemas: MRBetaWebFetchBlock, MRBetaWebFetchToolResultErrorBlock. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -120,7 +117,7 @@ class Content10(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], List[MRBetaWebSearchResultBlock], MRBetaWebSearchToolResultError]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], MRBetaWebFetchBlock, MRBetaWebFetchToolResultErrorBlock]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

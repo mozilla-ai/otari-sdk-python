@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,9 +28,10 @@ class MRBetaCompactionBlock(BaseModel):
     A compaction block returned when autocompact is triggered.  When content is None, it indicates the compaction failed to produce a valid summary (e.g., malformed output from the model). Clients may round-trip compaction blocks with null content; the server treats them as no-ops.
     """ # noqa: E501
     content: Optional[StrictStr] = None
+    encrypted_content: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     type: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["content", "type"]
+    __properties: ClassVar[List[str]] = ["content", "encrypted_content", "type"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -90,6 +91,11 @@ class MRBetaCompactionBlock(BaseModel):
         if self.content is None and "content" in self.model_fields_set:
             _dict['content'] = None
 
+        # set to None if encrypted_content (nullable) is None
+        # and model_fields_set contains the field
+        if self.encrypted_content is None and "encrypted_content" in self.model_fields_set:
+            _dict['encrypted_content'] = None
+
         return _dict
 
     @classmethod
@@ -103,6 +109,7 @@ class MRBetaCompactionBlock(BaseModel):
 
         _obj = cls.model_validate({
             "content": obj.get("content"),
+            "encrypted_content": obj.get("encrypted_content"),
             "type": obj.get("type")
         })
         # store additional fields in additional_properties
