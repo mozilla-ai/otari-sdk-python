@@ -5,6 +5,10 @@ Mirrors the TypeScript SDK's ``errors.test.ts``.
 
 from __future__ import annotations
 
+import json
+
+from otari._base import extract_detail
+from otari._client.exceptions import ApiException
 from otari.errors import (
     AuthenticationError,
     BatchNotCompleteError,
@@ -175,3 +179,45 @@ class TestUnsupportedCapabilityError:
             provider="anthropic",
         )
         assert str(err) == "[gateway] not supported"
+
+
+class TestExtractDetailOpenAIEnvelope:
+    """extract_detail must unwrap the OpenAI-style nested ``error`` envelope.
+
+    Mirrors the TS SDK's ``detailFromObject`` (mozilla-ai/otari-sdk-ts,
+    PR #41 / issue #40) and the Rust SDK's ``extract_detail`` in
+    ``otari-sdk-rust/src/core.rs``, which both already handle this shape.
+    """
+
+    def test_nested_openai_error_object_unwraps_to_message(self) -> None:
+        body = json.dumps({"error": {"message": "context length exceeded"}})
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        assert extract_detail(err) == "context length exceeded"
+
+    def test_fastapi_detail_shape_unchanged(self) -> None:
+        body = json.dumps({"detail": "boom"})
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        assert extract_detail(err) == "boom"
+
+    def test_flat_error_string_unchanged(self) -> None:
+        body = json.dumps({"error": "flat string"})
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        assert extract_detail(err) == "flat string"
+
+    def test_top_level_message_unchanged(self) -> None:
+        body = json.dumps({"message": "top level message"})
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        assert extract_detail(err) == "top level message"
+
+    def test_nested_error_object_without_message_falls_back_to_json(self) -> None:
+        body = json.dumps({"error": {"code": 400}})
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        result = extract_detail(err)
+        # Must be valid JSON round-tripping to the nested object, not a
+        # Python repr (which would contain single-quoted keys).
+        assert "'" not in result
+        assert json.loads(result) == {"code": 400}
+
+    def test_non_json_body_returned_verbatim(self) -> None:
+        err = ApiException(status=500, body="plain text failure", reason="Server Error")
+        assert extract_detail(err) == "plain text failure"
