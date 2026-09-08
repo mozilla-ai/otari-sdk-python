@@ -28,6 +28,7 @@ from __future__ import annotations
 import asyncio
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, Literal, cast, overload
+from urllib.parse import quote
 
 import httpx
 
@@ -36,6 +37,7 @@ from otari._client import ApiClient, Configuration
 from otari._client.api.batches_api import BatchesApi
 from otari._client.api.chat_api import ChatApi
 from otari._client.api.embeddings_api import EmbeddingsApi
+from otari._client.api.files_api import FilesApi
 from otari._client.api.images_api import ImagesApi
 from otari._client.api.messages_api import MessagesApi
 from otari._client.api.models_api import ModelsApi
@@ -58,6 +60,7 @@ from otari.response_metadata import AsyncOtariStream, OtariResponse
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Callable
+    from uuid import UUID
 
     from otari._client.models.chat_completion import ChatCompletion
     from otari._client.models.chat_completion_chunk import ChatCompletionChunk
@@ -128,6 +131,7 @@ class AsyncOtariClient(_BaseOtariClient):
         self._chat = ChatApi(self._api)
         self._responses = ResponsesApi(self._api)
         self._embeddings = EmbeddingsApi(self._api)
+        self._files = FilesApi(self._api)
         self._moderations = ModerationsApi(self._api)
         self._rerank = RerankApi(self._api)
         self._messages = MessagesApi(self._api)
@@ -400,6 +404,89 @@ class AsyncOtariClient(_BaseOtariClient):
             return TranscriptionResult(json=response.json())
         return TranscriptionResult(text=response.text)
 
+    # -- Files --------------------------------------------------------------
+
+    async def upload_file(
+        self,
+        *,
+        file: bytes,
+        filename: str,
+        purpose: str = "user_data",
+        content_type: str | None = None,
+        user: str | None = None,
+    ) -> dict[str, Any]:
+        """Upload a file to a standalone Otari gateway.
+
+        Args:
+            file: Raw file bytes.
+            filename: Filename sent in the multipart upload.
+            purpose: Caller-defined purpose, defaulting to ``"user_data"``.
+            content_type: Optional MIME type for the multipart file part.
+            user: User override accepted by the gateway's master-key flow.
+        """
+        data = {"purpose": purpose}
+        if user is not None:
+            data["user"] = user
+        file_part = (
+            (filename, file, content_type) if content_type is not None else (filename, file)
+        )
+        response = await self._post("/files", data=data, files={"file": file_part})
+        return cast("dict[str, Any]", response.json())
+
+    async def list_files(
+        self,
+        *,
+        purpose: str | None = None,
+        user: str | None = None,
+        workspace_id: UUID | None = None,
+    ) -> list[dict[str, Any]]:
+        """List files visible to the authenticated standalone gateway user."""
+        result = await self._call(
+            lambda: self._files.list_files_v1_files_get(
+                user=user,
+                purpose=purpose,
+                workspace_id=workspace_id,
+            )
+        )
+        data = result.get("data", []) if isinstance(result, dict) else []
+        return cast("list[dict[str, Any]]", data)
+
+    async def retrieve_file(
+        self,
+        file_id: str,
+        *,
+        user: str | None = None,
+    ) -> dict[str, Any]:
+        """Retrieve metadata for a file from a standalone gateway."""
+        result = await self._call(
+            lambda: self._files.get_file_v1_files_file_id_get(file_id, user=user)
+        )
+        return cast("dict[str, Any]", result)
+
+    async def download_file(
+        self,
+        file_id: str,
+        *,
+        user: str | None = None,
+    ) -> bytes:
+        """Download raw file bytes from a standalone gateway."""
+        params = {"user": user} if user is not None else None
+        encoded_file_id = quote(file_id, safe="")
+        response = await self._get(f"/files/{encoded_file_id}/content", params=params)
+        return response.content
+
+    async def delete_file(
+        self,
+        file_id: str,
+        *,
+        user: str | None = None,
+    ) -> dict[str, Any]:
+        """Delete a file from a standalone gateway."""
+        result = await self._call(
+            lambda: self._files.delete_file_v1_files_file_id_delete(file_id, user=user)
+        )
+        return cast("dict[str, Any]", result)
+
     # -- Models -------------------------------------------------------------
 
     async def list_models(self) -> list[ModelObject]:
@@ -498,14 +585,26 @@ class AsyncOtariClient(_BaseOtariClient):
     ) -> httpx.Response:
         """Issue a non-streaming raw httpx POST, mapping error responses.
 
-        Audio endpoints (binary speech, multipart transcription) do not fit the
-        generated JSON core, so they post directly over httpx and reuse the same
-        error mapping as the streaming shim.
+        Binary and multipart endpoints that do not fit the generated core use
+        raw httpx while retaining the SDK's typed error mapping.
         """
         url = f"{self._base_url}{path}"
         response = await self._http.post(
             url, headers=self._default_headers, json=json, data=data, files=files
         )
+        if response.status_code >= 400:
+            raise self._map_streaming_response(response, response.content)
+        return response
+
+    async def _get(
+        self,
+        path: str,
+        *,
+        params: dict[str, str] | None = None,
+    ) -> httpx.Response:
+        """Issue a non-streaming raw httpx GET, mapping error responses."""
+        url = f"{self._base_url}{path}"
+        response = await self._http.get(url, headers=self._default_headers, params=params)
         if response.status_code >= 400:
             raise self._map_streaming_response(response, response.content)
         return response

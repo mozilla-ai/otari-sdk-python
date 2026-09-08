@@ -286,6 +286,26 @@ result = client.transcription(
 print(result.json["text"])
 ```
 
+### Files
+
+The Files API is currently available on standalone Otari gateways. Upload a
+file, inspect or list its metadata, download its bytes, and delete it:
+
+```python
+uploaded = client.upload_file(
+    file=Path("report.pdf").read_bytes(),
+    filename="report.pdf",
+    content_type="application/pdf",
+)
+
+files = client.list_files(purpose="user_data")
+metadata = client.retrieve_file(uploaded["id"])
+Path(metadata["filename"]).write_bytes(client.download_file(uploaded["id"]))
+client.delete_file(uploaded["id"])
+```
+
+The asynchronous client exposes the same methods as coroutines.
+
 ### Batch operations
 
 Submit many requests as a single batch job, poll for status, then fetch results once the batch completes. Batch endpoints are scoped to a `provider`.
