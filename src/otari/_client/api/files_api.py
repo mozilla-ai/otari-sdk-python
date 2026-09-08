@@ -15,8 +15,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import StrictStr
-from typing import Any, Dict, Optional
+from pydantic import StrictBytes, StrictStr
+from typing import Any, Dict, Optional, Tuple, Union
 from uuid import UUID
 
 from otari._client.api_client import ApiClient, RequestSerialized
@@ -644,7 +644,7 @@ class FilesApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> object:
+    ) -> bytes:
         """Get File Content
 
         Download the raw bytes of a file, streamed rather than buffered whole.
@@ -685,7 +685,7 @@ class FilesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "object",
+            '200': "bytes",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -716,7 +716,7 @@ class FilesApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[object]:
+    ) -> ApiResponse[bytes]:
         """Get File Content
 
         Download the raw bytes of a file, streamed rather than buffered whole.
@@ -757,7 +757,7 @@ class FilesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "object",
+            '200': "bytes",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -829,7 +829,7 @@ class FilesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "object",
+            '200': "bytes",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -880,6 +880,8 @@ class FilesApi:
         if 'Accept' not in _header_params:
             _header_params['Accept'] = self.api_client.select_header_accept(
                 [
+                    '*/*', 
+                    'application/octet-stream', 
                     'application/json'
                 ]
             )
