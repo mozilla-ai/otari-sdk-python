@@ -1,1 +1,1 @@
-__spec_version__ = "0.0.0-dev"
+__spec_version__ = "0.5.0"
