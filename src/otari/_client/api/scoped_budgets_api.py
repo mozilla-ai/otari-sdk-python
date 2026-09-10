@@ -41,7 +41,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def create_scoped_budget_v1_scoped_budgets_post(
+    def create_scoped_budget_api_v1_scoped_budgets_post(
         self,
         create_scoped_budget_request: CreateScopedBudgetRequest,
         _request_timeout: Union[
@@ -85,7 +85,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_scoped_budget_v1_scoped_budgets_post_serialize(
+        _param = self._create_scoped_budget_api_v1_scoped_budgets_post_serialize(
             create_scoped_budget_request=create_scoped_budget_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -109,7 +109,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def create_scoped_budget_v1_scoped_budgets_post_with_http_info(
+    def create_scoped_budget_api_v1_scoped_budgets_post_with_http_info(
         self,
         create_scoped_budget_request: CreateScopedBudgetRequest,
         _request_timeout: Union[
@@ -153,7 +153,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_scoped_budget_v1_scoped_budgets_post_serialize(
+        _param = self._create_scoped_budget_api_v1_scoped_budgets_post_serialize(
             create_scoped_budget_request=create_scoped_budget_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -177,7 +177,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def create_scoped_budget_v1_scoped_budgets_post_without_preload_content(
+    def create_scoped_budget_api_v1_scoped_budgets_post_without_preload_content(
         self,
         create_scoped_budget_request: CreateScopedBudgetRequest,
         _request_timeout: Union[
@@ -221,7 +221,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_scoped_budget_v1_scoped_budgets_post_serialize(
+        _param = self._create_scoped_budget_api_v1_scoped_budgets_post_serialize(
             create_scoped_budget_request=create_scoped_budget_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -240,7 +240,7 @@ class ScopedBudgetsApi:
         return response_data.response
 
 
-    def _create_scoped_budget_v1_scoped_budgets_post_serialize(
+    def _create_scoped_budget_api_v1_scoped_budgets_post_serialize(
         self,
         create_scoped_budget_request,
         _request_auth,
@@ -302,7 +302,7 @@ class ScopedBudgetsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/scoped-budgets',
+            resource_path='/api/v1/scoped-budgets',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -319,7 +319,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def delete_scoped_budget_v1_scoped_budgets_budget_id_delete(
+    def delete_scoped_budget_api_v1_scoped_budgets_budget_id_delete(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -363,7 +363,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_scoped_budget_v1_scoped_budgets_budget_id_delete_serialize(
+        _param = self._delete_scoped_budget_api_v1_scoped_budgets_budget_id_delete_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -387,7 +387,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def delete_scoped_budget_v1_scoped_budgets_budget_id_delete_with_http_info(
+    def delete_scoped_budget_api_v1_scoped_budgets_budget_id_delete_with_http_info(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -431,7 +431,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_scoped_budget_v1_scoped_budgets_budget_id_delete_serialize(
+        _param = self._delete_scoped_budget_api_v1_scoped_budgets_budget_id_delete_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -455,7 +455,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def delete_scoped_budget_v1_scoped_budgets_budget_id_delete_without_preload_content(
+    def delete_scoped_budget_api_v1_scoped_budgets_budget_id_delete_without_preload_content(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -499,7 +499,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_scoped_budget_v1_scoped_budgets_budget_id_delete_serialize(
+        _param = self._delete_scoped_budget_api_v1_scoped_budgets_budget_id_delete_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -518,7 +518,7 @@ class ScopedBudgetsApi:
         return response_data.response
 
 
-    def _delete_scoped_budget_v1_scoped_budgets_budget_id_delete_serialize(
+    def _delete_scoped_budget_api_v1_scoped_budgets_budget_id_delete_serialize(
         self,
         budget_id,
         _request_auth,
@@ -567,7 +567,7 @@ class ScopedBudgetsApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/scoped-budgets/{budget_id}',
+            resource_path='/api/v1/scoped-budgets/{budget_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -584,7 +584,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def get_scoped_budget_v1_scoped_budgets_budget_id_get(
+    def get_scoped_budget_api_v1_scoped_budgets_budget_id_get(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -628,7 +628,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_scoped_budget_v1_scoped_budgets_budget_id_get_serialize(
+        _param = self._get_scoped_budget_api_v1_scoped_budgets_budget_id_get_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -652,7 +652,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def get_scoped_budget_v1_scoped_budgets_budget_id_get_with_http_info(
+    def get_scoped_budget_api_v1_scoped_budgets_budget_id_get_with_http_info(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -696,7 +696,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_scoped_budget_v1_scoped_budgets_budget_id_get_serialize(
+        _param = self._get_scoped_budget_api_v1_scoped_budgets_budget_id_get_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -720,7 +720,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def get_scoped_budget_v1_scoped_budgets_budget_id_get_without_preload_content(
+    def get_scoped_budget_api_v1_scoped_budgets_budget_id_get_without_preload_content(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -764,7 +764,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_scoped_budget_v1_scoped_budgets_budget_id_get_serialize(
+        _param = self._get_scoped_budget_api_v1_scoped_budgets_budget_id_get_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -783,7 +783,7 @@ class ScopedBudgetsApi:
         return response_data.response
 
 
-    def _get_scoped_budget_v1_scoped_budgets_budget_id_get_serialize(
+    def _get_scoped_budget_api_v1_scoped_budgets_budget_id_get_serialize(
         self,
         budget_id,
         _request_auth,
@@ -832,7 +832,7 @@ class ScopedBudgetsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/scoped-budgets/{budget_id}',
+            resource_path='/api/v1/scoped-budgets/{budget_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -849,7 +849,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def list_scoped_budgets_v1_scoped_budgets_get(
+    def list_scoped_budgets_api_v1_scoped_budgets_get(
         self,
         scope_type: Optional[StrictStr] = None,
         scope_id: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None,
@@ -902,7 +902,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_scoped_budgets_v1_scoped_budgets_get_serialize(
+        _param = self._list_scoped_budgets_api_v1_scoped_budgets_get_serialize(
             scope_type=scope_type,
             scope_id=scope_id,
             skip=skip,
@@ -929,7 +929,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def list_scoped_budgets_v1_scoped_budgets_get_with_http_info(
+    def list_scoped_budgets_api_v1_scoped_budgets_get_with_http_info(
         self,
         scope_type: Optional[StrictStr] = None,
         scope_id: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None,
@@ -982,7 +982,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_scoped_budgets_v1_scoped_budgets_get_serialize(
+        _param = self._list_scoped_budgets_api_v1_scoped_budgets_get_serialize(
             scope_type=scope_type,
             scope_id=scope_id,
             skip=skip,
@@ -1009,7 +1009,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def list_scoped_budgets_v1_scoped_budgets_get_without_preload_content(
+    def list_scoped_budgets_api_v1_scoped_budgets_get_without_preload_content(
         self,
         scope_type: Optional[StrictStr] = None,
         scope_id: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None,
@@ -1062,7 +1062,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_scoped_budgets_v1_scoped_budgets_get_serialize(
+        _param = self._list_scoped_budgets_api_v1_scoped_budgets_get_serialize(
             scope_type=scope_type,
             scope_id=scope_id,
             skip=skip,
@@ -1084,7 +1084,7 @@ class ScopedBudgetsApi:
         return response_data.response
 
 
-    def _list_scoped_budgets_v1_scoped_budgets_get_serialize(
+    def _list_scoped_budgets_api_v1_scoped_budgets_get_serialize(
         self,
         scope_type,
         scope_id,
@@ -1150,7 +1150,7 @@ class ScopedBudgetsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/scoped-budgets',
+            resource_path='/api/v1/scoped-budgets',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1167,7 +1167,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def update_scoped_budget_v1_scoped_budgets_budget_id_patch(
+    def update_scoped_budget_api_v1_scoped_budgets_budget_id_patch(
         self,
         budget_id: StrictStr,
         update_scoped_budget_request: UpdateScopedBudgetRequest,
@@ -1214,7 +1214,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_scoped_budget_v1_scoped_budgets_budget_id_patch_serialize(
+        _param = self._update_scoped_budget_api_v1_scoped_budgets_budget_id_patch_serialize(
             budget_id=budget_id,
             update_scoped_budget_request=update_scoped_budget_request,
             _request_auth=_request_auth,
@@ -1239,7 +1239,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def update_scoped_budget_v1_scoped_budgets_budget_id_patch_with_http_info(
+    def update_scoped_budget_api_v1_scoped_budgets_budget_id_patch_with_http_info(
         self,
         budget_id: StrictStr,
         update_scoped_budget_request: UpdateScopedBudgetRequest,
@@ -1286,7 +1286,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_scoped_budget_v1_scoped_budgets_budget_id_patch_serialize(
+        _param = self._update_scoped_budget_api_v1_scoped_budgets_budget_id_patch_serialize(
             budget_id=budget_id,
             update_scoped_budget_request=update_scoped_budget_request,
             _request_auth=_request_auth,
@@ -1311,7 +1311,7 @@ class ScopedBudgetsApi:
 
 
     @validate_call
-    def update_scoped_budget_v1_scoped_budgets_budget_id_patch_without_preload_content(
+    def update_scoped_budget_api_v1_scoped_budgets_budget_id_patch_without_preload_content(
         self,
         budget_id: StrictStr,
         update_scoped_budget_request: UpdateScopedBudgetRequest,
@@ -1358,7 +1358,7 @@ class ScopedBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_scoped_budget_v1_scoped_budgets_budget_id_patch_serialize(
+        _param = self._update_scoped_budget_api_v1_scoped_budgets_budget_id_patch_serialize(
             budget_id=budget_id,
             update_scoped_budget_request=update_scoped_budget_request,
             _request_auth=_request_auth,
@@ -1378,7 +1378,7 @@ class ScopedBudgetsApi:
         return response_data.response
 
 
-    def _update_scoped_budget_v1_scoped_budgets_budget_id_patch_serialize(
+    def _update_scoped_budget_api_v1_scoped_budgets_budget_id_patch_serialize(
         self,
         budget_id,
         update_scoped_budget_request,
@@ -1443,7 +1443,7 @@ class ScopedBudgetsApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/scoped-budgets/{budget_id}',
+            resource_path='/api/v1/scoped-budgets/{budget_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

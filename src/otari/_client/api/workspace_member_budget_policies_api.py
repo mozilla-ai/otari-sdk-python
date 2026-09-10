@@ -44,7 +44,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def create_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_post(
+    def create_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_post(
         self,
         workspace_id: UUID,
         workspace_member_budget_policy_create: WorkspaceMemberBudgetPolicyCreate,
@@ -91,7 +91,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_post_serialize(
+        _param = self._create_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_post_serialize(
             workspace_id=workspace_id,
             workspace_member_budget_policy_create=workspace_member_budget_policy_create,
             _request_auth=_request_auth,
@@ -116,7 +116,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def create_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_post_with_http_info(
+    def create_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_post_with_http_info(
         self,
         workspace_id: UUID,
         workspace_member_budget_policy_create: WorkspaceMemberBudgetPolicyCreate,
@@ -163,7 +163,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_post_serialize(
+        _param = self._create_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_post_serialize(
             workspace_id=workspace_id,
             workspace_member_budget_policy_create=workspace_member_budget_policy_create,
             _request_auth=_request_auth,
@@ -188,7 +188,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def create_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_post_without_preload_content(
+    def create_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_post_without_preload_content(
         self,
         workspace_id: UUID,
         workspace_member_budget_policy_create: WorkspaceMemberBudgetPolicyCreate,
@@ -235,7 +235,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_post_serialize(
+        _param = self._create_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_post_serialize(
             workspace_id=workspace_id,
             workspace_member_budget_policy_create=workspace_member_budget_policy_create,
             _request_auth=_request_auth,
@@ -255,7 +255,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         return response_data.response
 
 
-    def _create_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_post_serialize(
+    def _create_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_post_serialize(
         self,
         workspace_id,
         workspace_member_budget_policy_create,
@@ -320,7 +320,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/workspaces/{workspace_id}/member-budget-policies',
+            resource_path='/api/v1/workspaces/{workspace_id}/member-budget-policies',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -337,7 +337,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def delete_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_delete(
+    def delete_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_delete(
         self,
         workspace_id: UUID,
         default_id: StrictStr,
@@ -384,7 +384,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_serialize(
+        _param = self._delete_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_serialize(
             workspace_id=workspace_id,
             default_id=default_id,
             _request_auth=_request_auth,
@@ -409,7 +409,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def delete_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_with_http_info(
+    def delete_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_with_http_info(
         self,
         workspace_id: UUID,
         default_id: StrictStr,
@@ -456,7 +456,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_serialize(
+        _param = self._delete_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_serialize(
             workspace_id=workspace_id,
             default_id=default_id,
             _request_auth=_request_auth,
@@ -481,7 +481,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def delete_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_without_preload_content(
+    def delete_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_without_preload_content(
         self,
         workspace_id: UUID,
         default_id: StrictStr,
@@ -528,7 +528,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_serialize(
+        _param = self._delete_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_serialize(
             workspace_id=workspace_id,
             default_id=default_id,
             _request_auth=_request_auth,
@@ -548,7 +548,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         return response_data.response
 
 
-    def _delete_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_serialize(
+    def _delete_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_delete_serialize(
         self,
         workspace_id,
         default_id,
@@ -600,7 +600,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/workspaces/{workspace_id}/member-budget-policies/{default_id}',
+            resource_path='/api/v1/workspaces/{workspace_id}/member-budget-policies/{default_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -617,7 +617,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def list_workspace_budget_defaults_v1_workspaces_workspace_id_member_budget_policies_get(
+    def list_workspace_budget_defaults_api_v1_workspaces_workspace_id_member_budget_policies_get(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -667,7 +667,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_budget_defaults_v1_workspaces_workspace_id_member_budget_policies_get_serialize(
+        _param = self._list_workspace_budget_defaults_api_v1_workspaces_workspace_id_member_budget_policies_get_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -693,7 +693,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def list_workspace_budget_defaults_v1_workspaces_workspace_id_member_budget_policies_get_with_http_info(
+    def list_workspace_budget_defaults_api_v1_workspaces_workspace_id_member_budget_policies_get_with_http_info(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -743,7 +743,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_budget_defaults_v1_workspaces_workspace_id_member_budget_policies_get_serialize(
+        _param = self._list_workspace_budget_defaults_api_v1_workspaces_workspace_id_member_budget_policies_get_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -769,7 +769,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def list_workspace_budget_defaults_v1_workspaces_workspace_id_member_budget_policies_get_without_preload_content(
+    def list_workspace_budget_defaults_api_v1_workspaces_workspace_id_member_budget_policies_get_without_preload_content(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -819,7 +819,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_budget_defaults_v1_workspaces_workspace_id_member_budget_policies_get_serialize(
+        _param = self._list_workspace_budget_defaults_api_v1_workspaces_workspace_id_member_budget_policies_get_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -840,7 +840,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         return response_data.response
 
 
-    def _list_workspace_budget_defaults_v1_workspaces_workspace_id_member_budget_policies_get_serialize(
+    def _list_workspace_budget_defaults_api_v1_workspaces_workspace_id_member_budget_policies_get_serialize(
         self,
         workspace_id,
         skip,
@@ -899,7 +899,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/workspaces/{workspace_id}/member-budget-policies',
+            resource_path='/api/v1/workspaces/{workspace_id}/member-budget-policies',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -916,7 +916,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def update_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_patch(
+    def update_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_patch(
         self,
         workspace_id: UUID,
         default_id: StrictStr,
@@ -966,7 +966,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_serialize(
+        _param = self._update_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_serialize(
             workspace_id=workspace_id,
             default_id=default_id,
             workspace_member_budget_policy_update=workspace_member_budget_policy_update,
@@ -992,7 +992,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def update_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_with_http_info(
+    def update_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_with_http_info(
         self,
         workspace_id: UUID,
         default_id: StrictStr,
@@ -1042,7 +1042,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_serialize(
+        _param = self._update_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_serialize(
             workspace_id=workspace_id,
             default_id=default_id,
             workspace_member_budget_policy_update=workspace_member_budget_policy_update,
@@ -1068,7 +1068,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
 
     @validate_call
-    def update_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_without_preload_content(
+    def update_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_without_preload_content(
         self,
         workspace_id: UUID,
         default_id: StrictStr,
@@ -1118,7 +1118,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_serialize(
+        _param = self._update_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_serialize(
             workspace_id=workspace_id,
             default_id=default_id,
             workspace_member_budget_policy_update=workspace_member_budget_policy_update,
@@ -1139,7 +1139,7 @@ class WorkspaceMemberBudgetPoliciesApi:
         return response_data.response
 
 
-    def _update_workspace_budget_default_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_serialize(
+    def _update_workspace_budget_default_api_v1_workspaces_workspace_id_member_budget_policies_default_id_patch_serialize(
         self,
         workspace_id,
         default_id,
@@ -1207,7 +1207,7 @@ class WorkspaceMemberBudgetPoliciesApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/workspaces/{workspace_id}/member-budget-policies/{default_id}',
+            resource_path='/api/v1/workspaces/{workspace_id}/member-budget-policies/{default_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

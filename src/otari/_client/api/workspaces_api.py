@@ -46,7 +46,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def add_workspace_member_v1_workspaces_workspace_id_members_user_id_post(
+    def add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -96,7 +96,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._add_workspace_member_v1_workspaces_workspace_id_members_user_id_post_serialize(
+        _param = self._add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             role=role,
@@ -122,7 +122,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def add_workspace_member_v1_workspaces_workspace_id_members_user_id_post_with_http_info(
+    def add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_with_http_info(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -172,7 +172,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._add_workspace_member_v1_workspaces_workspace_id_members_user_id_post_serialize(
+        _param = self._add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             role=role,
@@ -198,7 +198,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def add_workspace_member_v1_workspaces_workspace_id_members_user_id_post_without_preload_content(
+    def add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_without_preload_content(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -248,7 +248,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._add_workspace_member_v1_workspaces_workspace_id_members_user_id_post_serialize(
+        _param = self._add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             role=role,
@@ -269,7 +269,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _add_workspace_member_v1_workspaces_workspace_id_members_user_id_post_serialize(
+    def _add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_serialize(
         self,
         workspace_id,
         user_id,
@@ -326,7 +326,7 @@ class WorkspacesApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/workspaces/{workspace_id}/members/{user_id}',
+            resource_path='/api/v1/workspaces/{workspace_id}/members/{user_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -343,7 +343,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def create_workspace_v1_workspaces_post(
+    def create_workspace_api_v1_workspaces_post(
         self,
         workspace_create: WorkspaceCreate,
         _request_timeout: Union[
@@ -387,7 +387,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_v1_workspaces_post_serialize(
+        _param = self._create_workspace_api_v1_workspaces_post_serialize(
             workspace_create=workspace_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -411,7 +411,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def create_workspace_v1_workspaces_post_with_http_info(
+    def create_workspace_api_v1_workspaces_post_with_http_info(
         self,
         workspace_create: WorkspaceCreate,
         _request_timeout: Union[
@@ -455,7 +455,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_v1_workspaces_post_serialize(
+        _param = self._create_workspace_api_v1_workspaces_post_serialize(
             workspace_create=workspace_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -479,7 +479,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def create_workspace_v1_workspaces_post_without_preload_content(
+    def create_workspace_api_v1_workspaces_post_without_preload_content(
         self,
         workspace_create: WorkspaceCreate,
         _request_timeout: Union[
@@ -523,7 +523,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_v1_workspaces_post_serialize(
+        _param = self._create_workspace_api_v1_workspaces_post_serialize(
             workspace_create=workspace_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -542,7 +542,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _create_workspace_v1_workspaces_post_serialize(
+    def _create_workspace_api_v1_workspaces_post_serialize(
         self,
         workspace_create,
         _request_auth,
@@ -604,7 +604,7 @@ class WorkspacesApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/workspaces',
+            resource_path='/api/v1/workspaces',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -621,7 +621,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def delete_workspace_v1_workspaces_workspace_id_delete(
+    def delete_workspace_api_v1_workspaces_workspace_id_delete(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -665,7 +665,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_v1_workspaces_workspace_id_delete_serialize(
+        _param = self._delete_workspace_api_v1_workspaces_workspace_id_delete_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -689,7 +689,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def delete_workspace_v1_workspaces_workspace_id_delete_with_http_info(
+    def delete_workspace_api_v1_workspaces_workspace_id_delete_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -733,7 +733,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_v1_workspaces_workspace_id_delete_serialize(
+        _param = self._delete_workspace_api_v1_workspaces_workspace_id_delete_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -757,7 +757,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def delete_workspace_v1_workspaces_workspace_id_delete_without_preload_content(
+    def delete_workspace_api_v1_workspaces_workspace_id_delete_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -801,7 +801,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_v1_workspaces_workspace_id_delete_serialize(
+        _param = self._delete_workspace_api_v1_workspaces_workspace_id_delete_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -820,7 +820,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _delete_workspace_v1_workspaces_workspace_id_delete_serialize(
+    def _delete_workspace_api_v1_workspaces_workspace_id_delete_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -869,7 +869,7 @@ class WorkspacesApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/workspaces/{workspace_id}',
+            resource_path='/api/v1/workspaces/{workspace_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -886,7 +886,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def get_workspace_v1_workspaces_workspace_id_get(
+    def get_workspace_api_v1_workspaces_workspace_id_get(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -930,7 +930,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_v1_workspaces_workspace_id_get_serialize(
+        _param = self._get_workspace_api_v1_workspaces_workspace_id_get_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -954,7 +954,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def get_workspace_v1_workspaces_workspace_id_get_with_http_info(
+    def get_workspace_api_v1_workspaces_workspace_id_get_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -998,7 +998,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_v1_workspaces_workspace_id_get_serialize(
+        _param = self._get_workspace_api_v1_workspaces_workspace_id_get_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1022,7 +1022,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def get_workspace_v1_workspaces_workspace_id_get_without_preload_content(
+    def get_workspace_api_v1_workspaces_workspace_id_get_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -1066,7 +1066,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_v1_workspaces_workspace_id_get_serialize(
+        _param = self._get_workspace_api_v1_workspaces_workspace_id_get_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1085,7 +1085,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _get_workspace_v1_workspaces_workspace_id_get_serialize(
+    def _get_workspace_api_v1_workspaces_workspace_id_get_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -1134,7 +1134,7 @@ class WorkspacesApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/workspaces/{workspace_id}',
+            resource_path='/api/v1/workspaces/{workspace_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1151,7 +1151,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspace_members_v1_workspaces_workspace_id_members_get(
+    def list_workspace_members_api_v1_workspaces_workspace_id_members_get(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -1201,7 +1201,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_members_v1_workspaces_workspace_id_members_get_serialize(
+        _param = self._list_workspace_members_api_v1_workspaces_workspace_id_members_get_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -1227,7 +1227,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspace_members_v1_workspaces_workspace_id_members_get_with_http_info(
+    def list_workspace_members_api_v1_workspaces_workspace_id_members_get_with_http_info(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -1277,7 +1277,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_members_v1_workspaces_workspace_id_members_get_serialize(
+        _param = self._list_workspace_members_api_v1_workspaces_workspace_id_members_get_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -1303,7 +1303,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspace_members_v1_workspaces_workspace_id_members_get_without_preload_content(
+    def list_workspace_members_api_v1_workspaces_workspace_id_members_get_without_preload_content(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -1353,7 +1353,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_members_v1_workspaces_workspace_id_members_get_serialize(
+        _param = self._list_workspace_members_api_v1_workspaces_workspace_id_members_get_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -1374,7 +1374,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _list_workspace_members_v1_workspaces_workspace_id_members_get_serialize(
+    def _list_workspace_members_api_v1_workspaces_workspace_id_members_get_serialize(
         self,
         workspace_id,
         skip,
@@ -1433,7 +1433,7 @@ class WorkspacesApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/workspaces/{workspace_id}/members',
+            resource_path='/api/v1/workspaces/{workspace_id}/members',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1450,7 +1450,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspaces_v1_workspaces_get(
+    def list_workspaces_api_v1_workspaces_get(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1497,7 +1497,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspaces_v1_workspaces_get_serialize(
+        _param = self._list_workspaces_api_v1_workspaces_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1522,7 +1522,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspaces_v1_workspaces_get_with_http_info(
+    def list_workspaces_api_v1_workspaces_get_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1569,7 +1569,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspaces_v1_workspaces_get_serialize(
+        _param = self._list_workspaces_api_v1_workspaces_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1594,7 +1594,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspaces_v1_workspaces_get_without_preload_content(
+    def list_workspaces_api_v1_workspaces_get_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1641,7 +1641,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspaces_v1_workspaces_get_serialize(
+        _param = self._list_workspaces_api_v1_workspaces_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1661,7 +1661,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _list_workspaces_v1_workspaces_get_serialize(
+    def _list_workspaces_api_v1_workspaces_get_serialize(
         self,
         skip,
         limit,
@@ -1717,7 +1717,7 @@ class WorkspacesApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/workspaces',
+            resource_path='/api/v1/workspaces',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1734,7 +1734,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def remove_workspace_member_v1_workspaces_workspace_id_members_user_id_delete(
+    def remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -1781,7 +1781,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_workspace_member_v1_workspaces_workspace_id_members_user_id_delete_serialize(
+        _param = self._remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             _request_auth=_request_auth,
@@ -1806,7 +1806,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def remove_workspace_member_v1_workspaces_workspace_id_members_user_id_delete_with_http_info(
+    def remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_with_http_info(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -1853,7 +1853,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_workspace_member_v1_workspaces_workspace_id_members_user_id_delete_serialize(
+        _param = self._remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             _request_auth=_request_auth,
@@ -1878,7 +1878,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def remove_workspace_member_v1_workspaces_workspace_id_members_user_id_delete_without_preload_content(
+    def remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_without_preload_content(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -1925,7 +1925,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_workspace_member_v1_workspaces_workspace_id_members_user_id_delete_serialize(
+        _param = self._remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             _request_auth=_request_auth,
@@ -1945,7 +1945,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _remove_workspace_member_v1_workspaces_workspace_id_members_user_id_delete_serialize(
+    def _remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_serialize(
         self,
         workspace_id,
         user_id,
@@ -1997,7 +1997,7 @@ class WorkspacesApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/workspaces/{workspace_id}/members/{user_id}',
+            resource_path='/api/v1/workspaces/{workspace_id}/members/{user_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2014,304 +2014,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def update_workspace_member_role_v1_workspaces_workspace_id_members_user_id_patch(
-        self,
-        workspace_id: UUID,
-        user_id: UUID,
-        role: Annotated[StrictStr, Field(description="Role to assign in this workspace.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> WorkspaceMemberPublic:
-        """Update Workspace Member Role
-
-        Change a workspace member's role.
-
-        :param workspace_id: (required)
-        :type workspace_id: UUID
-        :param user_id: (required)
-        :type user_id: UUID
-        :param role: Role to assign in this workspace. (required)
-        :type role: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._update_workspace_member_role_v1_workspaces_workspace_id_members_user_id_patch_serialize(
-            workspace_id=workspace_id,
-            user_id=user_id,
-            role=role,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "WorkspaceMemberPublic",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def update_workspace_member_role_v1_workspaces_workspace_id_members_user_id_patch_with_http_info(
-        self,
-        workspace_id: UUID,
-        user_id: UUID,
-        role: Annotated[StrictStr, Field(description="Role to assign in this workspace.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[WorkspaceMemberPublic]:
-        """Update Workspace Member Role
-
-        Change a workspace member's role.
-
-        :param workspace_id: (required)
-        :type workspace_id: UUID
-        :param user_id: (required)
-        :type user_id: UUID
-        :param role: Role to assign in this workspace. (required)
-        :type role: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._update_workspace_member_role_v1_workspaces_workspace_id_members_user_id_patch_serialize(
-            workspace_id=workspace_id,
-            user_id=user_id,
-            role=role,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "WorkspaceMemberPublic",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def update_workspace_member_role_v1_workspaces_workspace_id_members_user_id_patch_without_preload_content(
-        self,
-        workspace_id: UUID,
-        user_id: UUID,
-        role: Annotated[StrictStr, Field(description="Role to assign in this workspace.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Update Workspace Member Role
-
-        Change a workspace member's role.
-
-        :param workspace_id: (required)
-        :type workspace_id: UUID
-        :param user_id: (required)
-        :type user_id: UUID
-        :param role: Role to assign in this workspace. (required)
-        :type role: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._update_workspace_member_role_v1_workspaces_workspace_id_members_user_id_patch_serialize(
-            workspace_id=workspace_id,
-            user_id=user_id,
-            role=role,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "WorkspaceMemberPublic",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _update_workspace_member_role_v1_workspaces_workspace_id_members_user_id_patch_serialize(
-        self,
-        workspace_id,
-        user_id,
-        role,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if workspace_id is not None:
-            _path_params['workspace_id'] = workspace_id
-        if user_id is not None:
-            _path_params['user_id'] = user_id
-        # process the query parameters
-        if role is not None:
-            
-            _query_params.append(('role', role))
-            
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'XApiKeyAuth', 
-            'ApiKeyAuth'
-        ]
-
-        return self.api_client.param_serialize(
-            method='PATCH',
-            resource_path='/v1/workspaces/{workspace_id}/members/{user_id}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def update_workspace_v1_workspaces_workspace_id_patch(
+    def update_workspace_api_v1_workspaces_workspace_id_patch(
         self,
         workspace_id: UUID,
         workspace_update: WorkspaceUpdate,
@@ -2358,7 +2061,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_v1_workspaces_workspace_id_patch_serialize(
+        _param = self._update_workspace_api_v1_workspaces_workspace_id_patch_serialize(
             workspace_id=workspace_id,
             workspace_update=workspace_update,
             _request_auth=_request_auth,
@@ -2383,7 +2086,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def update_workspace_v1_workspaces_workspace_id_patch_with_http_info(
+    def update_workspace_api_v1_workspaces_workspace_id_patch_with_http_info(
         self,
         workspace_id: UUID,
         workspace_update: WorkspaceUpdate,
@@ -2430,7 +2133,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_v1_workspaces_workspace_id_patch_serialize(
+        _param = self._update_workspace_api_v1_workspaces_workspace_id_patch_serialize(
             workspace_id=workspace_id,
             workspace_update=workspace_update,
             _request_auth=_request_auth,
@@ -2455,7 +2158,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def update_workspace_v1_workspaces_workspace_id_patch_without_preload_content(
+    def update_workspace_api_v1_workspaces_workspace_id_patch_without_preload_content(
         self,
         workspace_id: UUID,
         workspace_update: WorkspaceUpdate,
@@ -2502,7 +2205,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_v1_workspaces_workspace_id_patch_serialize(
+        _param = self._update_workspace_api_v1_workspaces_workspace_id_patch_serialize(
             workspace_id=workspace_id,
             workspace_update=workspace_update,
             _request_auth=_request_auth,
@@ -2522,7 +2225,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _update_workspace_v1_workspaces_workspace_id_patch_serialize(
+    def _update_workspace_api_v1_workspaces_workspace_id_patch_serialize(
         self,
         workspace_id,
         workspace_update,
@@ -2587,7 +2290,304 @@ class WorkspacesApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/workspaces/{workspace_id}',
+            resource_path='/api/v1/workspaces/{workspace_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch(
+        self,
+        workspace_id: UUID,
+        user_id: UUID,
+        role: Annotated[StrictStr, Field(description="Role to assign in this workspace.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> WorkspaceMemberPublic:
+        """Update Workspace Member Role
+
+        Change a workspace member's role.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param user_id: (required)
+        :type user_id: UUID
+        :param role: Role to assign in this workspace. (required)
+        :type role: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_serialize(
+            workspace_id=workspace_id,
+            user_id=user_id,
+            role=role,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMemberPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_with_http_info(
+        self,
+        workspace_id: UUID,
+        user_id: UUID,
+        role: Annotated[StrictStr, Field(description="Role to assign in this workspace.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[WorkspaceMemberPublic]:
+        """Update Workspace Member Role
+
+        Change a workspace member's role.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param user_id: (required)
+        :type user_id: UUID
+        :param role: Role to assign in this workspace. (required)
+        :type role: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_serialize(
+            workspace_id=workspace_id,
+            user_id=user_id,
+            role=role,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMemberPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_without_preload_content(
+        self,
+        workspace_id: UUID,
+        user_id: UUID,
+        role: Annotated[StrictStr, Field(description="Role to assign in this workspace.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Update Workspace Member Role
+
+        Change a workspace member's role.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param user_id: (required)
+        :type user_id: UUID
+        :param role: Role to assign in this workspace. (required)
+        :type role: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_serialize(
+            workspace_id=workspace_id,
+            user_id=user_id,
+            role=role,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMemberPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_serialize(
+        self,
+        workspace_id,
+        user_id,
+        role,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if workspace_id is not None:
+            _path_params['workspace_id'] = workspace_id
+        if user_id is not None:
+            _path_params['user_id'] = user_id
+        # process the query parameters
+        if role is not None:
+            
+            _query_params.append(('role', role))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PATCH',
+            resource_path='/api/v1/workspaces/{workspace_id}/members/{user_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -37,7 +37,7 @@ class EmbeddingsApi:
 
 
     @validate_call
-    def create_embedding_v1_embeddings_post(
+    def create_embedding_api_v1_embeddings_post(
         self,
         embedding_request: EmbeddingRequest,
         _request_timeout: Union[
@@ -81,7 +81,7 @@ class EmbeddingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_embedding_v1_embeddings_post_serialize(
+        _param = self._create_embedding_api_v1_embeddings_post_serialize(
             embedding_request=embedding_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -105,7 +105,7 @@ class EmbeddingsApi:
 
 
     @validate_call
-    def create_embedding_v1_embeddings_post_with_http_info(
+    def create_embedding_api_v1_embeddings_post_with_http_info(
         self,
         embedding_request: EmbeddingRequest,
         _request_timeout: Union[
@@ -149,7 +149,7 @@ class EmbeddingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_embedding_v1_embeddings_post_serialize(
+        _param = self._create_embedding_api_v1_embeddings_post_serialize(
             embedding_request=embedding_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -173,7 +173,7 @@ class EmbeddingsApi:
 
 
     @validate_call
-    def create_embedding_v1_embeddings_post_without_preload_content(
+    def create_embedding_api_v1_embeddings_post_without_preload_content(
         self,
         embedding_request: EmbeddingRequest,
         _request_timeout: Union[
@@ -217,7 +217,7 @@ class EmbeddingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_embedding_v1_embeddings_post_serialize(
+        _param = self._create_embedding_api_v1_embeddings_post_serialize(
             embedding_request=embedding_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -236,7 +236,7 @@ class EmbeddingsApi:
         return response_data.response
 
 
-    def _create_embedding_v1_embeddings_post_serialize(
+    def _create_embedding_api_v1_embeddings_post_serialize(
         self,
         embedding_request,
         _request_auth,
@@ -298,7 +298,7 @@ class EmbeddingsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/embeddings',
+            resource_path='/api/v1/embeddings',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

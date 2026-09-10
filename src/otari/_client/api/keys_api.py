@@ -43,7 +43,7 @@ class KeysApi:
 
 
     @validate_call
-    def create_key_v1_keys_post(
+    def create_key_api_v1_keys_post(
         self,
         create_key_request: CreateKeyRequest,
         _request_timeout: Union[
@@ -87,7 +87,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_key_v1_keys_post_serialize(
+        _param = self._create_key_api_v1_keys_post_serialize(
             create_key_request=create_key_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -111,7 +111,7 @@ class KeysApi:
 
 
     @validate_call
-    def create_key_v1_keys_post_with_http_info(
+    def create_key_api_v1_keys_post_with_http_info(
         self,
         create_key_request: CreateKeyRequest,
         _request_timeout: Union[
@@ -155,7 +155,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_key_v1_keys_post_serialize(
+        _param = self._create_key_api_v1_keys_post_serialize(
             create_key_request=create_key_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -179,7 +179,7 @@ class KeysApi:
 
 
     @validate_call
-    def create_key_v1_keys_post_without_preload_content(
+    def create_key_api_v1_keys_post_without_preload_content(
         self,
         create_key_request: CreateKeyRequest,
         _request_timeout: Union[
@@ -223,7 +223,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_key_v1_keys_post_serialize(
+        _param = self._create_key_api_v1_keys_post_serialize(
             create_key_request=create_key_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -242,7 +242,7 @@ class KeysApi:
         return response_data.response
 
 
-    def _create_key_v1_keys_post_serialize(
+    def _create_key_api_v1_keys_post_serialize(
         self,
         create_key_request,
         _request_auth,
@@ -304,7 +304,7 @@ class KeysApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/keys',
+            resource_path='/api/v1/keys',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -321,7 +321,7 @@ class KeysApi:
 
 
     @validate_call
-    def delete_key_v1_keys_key_id_delete(
+    def delete_key_api_v1_keys_key_id_delete(
         self,
         key_id: StrictStr,
         _request_timeout: Union[
@@ -365,7 +365,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_key_v1_keys_key_id_delete_serialize(
+        _param = self._delete_key_api_v1_keys_key_id_delete_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -389,7 +389,7 @@ class KeysApi:
 
 
     @validate_call
-    def delete_key_v1_keys_key_id_delete_with_http_info(
+    def delete_key_api_v1_keys_key_id_delete_with_http_info(
         self,
         key_id: StrictStr,
         _request_timeout: Union[
@@ -433,7 +433,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_key_v1_keys_key_id_delete_serialize(
+        _param = self._delete_key_api_v1_keys_key_id_delete_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -457,7 +457,7 @@ class KeysApi:
 
 
     @validate_call
-    def delete_key_v1_keys_key_id_delete_without_preload_content(
+    def delete_key_api_v1_keys_key_id_delete_without_preload_content(
         self,
         key_id: StrictStr,
         _request_timeout: Union[
@@ -501,7 +501,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_key_v1_keys_key_id_delete_serialize(
+        _param = self._delete_key_api_v1_keys_key_id_delete_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -520,7 +520,7 @@ class KeysApi:
         return response_data.response
 
 
-    def _delete_key_v1_keys_key_id_delete_serialize(
+    def _delete_key_api_v1_keys_key_id_delete_serialize(
         self,
         key_id,
         _request_auth,
@@ -569,7 +569,7 @@ class KeysApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/keys/{key_id}',
+            resource_path='/api/v1/keys/{key_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -586,7 +586,7 @@ class KeysApi:
 
 
     @validate_call
-    def get_key_v1_keys_key_id_get(
+    def get_key_api_v1_keys_key_id_get(
         self,
         key_id: StrictStr,
         _request_timeout: Union[
@@ -630,7 +630,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_key_v1_keys_key_id_get_serialize(
+        _param = self._get_key_api_v1_keys_key_id_get_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -654,7 +654,7 @@ class KeysApi:
 
 
     @validate_call
-    def get_key_v1_keys_key_id_get_with_http_info(
+    def get_key_api_v1_keys_key_id_get_with_http_info(
         self,
         key_id: StrictStr,
         _request_timeout: Union[
@@ -698,7 +698,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_key_v1_keys_key_id_get_serialize(
+        _param = self._get_key_api_v1_keys_key_id_get_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -722,7 +722,7 @@ class KeysApi:
 
 
     @validate_call
-    def get_key_v1_keys_key_id_get_without_preload_content(
+    def get_key_api_v1_keys_key_id_get_without_preload_content(
         self,
         key_id: StrictStr,
         _request_timeout: Union[
@@ -766,7 +766,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_key_v1_keys_key_id_get_serialize(
+        _param = self._get_key_api_v1_keys_key_id_get_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -785,7 +785,7 @@ class KeysApi:
         return response_data.response
 
 
-    def _get_key_v1_keys_key_id_get_serialize(
+    def _get_key_api_v1_keys_key_id_get_serialize(
         self,
         key_id,
         _request_auth,
@@ -834,7 +834,7 @@ class KeysApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/keys/{key_id}',
+            resource_path='/api/v1/keys/{key_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -851,7 +851,7 @@ class KeysApi:
 
 
     @validate_call
-    def list_keys_v1_keys_get(
+    def list_keys_api_v1_keys_get(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -901,7 +901,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_keys_v1_keys_get_serialize(
+        _param = self._list_keys_api_v1_keys_get_serialize(
             skip=skip,
             limit=limit,
             workspace_id=workspace_id,
@@ -927,7 +927,7 @@ class KeysApi:
 
 
     @validate_call
-    def list_keys_v1_keys_get_with_http_info(
+    def list_keys_api_v1_keys_get_with_http_info(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -977,7 +977,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_keys_v1_keys_get_serialize(
+        _param = self._list_keys_api_v1_keys_get_serialize(
             skip=skip,
             limit=limit,
             workspace_id=workspace_id,
@@ -1003,7 +1003,7 @@ class KeysApi:
 
 
     @validate_call
-    def list_keys_v1_keys_get_without_preload_content(
+    def list_keys_api_v1_keys_get_without_preload_content(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1053,7 +1053,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_keys_v1_keys_get_serialize(
+        _param = self._list_keys_api_v1_keys_get_serialize(
             skip=skip,
             limit=limit,
             workspace_id=workspace_id,
@@ -1074,7 +1074,7 @@ class KeysApi:
         return response_data.response
 
 
-    def _list_keys_v1_keys_get_serialize(
+    def _list_keys_api_v1_keys_get_serialize(
         self,
         skip,
         limit,
@@ -1135,7 +1135,7 @@ class KeysApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/keys',
+            resource_path='/api/v1/keys',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1152,7 +1152,7 @@ class KeysApi:
 
 
     @validate_call
-    def rotate_key_v1_keys_key_id_rotate_post(
+    def rotate_key_api_v1_keys_key_id_rotate_post(
         self,
         key_id: StrictStr,
         _request_timeout: Union[
@@ -1196,7 +1196,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rotate_key_v1_keys_key_id_rotate_post_serialize(
+        _param = self._rotate_key_api_v1_keys_key_id_rotate_post_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1220,7 +1220,7 @@ class KeysApi:
 
 
     @validate_call
-    def rotate_key_v1_keys_key_id_rotate_post_with_http_info(
+    def rotate_key_api_v1_keys_key_id_rotate_post_with_http_info(
         self,
         key_id: StrictStr,
         _request_timeout: Union[
@@ -1264,7 +1264,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rotate_key_v1_keys_key_id_rotate_post_serialize(
+        _param = self._rotate_key_api_v1_keys_key_id_rotate_post_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1288,7 +1288,7 @@ class KeysApi:
 
 
     @validate_call
-    def rotate_key_v1_keys_key_id_rotate_post_without_preload_content(
+    def rotate_key_api_v1_keys_key_id_rotate_post_without_preload_content(
         self,
         key_id: StrictStr,
         _request_timeout: Union[
@@ -1332,7 +1332,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rotate_key_v1_keys_key_id_rotate_post_serialize(
+        _param = self._rotate_key_api_v1_keys_key_id_rotate_post_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1351,7 +1351,7 @@ class KeysApi:
         return response_data.response
 
 
-    def _rotate_key_v1_keys_key_id_rotate_post_serialize(
+    def _rotate_key_api_v1_keys_key_id_rotate_post_serialize(
         self,
         key_id,
         _request_auth,
@@ -1400,7 +1400,7 @@ class KeysApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/keys/{key_id}/rotate',
+            resource_path='/api/v1/keys/{key_id}/rotate',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1417,7 +1417,7 @@ class KeysApi:
 
 
     @validate_call
-    def update_key_v1_keys_key_id_patch(
+    def update_key_api_v1_keys_key_id_patch(
         self,
         key_id: StrictStr,
         update_key_request: UpdateKeyRequest,
@@ -1464,7 +1464,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_key_v1_keys_key_id_patch_serialize(
+        _param = self._update_key_api_v1_keys_key_id_patch_serialize(
             key_id=key_id,
             update_key_request=update_key_request,
             _request_auth=_request_auth,
@@ -1489,7 +1489,7 @@ class KeysApi:
 
 
     @validate_call
-    def update_key_v1_keys_key_id_patch_with_http_info(
+    def update_key_api_v1_keys_key_id_patch_with_http_info(
         self,
         key_id: StrictStr,
         update_key_request: UpdateKeyRequest,
@@ -1536,7 +1536,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_key_v1_keys_key_id_patch_serialize(
+        _param = self._update_key_api_v1_keys_key_id_patch_serialize(
             key_id=key_id,
             update_key_request=update_key_request,
             _request_auth=_request_auth,
@@ -1561,7 +1561,7 @@ class KeysApi:
 
 
     @validate_call
-    def update_key_v1_keys_key_id_patch_without_preload_content(
+    def update_key_api_v1_keys_key_id_patch_without_preload_content(
         self,
         key_id: StrictStr,
         update_key_request: UpdateKeyRequest,
@@ -1608,7 +1608,7 @@ class KeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_key_v1_keys_key_id_patch_serialize(
+        _param = self._update_key_api_v1_keys_key_id_patch_serialize(
             key_id=key_id,
             update_key_request=update_key_request,
             _request_auth=_request_auth,
@@ -1628,7 +1628,7 @@ class KeysApi:
         return response_data.response
 
 
-    def _update_key_v1_keys_key_id_patch_serialize(
+    def _update_key_api_v1_keys_key_id_patch_serialize(
         self,
         key_id,
         update_key_request,
@@ -1693,7 +1693,7 @@ class KeysApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/keys/{key_id}',
+            resource_path='/api/v1/keys/{key_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -30,7 +30,7 @@ class McpToolDefinition(BaseModel):
     annotations: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     description: Optional[StrictStr] = Field(default=None, description="The server's own description, untrusted.")
     input_schema: Dict[str, Any] = Field(description="The tool's MCP inputSchema, unmodified.")
-    name: StrictStr = Field(description="The remote MCP tool name to send back to /v1/mcp/execute.")
+    name: StrictStr = Field(description="The remote MCP tool name to send back to /api/v1/mcp/execute.")
     __properties: ClassVar[List[str]] = ["annotations", "description", "input_schema", "name"]
 
     model_config = ConfigDict(

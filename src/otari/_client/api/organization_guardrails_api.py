@@ -44,7 +44,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def create_organization_guardrail_v1_organizations_me_guardrails_post(
+    def create_organization_guardrail_api_v1_organizations_me_guardrails_post(
         self,
         organization_guardrail_create: OrganizationGuardrailCreate,
         _request_timeout: Union[
@@ -88,7 +88,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_guardrail_v1_organizations_me_guardrails_post_serialize(
+        _param = self._create_organization_guardrail_api_v1_organizations_me_guardrails_post_serialize(
             organization_guardrail_create=organization_guardrail_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -112,7 +112,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def create_organization_guardrail_v1_organizations_me_guardrails_post_with_http_info(
+    def create_organization_guardrail_api_v1_organizations_me_guardrails_post_with_http_info(
         self,
         organization_guardrail_create: OrganizationGuardrailCreate,
         _request_timeout: Union[
@@ -156,7 +156,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_guardrail_v1_organizations_me_guardrails_post_serialize(
+        _param = self._create_organization_guardrail_api_v1_organizations_me_guardrails_post_serialize(
             organization_guardrail_create=organization_guardrail_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -180,7 +180,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def create_organization_guardrail_v1_organizations_me_guardrails_post_without_preload_content(
+    def create_organization_guardrail_api_v1_organizations_me_guardrails_post_without_preload_content(
         self,
         organization_guardrail_create: OrganizationGuardrailCreate,
         _request_timeout: Union[
@@ -224,7 +224,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_guardrail_v1_organizations_me_guardrails_post_serialize(
+        _param = self._create_organization_guardrail_api_v1_organizations_me_guardrails_post_serialize(
             organization_guardrail_create=organization_guardrail_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -243,7 +243,7 @@ class OrganizationGuardrailsApi:
         return response_data.response
 
 
-    def _create_organization_guardrail_v1_organizations_me_guardrails_post_serialize(
+    def _create_organization_guardrail_api_v1_organizations_me_guardrails_post_serialize(
         self,
         organization_guardrail_create,
         _request_auth,
@@ -305,7 +305,7 @@ class OrganizationGuardrailsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/guardrails',
+            resource_path='/api/v1/organizations/me/guardrails',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -322,7 +322,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def delete_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_delete(
+    def delete_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_delete(
         self,
         guardrail_id: UUID,
         _request_timeout: Union[
@@ -366,7 +366,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_delete_serialize(
+        _param = self._delete_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_delete_serialize(
             guardrail_id=guardrail_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -390,7 +390,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def delete_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_delete_with_http_info(
+    def delete_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_delete_with_http_info(
         self,
         guardrail_id: UUID,
         _request_timeout: Union[
@@ -434,7 +434,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_delete_serialize(
+        _param = self._delete_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_delete_serialize(
             guardrail_id=guardrail_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -458,7 +458,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def delete_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_delete_without_preload_content(
+    def delete_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_delete_without_preload_content(
         self,
         guardrail_id: UUID,
         _request_timeout: Union[
@@ -502,7 +502,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_delete_serialize(
+        _param = self._delete_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_delete_serialize(
             guardrail_id=guardrail_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -521,7 +521,7 @@ class OrganizationGuardrailsApi:
         return response_data.response
 
 
-    def _delete_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_delete_serialize(
+    def _delete_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_delete_serialize(
         self,
         guardrail_id,
         _request_auth,
@@ -570,7 +570,7 @@ class OrganizationGuardrailsApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/organizations/me/guardrails/{guardrail_id}',
+            resource_path='/api/v1/organizations/me/guardrails/{guardrail_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -587,7 +587,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def list_organization_guardrails_v1_organizations_me_guardrails_get(
+    def list_organization_guardrails_api_v1_organizations_me_guardrails_get(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -634,7 +634,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_guardrails_v1_organizations_me_guardrails_get_serialize(
+        _param = self._list_organization_guardrails_api_v1_organizations_me_guardrails_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -659,7 +659,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def list_organization_guardrails_v1_organizations_me_guardrails_get_with_http_info(
+    def list_organization_guardrails_api_v1_organizations_me_guardrails_get_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -706,7 +706,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_guardrails_v1_organizations_me_guardrails_get_serialize(
+        _param = self._list_organization_guardrails_api_v1_organizations_me_guardrails_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -731,7 +731,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def list_organization_guardrails_v1_organizations_me_guardrails_get_without_preload_content(
+    def list_organization_guardrails_api_v1_organizations_me_guardrails_get_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -778,7 +778,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_guardrails_v1_organizations_me_guardrails_get_serialize(
+        _param = self._list_organization_guardrails_api_v1_organizations_me_guardrails_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -798,7 +798,7 @@ class OrganizationGuardrailsApi:
         return response_data.response
 
 
-    def _list_organization_guardrails_v1_organizations_me_guardrails_get_serialize(
+    def _list_organization_guardrails_api_v1_organizations_me_guardrails_get_serialize(
         self,
         skip,
         limit,
@@ -854,7 +854,7 @@ class OrganizationGuardrailsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/guardrails',
+            resource_path='/api/v1/organizations/me/guardrails',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -871,7 +871,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def update_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_patch(
+    def update_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_patch(
         self,
         guardrail_id: UUID,
         organization_guardrail_update: OrganizationGuardrailUpdate,
@@ -918,7 +918,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_patch_serialize(
+        _param = self._update_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_patch_serialize(
             guardrail_id=guardrail_id,
             organization_guardrail_update=organization_guardrail_update,
             _request_auth=_request_auth,
@@ -943,7 +943,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def update_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_patch_with_http_info(
+    def update_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_patch_with_http_info(
         self,
         guardrail_id: UUID,
         organization_guardrail_update: OrganizationGuardrailUpdate,
@@ -990,7 +990,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_patch_serialize(
+        _param = self._update_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_patch_serialize(
             guardrail_id=guardrail_id,
             organization_guardrail_update=organization_guardrail_update,
             _request_auth=_request_auth,
@@ -1015,7 +1015,7 @@ class OrganizationGuardrailsApi:
 
 
     @validate_call
-    def update_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_patch_without_preload_content(
+    def update_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_patch_without_preload_content(
         self,
         guardrail_id: UUID,
         organization_guardrail_update: OrganizationGuardrailUpdate,
@@ -1062,7 +1062,7 @@ class OrganizationGuardrailsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_patch_serialize(
+        _param = self._update_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_patch_serialize(
             guardrail_id=guardrail_id,
             organization_guardrail_update=organization_guardrail_update,
             _request_auth=_request_auth,
@@ -1082,7 +1082,7 @@ class OrganizationGuardrailsApi:
         return response_data.response
 
 
-    def _update_organization_guardrail_v1_organizations_me_guardrails_guardrail_id_patch_serialize(
+    def _update_organization_guardrail_api_v1_organizations_me_guardrails_guardrail_id_patch_serialize(
         self,
         guardrail_id,
         organization_guardrail_update,
@@ -1147,7 +1147,7 @@ class OrganizationGuardrailsApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/organizations/me/guardrails/{guardrail_id}',
+            resource_path='/api/v1/organizations/me/guardrails/{guardrail_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

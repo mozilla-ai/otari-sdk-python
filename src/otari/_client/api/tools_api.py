@@ -36,7 +36,7 @@ class ToolsApi:
 
 
     @validate_call
-    def list_tools_v1_tools_get(
+    def list_tools_api_v1_tools_get(
         self,
         _request_timeout: Union[
             None,
@@ -77,7 +77,7 @@ class ToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_tools_v1_tools_get_serialize(
+        _param = self._list_tools_api_v1_tools_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -99,7 +99,7 @@ class ToolsApi:
 
 
     @validate_call
-    def list_tools_v1_tools_get_with_http_info(
+    def list_tools_api_v1_tools_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -140,7 +140,7 @@ class ToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_tools_v1_tools_get_serialize(
+        _param = self._list_tools_api_v1_tools_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -162,7 +162,7 @@ class ToolsApi:
 
 
     @validate_call
-    def list_tools_v1_tools_get_without_preload_content(
+    def list_tools_api_v1_tools_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -203,7 +203,7 @@ class ToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_tools_v1_tools_get_serialize(
+        _param = self._list_tools_api_v1_tools_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -220,7 +220,7 @@ class ToolsApi:
         return response_data.response
 
 
-    def _list_tools_v1_tools_get_serialize(
+    def _list_tools_api_v1_tools_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -266,7 +266,7 @@ class ToolsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/tools',
+            resource_path='/api/v1/tools',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

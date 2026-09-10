@@ -39,7 +39,7 @@ class WorkspaceActivationApi:
 
 
     @validate_call
-    def create_workspace_activation_key_v1_workspaces_workspace_id_activation_key_post(
+    def create_workspace_activation_key_api_v1_workspaces_workspace_id_activation_key_post(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -83,7 +83,7 @@ class WorkspaceActivationApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_activation_key_v1_workspaces_workspace_id_activation_key_post_serialize(
+        _param = self._create_workspace_activation_key_api_v1_workspaces_workspace_id_activation_key_post_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -107,7 +107,7 @@ class WorkspaceActivationApi:
 
 
     @validate_call
-    def create_workspace_activation_key_v1_workspaces_workspace_id_activation_key_post_with_http_info(
+    def create_workspace_activation_key_api_v1_workspaces_workspace_id_activation_key_post_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -151,7 +151,7 @@ class WorkspaceActivationApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_activation_key_v1_workspaces_workspace_id_activation_key_post_serialize(
+        _param = self._create_workspace_activation_key_api_v1_workspaces_workspace_id_activation_key_post_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -175,7 +175,7 @@ class WorkspaceActivationApi:
 
 
     @validate_call
-    def create_workspace_activation_key_v1_workspaces_workspace_id_activation_key_post_without_preload_content(
+    def create_workspace_activation_key_api_v1_workspaces_workspace_id_activation_key_post_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -219,7 +219,7 @@ class WorkspaceActivationApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_activation_key_v1_workspaces_workspace_id_activation_key_post_serialize(
+        _param = self._create_workspace_activation_key_api_v1_workspaces_workspace_id_activation_key_post_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -238,7 +238,7 @@ class WorkspaceActivationApi:
         return response_data.response
 
 
-    def _create_workspace_activation_key_v1_workspaces_workspace_id_activation_key_post_serialize(
+    def _create_workspace_activation_key_api_v1_workspaces_workspace_id_activation_key_post_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -287,7 +287,7 @@ class WorkspaceActivationApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/workspaces/{workspace_id}/activation/key',
+            resource_path='/api/v1/workspaces/{workspace_id}/activation/key',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -304,7 +304,7 @@ class WorkspaceActivationApi:
 
 
     @validate_call
-    def dismiss_workspace_activation_v1_workspaces_workspace_id_activation_dismiss_post(
+    def dismiss_workspace_activation_api_v1_workspaces_workspace_id_activation_dismiss_post(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -348,7 +348,7 @@ class WorkspaceActivationApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._dismiss_workspace_activation_v1_workspaces_workspace_id_activation_dismiss_post_serialize(
+        _param = self._dismiss_workspace_activation_api_v1_workspaces_workspace_id_activation_dismiss_post_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -372,7 +372,7 @@ class WorkspaceActivationApi:
 
 
     @validate_call
-    def dismiss_workspace_activation_v1_workspaces_workspace_id_activation_dismiss_post_with_http_info(
+    def dismiss_workspace_activation_api_v1_workspaces_workspace_id_activation_dismiss_post_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -416,7 +416,7 @@ class WorkspaceActivationApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._dismiss_workspace_activation_v1_workspaces_workspace_id_activation_dismiss_post_serialize(
+        _param = self._dismiss_workspace_activation_api_v1_workspaces_workspace_id_activation_dismiss_post_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -440,7 +440,7 @@ class WorkspaceActivationApi:
 
 
     @validate_call
-    def dismiss_workspace_activation_v1_workspaces_workspace_id_activation_dismiss_post_without_preload_content(
+    def dismiss_workspace_activation_api_v1_workspaces_workspace_id_activation_dismiss_post_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -484,7 +484,7 @@ class WorkspaceActivationApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._dismiss_workspace_activation_v1_workspaces_workspace_id_activation_dismiss_post_serialize(
+        _param = self._dismiss_workspace_activation_api_v1_workspaces_workspace_id_activation_dismiss_post_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -503,7 +503,7 @@ class WorkspaceActivationApi:
         return response_data.response
 
 
-    def _dismiss_workspace_activation_v1_workspaces_workspace_id_activation_dismiss_post_serialize(
+    def _dismiss_workspace_activation_api_v1_workspaces_workspace_id_activation_dismiss_post_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -552,7 +552,7 @@ class WorkspaceActivationApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/workspaces/{workspace_id}/activation/dismiss',
+            resource_path='/api/v1/workspaces/{workspace_id}/activation/dismiss',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -569,7 +569,7 @@ class WorkspaceActivationApi:
 
 
     @validate_call
-    def get_workspace_activation_v1_workspaces_workspace_id_activation_get(
+    def get_workspace_activation_api_v1_workspaces_workspace_id_activation_get(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -613,7 +613,7 @@ class WorkspaceActivationApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_activation_v1_workspaces_workspace_id_activation_get_serialize(
+        _param = self._get_workspace_activation_api_v1_workspaces_workspace_id_activation_get_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -637,7 +637,7 @@ class WorkspaceActivationApi:
 
 
     @validate_call
-    def get_workspace_activation_v1_workspaces_workspace_id_activation_get_with_http_info(
+    def get_workspace_activation_api_v1_workspaces_workspace_id_activation_get_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -681,7 +681,7 @@ class WorkspaceActivationApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_activation_v1_workspaces_workspace_id_activation_get_serialize(
+        _param = self._get_workspace_activation_api_v1_workspaces_workspace_id_activation_get_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -705,7 +705,7 @@ class WorkspaceActivationApi:
 
 
     @validate_call
-    def get_workspace_activation_v1_workspaces_workspace_id_activation_get_without_preload_content(
+    def get_workspace_activation_api_v1_workspaces_workspace_id_activation_get_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -749,7 +749,7 @@ class WorkspaceActivationApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_activation_v1_workspaces_workspace_id_activation_get_serialize(
+        _param = self._get_workspace_activation_api_v1_workspaces_workspace_id_activation_get_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -768,7 +768,7 @@ class WorkspaceActivationApi:
         return response_data.response
 
 
-    def _get_workspace_activation_v1_workspaces_workspace_id_activation_get_serialize(
+    def _get_workspace_activation_api_v1_workspaces_workspace_id_activation_get_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -817,7 +817,7 @@ class WorkspaceActivationApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/workspaces/{workspace_id}/activation',
+            resource_path='/api/v1/workspaces/{workspace_id}/activation',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

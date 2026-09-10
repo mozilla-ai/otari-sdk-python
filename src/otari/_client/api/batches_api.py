@@ -38,7 +38,7 @@ class BatchesApi:
 
 
     @validate_call
-    def cancel_batch_v1_batches_batch_id_cancel_post(
+    def cancel_batch_api_v1_batches_batch_id_cancel_post(
         self,
         batch_id: StrictStr,
         provider: StrictStr,
@@ -85,7 +85,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._cancel_batch_v1_batches_batch_id_cancel_post_serialize(
+        _param = self._cancel_batch_api_v1_batches_batch_id_cancel_post_serialize(
             batch_id=batch_id,
             provider=provider,
             _request_auth=_request_auth,
@@ -110,7 +110,7 @@ class BatchesApi:
 
 
     @validate_call
-    def cancel_batch_v1_batches_batch_id_cancel_post_with_http_info(
+    def cancel_batch_api_v1_batches_batch_id_cancel_post_with_http_info(
         self,
         batch_id: StrictStr,
         provider: StrictStr,
@@ -157,7 +157,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._cancel_batch_v1_batches_batch_id_cancel_post_serialize(
+        _param = self._cancel_batch_api_v1_batches_batch_id_cancel_post_serialize(
             batch_id=batch_id,
             provider=provider,
             _request_auth=_request_auth,
@@ -182,7 +182,7 @@ class BatchesApi:
 
 
     @validate_call
-    def cancel_batch_v1_batches_batch_id_cancel_post_without_preload_content(
+    def cancel_batch_api_v1_batches_batch_id_cancel_post_without_preload_content(
         self,
         batch_id: StrictStr,
         provider: StrictStr,
@@ -229,7 +229,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._cancel_batch_v1_batches_batch_id_cancel_post_serialize(
+        _param = self._cancel_batch_api_v1_batches_batch_id_cancel_post_serialize(
             batch_id=batch_id,
             provider=provider,
             _request_auth=_request_auth,
@@ -249,7 +249,7 @@ class BatchesApi:
         return response_data.response
 
 
-    def _cancel_batch_v1_batches_batch_id_cancel_post_serialize(
+    def _cancel_batch_api_v1_batches_batch_id_cancel_post_serialize(
         self,
         batch_id,
         provider,
@@ -303,7 +303,7 @@ class BatchesApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/batches/{batch_id}/cancel',
+            resource_path='/api/v1/batches/{batch_id}/cancel',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -320,7 +320,7 @@ class BatchesApi:
 
 
     @validate_call
-    def create_batch_v1_batches_post(
+    def create_batch_api_v1_batches_post(
         self,
         create_batch_request: CreateBatchRequest,
         _request_timeout: Union[
@@ -364,7 +364,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_batch_v1_batches_post_serialize(
+        _param = self._create_batch_api_v1_batches_post_serialize(
             create_batch_request=create_batch_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -388,7 +388,7 @@ class BatchesApi:
 
 
     @validate_call
-    def create_batch_v1_batches_post_with_http_info(
+    def create_batch_api_v1_batches_post_with_http_info(
         self,
         create_batch_request: CreateBatchRequest,
         _request_timeout: Union[
@@ -432,7 +432,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_batch_v1_batches_post_serialize(
+        _param = self._create_batch_api_v1_batches_post_serialize(
             create_batch_request=create_batch_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -456,7 +456,7 @@ class BatchesApi:
 
 
     @validate_call
-    def create_batch_v1_batches_post_without_preload_content(
+    def create_batch_api_v1_batches_post_without_preload_content(
         self,
         create_batch_request: CreateBatchRequest,
         _request_timeout: Union[
@@ -500,7 +500,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_batch_v1_batches_post_serialize(
+        _param = self._create_batch_api_v1_batches_post_serialize(
             create_batch_request=create_batch_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -519,7 +519,7 @@ class BatchesApi:
         return response_data.response
 
 
-    def _create_batch_v1_batches_post_serialize(
+    def _create_batch_api_v1_batches_post_serialize(
         self,
         create_batch_request,
         _request_auth,
@@ -581,7 +581,7 @@ class BatchesApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/batches',
+            resource_path='/api/v1/batches',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -598,7 +598,7 @@ class BatchesApi:
 
 
     @validate_call
-    def list_batches_v1_batches_get(
+    def list_batches_api_v1_batches_get(
         self,
         provider: StrictStr,
         after: Optional[StrictStr] = None,
@@ -648,7 +648,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_batches_v1_batches_get_serialize(
+        _param = self._list_batches_api_v1_batches_get_serialize(
             provider=provider,
             after=after,
             limit=limit,
@@ -674,7 +674,7 @@ class BatchesApi:
 
 
     @validate_call
-    def list_batches_v1_batches_get_with_http_info(
+    def list_batches_api_v1_batches_get_with_http_info(
         self,
         provider: StrictStr,
         after: Optional[StrictStr] = None,
@@ -724,7 +724,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_batches_v1_batches_get_serialize(
+        _param = self._list_batches_api_v1_batches_get_serialize(
             provider=provider,
             after=after,
             limit=limit,
@@ -750,7 +750,7 @@ class BatchesApi:
 
 
     @validate_call
-    def list_batches_v1_batches_get_without_preload_content(
+    def list_batches_api_v1_batches_get_without_preload_content(
         self,
         provider: StrictStr,
         after: Optional[StrictStr] = None,
@@ -800,7 +800,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_batches_v1_batches_get_serialize(
+        _param = self._list_batches_api_v1_batches_get_serialize(
             provider=provider,
             after=after,
             limit=limit,
@@ -821,7 +821,7 @@ class BatchesApi:
         return response_data.response
 
 
-    def _list_batches_v1_batches_get_serialize(
+    def _list_batches_api_v1_batches_get_serialize(
         self,
         provider,
         after,
@@ -882,7 +882,7 @@ class BatchesApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/batches',
+            resource_path='/api/v1/batches',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -899,7 +899,7 @@ class BatchesApi:
 
 
     @validate_call
-    def retrieve_batch_results_v1_batches_batch_id_results_get(
+    def retrieve_batch_api_v1_batches_batch_id_get(
         self,
         batch_id: StrictStr,
         provider: StrictStr,
@@ -916,9 +916,9 @@ class BatchesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> object:
-        """Retrieve Batch Results
+        """Retrieve Batch
 
-        Retrieve the results of a completed batch.
+        Retrieve the status of a batch.
 
         :param batch_id: (required)
         :type batch_id: str
@@ -946,7 +946,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._retrieve_batch_results_v1_batches_batch_id_results_get_serialize(
+        _param = self._retrieve_batch_api_v1_batches_batch_id_get_serialize(
             batch_id=batch_id,
             provider=provider,
             _request_auth=_request_auth,
@@ -957,9 +957,7 @@ class BatchesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "object",
-            '409': None,
             '422': "HTTPValidationError",
-            '502': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -973,7 +971,7 @@ class BatchesApi:
 
 
     @validate_call
-    def retrieve_batch_results_v1_batches_batch_id_results_get_with_http_info(
+    def retrieve_batch_api_v1_batches_batch_id_get_with_http_info(
         self,
         batch_id: StrictStr,
         provider: StrictStr,
@@ -990,9 +988,9 @@ class BatchesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[object]:
-        """Retrieve Batch Results
+        """Retrieve Batch
 
-        Retrieve the results of a completed batch.
+        Retrieve the status of a batch.
 
         :param batch_id: (required)
         :type batch_id: str
@@ -1020,7 +1018,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._retrieve_batch_results_v1_batches_batch_id_results_get_serialize(
+        _param = self._retrieve_batch_api_v1_batches_batch_id_get_serialize(
             batch_id=batch_id,
             provider=provider,
             _request_auth=_request_auth,
@@ -1031,9 +1029,7 @@ class BatchesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "object",
-            '409': None,
             '422': "HTTPValidationError",
-            '502': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1047,7 +1043,7 @@ class BatchesApi:
 
 
     @validate_call
-    def retrieve_batch_results_v1_batches_batch_id_results_get_without_preload_content(
+    def retrieve_batch_api_v1_batches_batch_id_get_without_preload_content(
         self,
         batch_id: StrictStr,
         provider: StrictStr,
@@ -1064,9 +1060,9 @@ class BatchesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Retrieve Batch Results
+        """Retrieve Batch
 
-        Retrieve the results of a completed batch.
+        Retrieve the status of a batch.
 
         :param batch_id: (required)
         :type batch_id: str
@@ -1094,7 +1090,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._retrieve_batch_results_v1_batches_batch_id_results_get_serialize(
+        _param = self._retrieve_batch_api_v1_batches_batch_id_get_serialize(
             batch_id=batch_id,
             provider=provider,
             _request_auth=_request_auth,
@@ -1105,9 +1101,7 @@ class BatchesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "object",
-            '409': None,
             '422': "HTTPValidationError",
-            '502': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1116,7 +1110,7 @@ class BatchesApi:
         return response_data.response
 
 
-    def _retrieve_batch_results_v1_batches_batch_id_results_get_serialize(
+    def _retrieve_batch_api_v1_batches_batch_id_get_serialize(
         self,
         batch_id,
         provider,
@@ -1170,7 +1164,7 @@ class BatchesApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/batches/{batch_id}/results',
+            resource_path='/api/v1/batches/{batch_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1187,7 +1181,7 @@ class BatchesApi:
 
 
     @validate_call
-    def retrieve_batch_v1_batches_batch_id_get(
+    def retrieve_batch_results_api_v1_batches_batch_id_results_get(
         self,
         batch_id: StrictStr,
         provider: StrictStr,
@@ -1204,9 +1198,9 @@ class BatchesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> object:
-        """Retrieve Batch
+        """Retrieve Batch Results
 
-        Retrieve the status of a batch.
+        Retrieve the results of a completed batch.
 
         :param batch_id: (required)
         :type batch_id: str
@@ -1234,7 +1228,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._retrieve_batch_v1_batches_batch_id_get_serialize(
+        _param = self._retrieve_batch_results_api_v1_batches_batch_id_results_get_serialize(
             batch_id=batch_id,
             provider=provider,
             _request_auth=_request_auth,
@@ -1245,7 +1239,9 @@ class BatchesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "object",
+            '409': None,
             '422': "HTTPValidationError",
+            '502': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1259,7 +1255,7 @@ class BatchesApi:
 
 
     @validate_call
-    def retrieve_batch_v1_batches_batch_id_get_with_http_info(
+    def retrieve_batch_results_api_v1_batches_batch_id_results_get_with_http_info(
         self,
         batch_id: StrictStr,
         provider: StrictStr,
@@ -1276,9 +1272,9 @@ class BatchesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[object]:
-        """Retrieve Batch
+        """Retrieve Batch Results
 
-        Retrieve the status of a batch.
+        Retrieve the results of a completed batch.
 
         :param batch_id: (required)
         :type batch_id: str
@@ -1306,7 +1302,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._retrieve_batch_v1_batches_batch_id_get_serialize(
+        _param = self._retrieve_batch_results_api_v1_batches_batch_id_results_get_serialize(
             batch_id=batch_id,
             provider=provider,
             _request_auth=_request_auth,
@@ -1317,7 +1313,9 @@ class BatchesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "object",
+            '409': None,
             '422': "HTTPValidationError",
+            '502': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1331,7 +1329,7 @@ class BatchesApi:
 
 
     @validate_call
-    def retrieve_batch_v1_batches_batch_id_get_without_preload_content(
+    def retrieve_batch_results_api_v1_batches_batch_id_results_get_without_preload_content(
         self,
         batch_id: StrictStr,
         provider: StrictStr,
@@ -1348,9 +1346,9 @@ class BatchesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Retrieve Batch
+        """Retrieve Batch Results
 
-        Retrieve the status of a batch.
+        Retrieve the results of a completed batch.
 
         :param batch_id: (required)
         :type batch_id: str
@@ -1378,7 +1376,7 @@ class BatchesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._retrieve_batch_v1_batches_batch_id_get_serialize(
+        _param = self._retrieve_batch_results_api_v1_batches_batch_id_results_get_serialize(
             batch_id=batch_id,
             provider=provider,
             _request_auth=_request_auth,
@@ -1389,7 +1387,9 @@ class BatchesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "object",
+            '409': None,
             '422': "HTTPValidationError",
+            '502': None,
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1398,7 +1398,7 @@ class BatchesApi:
         return response_data.response
 
 
-    def _retrieve_batch_v1_batches_batch_id_get_serialize(
+    def _retrieve_batch_results_api_v1_batches_batch_id_results_get_serialize(
         self,
         batch_id,
         provider,
@@ -1452,7 +1452,7 @@ class BatchesApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/batches/{batch_id}',
+            resource_path='/api/v1/batches/{batch_id}/results',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -39,7 +39,7 @@ class McpApi:
 
 
     @validate_call
-    def execute_mcp_tool_v1_mcp_execute_post(
+    def execute_mcp_tool_api_v1_mcp_execute_post(
         self,
         mcp_execute_request: McpExecuteRequest,
         _request_timeout: Union[
@@ -83,7 +83,7 @@ class McpApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._execute_mcp_tool_v1_mcp_execute_post_serialize(
+        _param = self._execute_mcp_tool_api_v1_mcp_execute_post_serialize(
             mcp_execute_request=mcp_execute_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -118,7 +118,7 @@ class McpApi:
 
 
     @validate_call
-    def execute_mcp_tool_v1_mcp_execute_post_with_http_info(
+    def execute_mcp_tool_api_v1_mcp_execute_post_with_http_info(
         self,
         mcp_execute_request: McpExecuteRequest,
         _request_timeout: Union[
@@ -162,7 +162,7 @@ class McpApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._execute_mcp_tool_v1_mcp_execute_post_serialize(
+        _param = self._execute_mcp_tool_api_v1_mcp_execute_post_serialize(
             mcp_execute_request=mcp_execute_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -197,7 +197,7 @@ class McpApi:
 
 
     @validate_call
-    def execute_mcp_tool_v1_mcp_execute_post_without_preload_content(
+    def execute_mcp_tool_api_v1_mcp_execute_post_without_preload_content(
         self,
         mcp_execute_request: McpExecuteRequest,
         _request_timeout: Union[
@@ -241,7 +241,7 @@ class McpApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._execute_mcp_tool_v1_mcp_execute_post_serialize(
+        _param = self._execute_mcp_tool_api_v1_mcp_execute_post_serialize(
             mcp_execute_request=mcp_execute_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -271,7 +271,7 @@ class McpApi:
         return response_data.response
 
 
-    def _execute_mcp_tool_v1_mcp_execute_post_serialize(
+    def _execute_mcp_tool_api_v1_mcp_execute_post_serialize(
         self,
         mcp_execute_request,
         _request_auth,
@@ -333,7 +333,7 @@ class McpApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/mcp/execute',
+            resource_path='/api/v1/mcp/execute',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -350,7 +350,7 @@ class McpApi:
 
 
     @validate_call
-    def list_mcp_tools_v1_mcp_servers_mcp_server_id_tools_get(
+    def list_mcp_tools_api_v1_mcp_servers_mcp_server_id_tools_get(
         self,
         mcp_server_id: UUID,
         _request_timeout: Union[
@@ -394,7 +394,7 @@ class McpApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_mcp_tools_v1_mcp_servers_mcp_server_id_tools_get_serialize(
+        _param = self._list_mcp_tools_api_v1_mcp_servers_mcp_server_id_tools_get_serialize(
             mcp_server_id=mcp_server_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -427,7 +427,7 @@ class McpApi:
 
 
     @validate_call
-    def list_mcp_tools_v1_mcp_servers_mcp_server_id_tools_get_with_http_info(
+    def list_mcp_tools_api_v1_mcp_servers_mcp_server_id_tools_get_with_http_info(
         self,
         mcp_server_id: UUID,
         _request_timeout: Union[
@@ -471,7 +471,7 @@ class McpApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_mcp_tools_v1_mcp_servers_mcp_server_id_tools_get_serialize(
+        _param = self._list_mcp_tools_api_v1_mcp_servers_mcp_server_id_tools_get_serialize(
             mcp_server_id=mcp_server_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -504,7 +504,7 @@ class McpApi:
 
 
     @validate_call
-    def list_mcp_tools_v1_mcp_servers_mcp_server_id_tools_get_without_preload_content(
+    def list_mcp_tools_api_v1_mcp_servers_mcp_server_id_tools_get_without_preload_content(
         self,
         mcp_server_id: UUID,
         _request_timeout: Union[
@@ -548,7 +548,7 @@ class McpApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_mcp_tools_v1_mcp_servers_mcp_server_id_tools_get_serialize(
+        _param = self._list_mcp_tools_api_v1_mcp_servers_mcp_server_id_tools_get_serialize(
             mcp_server_id=mcp_server_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -576,7 +576,7 @@ class McpApi:
         return response_data.response
 
 
-    def _list_mcp_tools_v1_mcp_servers_mcp_server_id_tools_get_serialize(
+    def _list_mcp_tools_api_v1_mcp_servers_mcp_server_id_tools_get_serialize(
         self,
         mcp_server_id,
         _request_auth,
@@ -625,7 +625,7 @@ class McpApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/mcp/servers/{mcp_server_id}/tools',
+            resource_path='/api/v1/mcp/servers/{mcp_server_id}/tools',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

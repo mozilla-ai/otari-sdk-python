@@ -27,7 +27,7 @@ class MaintenanceMode(BaseModel):
     """
     Whether this deployment is currently refusing new dashboard sign-ins.
     """ # noqa: E501
-    enabled: StrictBool = Field(description="When true, POST /v1/auth/session refuses every credential with 503 so nobody starts a new dashboard session during a redeploy. Sessions already issued keep working, and the management API and the data plane are unaffected: a caller presenting the master key or an API key through the header is never frozen out.")
+    enabled: StrictBool = Field(description="When true, POST /api/v1/auth/session refuses every credential with 503 so nobody starts a new dashboard session during a redeploy. Sessions already issued keep working, and the management API and the data plane are unaffected: a caller presenting the master key or an API key through the header is never frozen out.")
     __properties: ClassVar[List[str]] = ["enabled"]
 
     model_config = ConfigDict(

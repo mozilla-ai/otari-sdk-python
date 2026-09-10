@@ -30,7 +30,7 @@ class WorkspaceWebSearchConfigUpdate(BaseModel):
     """ # noqa: E501
     allowed_domains: Optional[List[StrictStr]] = Field(default=None, description="Results are kept only from these domains; intersected with any list the request sends")
     blocked_domains: Optional[List[StrictStr]] = Field(default=None, description="Results from these domains are dropped; added to any list the request sends")
-    enabled: StrictBool = Field(description="False refuses web search for this workspace, both the otari_web_search tool and POST /v1/search. The fields below narrow the tool only.")
+    enabled: StrictBool = Field(description="False refuses web search for this workspace, both the otari_web_search tool and the search endpoint. The fields below narrow the tool only.")
     max_results: Optional[Annotated[int, Field(le=20, strict=True, gt=0)]] = Field(default=None, description="Ceiling on results one search returns; only ever lowers the effective limit, so at most 20")
     provider_options: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     purpose_hint: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = Field(default=None, description="Hint used when a request declares otari_web_search without one of its own")

@@ -39,7 +39,7 @@ class ModerationsApi:
 
 
     @validate_call
-    def create_moderation_v1_moderations_post(
+    def create_moderation_api_v1_moderations_post(
         self,
         moderation_request: ModerationRequest,
         include_raw: Optional[StrictBool] = None,
@@ -86,7 +86,7 @@ class ModerationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_moderation_v1_moderations_post_serialize(
+        _param = self._create_moderation_api_v1_moderations_post_serialize(
             moderation_request=moderation_request,
             include_raw=include_raw,
             _request_auth=_request_auth,
@@ -111,7 +111,7 @@ class ModerationsApi:
 
 
     @validate_call
-    def create_moderation_v1_moderations_post_with_http_info(
+    def create_moderation_api_v1_moderations_post_with_http_info(
         self,
         moderation_request: ModerationRequest,
         include_raw: Optional[StrictBool] = None,
@@ -158,7 +158,7 @@ class ModerationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_moderation_v1_moderations_post_serialize(
+        _param = self._create_moderation_api_v1_moderations_post_serialize(
             moderation_request=moderation_request,
             include_raw=include_raw,
             _request_auth=_request_auth,
@@ -183,7 +183,7 @@ class ModerationsApi:
 
 
     @validate_call
-    def create_moderation_v1_moderations_post_without_preload_content(
+    def create_moderation_api_v1_moderations_post_without_preload_content(
         self,
         moderation_request: ModerationRequest,
         include_raw: Optional[StrictBool] = None,
@@ -230,7 +230,7 @@ class ModerationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_moderation_v1_moderations_post_serialize(
+        _param = self._create_moderation_api_v1_moderations_post_serialize(
             moderation_request=moderation_request,
             include_raw=include_raw,
             _request_auth=_request_auth,
@@ -250,7 +250,7 @@ class ModerationsApi:
         return response_data.response
 
 
-    def _create_moderation_v1_moderations_post_serialize(
+    def _create_moderation_api_v1_moderations_post_serialize(
         self,
         moderation_request,
         include_raw,
@@ -317,7 +317,7 @@ class ModerationsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/moderations',
+            resource_path='/api/v1/moderations',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

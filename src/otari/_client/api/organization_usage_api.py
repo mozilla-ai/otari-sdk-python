@@ -44,7 +44,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def count_organization_usage_v1_organizations_me_usage_count_get(
+    def count_organization_usage_api_v1_organizations_me_usage_count_get(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -77,7 +77,7 @@ class OrganizationUsageApi:
     ) -> UsageCount:
         """Count Organization Usage
 
-        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
+        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /api/v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -133,7 +133,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_organization_usage_v1_organizations_me_usage_count_get_serialize(
+        _param = self._count_organization_usage_api_v1_organizations_me_usage_count_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -172,7 +172,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def count_organization_usage_v1_organizations_me_usage_count_get_with_http_info(
+    def count_organization_usage_api_v1_organizations_me_usage_count_get_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -205,7 +205,7 @@ class OrganizationUsageApi:
     ) -> ApiResponse[UsageCount]:
         """Count Organization Usage
 
-        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
+        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /api/v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -261,7 +261,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_organization_usage_v1_organizations_me_usage_count_get_serialize(
+        _param = self._count_organization_usage_api_v1_organizations_me_usage_count_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -300,7 +300,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def count_organization_usage_v1_organizations_me_usage_count_get_without_preload_content(
+    def count_organization_usage_api_v1_organizations_me_usage_count_get_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -333,7 +333,7 @@ class OrganizationUsageApi:
     ) -> RESTResponseType:
         """Count Organization Usage
 
-        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
+        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /api/v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -389,7 +389,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_organization_usage_v1_organizations_me_usage_count_get_serialize(
+        _param = self._count_organization_usage_api_v1_organizations_me_usage_count_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -423,7 +423,7 @@ class OrganizationUsageApi:
         return response_data.response
 
 
-    def _count_organization_usage_v1_organizations_me_usage_count_get_serialize(
+    def _count_organization_usage_api_v1_organizations_me_usage_count_get_serialize(
         self,
         start_date,
         end_date,
@@ -571,7 +571,7 @@ class OrganizationUsageApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/usage/count',
+            resource_path='/api/v1/organizations/me/usage/count',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -588,7 +588,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def list_organization_usage_v1_organizations_me_usage_get(
+    def list_organization_usage_api_v1_organizations_me_usage_get(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -623,7 +623,7 @@ class OrganizationUsageApi:
     ) -> List[UsageEntry]:
         """List Organization Usage
 
-        List the caller's organization's usage logs, most recent first.  The tenant-scoped counterpart of ``GET /v1/usage``: same filters, same bare JSON array, same separate ``/count`` for a paginator's total, confined to what the caller's membership lets them see. Scope is never a parameter here.
+        List the caller's organization's usage logs, most recent first.  The tenant-scoped counterpart of ``GET /api/v1/usage``: same filters, same bare JSON array, same separate ``/count`` for a paginator's total, confined to what the caller's membership lets them see. Scope is never a parameter here.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -683,7 +683,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_usage_v1_organizations_me_usage_get_serialize(
+        _param = self._list_organization_usage_api_v1_organizations_me_usage_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -724,7 +724,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def list_organization_usage_v1_organizations_me_usage_get_with_http_info(
+    def list_organization_usage_api_v1_organizations_me_usage_get_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -759,7 +759,7 @@ class OrganizationUsageApi:
     ) -> ApiResponse[List[UsageEntry]]:
         """List Organization Usage
 
-        List the caller's organization's usage logs, most recent first.  The tenant-scoped counterpart of ``GET /v1/usage``: same filters, same bare JSON array, same separate ``/count`` for a paginator's total, confined to what the caller's membership lets them see. Scope is never a parameter here.
+        List the caller's organization's usage logs, most recent first.  The tenant-scoped counterpart of ``GET /api/v1/usage``: same filters, same bare JSON array, same separate ``/count`` for a paginator's total, confined to what the caller's membership lets them see. Scope is never a parameter here.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -819,7 +819,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_usage_v1_organizations_me_usage_get_serialize(
+        _param = self._list_organization_usage_api_v1_organizations_me_usage_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -860,7 +860,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def list_organization_usage_v1_organizations_me_usage_get_without_preload_content(
+    def list_organization_usage_api_v1_organizations_me_usage_get_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -895,7 +895,7 @@ class OrganizationUsageApi:
     ) -> RESTResponseType:
         """List Organization Usage
 
-        List the caller's organization's usage logs, most recent first.  The tenant-scoped counterpart of ``GET /v1/usage``: same filters, same bare JSON array, same separate ``/count`` for a paginator's total, confined to what the caller's membership lets them see. Scope is never a parameter here.
+        List the caller's organization's usage logs, most recent first.  The tenant-scoped counterpart of ``GET /api/v1/usage``: same filters, same bare JSON array, same separate ``/count`` for a paginator's total, confined to what the caller's membership lets them see. Scope is never a parameter here.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -955,7 +955,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_usage_v1_organizations_me_usage_get_serialize(
+        _param = self._list_organization_usage_api_v1_organizations_me_usage_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -991,7 +991,7 @@ class OrganizationUsageApi:
         return response_data.response
 
 
-    def _list_organization_usage_v1_organizations_me_usage_get_serialize(
+    def _list_organization_usage_api_v1_organizations_me_usage_get_serialize(
         self,
         start_date,
         end_date,
@@ -1149,7 +1149,7 @@ class OrganizationUsageApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/usage',
+            resource_path='/api/v1/organizations/me/usage',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1166,7 +1166,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_series_v1_organizations_me_usage_series_get(
+    def organization_usage_series_api_v1_organizations_me_usage_series_get(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1200,7 +1200,7 @@ class OrganizationUsageApi:
     ) -> UsageGroupedSeries:
         """Organization Usage Series
 
-        Time series split by one dimension, for the caller's organization.  The tenant-scoped counterpart of ``GET /v1/usage/series``, and kept in lockstep with the summary above for the reason that endpoint gives: the dashboard serializes one filter object for both, so a filter one of them ignored would make the stacked chart disagree with the tiles beside it.
+        Time series split by one dimension, for the caller's organization.  The tenant-scoped counterpart of ``GET /api/v1/usage/series``, and kept in lockstep with the summary above for the reason that endpoint gives: the dashboard serializes one filter object for both, so a filter one of them ignored would make the stacked chart disagree with the tiles beside it.
 
         :param group_by: Dimension to split the series by (required)
         :type group_by: str
@@ -1258,7 +1258,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_series_v1_organizations_me_usage_series_get_serialize(
+        _param = self._organization_usage_series_api_v1_organizations_me_usage_series_get_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -1298,7 +1298,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_series_v1_organizations_me_usage_series_get_with_http_info(
+    def organization_usage_series_api_v1_organizations_me_usage_series_get_with_http_info(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1332,7 +1332,7 @@ class OrganizationUsageApi:
     ) -> ApiResponse[UsageGroupedSeries]:
         """Organization Usage Series
 
-        Time series split by one dimension, for the caller's organization.  The tenant-scoped counterpart of ``GET /v1/usage/series``, and kept in lockstep with the summary above for the reason that endpoint gives: the dashboard serializes one filter object for both, so a filter one of them ignored would make the stacked chart disagree with the tiles beside it.
+        Time series split by one dimension, for the caller's organization.  The tenant-scoped counterpart of ``GET /api/v1/usage/series``, and kept in lockstep with the summary above for the reason that endpoint gives: the dashboard serializes one filter object for both, so a filter one of them ignored would make the stacked chart disagree with the tiles beside it.
 
         :param group_by: Dimension to split the series by (required)
         :type group_by: str
@@ -1390,7 +1390,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_series_v1_organizations_me_usage_series_get_serialize(
+        _param = self._organization_usage_series_api_v1_organizations_me_usage_series_get_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -1430,7 +1430,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_series_v1_organizations_me_usage_series_get_without_preload_content(
+    def organization_usage_series_api_v1_organizations_me_usage_series_get_without_preload_content(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1464,7 +1464,7 @@ class OrganizationUsageApi:
     ) -> RESTResponseType:
         """Organization Usage Series
 
-        Time series split by one dimension, for the caller's organization.  The tenant-scoped counterpart of ``GET /v1/usage/series``, and kept in lockstep with the summary above for the reason that endpoint gives: the dashboard serializes one filter object for both, so a filter one of them ignored would make the stacked chart disagree with the tiles beside it.
+        Time series split by one dimension, for the caller's organization.  The tenant-scoped counterpart of ``GET /api/v1/usage/series``, and kept in lockstep with the summary above for the reason that endpoint gives: the dashboard serializes one filter object for both, so a filter one of them ignored would make the stacked chart disagree with the tiles beside it.
 
         :param group_by: Dimension to split the series by (required)
         :type group_by: str
@@ -1522,7 +1522,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_series_v1_organizations_me_usage_series_get_serialize(
+        _param = self._organization_usage_series_api_v1_organizations_me_usage_series_get_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -1557,7 +1557,7 @@ class OrganizationUsageApi:
         return response_data.response
 
 
-    def _organization_usage_series_v1_organizations_me_usage_series_get_serialize(
+    def _organization_usage_series_api_v1_organizations_me_usage_series_get_serialize(
         self,
         group_by,
         start_date,
@@ -1709,7 +1709,7 @@ class OrganizationUsageApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/usage/series',
+            resource_path='/api/v1/organizations/me/usage/series',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1726,7 +1726,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_summary_v1_organizations_me_usage_summary_get(
+    def organization_usage_summary_api_v1_organizations_me_usage_summary_get(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1760,7 +1760,7 @@ class OrganizationUsageApi:
     ) -> UsageSummary:
         """Organization Usage Summary
 
-        Aggregate spend, tokens and request volume for the caller's organization.  The tenant-scoped counterpart of ``GET /v1/usage/summary``, running the same aggregation over a narrower row set: the same bounded window, the same breakdowns, the same ``dimensions`` selector for paying only for the passes a caller reads. The breakdown by user names the people inside the caller's own scope, which is the roster they can already read.
+        Aggregate spend, tokens and request volume for the caller's organization.  The tenant-scoped counterpart of ``GET /api/v1/usage/summary``, running the same aggregation over a narrower row set: the same bounded window, the same breakdowns, the same ``dimensions`` selector for paying only for the passes a caller reads. The breakdown by user names the people inside the caller's own scope, which is the roster they can already read.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -1818,7 +1818,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_summary_v1_organizations_me_usage_summary_get_serialize(
+        _param = self._organization_usage_summary_api_v1_organizations_me_usage_summary_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1858,7 +1858,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_summary_v1_organizations_me_usage_summary_get_with_http_info(
+    def organization_usage_summary_api_v1_organizations_me_usage_summary_get_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1892,7 +1892,7 @@ class OrganizationUsageApi:
     ) -> ApiResponse[UsageSummary]:
         """Organization Usage Summary
 
-        Aggregate spend, tokens and request volume for the caller's organization.  The tenant-scoped counterpart of ``GET /v1/usage/summary``, running the same aggregation over a narrower row set: the same bounded window, the same breakdowns, the same ``dimensions`` selector for paying only for the passes a caller reads. The breakdown by user names the people inside the caller's own scope, which is the roster they can already read.
+        Aggregate spend, tokens and request volume for the caller's organization.  The tenant-scoped counterpart of ``GET /api/v1/usage/summary``, running the same aggregation over a narrower row set: the same bounded window, the same breakdowns, the same ``dimensions`` selector for paying only for the passes a caller reads. The breakdown by user names the people inside the caller's own scope, which is the roster they can already read.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -1950,7 +1950,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_summary_v1_organizations_me_usage_summary_get_serialize(
+        _param = self._organization_usage_summary_api_v1_organizations_me_usage_summary_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1990,7 +1990,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_summary_v1_organizations_me_usage_summary_get_without_preload_content(
+    def organization_usage_summary_api_v1_organizations_me_usage_summary_get_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2024,7 +2024,7 @@ class OrganizationUsageApi:
     ) -> RESTResponseType:
         """Organization Usage Summary
 
-        Aggregate spend, tokens and request volume for the caller's organization.  The tenant-scoped counterpart of ``GET /v1/usage/summary``, running the same aggregation over a narrower row set: the same bounded window, the same breakdowns, the same ``dimensions`` selector for paying only for the passes a caller reads. The breakdown by user names the people inside the caller's own scope, which is the roster they can already read.
+        Aggregate spend, tokens and request volume for the caller's organization.  The tenant-scoped counterpart of ``GET /api/v1/usage/summary``, running the same aggregation over a narrower row set: the same bounded window, the same breakdowns, the same ``dimensions`` selector for paying only for the passes a caller reads. The breakdown by user names the people inside the caller's own scope, which is the roster they can already read.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -2082,7 +2082,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_summary_v1_organizations_me_usage_summary_get_serialize(
+        _param = self._organization_usage_summary_api_v1_organizations_me_usage_summary_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -2117,7 +2117,7 @@ class OrganizationUsageApi:
         return response_data.response
 
 
-    def _organization_usage_summary_v1_organizations_me_usage_summary_get_serialize(
+    def _organization_usage_summary_api_v1_organizations_me_usage_summary_get_serialize(
         self,
         start_date,
         end_date,
@@ -2270,7 +2270,7 @@ class OrganizationUsageApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/usage/summary',
+            resource_path='/api/v1/organizations/me/usage/summary',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

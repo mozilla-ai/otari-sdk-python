@@ -47,7 +47,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def create_stored_provider_v1_provider_credentials_post(
+    def create_stored_provider_api_v1_provider_credentials_post(
         self,
         create_stored_provider_request: CreateStoredProviderRequest,
         _request_timeout: Union[
@@ -91,7 +91,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_stored_provider_v1_provider_credentials_post_serialize(
+        _param = self._create_stored_provider_api_v1_provider_credentials_post_serialize(
             create_stored_provider_request=create_stored_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -115,7 +115,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def create_stored_provider_v1_provider_credentials_post_with_http_info(
+    def create_stored_provider_api_v1_provider_credentials_post_with_http_info(
         self,
         create_stored_provider_request: CreateStoredProviderRequest,
         _request_timeout: Union[
@@ -159,7 +159,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_stored_provider_v1_provider_credentials_post_serialize(
+        _param = self._create_stored_provider_api_v1_provider_credentials_post_serialize(
             create_stored_provider_request=create_stored_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -183,7 +183,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def create_stored_provider_v1_provider_credentials_post_without_preload_content(
+    def create_stored_provider_api_v1_provider_credentials_post_without_preload_content(
         self,
         create_stored_provider_request: CreateStoredProviderRequest,
         _request_timeout: Union[
@@ -227,7 +227,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_stored_provider_v1_provider_credentials_post_serialize(
+        _param = self._create_stored_provider_api_v1_provider_credentials_post_serialize(
             create_stored_provider_request=create_stored_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -246,7 +246,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _create_stored_provider_v1_provider_credentials_post_serialize(
+    def _create_stored_provider_api_v1_provider_credentials_post_serialize(
         self,
         create_stored_provider_request,
         _request_auth,
@@ -308,7 +308,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/provider-credentials',
+            resource_path='/api/v1/provider-credentials',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -325,7 +325,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def delete_stored_provider_v1_provider_credentials_instance_delete(
+    def delete_stored_provider_api_v1_provider_credentials_instance_delete(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -369,7 +369,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_stored_provider_v1_provider_credentials_instance_delete_serialize(
+        _param = self._delete_stored_provider_api_v1_provider_credentials_instance_delete_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -393,7 +393,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def delete_stored_provider_v1_provider_credentials_instance_delete_with_http_info(
+    def delete_stored_provider_api_v1_provider_credentials_instance_delete_with_http_info(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -437,7 +437,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_stored_provider_v1_provider_credentials_instance_delete_serialize(
+        _param = self._delete_stored_provider_api_v1_provider_credentials_instance_delete_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -461,7 +461,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def delete_stored_provider_v1_provider_credentials_instance_delete_without_preload_content(
+    def delete_stored_provider_api_v1_provider_credentials_instance_delete_without_preload_content(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -505,7 +505,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_stored_provider_v1_provider_credentials_instance_delete_serialize(
+        _param = self._delete_stored_provider_api_v1_provider_credentials_instance_delete_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -524,7 +524,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _delete_stored_provider_v1_provider_credentials_instance_delete_serialize(
+    def _delete_stored_provider_api_v1_provider_credentials_instance_delete_serialize(
         self,
         instance,
         _request_auth,
@@ -573,7 +573,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/provider-credentials/{instance}',
+            resource_path='/api/v1/provider-credentials/{instance}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -590,7 +590,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_providers_v1_providers_get(
+    def list_providers_api_v1_providers_get(
         self,
         _request_timeout: Union[
             None,
@@ -631,7 +631,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_providers_v1_providers_get_serialize(
+        _param = self._list_providers_api_v1_providers_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -653,7 +653,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_providers_v1_providers_get_with_http_info(
+    def list_providers_api_v1_providers_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -694,7 +694,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_providers_v1_providers_get_serialize(
+        _param = self._list_providers_api_v1_providers_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -716,7 +716,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_providers_v1_providers_get_without_preload_content(
+    def list_providers_api_v1_providers_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -757,7 +757,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_providers_v1_providers_get_serialize(
+        _param = self._list_providers_api_v1_providers_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -774,7 +774,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _list_providers_v1_providers_get_serialize(
+    def _list_providers_api_v1_providers_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -820,7 +820,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/providers',
+            resource_path='/api/v1/providers',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -837,7 +837,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_stored_providers_v1_provider_credentials_get(
+    def list_stored_providers_api_v1_provider_credentials_get(
         self,
         _request_timeout: Union[
             None,
@@ -878,7 +878,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_stored_providers_v1_provider_credentials_get_serialize(
+        _param = self._list_stored_providers_api_v1_provider_credentials_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -900,7 +900,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_stored_providers_v1_provider_credentials_get_with_http_info(
+    def list_stored_providers_api_v1_provider_credentials_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -941,7 +941,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_stored_providers_v1_provider_credentials_get_serialize(
+        _param = self._list_stored_providers_api_v1_provider_credentials_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -963,7 +963,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_stored_providers_v1_provider_credentials_get_without_preload_content(
+    def list_stored_providers_api_v1_provider_credentials_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1004,7 +1004,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_stored_providers_v1_provider_credentials_get_serialize(
+        _param = self._list_stored_providers_api_v1_provider_credentials_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1021,7 +1021,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _list_stored_providers_v1_provider_credentials_get_serialize(
+    def _list_stored_providers_api_v1_provider_credentials_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1067,7 +1067,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/provider-credentials',
+            resource_path='/api/v1/provider-credentials',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1084,7 +1084,254 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_detail_v1_providers_catalog_provider_id_get(
+    def provider_catalog_api_v1_providers_catalog_get(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> List[KnownProviderSummarySchema]:
+        """Provider Catalog
+
+        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /api/v1/providers/catalog/{provider_id}, which imports only that one SDK.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._provider_catalog_api_v1_providers_catalog_get_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[KnownProviderSummarySchema]",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def provider_catalog_api_v1_providers_catalog_get_with_http_info(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[List[KnownProviderSummarySchema]]:
+        """Provider Catalog
+
+        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /api/v1/providers/catalog/{provider_id}, which imports only that one SDK.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._provider_catalog_api_v1_providers_catalog_get_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[KnownProviderSummarySchema]",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def provider_catalog_api_v1_providers_catalog_get_without_preload_content(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Provider Catalog
+
+        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /api/v1/providers/catalog/{provider_id}, which imports only that one SDK.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._provider_catalog_api_v1_providers_catalog_get_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[KnownProviderSummarySchema]",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _provider_catalog_api_v1_providers_catalog_get_serialize(
+        self,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/providers/catalog',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def provider_catalog_detail_api_v1_providers_catalog_provider_id_get(
         self,
         provider_id: StrictStr,
         _request_timeout: Union[
@@ -1128,7 +1375,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_catalog_detail_v1_providers_catalog_provider_id_get_serialize(
+        _param = self._provider_catalog_detail_api_v1_providers_catalog_provider_id_get_serialize(
             provider_id=provider_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1152,7 +1399,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_detail_v1_providers_catalog_provider_id_get_with_http_info(
+    def provider_catalog_detail_api_v1_providers_catalog_provider_id_get_with_http_info(
         self,
         provider_id: StrictStr,
         _request_timeout: Union[
@@ -1196,7 +1443,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_catalog_detail_v1_providers_catalog_provider_id_get_serialize(
+        _param = self._provider_catalog_detail_api_v1_providers_catalog_provider_id_get_serialize(
             provider_id=provider_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1220,7 +1467,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_detail_v1_providers_catalog_provider_id_get_without_preload_content(
+    def provider_catalog_detail_api_v1_providers_catalog_provider_id_get_without_preload_content(
         self,
         provider_id: StrictStr,
         _request_timeout: Union[
@@ -1264,7 +1511,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_catalog_detail_v1_providers_catalog_provider_id_get_serialize(
+        _param = self._provider_catalog_detail_api_v1_providers_catalog_provider_id_get_serialize(
             provider_id=provider_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1283,7 +1530,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _provider_catalog_detail_v1_providers_catalog_provider_id_get_serialize(
+    def _provider_catalog_detail_api_v1_providers_catalog_provider_id_get_serialize(
         self,
         provider_id,
         _request_auth,
@@ -1332,7 +1579,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/providers/catalog/{provider_id}',
+            resource_path='/api/v1/providers/catalog/{provider_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1349,254 +1596,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_v1_providers_catalog_get(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[KnownProviderSummarySchema]:
-        """Provider Catalog
-
-        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /v1/providers/catalog/{provider_id}, which imports only that one SDK.
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._provider_catalog_v1_providers_catalog_get_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[KnownProviderSummarySchema]",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def provider_catalog_v1_providers_catalog_get_with_http_info(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[KnownProviderSummarySchema]]:
-        """Provider Catalog
-
-        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /v1/providers/catalog/{provider_id}, which imports only that one SDK.
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._provider_catalog_v1_providers_catalog_get_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[KnownProviderSummarySchema]",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def provider_catalog_v1_providers_catalog_get_without_preload_content(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Provider Catalog
-
-        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /v1/providers/catalog/{provider_id}, which imports only that one SDK.
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._provider_catalog_v1_providers_catalog_get_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[KnownProviderSummarySchema]",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _provider_catalog_v1_providers_catalog_get_serialize(
-        self,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'XApiKeyAuth', 
-            'ApiKeyAuth'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v1/providers/catalog',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def provider_health_v1_providers_health_get(
+    def provider_health_api_v1_providers_health_get(
         self,
         refresh: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -1640,7 +1640,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_health_v1_providers_health_get_serialize(
+        _param = self._provider_health_api_v1_providers_health_get_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1664,7 +1664,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_health_v1_providers_health_get_with_http_info(
+    def provider_health_api_v1_providers_health_get_with_http_info(
         self,
         refresh: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -1708,7 +1708,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_health_v1_providers_health_get_serialize(
+        _param = self._provider_health_api_v1_providers_health_get_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1732,7 +1732,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_health_v1_providers_health_get_without_preload_content(
+    def provider_health_api_v1_providers_health_get_without_preload_content(
         self,
         refresh: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -1776,7 +1776,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_health_v1_providers_health_get_serialize(
+        _param = self._provider_health_api_v1_providers_health_get_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1795,7 +1795,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _provider_health_v1_providers_health_get_serialize(
+    def _provider_health_api_v1_providers_health_get_serialize(
         self,
         refresh,
         _request_auth,
@@ -1846,7 +1846,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/providers/health',
+            resource_path='/api/v1/providers/health',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1863,7 +1863,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def reencrypt_stored_provider_keys_v1_provider_credentials_reencrypt_post(
+    def reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post(
         self,
         _request_timeout: Union[
             None,
@@ -1904,7 +1904,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reencrypt_stored_provider_keys_v1_provider_credentials_reencrypt_post_serialize(
+        _param = self._reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1926,7 +1926,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def reencrypt_stored_provider_keys_v1_provider_credentials_reencrypt_post_with_http_info(
+    def reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -1967,7 +1967,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reencrypt_stored_provider_keys_v1_provider_credentials_reencrypt_post_serialize(
+        _param = self._reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1989,7 +1989,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def reencrypt_stored_provider_keys_v1_provider_credentials_reencrypt_post_without_preload_content(
+    def reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -2030,7 +2030,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reencrypt_stored_provider_keys_v1_provider_credentials_reencrypt_post_serialize(
+        _param = self._reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2047,7 +2047,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _reencrypt_stored_provider_keys_v1_provider_credentials_reencrypt_post_serialize(
+    def _reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -2093,7 +2093,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/provider-credentials/reencrypt',
+            resource_path='/api/v1/provider-credentials/reencrypt',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2110,7 +2110,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_provider_connection_v1_provider_credentials_test_post(
+    def test_provider_connection_api_v1_provider_credentials_test_post(
         self,
         test_provider_request: TestProviderRequest,
         _request_timeout: Union[
@@ -2154,7 +2154,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_provider_connection_v1_provider_credentials_test_post_serialize(
+        _param = self._test_provider_connection_api_v1_provider_credentials_test_post_serialize(
             test_provider_request=test_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2178,7 +2178,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_provider_connection_v1_provider_credentials_test_post_with_http_info(
+    def test_provider_connection_api_v1_provider_credentials_test_post_with_http_info(
         self,
         test_provider_request: TestProviderRequest,
         _request_timeout: Union[
@@ -2222,7 +2222,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_provider_connection_v1_provider_credentials_test_post_serialize(
+        _param = self._test_provider_connection_api_v1_provider_credentials_test_post_serialize(
             test_provider_request=test_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2246,7 +2246,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_provider_connection_v1_provider_credentials_test_post_without_preload_content(
+    def test_provider_connection_api_v1_provider_credentials_test_post_without_preload_content(
         self,
         test_provider_request: TestProviderRequest,
         _request_timeout: Union[
@@ -2290,7 +2290,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_provider_connection_v1_provider_credentials_test_post_serialize(
+        _param = self._test_provider_connection_api_v1_provider_credentials_test_post_serialize(
             test_provider_request=test_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2309,7 +2309,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _test_provider_connection_v1_provider_credentials_test_post_serialize(
+    def _test_provider_connection_api_v1_provider_credentials_test_post_serialize(
         self,
         test_provider_request,
         _request_auth,
@@ -2371,7 +2371,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/provider-credentials/test',
+            resource_path='/api/v1/provider-credentials/test',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2388,7 +2388,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_stored_provider_v1_provider_credentials_instance_test_post(
+    def test_stored_provider_api_v1_provider_credentials_instance_test_post(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -2432,7 +2432,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_stored_provider_v1_provider_credentials_instance_test_post_serialize(
+        _param = self._test_stored_provider_api_v1_provider_credentials_instance_test_post_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2456,7 +2456,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_stored_provider_v1_provider_credentials_instance_test_post_with_http_info(
+    def test_stored_provider_api_v1_provider_credentials_instance_test_post_with_http_info(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -2500,7 +2500,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_stored_provider_v1_provider_credentials_instance_test_post_serialize(
+        _param = self._test_stored_provider_api_v1_provider_credentials_instance_test_post_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2524,7 +2524,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_stored_provider_v1_provider_credentials_instance_test_post_without_preload_content(
+    def test_stored_provider_api_v1_provider_credentials_instance_test_post_without_preload_content(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -2568,7 +2568,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_stored_provider_v1_provider_credentials_instance_test_post_serialize(
+        _param = self._test_stored_provider_api_v1_provider_credentials_instance_test_post_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2587,7 +2587,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _test_stored_provider_v1_provider_credentials_instance_test_post_serialize(
+    def _test_stored_provider_api_v1_provider_credentials_instance_test_post_serialize(
         self,
         instance,
         _request_auth,
@@ -2636,7 +2636,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/provider-credentials/{instance}/test',
+            resource_path='/api/v1/provider-credentials/{instance}/test',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2653,7 +2653,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def update_stored_provider_v1_provider_credentials_instance_patch(
+    def update_stored_provider_api_v1_provider_credentials_instance_patch(
         self,
         instance: StrictStr,
         update_stored_provider_request: UpdateStoredProviderRequest,
@@ -2700,7 +2700,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_stored_provider_v1_provider_credentials_instance_patch_serialize(
+        _param = self._update_stored_provider_api_v1_provider_credentials_instance_patch_serialize(
             instance=instance,
             update_stored_provider_request=update_stored_provider_request,
             _request_auth=_request_auth,
@@ -2725,7 +2725,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def update_stored_provider_v1_provider_credentials_instance_patch_with_http_info(
+    def update_stored_provider_api_v1_provider_credentials_instance_patch_with_http_info(
         self,
         instance: StrictStr,
         update_stored_provider_request: UpdateStoredProviderRequest,
@@ -2772,7 +2772,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_stored_provider_v1_provider_credentials_instance_patch_serialize(
+        _param = self._update_stored_provider_api_v1_provider_credentials_instance_patch_serialize(
             instance=instance,
             update_stored_provider_request=update_stored_provider_request,
             _request_auth=_request_auth,
@@ -2797,7 +2797,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def update_stored_provider_v1_provider_credentials_instance_patch_without_preload_content(
+    def update_stored_provider_api_v1_provider_credentials_instance_patch_without_preload_content(
         self,
         instance: StrictStr,
         update_stored_provider_request: UpdateStoredProviderRequest,
@@ -2844,7 +2844,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_stored_provider_v1_provider_credentials_instance_patch_serialize(
+        _param = self._update_stored_provider_api_v1_provider_credentials_instance_patch_serialize(
             instance=instance,
             update_stored_provider_request=update_stored_provider_request,
             _request_auth=_request_auth,
@@ -2864,7 +2864,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _update_stored_provider_v1_provider_credentials_instance_patch_serialize(
+    def _update_stored_provider_api_v1_provider_credentials_instance_patch_serialize(
         self,
         instance,
         update_stored_provider_request,
@@ -2929,7 +2929,7 @@ class ProvidersApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/provider-credentials/{instance}',
+            resource_path='/api/v1/provider-credentials/{instance}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

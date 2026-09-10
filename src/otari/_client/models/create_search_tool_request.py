@@ -30,7 +30,7 @@ class CreateSearchToolRequest(BaseModel):
     """ # noqa: E501
     api_base: Optional[StrictStr] = Field(default=None, description="Backend endpoint. Omit to inherit the provider's default (searxng inherits web_search_url).")
     api_key: Optional[StrictStr] = Field(default=None, description="Provider API key. Stored encrypted; never returned.")
-    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Name callers pass as 'search_tool_name' or in /v1/search/{tool}.")
+    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Name callers pass as 'search_tool_name' or in /api/v1/search/{tool}.")
     options: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     provider: StrictStr = Field(description="Search provider, one of: exa, searxng.")
     timeout: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = Field(default=None, description="Per-request timeout in seconds.")

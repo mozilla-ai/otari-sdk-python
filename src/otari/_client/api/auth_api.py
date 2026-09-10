@@ -61,7 +61,7 @@ class AuthApi:
 
 
     @validate_call
-    def authenticate_passkey_v1_auth_webauthn_authenticate_post(
+    def authenticate_passkey_api_v1_auth_webauthn_authenticate_post(
         self,
         authenticate_passkey_request: AuthenticatePasskeyRequest,
         _request_timeout: Union[
@@ -105,7 +105,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._authenticate_passkey_v1_auth_webauthn_authenticate_post_serialize(
+        _param = self._authenticate_passkey_api_v1_auth_webauthn_authenticate_post_serialize(
             authenticate_passkey_request=authenticate_passkey_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -129,7 +129,7 @@ class AuthApi:
 
 
     @validate_call
-    def authenticate_passkey_v1_auth_webauthn_authenticate_post_with_http_info(
+    def authenticate_passkey_api_v1_auth_webauthn_authenticate_post_with_http_info(
         self,
         authenticate_passkey_request: AuthenticatePasskeyRequest,
         _request_timeout: Union[
@@ -173,7 +173,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._authenticate_passkey_v1_auth_webauthn_authenticate_post_serialize(
+        _param = self._authenticate_passkey_api_v1_auth_webauthn_authenticate_post_serialize(
             authenticate_passkey_request=authenticate_passkey_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -197,7 +197,7 @@ class AuthApi:
 
 
     @validate_call
-    def authenticate_passkey_v1_auth_webauthn_authenticate_post_without_preload_content(
+    def authenticate_passkey_api_v1_auth_webauthn_authenticate_post_without_preload_content(
         self,
         authenticate_passkey_request: AuthenticatePasskeyRequest,
         _request_timeout: Union[
@@ -241,7 +241,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._authenticate_passkey_v1_auth_webauthn_authenticate_post_serialize(
+        _param = self._authenticate_passkey_api_v1_auth_webauthn_authenticate_post_serialize(
             authenticate_passkey_request=authenticate_passkey_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -260,7 +260,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _authenticate_passkey_v1_auth_webauthn_authenticate_post_serialize(
+    def _authenticate_passkey_api_v1_auth_webauthn_authenticate_post_serialize(
         self,
         authenticate_passkey_request,
         _request_auth,
@@ -320,7 +320,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/webauthn/authenticate',
+            resource_path='/api/v1/auth/webauthn/authenticate',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -337,7 +337,7 @@ class AuthApi:
 
 
     @validate_call
-    def authentication_options_v1_auth_webauthn_authenticate_options_post(
+    def authentication_options_api_v1_auth_webauthn_authenticate_options_post(
         self,
         _request_timeout: Union[
             None,
@@ -378,7 +378,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._authentication_options_v1_auth_webauthn_authenticate_options_post_serialize(
+        _param = self._authentication_options_api_v1_auth_webauthn_authenticate_options_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -400,7 +400,7 @@ class AuthApi:
 
 
     @validate_call
-    def authentication_options_v1_auth_webauthn_authenticate_options_post_with_http_info(
+    def authentication_options_api_v1_auth_webauthn_authenticate_options_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -441,7 +441,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._authentication_options_v1_auth_webauthn_authenticate_options_post_serialize(
+        _param = self._authentication_options_api_v1_auth_webauthn_authenticate_options_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -463,7 +463,7 @@ class AuthApi:
 
 
     @validate_call
-    def authentication_options_v1_auth_webauthn_authenticate_options_post_without_preload_content(
+    def authentication_options_api_v1_auth_webauthn_authenticate_options_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -504,7 +504,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._authentication_options_v1_auth_webauthn_authenticate_options_post_serialize(
+        _param = self._authentication_options_api_v1_auth_webauthn_authenticate_options_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -521,7 +521,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _authentication_options_v1_auth_webauthn_authenticate_options_post_serialize(
+    def _authentication_options_api_v1_auth_webauthn_authenticate_options_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -565,7 +565,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/webauthn/authenticate/options',
+            resource_path='/api/v1/auth/webauthn/authenticate/options',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -582,7 +582,7 @@ class AuthApi:
 
 
     @validate_call
-    def authorize_v1_auth_oauth_provider_authorize_get(
+    def authorize_api_v1_auth_oauth_provider_authorize_get(
         self,
         provider: Annotated[str, Field(strict=True, description="Which OAuth provider to sign in with.")],
         _request_timeout: Union[
@@ -626,7 +626,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._authorize_v1_auth_oauth_provider_authorize_get_serialize(
+        _param = self._authorize_api_v1_auth_oauth_provider_authorize_get_serialize(
             provider=provider,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -650,7 +650,7 @@ class AuthApi:
 
 
     @validate_call
-    def authorize_v1_auth_oauth_provider_authorize_get_with_http_info(
+    def authorize_api_v1_auth_oauth_provider_authorize_get_with_http_info(
         self,
         provider: Annotated[str, Field(strict=True, description="Which OAuth provider to sign in with.")],
         _request_timeout: Union[
@@ -694,7 +694,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._authorize_v1_auth_oauth_provider_authorize_get_serialize(
+        _param = self._authorize_api_v1_auth_oauth_provider_authorize_get_serialize(
             provider=provider,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -718,7 +718,7 @@ class AuthApi:
 
 
     @validate_call
-    def authorize_v1_auth_oauth_provider_authorize_get_without_preload_content(
+    def authorize_api_v1_auth_oauth_provider_authorize_get_without_preload_content(
         self,
         provider: Annotated[str, Field(strict=True, description="Which OAuth provider to sign in with.")],
         _request_timeout: Union[
@@ -762,7 +762,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._authorize_v1_auth_oauth_provider_authorize_get_serialize(
+        _param = self._authorize_api_v1_auth_oauth_provider_authorize_get_serialize(
             provider=provider,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -781,7 +781,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _authorize_v1_auth_oauth_provider_authorize_get_serialize(
+    def _authorize_api_v1_auth_oauth_provider_authorize_get_serialize(
         self,
         provider,
         _request_auth,
@@ -828,7 +828,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/auth/oauth/{provider}/authorize',
+            resource_path='/api/v1/auth/oauth/{provider}/authorize',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -845,7 +845,7 @@ class AuthApi:
 
 
     @validate_call
-    def callback_v1_auth_oauth_provider_callback_post(
+    def callback_api_v1_auth_oauth_provider_callback_post(
         self,
         provider: Annotated[str, Field(strict=True, description="Which OAuth provider to sign in with.")],
         o_auth_callback_request: OAuthCallbackRequest,
@@ -892,7 +892,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._callback_v1_auth_oauth_provider_callback_post_serialize(
+        _param = self._callback_api_v1_auth_oauth_provider_callback_post_serialize(
             provider=provider,
             o_auth_callback_request=o_auth_callback_request,
             _request_auth=_request_auth,
@@ -917,7 +917,7 @@ class AuthApi:
 
 
     @validate_call
-    def callback_v1_auth_oauth_provider_callback_post_with_http_info(
+    def callback_api_v1_auth_oauth_provider_callback_post_with_http_info(
         self,
         provider: Annotated[str, Field(strict=True, description="Which OAuth provider to sign in with.")],
         o_auth_callback_request: OAuthCallbackRequest,
@@ -964,7 +964,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._callback_v1_auth_oauth_provider_callback_post_serialize(
+        _param = self._callback_api_v1_auth_oauth_provider_callback_post_serialize(
             provider=provider,
             o_auth_callback_request=o_auth_callback_request,
             _request_auth=_request_auth,
@@ -989,7 +989,7 @@ class AuthApi:
 
 
     @validate_call
-    def callback_v1_auth_oauth_provider_callback_post_without_preload_content(
+    def callback_api_v1_auth_oauth_provider_callback_post_without_preload_content(
         self,
         provider: Annotated[str, Field(strict=True, description="Which OAuth provider to sign in with.")],
         o_auth_callback_request: OAuthCallbackRequest,
@@ -1036,7 +1036,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._callback_v1_auth_oauth_provider_callback_post_serialize(
+        _param = self._callback_api_v1_auth_oauth_provider_callback_post_serialize(
             provider=provider,
             o_auth_callback_request=o_auth_callback_request,
             _request_auth=_request_auth,
@@ -1056,7 +1056,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _callback_v1_auth_oauth_provider_callback_post_serialize(
+    def _callback_api_v1_auth_oauth_provider_callback_post_serialize(
         self,
         provider,
         o_auth_callback_request,
@@ -1119,7 +1119,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/oauth/{provider}/callback',
+            resource_path='/api/v1/auth/oauth/{provider}/callback',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1136,7 +1136,7 @@ class AuthApi:
 
 
     @validate_call
-    def confirm_reset_v1_auth_password_reset_confirm_post(
+    def confirm_reset_api_v1_auth_password_reset_confirm_post(
         self,
         reset_password_request: ResetPasswordRequest,
         _request_timeout: Union[
@@ -1180,7 +1180,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._confirm_reset_v1_auth_password_reset_confirm_post_serialize(
+        _param = self._confirm_reset_api_v1_auth_password_reset_confirm_post_serialize(
             reset_password_request=reset_password_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1204,7 +1204,7 @@ class AuthApi:
 
 
     @validate_call
-    def confirm_reset_v1_auth_password_reset_confirm_post_with_http_info(
+    def confirm_reset_api_v1_auth_password_reset_confirm_post_with_http_info(
         self,
         reset_password_request: ResetPasswordRequest,
         _request_timeout: Union[
@@ -1248,7 +1248,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._confirm_reset_v1_auth_password_reset_confirm_post_serialize(
+        _param = self._confirm_reset_api_v1_auth_password_reset_confirm_post_serialize(
             reset_password_request=reset_password_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1272,7 +1272,7 @@ class AuthApi:
 
 
     @validate_call
-    def confirm_reset_v1_auth_password_reset_confirm_post_without_preload_content(
+    def confirm_reset_api_v1_auth_password_reset_confirm_post_without_preload_content(
         self,
         reset_password_request: ResetPasswordRequest,
         _request_timeout: Union[
@@ -1316,7 +1316,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._confirm_reset_v1_auth_password_reset_confirm_post_serialize(
+        _param = self._confirm_reset_api_v1_auth_password_reset_confirm_post_serialize(
             reset_password_request=reset_password_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1335,7 +1335,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _confirm_reset_v1_auth_password_reset_confirm_post_serialize(
+    def _confirm_reset_api_v1_auth_password_reset_confirm_post_serialize(
         self,
         reset_password_request,
         _request_auth,
@@ -1395,7 +1395,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/password/reset/confirm',
+            resource_path='/api/v1/auth/password/reset/confirm',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1412,7 +1412,7 @@ class AuthApi:
 
 
     @validate_call
-    def create_session_v1_auth_session_post(
+    def create_session_api_v1_auth_session_post(
         self,
         create_session_request: CreateSessionRequest,
         _request_timeout: Union[
@@ -1430,7 +1430,7 @@ class AuthApi:
     ) -> SessionResponse:
         """Create Session
 
-        Verify a sign-in credential and set the HttpOnly session cookie.  The session is bound to the identity that authenticated, so every request it later authenticates resolves a user and that user's active organization rather than only \"a credential was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. Running after verification also means the throttle bounds how many verdicts an IP gets, not how much work it can cause: a password attempt pays for a bcrypt verification (cost 12, on the order of 200ms of CPU, and one is burned against a stand-in hash even for an address nobody holds) before the limit is consulted, so a 429 costs the same as a 401. A gateway exposed to the internet should rate-limit this path at the proxy as well.  The maintenance-mode check runs before either credential is verified, and refuses both. Before, because a frozen deployment should not spend a bcrypt verification per attempt and the refusal is not about the credential anyway; both, because the way back out is the master key against ``PATCH /v1/settings/maintenance-mode`` through the header, which never passes through this door. That is what keeps the way back out off the frozen path, and it is why no identity needs an exemption here; an operator who no longer holds the master key recovers by setting ``OTARI_MASTER_KEY`` and restarting, which is a restart rather than a click. It leaks nothing either: ``GET /v1/bootstrap`` already publishes the same flag unauthenticated, so the sign-in screen can render the right page.
+        Verify a sign-in credential and set the HttpOnly session cookie.  The session is bound to the identity that authenticated, so every request it later authenticates resolves a user and that user's active organization rather than only \"a credential was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. Running after verification also means the throttle bounds how many verdicts an IP gets, not how much work it can cause: a password attempt pays for a bcrypt verification (cost 12, on the order of 200ms of CPU, and one is burned against a stand-in hash even for an address nobody holds) before the limit is consulted, so a 429 costs the same as a 401. A gateway exposed to the internet should rate-limit this path at the proxy as well.  The maintenance-mode check runs before either credential is verified, and refuses both. Before, because a frozen deployment should not spend a bcrypt verification per attempt and the refusal is not about the credential anyway; both, because the way back out is the master key against ``PATCH /api/v1/settings/maintenance-mode`` through the header, which never passes through this door. That is what keeps the way back out off the frozen path, and it is why no identity needs an exemption here; an operator who no longer holds the master key recovers by setting ``OTARI_MASTER_KEY`` and restarting, which is a restart rather than a click. It leaks nothing either: ``GET /api/v1/bootstrap`` already publishes the same flag unauthenticated, so the sign-in screen can render the right page.
 
         :param create_session_request: (required)
         :type create_session_request: CreateSessionRequest
@@ -1456,7 +1456,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_session_v1_auth_session_post_serialize(
+        _param = self._create_session_api_v1_auth_session_post_serialize(
             create_session_request=create_session_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1480,7 +1480,7 @@ class AuthApi:
 
 
     @validate_call
-    def create_session_v1_auth_session_post_with_http_info(
+    def create_session_api_v1_auth_session_post_with_http_info(
         self,
         create_session_request: CreateSessionRequest,
         _request_timeout: Union[
@@ -1498,7 +1498,7 @@ class AuthApi:
     ) -> ApiResponse[SessionResponse]:
         """Create Session
 
-        Verify a sign-in credential and set the HttpOnly session cookie.  The session is bound to the identity that authenticated, so every request it later authenticates resolves a user and that user's active organization rather than only \"a credential was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. Running after verification also means the throttle bounds how many verdicts an IP gets, not how much work it can cause: a password attempt pays for a bcrypt verification (cost 12, on the order of 200ms of CPU, and one is burned against a stand-in hash even for an address nobody holds) before the limit is consulted, so a 429 costs the same as a 401. A gateway exposed to the internet should rate-limit this path at the proxy as well.  The maintenance-mode check runs before either credential is verified, and refuses both. Before, because a frozen deployment should not spend a bcrypt verification per attempt and the refusal is not about the credential anyway; both, because the way back out is the master key against ``PATCH /v1/settings/maintenance-mode`` through the header, which never passes through this door. That is what keeps the way back out off the frozen path, and it is why no identity needs an exemption here; an operator who no longer holds the master key recovers by setting ``OTARI_MASTER_KEY`` and restarting, which is a restart rather than a click. It leaks nothing either: ``GET /v1/bootstrap`` already publishes the same flag unauthenticated, so the sign-in screen can render the right page.
+        Verify a sign-in credential and set the HttpOnly session cookie.  The session is bound to the identity that authenticated, so every request it later authenticates resolves a user and that user's active organization rather than only \"a credential was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. Running after verification also means the throttle bounds how many verdicts an IP gets, not how much work it can cause: a password attempt pays for a bcrypt verification (cost 12, on the order of 200ms of CPU, and one is burned against a stand-in hash even for an address nobody holds) before the limit is consulted, so a 429 costs the same as a 401. A gateway exposed to the internet should rate-limit this path at the proxy as well.  The maintenance-mode check runs before either credential is verified, and refuses both. Before, because a frozen deployment should not spend a bcrypt verification per attempt and the refusal is not about the credential anyway; both, because the way back out is the master key against ``PATCH /api/v1/settings/maintenance-mode`` through the header, which never passes through this door. That is what keeps the way back out off the frozen path, and it is why no identity needs an exemption here; an operator who no longer holds the master key recovers by setting ``OTARI_MASTER_KEY`` and restarting, which is a restart rather than a click. It leaks nothing either: ``GET /api/v1/bootstrap`` already publishes the same flag unauthenticated, so the sign-in screen can render the right page.
 
         :param create_session_request: (required)
         :type create_session_request: CreateSessionRequest
@@ -1524,7 +1524,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_session_v1_auth_session_post_serialize(
+        _param = self._create_session_api_v1_auth_session_post_serialize(
             create_session_request=create_session_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1548,7 +1548,7 @@ class AuthApi:
 
 
     @validate_call
-    def create_session_v1_auth_session_post_without_preload_content(
+    def create_session_api_v1_auth_session_post_without_preload_content(
         self,
         create_session_request: CreateSessionRequest,
         _request_timeout: Union[
@@ -1566,7 +1566,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Create Session
 
-        Verify a sign-in credential and set the HttpOnly session cookie.  The session is bound to the identity that authenticated, so every request it later authenticates resolves a user and that user's active organization rather than only \"a credential was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. Running after verification also means the throttle bounds how many verdicts an IP gets, not how much work it can cause: a password attempt pays for a bcrypt verification (cost 12, on the order of 200ms of CPU, and one is burned against a stand-in hash even for an address nobody holds) before the limit is consulted, so a 429 costs the same as a 401. A gateway exposed to the internet should rate-limit this path at the proxy as well.  The maintenance-mode check runs before either credential is verified, and refuses both. Before, because a frozen deployment should not spend a bcrypt verification per attempt and the refusal is not about the credential anyway; both, because the way back out is the master key against ``PATCH /v1/settings/maintenance-mode`` through the header, which never passes through this door. That is what keeps the way back out off the frozen path, and it is why no identity needs an exemption here; an operator who no longer holds the master key recovers by setting ``OTARI_MASTER_KEY`` and restarting, which is a restart rather than a click. It leaks nothing either: ``GET /v1/bootstrap`` already publishes the same flag unauthenticated, so the sign-in screen can render the right page.
+        Verify a sign-in credential and set the HttpOnly session cookie.  The session is bound to the identity that authenticated, so every request it later authenticates resolves a user and that user's active organization rather than only \"a credential was presented once\". The response names both, so a client knows who it is signed in as without a second call.  The rate-limit check deliberately runs only after a failed verification, not before it: a pre-verification gate can't know whether *this* attempt would have succeeded, so once an IP has used up its failure quota it would end up blocking that IP's legitimate owner too, not just further attackers. Running after verification also means the throttle bounds how many verdicts an IP gets, not how much work it can cause: a password attempt pays for a bcrypt verification (cost 12, on the order of 200ms of CPU, and one is burned against a stand-in hash even for an address nobody holds) before the limit is consulted, so a 429 costs the same as a 401. A gateway exposed to the internet should rate-limit this path at the proxy as well.  The maintenance-mode check runs before either credential is verified, and refuses both. Before, because a frozen deployment should not spend a bcrypt verification per attempt and the refusal is not about the credential anyway; both, because the way back out is the master key against ``PATCH /api/v1/settings/maintenance-mode`` through the header, which never passes through this door. That is what keeps the way back out off the frozen path, and it is why no identity needs an exemption here; an operator who no longer holds the master key recovers by setting ``OTARI_MASTER_KEY`` and restarting, which is a restart rather than a click. It leaks nothing either: ``GET /api/v1/bootstrap`` already publishes the same flag unauthenticated, so the sign-in screen can render the right page.
 
         :param create_session_request: (required)
         :type create_session_request: CreateSessionRequest
@@ -1592,7 +1592,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_session_v1_auth_session_post_serialize(
+        _param = self._create_session_api_v1_auth_session_post_serialize(
             create_session_request=create_session_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1611,7 +1611,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _create_session_v1_auth_session_post_serialize(
+    def _create_session_api_v1_auth_session_post_serialize(
         self,
         create_session_request,
         _request_auth,
@@ -1671,7 +1671,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/session',
+            resource_path='/api/v1/auth/session',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1688,7 +1688,7 @@ class AuthApi:
 
 
     @validate_call
-    def delete_passkey_v1_auth_webauthn_credentials_credential_id_delete(
+    def delete_passkey_api_v1_auth_webauthn_credentials_credential_id_delete(
         self,
         credential_id: UUID,
         _request_timeout: Union[
@@ -1732,7 +1732,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_passkey_v1_auth_webauthn_credentials_credential_id_delete_serialize(
+        _param = self._delete_passkey_api_v1_auth_webauthn_credentials_credential_id_delete_serialize(
             credential_id=credential_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1756,7 +1756,7 @@ class AuthApi:
 
 
     @validate_call
-    def delete_passkey_v1_auth_webauthn_credentials_credential_id_delete_with_http_info(
+    def delete_passkey_api_v1_auth_webauthn_credentials_credential_id_delete_with_http_info(
         self,
         credential_id: UUID,
         _request_timeout: Union[
@@ -1800,7 +1800,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_passkey_v1_auth_webauthn_credentials_credential_id_delete_serialize(
+        _param = self._delete_passkey_api_v1_auth_webauthn_credentials_credential_id_delete_serialize(
             credential_id=credential_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1824,7 +1824,7 @@ class AuthApi:
 
 
     @validate_call
-    def delete_passkey_v1_auth_webauthn_credentials_credential_id_delete_without_preload_content(
+    def delete_passkey_api_v1_auth_webauthn_credentials_credential_id_delete_without_preload_content(
         self,
         credential_id: UUID,
         _request_timeout: Union[
@@ -1868,7 +1868,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_passkey_v1_auth_webauthn_credentials_credential_id_delete_serialize(
+        _param = self._delete_passkey_api_v1_auth_webauthn_credentials_credential_id_delete_serialize(
             credential_id=credential_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1887,7 +1887,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _delete_passkey_v1_auth_webauthn_credentials_credential_id_delete_serialize(
+    def _delete_passkey_api_v1_auth_webauthn_credentials_credential_id_delete_serialize(
         self,
         credential_id,
         _request_auth,
@@ -1936,7 +1936,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/auth/webauthn/credentials/{credential_id}',
+            resource_path='/api/v1/auth/webauthn/credentials/{credential_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1953,7 +1953,7 @@ class AuthApi:
 
 
     @validate_call
-    def delete_session_v1_auth_session_delete(
+    def delete_session_api_v1_auth_session_delete(
         self,
         _request_timeout: Union[
             None,
@@ -1994,7 +1994,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_session_v1_auth_session_delete_serialize(
+        _param = self._delete_session_api_v1_auth_session_delete_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2016,7 +2016,7 @@ class AuthApi:
 
 
     @validate_call
-    def delete_session_v1_auth_session_delete_with_http_info(
+    def delete_session_api_v1_auth_session_delete_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -2057,7 +2057,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_session_v1_auth_session_delete_serialize(
+        _param = self._delete_session_api_v1_auth_session_delete_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2079,7 +2079,7 @@ class AuthApi:
 
 
     @validate_call
-    def delete_session_v1_auth_session_delete_without_preload_content(
+    def delete_session_api_v1_auth_session_delete_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -2120,7 +2120,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_session_v1_auth_session_delete_serialize(
+        _param = self._delete_session_api_v1_auth_session_delete_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2137,7 +2137,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _delete_session_v1_auth_session_delete_serialize(
+    def _delete_session_api_v1_auth_session_delete_serialize(
         self,
         _request_auth,
         _content_type,
@@ -2174,7 +2174,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/auth/session',
+            resource_path='/api/v1/auth/session',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2191,7 +2191,7 @@ class AuthApi:
 
 
     @validate_call
-    def list_passkeys_v1_auth_webauthn_credentials_get(
+    def list_passkeys_api_v1_auth_webauthn_credentials_get(
         self,
         _request_timeout: Union[
             None,
@@ -2232,7 +2232,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_passkeys_v1_auth_webauthn_credentials_get_serialize(
+        _param = self._list_passkeys_api_v1_auth_webauthn_credentials_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2254,7 +2254,7 @@ class AuthApi:
 
 
     @validate_call
-    def list_passkeys_v1_auth_webauthn_credentials_get_with_http_info(
+    def list_passkeys_api_v1_auth_webauthn_credentials_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -2295,7 +2295,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_passkeys_v1_auth_webauthn_credentials_get_serialize(
+        _param = self._list_passkeys_api_v1_auth_webauthn_credentials_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2317,7 +2317,7 @@ class AuthApi:
 
 
     @validate_call
-    def list_passkeys_v1_auth_webauthn_credentials_get_without_preload_content(
+    def list_passkeys_api_v1_auth_webauthn_credentials_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -2358,7 +2358,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_passkeys_v1_auth_webauthn_credentials_get_serialize(
+        _param = self._list_passkeys_api_v1_auth_webauthn_credentials_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2375,7 +2375,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _list_passkeys_v1_auth_webauthn_credentials_get_serialize(
+    def _list_passkeys_api_v1_auth_webauthn_credentials_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -2421,7 +2421,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/auth/webauthn/credentials',
+            resource_path='/api/v1/auth/webauthn/credentials',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2438,7 +2438,7 @@ class AuthApi:
 
 
     @validate_call
-    def register_passkey_v1_auth_webauthn_register_post(
+    def register_passkey_api_v1_auth_webauthn_register_post(
         self,
         register_passkey_request: RegisterPasskeyRequest,
         _request_timeout: Union[
@@ -2482,7 +2482,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._register_passkey_v1_auth_webauthn_register_post_serialize(
+        _param = self._register_passkey_api_v1_auth_webauthn_register_post_serialize(
             register_passkey_request=register_passkey_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2506,7 +2506,7 @@ class AuthApi:
 
 
     @validate_call
-    def register_passkey_v1_auth_webauthn_register_post_with_http_info(
+    def register_passkey_api_v1_auth_webauthn_register_post_with_http_info(
         self,
         register_passkey_request: RegisterPasskeyRequest,
         _request_timeout: Union[
@@ -2550,7 +2550,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._register_passkey_v1_auth_webauthn_register_post_serialize(
+        _param = self._register_passkey_api_v1_auth_webauthn_register_post_serialize(
             register_passkey_request=register_passkey_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2574,7 +2574,7 @@ class AuthApi:
 
 
     @validate_call
-    def register_passkey_v1_auth_webauthn_register_post_without_preload_content(
+    def register_passkey_api_v1_auth_webauthn_register_post_without_preload_content(
         self,
         register_passkey_request: RegisterPasskeyRequest,
         _request_timeout: Union[
@@ -2618,7 +2618,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._register_passkey_v1_auth_webauthn_register_post_serialize(
+        _param = self._register_passkey_api_v1_auth_webauthn_register_post_serialize(
             register_passkey_request=register_passkey_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2637,7 +2637,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _register_passkey_v1_auth_webauthn_register_post_serialize(
+    def _register_passkey_api_v1_auth_webauthn_register_post_serialize(
         self,
         register_passkey_request,
         _request_auth,
@@ -2699,7 +2699,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/webauthn/register',
+            resource_path='/api/v1/auth/webauthn/register',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2716,7 +2716,7 @@ class AuthApi:
 
 
     @validate_call
-    def registration_options_v1_auth_webauthn_register_options_post(
+    def registration_options_api_v1_auth_webauthn_register_options_post(
         self,
         _request_timeout: Union[
             None,
@@ -2757,7 +2757,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._registration_options_v1_auth_webauthn_register_options_post_serialize(
+        _param = self._registration_options_api_v1_auth_webauthn_register_options_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2779,7 +2779,7 @@ class AuthApi:
 
 
     @validate_call
-    def registration_options_v1_auth_webauthn_register_options_post_with_http_info(
+    def registration_options_api_v1_auth_webauthn_register_options_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -2820,7 +2820,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._registration_options_v1_auth_webauthn_register_options_post_serialize(
+        _param = self._registration_options_api_v1_auth_webauthn_register_options_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2842,7 +2842,7 @@ class AuthApi:
 
 
     @validate_call
-    def registration_options_v1_auth_webauthn_register_options_post_without_preload_content(
+    def registration_options_api_v1_auth_webauthn_register_options_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -2883,7 +2883,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._registration_options_v1_auth_webauthn_register_options_post_serialize(
+        _param = self._registration_options_api_v1_auth_webauthn_register_options_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2900,7 +2900,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _registration_options_v1_auth_webauthn_register_options_post_serialize(
+    def _registration_options_api_v1_auth_webauthn_register_options_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -2946,7 +2946,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/webauthn/register/options',
+            resource_path='/api/v1/auth/webauthn/register/options',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2963,7 +2963,7 @@ class AuthApi:
 
 
     @validate_call
-    def rename_passkey_v1_auth_webauthn_credentials_credential_id_patch(
+    def rename_passkey_api_v1_auth_webauthn_credentials_credential_id_patch(
         self,
         credential_id: UUID,
         web_authn_credential_update: WebAuthnCredentialUpdate,
@@ -3010,7 +3010,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rename_passkey_v1_auth_webauthn_credentials_credential_id_patch_serialize(
+        _param = self._rename_passkey_api_v1_auth_webauthn_credentials_credential_id_patch_serialize(
             credential_id=credential_id,
             web_authn_credential_update=web_authn_credential_update,
             _request_auth=_request_auth,
@@ -3035,7 +3035,7 @@ class AuthApi:
 
 
     @validate_call
-    def rename_passkey_v1_auth_webauthn_credentials_credential_id_patch_with_http_info(
+    def rename_passkey_api_v1_auth_webauthn_credentials_credential_id_patch_with_http_info(
         self,
         credential_id: UUID,
         web_authn_credential_update: WebAuthnCredentialUpdate,
@@ -3082,7 +3082,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rename_passkey_v1_auth_webauthn_credentials_credential_id_patch_serialize(
+        _param = self._rename_passkey_api_v1_auth_webauthn_credentials_credential_id_patch_serialize(
             credential_id=credential_id,
             web_authn_credential_update=web_authn_credential_update,
             _request_auth=_request_auth,
@@ -3107,7 +3107,7 @@ class AuthApi:
 
 
     @validate_call
-    def rename_passkey_v1_auth_webauthn_credentials_credential_id_patch_without_preload_content(
+    def rename_passkey_api_v1_auth_webauthn_credentials_credential_id_patch_without_preload_content(
         self,
         credential_id: UUID,
         web_authn_credential_update: WebAuthnCredentialUpdate,
@@ -3154,7 +3154,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rename_passkey_v1_auth_webauthn_credentials_credential_id_patch_serialize(
+        _param = self._rename_passkey_api_v1_auth_webauthn_credentials_credential_id_patch_serialize(
             credential_id=credential_id,
             web_authn_credential_update=web_authn_credential_update,
             _request_auth=_request_auth,
@@ -3174,7 +3174,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _rename_passkey_v1_auth_webauthn_credentials_credential_id_patch_serialize(
+    def _rename_passkey_api_v1_auth_webauthn_credentials_credential_id_patch_serialize(
         self,
         credential_id,
         web_authn_credential_update,
@@ -3239,7 +3239,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/auth/webauthn/credentials/{credential_id}',
+            resource_path='/api/v1/auth/webauthn/credentials/{credential_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3256,7 +3256,7 @@ class AuthApi:
 
 
     @validate_call
-    def request_reset_v1_auth_password_reset_post(
+    def request_reset_api_v1_auth_password_reset_post(
         self,
         request_password_reset_request: RequestPasswordResetRequest,
         _request_timeout: Union[
@@ -3300,7 +3300,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._request_reset_v1_auth_password_reset_post_serialize(
+        _param = self._request_reset_api_v1_auth_password_reset_post_serialize(
             request_password_reset_request=request_password_reset_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3324,7 +3324,7 @@ class AuthApi:
 
 
     @validate_call
-    def request_reset_v1_auth_password_reset_post_with_http_info(
+    def request_reset_api_v1_auth_password_reset_post_with_http_info(
         self,
         request_password_reset_request: RequestPasswordResetRequest,
         _request_timeout: Union[
@@ -3368,7 +3368,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._request_reset_v1_auth_password_reset_post_serialize(
+        _param = self._request_reset_api_v1_auth_password_reset_post_serialize(
             request_password_reset_request=request_password_reset_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3392,7 +3392,7 @@ class AuthApi:
 
 
     @validate_call
-    def request_reset_v1_auth_password_reset_post_without_preload_content(
+    def request_reset_api_v1_auth_password_reset_post_without_preload_content(
         self,
         request_password_reset_request: RequestPasswordResetRequest,
         _request_timeout: Union[
@@ -3436,7 +3436,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._request_reset_v1_auth_password_reset_post_serialize(
+        _param = self._request_reset_api_v1_auth_password_reset_post_serialize(
             request_password_reset_request=request_password_reset_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3455,7 +3455,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _request_reset_v1_auth_password_reset_post_serialize(
+    def _request_reset_api_v1_auth_password_reset_post_serialize(
         self,
         request_password_reset_request,
         _request_auth,
@@ -3515,7 +3515,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/password/reset',
+            resource_path='/api/v1/auth/password/reset',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3532,7 +3532,7 @@ class AuthApi:
 
 
     @validate_call
-    def resend_verification_v1_auth_resend_verification_post(
+    def resend_verification_api_v1_auth_resend_verification_post(
         self,
         resend_verification_request: ResendVerificationRequest,
         _request_timeout: Union[
@@ -3576,7 +3576,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._resend_verification_v1_auth_resend_verification_post_serialize(
+        _param = self._resend_verification_api_v1_auth_resend_verification_post_serialize(
             resend_verification_request=resend_verification_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3600,7 +3600,7 @@ class AuthApi:
 
 
     @validate_call
-    def resend_verification_v1_auth_resend_verification_post_with_http_info(
+    def resend_verification_api_v1_auth_resend_verification_post_with_http_info(
         self,
         resend_verification_request: ResendVerificationRequest,
         _request_timeout: Union[
@@ -3644,7 +3644,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._resend_verification_v1_auth_resend_verification_post_serialize(
+        _param = self._resend_verification_api_v1_auth_resend_verification_post_serialize(
             resend_verification_request=resend_verification_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3668,7 +3668,7 @@ class AuthApi:
 
 
     @validate_call
-    def resend_verification_v1_auth_resend_verification_post_without_preload_content(
+    def resend_verification_api_v1_auth_resend_verification_post_without_preload_content(
         self,
         resend_verification_request: ResendVerificationRequest,
         _request_timeout: Union[
@@ -3712,7 +3712,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._resend_verification_v1_auth_resend_verification_post_serialize(
+        _param = self._resend_verification_api_v1_auth_resend_verification_post_serialize(
             resend_verification_request=resend_verification_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3731,7 +3731,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _resend_verification_v1_auth_resend_verification_post_serialize(
+    def _resend_verification_api_v1_auth_resend_verification_post_serialize(
         self,
         resend_verification_request,
         _request_auth,
@@ -3791,7 +3791,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/resend-verification',
+            resource_path='/api/v1/auth/resend-verification',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3808,7 +3808,7 @@ class AuthApi:
 
 
     @validate_call
-    def set_dashboard_password_v1_auth_password_put(
+    def set_dashboard_password_api_v1_auth_password_put(
         self,
         set_password_request: SetPasswordRequest,
         _request_timeout: Union[
@@ -3852,7 +3852,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_dashboard_password_v1_auth_password_put_serialize(
+        _param = self._set_dashboard_password_api_v1_auth_password_put_serialize(
             set_password_request=set_password_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3876,7 +3876,7 @@ class AuthApi:
 
 
     @validate_call
-    def set_dashboard_password_v1_auth_password_put_with_http_info(
+    def set_dashboard_password_api_v1_auth_password_put_with_http_info(
         self,
         set_password_request: SetPasswordRequest,
         _request_timeout: Union[
@@ -3920,7 +3920,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_dashboard_password_v1_auth_password_put_serialize(
+        _param = self._set_dashboard_password_api_v1_auth_password_put_serialize(
             set_password_request=set_password_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3944,7 +3944,7 @@ class AuthApi:
 
 
     @validate_call
-    def set_dashboard_password_v1_auth_password_put_without_preload_content(
+    def set_dashboard_password_api_v1_auth_password_put_without_preload_content(
         self,
         set_password_request: SetPasswordRequest,
         _request_timeout: Union[
@@ -3988,7 +3988,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_dashboard_password_v1_auth_password_put_serialize(
+        _param = self._set_dashboard_password_api_v1_auth_password_put_serialize(
             set_password_request=set_password_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4007,7 +4007,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _set_dashboard_password_v1_auth_password_put_serialize(
+    def _set_dashboard_password_api_v1_auth_password_put_serialize(
         self,
         set_password_request,
         _request_auth,
@@ -4069,7 +4069,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='PUT',
-            resource_path='/v1/auth/password',
+            resource_path='/api/v1/auth/password',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4086,7 +4086,7 @@ class AuthApi:
 
 
     @validate_call
-    def signup_v1_auth_signup_post(
+    def signup_api_v1_auth_signup_post(
         self,
         signup_request: SignupRequest,
         _request_timeout: Union[
@@ -4130,7 +4130,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._signup_v1_auth_signup_post_serialize(
+        _param = self._signup_api_v1_auth_signup_post_serialize(
             signup_request=signup_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4154,7 +4154,7 @@ class AuthApi:
 
 
     @validate_call
-    def signup_v1_auth_signup_post_with_http_info(
+    def signup_api_v1_auth_signup_post_with_http_info(
         self,
         signup_request: SignupRequest,
         _request_timeout: Union[
@@ -4198,7 +4198,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._signup_v1_auth_signup_post_serialize(
+        _param = self._signup_api_v1_auth_signup_post_serialize(
             signup_request=signup_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4222,7 +4222,7 @@ class AuthApi:
 
 
     @validate_call
-    def signup_v1_auth_signup_post_without_preload_content(
+    def signup_api_v1_auth_signup_post_without_preload_content(
         self,
         signup_request: SignupRequest,
         _request_timeout: Union[
@@ -4266,7 +4266,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._signup_v1_auth_signup_post_serialize(
+        _param = self._signup_api_v1_auth_signup_post_serialize(
             signup_request=signup_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4285,7 +4285,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _signup_v1_auth_signup_post_serialize(
+    def _signup_api_v1_auth_signup_post_serialize(
         self,
         signup_request,
         _request_auth,
@@ -4345,7 +4345,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/signup',
+            resource_path='/api/v1/auth/signup',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4362,7 +4362,7 @@ class AuthApi:
 
 
     @validate_call
-    def verify_email_route_v1_auth_verify_email_post(
+    def verify_email_route_api_v1_auth_verify_email_post(
         self,
         verify_email_request: VerifyEmailRequest,
         _request_timeout: Union[
@@ -4406,7 +4406,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._verify_email_route_v1_auth_verify_email_post_serialize(
+        _param = self._verify_email_route_api_v1_auth_verify_email_post_serialize(
             verify_email_request=verify_email_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4430,7 +4430,7 @@ class AuthApi:
 
 
     @validate_call
-    def verify_email_route_v1_auth_verify_email_post_with_http_info(
+    def verify_email_route_api_v1_auth_verify_email_post_with_http_info(
         self,
         verify_email_request: VerifyEmailRequest,
         _request_timeout: Union[
@@ -4474,7 +4474,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._verify_email_route_v1_auth_verify_email_post_serialize(
+        _param = self._verify_email_route_api_v1_auth_verify_email_post_serialize(
             verify_email_request=verify_email_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4498,7 +4498,7 @@ class AuthApi:
 
 
     @validate_call
-    def verify_email_route_v1_auth_verify_email_post_without_preload_content(
+    def verify_email_route_api_v1_auth_verify_email_post_without_preload_content(
         self,
         verify_email_request: VerifyEmailRequest,
         _request_timeout: Union[
@@ -4542,7 +4542,7 @@ class AuthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._verify_email_route_v1_auth_verify_email_post_serialize(
+        _param = self._verify_email_route_api_v1_auth_verify_email_post_serialize(
             verify_email_request=verify_email_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4561,7 +4561,7 @@ class AuthApi:
         return response_data.response
 
 
-    def _verify_email_route_v1_auth_verify_email_post_serialize(
+    def _verify_email_route_api_v1_auth_verify_email_post_serialize(
         self,
         verify_email_request,
         _request_auth,
@@ -4621,7 +4621,7 @@ class AuthApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/auth/verify-email',
+            resource_path='/api/v1/auth/verify-email',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
