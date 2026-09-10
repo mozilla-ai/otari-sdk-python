@@ -16,6 +16,7 @@ from otari._client.api.health_api import HealthApi
 from otari._client.api.images_api import ImagesApi
 from otari._client.api.invitations_api import InvitationsApi
 from otari._client.api.keys_api import KeysApi
+from otari._client.api.mcp_api import McpApi
 from otari._client.api.mcp_servers_api import McpServersApi
 from otari._client.api.messages_api import MessagesApi
 from otari._client.api.models_api import ModelsApi
