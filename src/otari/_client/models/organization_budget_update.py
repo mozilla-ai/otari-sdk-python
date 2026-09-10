@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class OrganizationBudgetUpdate(BaseModel):
     """
-    Replace a budget's label, figure and period.  Every field is optional and keyed on ``model_fields_set``, matching ``PATCH /v1/budgets/{id}``'s own: an *omitted* field is left alone, and an explicit null clears it, so sending ``max_budget: null`` takes a budget back to uncapped, which is what the dashboard's dialog does. The period pair is still mutually exclusive, and setting one does not clear the other, which is why :func:`_require_single_period_source` re-checks the *resulting* pair rather than the submitted one.
+    Replace a budget's label, figure and period.  Every field is optional and keyed on ``model_fields_set``, matching the deployment-wide budget update's own: an *omitted* field is left alone, and an explicit null clears it, so sending ``max_budget: null`` takes a budget back to uncapped, which is what the dashboard's dialog does. The period pair is still mutually exclusive, and setting one does not clear the other, which is why :func:`_require_single_period_source` re-checks the *resulting* pair rather than the submitted one.
     """ # noqa: E501
     budget_duration_sec: Optional[Annotated[int, Field(strict=True, gt=0)]] = Field(default=None, description="Seconds between resets, counted from the last one. Mutually exclusive with reset_alignment")
     max_budget: Optional[Union[Annotated[float, Field(le=999999999999, strict=True, ge=0.0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = Field(default=None, description="Maximum spend in USD over one period; null caps nothing")

@@ -43,7 +43,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def create_organization_pricing_v1_organizations_me_pricing_post(
+    def create_organization_pricing_api_v1_organizations_me_pricing_post(
         self,
         organization_model_pricing_create: OrganizationModelPricingCreate,
         _request_timeout: Union[
@@ -61,7 +61,7 @@ class OrganizationPricingApi:
     ) -> OrganizationModelPricingPublic:
         """Create Organization Pricing
 
-        Set the organization's rate for a model over a period.  Refused with a 409 when the period overlaps one already stored for that model, naming the period it collides with, rather than shadowing it.  The key is normalized to its canonical ``instance:model`` form first, the same call ``POST /v1/pricing`` makes, and that is what makes one model one row rather than one per spelling. Stored verbatim, ``openai:gpt-4o`` and ``openai/gpt-4o`` are two keys: the overlap rule would not see them as colliding, and both would resolve, with the canonical one preferred, leaving the other dormant until the first is deleted. Normalizing on the way in is what stops that pair existing at all.
+        Set the organization's rate for a model over a period.  Refused with a 409 when the period overlaps one already stored for that model, naming the period it collides with, rather than shadowing it.  The key is normalized to its canonical ``instance:model`` form first, the same call ``POST /api/v1/pricing`` makes, and that is what makes one model one row rather than one per spelling. Stored verbatim, ``openai:gpt-4o`` and ``openai/gpt-4o`` are two keys: the overlap rule would not see them as colliding, and both would resolve, with the canonical one preferred, leaving the other dormant until the first is deleted. Normalizing on the way in is what stops that pair existing at all.
 
         :param organization_model_pricing_create: (required)
         :type organization_model_pricing_create: OrganizationModelPricingCreate
@@ -87,7 +87,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_pricing_v1_organizations_me_pricing_post_serialize(
+        _param = self._create_organization_pricing_api_v1_organizations_me_pricing_post_serialize(
             organization_model_pricing_create=organization_model_pricing_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -111,7 +111,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def create_organization_pricing_v1_organizations_me_pricing_post_with_http_info(
+    def create_organization_pricing_api_v1_organizations_me_pricing_post_with_http_info(
         self,
         organization_model_pricing_create: OrganizationModelPricingCreate,
         _request_timeout: Union[
@@ -129,7 +129,7 @@ class OrganizationPricingApi:
     ) -> ApiResponse[OrganizationModelPricingPublic]:
         """Create Organization Pricing
 
-        Set the organization's rate for a model over a period.  Refused with a 409 when the period overlaps one already stored for that model, naming the period it collides with, rather than shadowing it.  The key is normalized to its canonical ``instance:model`` form first, the same call ``POST /v1/pricing`` makes, and that is what makes one model one row rather than one per spelling. Stored verbatim, ``openai:gpt-4o`` and ``openai/gpt-4o`` are two keys: the overlap rule would not see them as colliding, and both would resolve, with the canonical one preferred, leaving the other dormant until the first is deleted. Normalizing on the way in is what stops that pair existing at all.
+        Set the organization's rate for a model over a period.  Refused with a 409 when the period overlaps one already stored for that model, naming the period it collides with, rather than shadowing it.  The key is normalized to its canonical ``instance:model`` form first, the same call ``POST /api/v1/pricing`` makes, and that is what makes one model one row rather than one per spelling. Stored verbatim, ``openai:gpt-4o`` and ``openai/gpt-4o`` are two keys: the overlap rule would not see them as colliding, and both would resolve, with the canonical one preferred, leaving the other dormant until the first is deleted. Normalizing on the way in is what stops that pair existing at all.
 
         :param organization_model_pricing_create: (required)
         :type organization_model_pricing_create: OrganizationModelPricingCreate
@@ -155,7 +155,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_pricing_v1_organizations_me_pricing_post_serialize(
+        _param = self._create_organization_pricing_api_v1_organizations_me_pricing_post_serialize(
             organization_model_pricing_create=organization_model_pricing_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -179,7 +179,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def create_organization_pricing_v1_organizations_me_pricing_post_without_preload_content(
+    def create_organization_pricing_api_v1_organizations_me_pricing_post_without_preload_content(
         self,
         organization_model_pricing_create: OrganizationModelPricingCreate,
         _request_timeout: Union[
@@ -197,7 +197,7 @@ class OrganizationPricingApi:
     ) -> RESTResponseType:
         """Create Organization Pricing
 
-        Set the organization's rate for a model over a period.  Refused with a 409 when the period overlaps one already stored for that model, naming the period it collides with, rather than shadowing it.  The key is normalized to its canonical ``instance:model`` form first, the same call ``POST /v1/pricing`` makes, and that is what makes one model one row rather than one per spelling. Stored verbatim, ``openai:gpt-4o`` and ``openai/gpt-4o`` are two keys: the overlap rule would not see them as colliding, and both would resolve, with the canonical one preferred, leaving the other dormant until the first is deleted. Normalizing on the way in is what stops that pair existing at all.
+        Set the organization's rate for a model over a period.  Refused with a 409 when the period overlaps one already stored for that model, naming the period it collides with, rather than shadowing it.  The key is normalized to its canonical ``instance:model`` form first, the same call ``POST /api/v1/pricing`` makes, and that is what makes one model one row rather than one per spelling. Stored verbatim, ``openai:gpt-4o`` and ``openai/gpt-4o`` are two keys: the overlap rule would not see them as colliding, and both would resolve, with the canonical one preferred, leaving the other dormant until the first is deleted. Normalizing on the way in is what stops that pair existing at all.
 
         :param organization_model_pricing_create: (required)
         :type organization_model_pricing_create: OrganizationModelPricingCreate
@@ -223,7 +223,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_pricing_v1_organizations_me_pricing_post_serialize(
+        _param = self._create_organization_pricing_api_v1_organizations_me_pricing_post_serialize(
             organization_model_pricing_create=organization_model_pricing_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -242,7 +242,7 @@ class OrganizationPricingApi:
         return response_data.response
 
 
-    def _create_organization_pricing_v1_organizations_me_pricing_post_serialize(
+    def _create_organization_pricing_api_v1_organizations_me_pricing_post_serialize(
         self,
         organization_model_pricing_create,
         _request_auth,
@@ -304,7 +304,7 @@ class OrganizationPricingApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/pricing',
+            resource_path='/api/v1/organizations/me/pricing',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -321,7 +321,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def delete_organization_pricing_v1_organizations_me_pricing_pricing_id_delete(
+    def delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete(
         self,
         pricing_id: UUID,
         _request_timeout: Union[
@@ -365,7 +365,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_pricing_v1_organizations_me_pricing_pricing_id_delete_serialize(
+        _param = self._delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_serialize(
             pricing_id=pricing_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -389,7 +389,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def delete_organization_pricing_v1_organizations_me_pricing_pricing_id_delete_with_http_info(
+    def delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_with_http_info(
         self,
         pricing_id: UUID,
         _request_timeout: Union[
@@ -433,7 +433,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_pricing_v1_organizations_me_pricing_pricing_id_delete_serialize(
+        _param = self._delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_serialize(
             pricing_id=pricing_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -457,7 +457,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def delete_organization_pricing_v1_organizations_me_pricing_pricing_id_delete_without_preload_content(
+    def delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_without_preload_content(
         self,
         pricing_id: UUID,
         _request_timeout: Union[
@@ -501,7 +501,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_pricing_v1_organizations_me_pricing_pricing_id_delete_serialize(
+        _param = self._delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_serialize(
             pricing_id=pricing_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -520,7 +520,7 @@ class OrganizationPricingApi:
         return response_data.response
 
 
-    def _delete_organization_pricing_v1_organizations_me_pricing_pricing_id_delete_serialize(
+    def _delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_serialize(
         self,
         pricing_id,
         _request_auth,
@@ -569,7 +569,7 @@ class OrganizationPricingApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/organizations/me/pricing/{pricing_id}',
+            resource_path='/api/v1/organizations/me/pricing/{pricing_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -586,7 +586,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def list_organization_pricing_v1_organizations_me_pricing_get(
+    def list_organization_pricing_api_v1_organizations_me_pricing_get(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -633,7 +633,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_pricing_v1_organizations_me_pricing_get_serialize(
+        _param = self._list_organization_pricing_api_v1_organizations_me_pricing_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -658,7 +658,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def list_organization_pricing_v1_organizations_me_pricing_get_with_http_info(
+    def list_organization_pricing_api_v1_organizations_me_pricing_get_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -705,7 +705,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_pricing_v1_organizations_me_pricing_get_serialize(
+        _param = self._list_organization_pricing_api_v1_organizations_me_pricing_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -730,7 +730,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def list_organization_pricing_v1_organizations_me_pricing_get_without_preload_content(
+    def list_organization_pricing_api_v1_organizations_me_pricing_get_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -777,7 +777,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_pricing_v1_organizations_me_pricing_get_serialize(
+        _param = self._list_organization_pricing_api_v1_organizations_me_pricing_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -797,7 +797,7 @@ class OrganizationPricingApi:
         return response_data.response
 
 
-    def _list_organization_pricing_v1_organizations_me_pricing_get_serialize(
+    def _list_organization_pricing_api_v1_organizations_me_pricing_get_serialize(
         self,
         skip,
         limit,
@@ -853,7 +853,7 @@ class OrganizationPricingApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/pricing',
+            resource_path='/api/v1/organizations/me/pricing',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -870,7 +870,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def replace_organization_pricing_v1_organizations_me_pricing_pricing_id_put(
+    def replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put(
         self,
         pricing_id: UUID,
         organization_model_pricing_update: OrganizationModelPricingUpdate,
@@ -917,7 +917,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._replace_organization_pricing_v1_organizations_me_pricing_pricing_id_put_serialize(
+        _param = self._replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_serialize(
             pricing_id=pricing_id,
             organization_model_pricing_update=organization_model_pricing_update,
             _request_auth=_request_auth,
@@ -942,7 +942,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def replace_organization_pricing_v1_organizations_me_pricing_pricing_id_put_with_http_info(
+    def replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_with_http_info(
         self,
         pricing_id: UUID,
         organization_model_pricing_update: OrganizationModelPricingUpdate,
@@ -989,7 +989,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._replace_organization_pricing_v1_organizations_me_pricing_pricing_id_put_serialize(
+        _param = self._replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_serialize(
             pricing_id=pricing_id,
             organization_model_pricing_update=organization_model_pricing_update,
             _request_auth=_request_auth,
@@ -1014,7 +1014,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def replace_organization_pricing_v1_organizations_me_pricing_pricing_id_put_without_preload_content(
+    def replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_without_preload_content(
         self,
         pricing_id: UUID,
         organization_model_pricing_update: OrganizationModelPricingUpdate,
@@ -1061,7 +1061,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._replace_organization_pricing_v1_organizations_me_pricing_pricing_id_put_serialize(
+        _param = self._replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_serialize(
             pricing_id=pricing_id,
             organization_model_pricing_update=organization_model_pricing_update,
             _request_auth=_request_auth,
@@ -1081,7 +1081,7 @@ class OrganizationPricingApi:
         return response_data.response
 
 
-    def _replace_organization_pricing_v1_organizations_me_pricing_pricing_id_put_serialize(
+    def _replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_serialize(
         self,
         pricing_id,
         organization_model_pricing_update,
@@ -1146,7 +1146,7 @@ class OrganizationPricingApi:
 
         return self.api_client.param_serialize(
             method='PUT',
-            resource_path='/v1/organizations/me/pricing/{pricing_id}',
+            resource_path='/api/v1/organizations/me/pricing/{pricing_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

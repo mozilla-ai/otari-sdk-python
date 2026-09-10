@@ -36,7 +36,7 @@ class OtelApi:
 
 
     @validate_call
-    def receive_logs_v1_logs_post(
+    def receive_logs_otlp_v1_logs_post(
         self,
         _request_timeout: Union[
             None,
@@ -77,7 +77,7 @@ class OtelApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._receive_logs_v1_logs_post_serialize(
+        _param = self._receive_logs_otlp_v1_logs_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -99,7 +99,7 @@ class OtelApi:
 
 
     @validate_call
-    def receive_logs_v1_logs_post_with_http_info(
+    def receive_logs_otlp_v1_logs_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -140,7 +140,7 @@ class OtelApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._receive_logs_v1_logs_post_serialize(
+        _param = self._receive_logs_otlp_v1_logs_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -162,7 +162,7 @@ class OtelApi:
 
 
     @validate_call
-    def receive_logs_v1_logs_post_without_preload_content(
+    def receive_logs_otlp_v1_logs_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -203,7 +203,7 @@ class OtelApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._receive_logs_v1_logs_post_serialize(
+        _param = self._receive_logs_otlp_v1_logs_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -220,7 +220,7 @@ class OtelApi:
         return response_data.response
 
 
-    def _receive_logs_v1_logs_post_serialize(
+    def _receive_logs_otlp_v1_logs_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -266,7 +266,7 @@ class OtelApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/logs',
+            resource_path='/otlp/v1/logs',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -283,7 +283,7 @@ class OtelApi:
 
 
     @validate_call
-    def receive_metrics_v1_metrics_post(
+    def receive_metrics_otlp_v1_metrics_post(
         self,
         _request_timeout: Union[
             None,
@@ -324,7 +324,7 @@ class OtelApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._receive_metrics_v1_metrics_post_serialize(
+        _param = self._receive_metrics_otlp_v1_metrics_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -346,7 +346,7 @@ class OtelApi:
 
 
     @validate_call
-    def receive_metrics_v1_metrics_post_with_http_info(
+    def receive_metrics_otlp_v1_metrics_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -387,7 +387,7 @@ class OtelApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._receive_metrics_v1_metrics_post_serialize(
+        _param = self._receive_metrics_otlp_v1_metrics_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -409,7 +409,7 @@ class OtelApi:
 
 
     @validate_call
-    def receive_metrics_v1_metrics_post_without_preload_content(
+    def receive_metrics_otlp_v1_metrics_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -450,7 +450,7 @@ class OtelApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._receive_metrics_v1_metrics_post_serialize(
+        _param = self._receive_metrics_otlp_v1_metrics_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -467,7 +467,7 @@ class OtelApi:
         return response_data.response
 
 
-    def _receive_metrics_v1_metrics_post_serialize(
+    def _receive_metrics_otlp_v1_metrics_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -513,7 +513,7 @@ class OtelApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/metrics',
+            resource_path='/otlp/v1/metrics',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -530,7 +530,7 @@ class OtelApi:
 
 
     @validate_call
-    def receive_traces_v1_traces_post(
+    def receive_traces_otlp_v1_traces_post(
         self,
         _request_timeout: Union[
             None,
@@ -571,7 +571,7 @@ class OtelApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._receive_traces_v1_traces_post_serialize(
+        _param = self._receive_traces_otlp_v1_traces_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -593,7 +593,7 @@ class OtelApi:
 
 
     @validate_call
-    def receive_traces_v1_traces_post_with_http_info(
+    def receive_traces_otlp_v1_traces_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -634,7 +634,7 @@ class OtelApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._receive_traces_v1_traces_post_serialize(
+        _param = self._receive_traces_otlp_v1_traces_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -656,7 +656,7 @@ class OtelApi:
 
 
     @validate_call
-    def receive_traces_v1_traces_post_without_preload_content(
+    def receive_traces_otlp_v1_traces_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -697,7 +697,7 @@ class OtelApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._receive_traces_v1_traces_post_serialize(
+        _param = self._receive_traces_otlp_v1_traces_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -714,7 +714,7 @@ class OtelApi:
         return response_data.response
 
 
-    def _receive_traces_v1_traces_post_serialize(
+    def _receive_traces_otlp_v1_traces_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -760,7 +760,7 @@ class OtelApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/traces',
+            resource_path='/otlp/v1/traces',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

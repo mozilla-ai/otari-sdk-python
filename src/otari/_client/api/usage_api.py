@@ -51,7 +51,7 @@ class UsageApi:
 
 
     @validate_call
-    def count_usage_v1_usage_count_get(
+    def count_usage_api_v1_usage_count_get(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -66,7 +66,7 @@ class UsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /v1/usage so the total matches what bulk delete and set-price can reach")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /api/v1/usage so the total matches what bulk delete and set-price can reach")] = None,
         request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         _request_timeout: Union[
@@ -84,7 +84,7 @@ class UsageApi:
     ) -> UsageCount:
         """Count Usage
 
-        Total number of usage logs matching the given filters.  Serves the dashboard paginator's \"N of M\" total without changing the bare array contract of ``GET /v1/usage``. Runs only when the client asks (a separate request), so the ``COUNT(*)`` is not paid on every page load. With ``counts_toward_budget=false`` it also backs the \"select all N matching this filter\" affordance for bulk delete / set-price, which touch imported rows only.  That value is the one place this count is narrower than ``GET /v1/usage``: it also excludes rows this deployment served itself, so the number an operator confirms is the number the mutation can reach. The list still pages the budget-exempt gateway rows it omits.
+        Total number of usage logs matching the given filters.  Serves the dashboard paginator's \"N of M\" total without changing the bare array contract of ``GET /api/v1/usage``. Runs only when the client asks (a separate request), so the ``COUNT(*)`` is not paid on every page load. With ``counts_toward_budget=false`` it also backs the \"select all N matching this filter\" affordance for bulk delete / set-price, which touch imported rows only.  That value is the one place this count is narrower than ``GET /api/v1/usage``: it also excludes rows this deployment served itself, so the number an operator confirms is the number the mutation can reach. The list still pages the budget-exempt gateway rows it omits.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -112,7 +112,7 @@ class UsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /v1/usage so the total matches what bulk delete and set-price can reach
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /api/v1/usage so the total matches what bulk delete and set-price can reach
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
         :type request_group_id: List[str]
@@ -140,7 +140,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_usage_v1_usage_count_get_serialize(
+        _param = self._count_usage_api_v1_usage_count_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -179,7 +179,7 @@ class UsageApi:
 
 
     @validate_call
-    def count_usage_v1_usage_count_get_with_http_info(
+    def count_usage_api_v1_usage_count_get_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -194,7 +194,7 @@ class UsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /v1/usage so the total matches what bulk delete and set-price can reach")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /api/v1/usage so the total matches what bulk delete and set-price can reach")] = None,
         request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         _request_timeout: Union[
@@ -212,7 +212,7 @@ class UsageApi:
     ) -> ApiResponse[UsageCount]:
         """Count Usage
 
-        Total number of usage logs matching the given filters.  Serves the dashboard paginator's \"N of M\" total without changing the bare array contract of ``GET /v1/usage``. Runs only when the client asks (a separate request), so the ``COUNT(*)`` is not paid on every page load. With ``counts_toward_budget=false`` it also backs the \"select all N matching this filter\" affordance for bulk delete / set-price, which touch imported rows only.  That value is the one place this count is narrower than ``GET /v1/usage``: it also excludes rows this deployment served itself, so the number an operator confirms is the number the mutation can reach. The list still pages the budget-exempt gateway rows it omits.
+        Total number of usage logs matching the given filters.  Serves the dashboard paginator's \"N of M\" total without changing the bare array contract of ``GET /api/v1/usage``. Runs only when the client asks (a separate request), so the ``COUNT(*)`` is not paid on every page load. With ``counts_toward_budget=false`` it also backs the \"select all N matching this filter\" affordance for bulk delete / set-price, which touch imported rows only.  That value is the one place this count is narrower than ``GET /api/v1/usage``: it also excludes rows this deployment served itself, so the number an operator confirms is the number the mutation can reach. The list still pages the budget-exempt gateway rows it omits.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -240,7 +240,7 @@ class UsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /v1/usage so the total matches what bulk delete and set-price can reach
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /api/v1/usage so the total matches what bulk delete and set-price can reach
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
         :type request_group_id: List[str]
@@ -268,7 +268,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_usage_v1_usage_count_get_serialize(
+        _param = self._count_usage_api_v1_usage_count_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -307,7 +307,7 @@ class UsageApi:
 
 
     @validate_call
-    def count_usage_v1_usage_count_get_without_preload_content(
+    def count_usage_api_v1_usage_count_get_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -322,7 +322,7 @@ class UsageApi:
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.")] = None,
-        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /v1/usage so the total matches what bulk delete and set-price can reach")] = None,
+        counts_toward_budget: Annotated[Optional[StrictBool], Field(description="Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /api/v1/usage so the total matches what bulk delete and set-price can reach")] = None,
         request_group_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=1000)]], Field(description="Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         _request_timeout: Union[
@@ -340,7 +340,7 @@ class UsageApi:
     ) -> RESTResponseType:
         """Count Usage
 
-        Total number of usage logs matching the given filters.  Serves the dashboard paginator's \"N of M\" total without changing the bare array contract of ``GET /v1/usage``. Runs only when the client asks (a separate request), so the ``COUNT(*)`` is not paid on every page load. With ``counts_toward_budget=false`` it also backs the \"select all N matching this filter\" affordance for bulk delete / set-price, which touch imported rows only.  That value is the one place this count is narrower than ``GET /v1/usage``: it also excludes rows this deployment served itself, so the number an operator confirms is the number the mutation can reach. The list still pages the budget-exempt gateway rows it omits.
+        Total number of usage logs matching the given filters.  Serves the dashboard paginator's \"N of M\" total without changing the bare array contract of ``GET /api/v1/usage``. Runs only when the client asks (a separate request), so the ``COUNT(*)`` is not paid on every page load. With ``counts_toward_budget=false`` it also backs the \"select all N matching this filter\" affordance for bulk delete / set-price, which touch imported rows only.  That value is the one place this count is narrower than ``GET /api/v1/usage``: it also excludes rows this deployment served itself, so the number an operator confirms is the number the mutation can reach. The list still pages the budget-exempt gateway rows it omits.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -368,7 +368,7 @@ class UsageApi:
         :type priced: bool
         :param tool: Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, code_execution) matches that tool specifically.
         :type tool: str
-        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /v1/usage so the total matches what bulk delete and set-price can reach
+        :param counts_toward_budget: Filter by budget participation: true = only enforced gateway rows, false = only imported rows, narrowed past the filter of the same name on GET /api/v1/usage so the total matches what bulk delete and set-price can reach
         :type counts_toward_budget: bool
         :param request_group_id: Filter to the rows of one or more request groups; repeatable (request_group_id=a&request_group_id=b). A routed request writes one row per attempt, all sharing a request_group_id, so this returns a request's whole plan: its absorbed attempts and the attempt that served it. Ignore ordering by timestamp and read attempt_position to reconstruct the plan. At most 1000 ids per call.
         :type request_group_id: List[str]
@@ -396,7 +396,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_usage_v1_usage_count_get_serialize(
+        _param = self._count_usage_api_v1_usage_count_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -430,7 +430,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _count_usage_v1_usage_count_get_serialize(
+    def _count_usage_api_v1_usage_count_get_serialize(
         self,
         start_date,
         end_date,
@@ -578,7 +578,7 @@ class UsageApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/usage/count',
+            resource_path='/api/v1/usage/count',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -595,7 +595,7 @@ class UsageApi:
 
 
     @validate_call
-    def delete_usage_rows_v1_usage_delete(
+    def delete_usage_rows_api_v1_usage_delete(
         self,
         usage_delete_request: UsageDeleteRequest,
         _request_timeout: Union[
@@ -639,7 +639,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_usage_rows_v1_usage_delete_serialize(
+        _param = self._delete_usage_rows_api_v1_usage_delete_serialize(
             usage_delete_request=usage_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -663,7 +663,7 @@ class UsageApi:
 
 
     @validate_call
-    def delete_usage_rows_v1_usage_delete_with_http_info(
+    def delete_usage_rows_api_v1_usage_delete_with_http_info(
         self,
         usage_delete_request: UsageDeleteRequest,
         _request_timeout: Union[
@@ -707,7 +707,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_usage_rows_v1_usage_delete_serialize(
+        _param = self._delete_usage_rows_api_v1_usage_delete_serialize(
             usage_delete_request=usage_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -731,7 +731,7 @@ class UsageApi:
 
 
     @validate_call
-    def delete_usage_rows_v1_usage_delete_without_preload_content(
+    def delete_usage_rows_api_v1_usage_delete_without_preload_content(
         self,
         usage_delete_request: UsageDeleteRequest,
         _request_timeout: Union[
@@ -775,7 +775,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_usage_rows_v1_usage_delete_serialize(
+        _param = self._delete_usage_rows_api_v1_usage_delete_serialize(
             usage_delete_request=usage_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -794,7 +794,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _delete_usage_rows_v1_usage_delete_serialize(
+    def _delete_usage_rows_api_v1_usage_delete_serialize(
         self,
         usage_delete_request,
         _request_auth,
@@ -856,7 +856,7 @@ class UsageApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/usage',
+            resource_path='/api/v1/usage',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -873,7 +873,7 @@ class UsageApi:
 
 
     @validate_call
-    def ingest_external_usage_v1_usage_external_events_post(
+    def ingest_external_usage_api_v1_usage_external_events_post(
         self,
         external_events_request: ExternalEventsRequest,
         _request_timeout: Union[
@@ -917,7 +917,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._ingest_external_usage_v1_usage_external_events_post_serialize(
+        _param = self._ingest_external_usage_api_v1_usage_external_events_post_serialize(
             external_events_request=external_events_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -941,7 +941,7 @@ class UsageApi:
 
 
     @validate_call
-    def ingest_external_usage_v1_usage_external_events_post_with_http_info(
+    def ingest_external_usage_api_v1_usage_external_events_post_with_http_info(
         self,
         external_events_request: ExternalEventsRequest,
         _request_timeout: Union[
@@ -985,7 +985,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._ingest_external_usage_v1_usage_external_events_post_serialize(
+        _param = self._ingest_external_usage_api_v1_usage_external_events_post_serialize(
             external_events_request=external_events_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1009,7 +1009,7 @@ class UsageApi:
 
 
     @validate_call
-    def ingest_external_usage_v1_usage_external_events_post_without_preload_content(
+    def ingest_external_usage_api_v1_usage_external_events_post_without_preload_content(
         self,
         external_events_request: ExternalEventsRequest,
         _request_timeout: Union[
@@ -1053,7 +1053,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._ingest_external_usage_v1_usage_external_events_post_serialize(
+        _param = self._ingest_external_usage_api_v1_usage_external_events_post_serialize(
             external_events_request=external_events_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1072,7 +1072,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _ingest_external_usage_v1_usage_external_events_post_serialize(
+    def _ingest_external_usage_api_v1_usage_external_events_post_serialize(
         self,
         external_events_request,
         _request_auth,
@@ -1134,7 +1134,7 @@ class UsageApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/usage/external-events',
+            resource_path='/api/v1/usage/external-events',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1151,7 +1151,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_in_flight_v1_usage_in_flight_get(
+    def list_in_flight_api_v1_usage_in_flight_get(
         self,
         _request_timeout: Union[
             None,
@@ -1192,7 +1192,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_in_flight_v1_usage_in_flight_get_serialize(
+        _param = self._list_in_flight_api_v1_usage_in_flight_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1214,7 +1214,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_in_flight_v1_usage_in_flight_get_with_http_info(
+    def list_in_flight_api_v1_usage_in_flight_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -1255,7 +1255,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_in_flight_v1_usage_in_flight_get_serialize(
+        _param = self._list_in_flight_api_v1_usage_in_flight_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1277,7 +1277,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_in_flight_v1_usage_in_flight_get_without_preload_content(
+    def list_in_flight_api_v1_usage_in_flight_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1318,7 +1318,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_in_flight_v1_usage_in_flight_get_serialize(
+        _param = self._list_in_flight_api_v1_usage_in_flight_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1335,7 +1335,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _list_in_flight_v1_usage_in_flight_get_serialize(
+    def _list_in_flight_api_v1_usage_in_flight_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1381,7 +1381,7 @@ class UsageApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/usage/in-flight',
+            resource_path='/api/v1/usage/in-flight',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1398,7 +1398,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_usage_v1_usage_get(
+    def list_usage_api_v1_usage_get(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1433,7 +1433,7 @@ class UsageApi:
     ) -> List[UsageEntry]:
         """List Usage
 
-        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range, user, status, failure status code, model, endpoint, provider, source, session (``source_label``), and request group (``request_group_id``, repeatable, which returns a routed request's whole attempt plan). Paginated via skip/limit. The return shape is a bare JSON array; external billing/analytics consumers depend on this, so the total row count for a paginated UI is served separately by ``GET /v1/usage/count`` rather than wrapped in an envelope here. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
+        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range, user, status, failure status code, model, endpoint, provider, source, session (``source_label``), and request group (``request_group_id``, repeatable, which returns a routed request's whole attempt plan). Paginated via skip/limit. The return shape is a bare JSON array; external billing/analytics consumers depend on this, so the total row count for a paginated UI is served separately by ``GET /api/v1/usage/count`` rather than wrapped in an envelope here. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -1493,7 +1493,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_usage_v1_usage_get_serialize(
+        _param = self._list_usage_api_v1_usage_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1534,7 +1534,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_usage_v1_usage_get_with_http_info(
+    def list_usage_api_v1_usage_get_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1569,7 +1569,7 @@ class UsageApi:
     ) -> ApiResponse[List[UsageEntry]]:
         """List Usage
 
-        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range, user, status, failure status code, model, endpoint, provider, source, session (``source_label``), and request group (``request_group_id``, repeatable, which returns a routed request's whole attempt plan). Paginated via skip/limit. The return shape is a bare JSON array; external billing/analytics consumers depend on this, so the total row count for a paginated UI is served separately by ``GET /v1/usage/count`` rather than wrapped in an envelope here. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
+        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range, user, status, failure status code, model, endpoint, provider, source, session (``source_label``), and request group (``request_group_id``, repeatable, which returns a routed request's whole attempt plan). Paginated via skip/limit. The return shape is a bare JSON array; external billing/analytics consumers depend on this, so the total row count for a paginated UI is served separately by ``GET /api/v1/usage/count`` rather than wrapped in an envelope here. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -1629,7 +1629,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_usage_v1_usage_get_serialize(
+        _param = self._list_usage_api_v1_usage_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1670,7 +1670,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_usage_v1_usage_get_without_preload_content(
+    def list_usage_api_v1_usage_get_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1705,7 +1705,7 @@ class UsageApi:
     ) -> RESTResponseType:
         """List Usage
 
-        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range, user, status, failure status code, model, endpoint, provider, source, session (``source_label``), and request group (``request_group_id``, repeatable, which returns a routed request's whole attempt plan). Paginated via skip/limit. The return shape is a bare JSON array; external billing/analytics consumers depend on this, so the total row count for a paginated UI is served separately by ``GET /v1/usage/count`` rather than wrapped in an envelope here. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
+        List usage logs ordered by timestamp (most recent first).  Supports optional filters for time range, user, status, failure status code, model, endpoint, provider, source, session (``source_label``), and request group (``request_group_id``, repeatable, which returns a routed request's whole attempt plan). Paginated via skip/limit. The return shape is a bare JSON array; external billing/analytics consumers depend on this, so the total row count for a paginated UI is served separately by ``GET /api/v1/usage/count`` rather than wrapped in an envelope here. Timestamps accept either ISO 8601 strings or Unix epoch seconds (numeric).
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -1765,7 +1765,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_usage_v1_usage_get_serialize(
+        _param = self._list_usage_api_v1_usage_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1801,7 +1801,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _list_usage_v1_usage_get_serialize(
+    def _list_usage_api_v1_usage_get_serialize(
         self,
         start_date,
         end_date,
@@ -1959,7 +1959,7 @@ class UsageApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/usage',
+            resource_path='/api/v1/usage',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1976,7 +1976,7 @@ class UsageApi:
 
 
     @validate_call
-    def set_usage_price_rows_v1_usage_set_price_post(
+    def set_usage_price_rows_api_v1_usage_set_price_post(
         self,
         usage_set_price_request: UsageSetPriceRequest,
         _request_timeout: Union[
@@ -2020,7 +2020,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_usage_price_rows_v1_usage_set_price_post_serialize(
+        _param = self._set_usage_price_rows_api_v1_usage_set_price_post_serialize(
             usage_set_price_request=usage_set_price_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2044,7 +2044,7 @@ class UsageApi:
 
 
     @validate_call
-    def set_usage_price_rows_v1_usage_set_price_post_with_http_info(
+    def set_usage_price_rows_api_v1_usage_set_price_post_with_http_info(
         self,
         usage_set_price_request: UsageSetPriceRequest,
         _request_timeout: Union[
@@ -2088,7 +2088,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_usage_price_rows_v1_usage_set_price_post_serialize(
+        _param = self._set_usage_price_rows_api_v1_usage_set_price_post_serialize(
             usage_set_price_request=usage_set_price_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2112,7 +2112,7 @@ class UsageApi:
 
 
     @validate_call
-    def set_usage_price_rows_v1_usage_set_price_post_without_preload_content(
+    def set_usage_price_rows_api_v1_usage_set_price_post_without_preload_content(
         self,
         usage_set_price_request: UsageSetPriceRequest,
         _request_timeout: Union[
@@ -2156,7 +2156,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_usage_price_rows_v1_usage_set_price_post_serialize(
+        _param = self._set_usage_price_rows_api_v1_usage_set_price_post_serialize(
             usage_set_price_request=usage_set_price_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2175,7 +2175,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _set_usage_price_rows_v1_usage_set_price_post_serialize(
+    def _set_usage_price_rows_api_v1_usage_set_price_post_serialize(
         self,
         usage_set_price_request,
         _request_auth,
@@ -2237,7 +2237,7 @@ class UsageApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/usage/set-price',
+            resource_path='/api/v1/usage/set-price',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2254,7 +2254,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_series_v1_usage_series_get(
+    def usage_series_api_v1_usage_series_get(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2346,7 +2346,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_series_v1_usage_series_get_serialize(
+        _param = self._usage_series_api_v1_usage_series_get_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -2386,7 +2386,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_series_v1_usage_series_get_with_http_info(
+    def usage_series_api_v1_usage_series_get_with_http_info(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2478,7 +2478,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_series_v1_usage_series_get_serialize(
+        _param = self._usage_series_api_v1_usage_series_get_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -2518,7 +2518,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_series_v1_usage_series_get_without_preload_content(
+    def usage_series_api_v1_usage_series_get_without_preload_content(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2610,7 +2610,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_series_v1_usage_series_get_serialize(
+        _param = self._usage_series_api_v1_usage_series_get_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -2645,7 +2645,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _usage_series_v1_usage_series_get_serialize(
+    def _usage_series_api_v1_usage_series_get_serialize(
         self,
         group_by,
         start_date,
@@ -2797,7 +2797,7 @@ class UsageApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/usage/series',
+            resource_path='/api/v1/usage/series',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2814,7 +2814,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_summary_v1_usage_summary_get(
+    def usage_summary_api_v1_usage_summary_get(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2848,7 +2848,7 @@ class UsageApi:
     ) -> UsageSummary:
         """Usage Summary
 
-        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.  ``model``, ``user_id``, and ``api_key_id`` are repeatable: several values match any of them, so one chart can compare a handful of models, users, or keys.
+        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/api/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.  ``model``, ``user_id``, and ``api_key_id`` are repeatable: several values match any of them, so one chart can compare a handful of models, users, or keys.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -2906,7 +2906,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_summary_v1_usage_summary_get_serialize(
+        _param = self._usage_summary_api_v1_usage_summary_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -2946,7 +2946,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_summary_v1_usage_summary_get_with_http_info(
+    def usage_summary_api_v1_usage_summary_get_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2980,7 +2980,7 @@ class UsageApi:
     ) -> ApiResponse[UsageSummary]:
         """Usage Summary
 
-        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.  ``model``, ``user_id``, and ``api_key_id`` are repeatable: several values match any of them, so one chart can compare a handful of models, users, or keys.
+        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/api/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.  ``model``, ``user_id``, and ``api_key_id`` are repeatable: several values match any of them, so one chart can compare a handful of models, users, or keys.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -3038,7 +3038,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_summary_v1_usage_summary_get_serialize(
+        _param = self._usage_summary_api_v1_usage_summary_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -3078,7 +3078,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_summary_v1_usage_summary_get_without_preload_content(
+    def usage_summary_api_v1_usage_summary_get_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -3112,7 +3112,7 @@ class UsageApi:
     ) -> RESTResponseType:
         """Usage Summary
 
-        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.  ``model``, ``user_id``, and ``api_key_id`` are repeatable: several values match any of them, so one chart can compare a handful of models, users, or keys.
+        Aggregate spend, tokens, and request volume for the dashboard Usage page.  Range-bounded (default last 30 days, hard-capped): unlike the raw ``/api/v1/usage`` list, every aggregate is scoped to a bounded window so it stays served by the timestamp index. Returns grand totals, breakdowns by model / user / API key / source / session (``source_label``) / endpoint / provider (top rows plus a reconciling ``other`` fold, billed token counts), the error taxonomy grouped by failure status code, and a UTC-bucketed time series carrying each bucket's error count and billed token composition (input incl. cache, cache read/write, output).  Each breakdown is its own ``GROUP BY`` pass, so a caller that reads only the totals or the series should narrow ``dimensions`` rather than pay for all eight (the dashboard's tiles, timeline context, and model typeahead all do). Omitting the parameter keeps the full set.  ``model``, ``user_id``, and ``api_key_id`` are repeatable: several values match any of them, so one chart can compare a handful of models, users, or keys.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -3170,7 +3170,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_summary_v1_usage_summary_get_serialize(
+        _param = self._usage_summary_api_v1_usage_summary_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -3205,7 +3205,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _usage_summary_v1_usage_summary_get_serialize(
+    def _usage_summary_api_v1_usage_summary_get_serialize(
         self,
         start_date,
         end_date,
@@ -3358,7 +3358,7 @@ class UsageApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/usage/summary',
+            resource_path='/api/v1/usage/summary',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

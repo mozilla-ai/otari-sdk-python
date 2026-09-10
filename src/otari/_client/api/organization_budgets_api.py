@@ -47,7 +47,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def create_organization_budget_v1_organizations_me_budgets_post(
+    def create_organization_budget_api_v1_organizations_me_budgets_post(
         self,
         organization_budget_create: OrganizationBudgetCreate,
         _request_timeout: Union[
@@ -91,7 +91,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_budget_v1_organizations_me_budgets_post_serialize(
+        _param = self._create_organization_budget_api_v1_organizations_me_budgets_post_serialize(
             organization_budget_create=organization_budget_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -115,7 +115,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def create_organization_budget_v1_organizations_me_budgets_post_with_http_info(
+    def create_organization_budget_api_v1_organizations_me_budgets_post_with_http_info(
         self,
         organization_budget_create: OrganizationBudgetCreate,
         _request_timeout: Union[
@@ -159,7 +159,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_budget_v1_organizations_me_budgets_post_serialize(
+        _param = self._create_organization_budget_api_v1_organizations_me_budgets_post_serialize(
             organization_budget_create=organization_budget_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -183,7 +183,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def create_organization_budget_v1_organizations_me_budgets_post_without_preload_content(
+    def create_organization_budget_api_v1_organizations_me_budgets_post_without_preload_content(
         self,
         organization_budget_create: OrganizationBudgetCreate,
         _request_timeout: Union[
@@ -227,7 +227,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_budget_v1_organizations_me_budgets_post_serialize(
+        _param = self._create_organization_budget_api_v1_organizations_me_budgets_post_serialize(
             organization_budget_create=organization_budget_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -246,7 +246,7 @@ class OrganizationBudgetsApi:
         return response_data.response
 
 
-    def _create_organization_budget_v1_organizations_me_budgets_post_serialize(
+    def _create_organization_budget_api_v1_organizations_me_budgets_post_serialize(
         self,
         organization_budget_create,
         _request_auth,
@@ -308,7 +308,7 @@ class OrganizationBudgetsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/budgets',
+            resource_path='/api/v1/organizations/me/budgets',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -325,7 +325,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def create_organization_spend_ceiling_v1_organizations_me_spend_ceilings_post(
+    def create_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_post(
         self,
         organization_scoped_budget_create: OrganizationScopedBudgetCreate,
         _request_timeout: Union[
@@ -369,7 +369,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_spend_ceiling_v1_organizations_me_spend_ceilings_post_serialize(
+        _param = self._create_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_post_serialize(
             organization_scoped_budget_create=organization_scoped_budget_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -393,7 +393,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def create_organization_spend_ceiling_v1_organizations_me_spend_ceilings_post_with_http_info(
+    def create_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_post_with_http_info(
         self,
         organization_scoped_budget_create: OrganizationScopedBudgetCreate,
         _request_timeout: Union[
@@ -437,7 +437,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_spend_ceiling_v1_organizations_me_spend_ceilings_post_serialize(
+        _param = self._create_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_post_serialize(
             organization_scoped_budget_create=organization_scoped_budget_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -461,7 +461,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def create_organization_spend_ceiling_v1_organizations_me_spend_ceilings_post_without_preload_content(
+    def create_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_post_without_preload_content(
         self,
         organization_scoped_budget_create: OrganizationScopedBudgetCreate,
         _request_timeout: Union[
@@ -505,7 +505,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_spend_ceiling_v1_organizations_me_spend_ceilings_post_serialize(
+        _param = self._create_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_post_serialize(
             organization_scoped_budget_create=organization_scoped_budget_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -524,7 +524,7 @@ class OrganizationBudgetsApi:
         return response_data.response
 
 
-    def _create_organization_spend_ceiling_v1_organizations_me_spend_ceilings_post_serialize(
+    def _create_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_post_serialize(
         self,
         organization_scoped_budget_create,
         _request_auth,
@@ -586,7 +586,7 @@ class OrganizationBudgetsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/spend-ceilings',
+            resource_path='/api/v1/organizations/me/spend-ceilings',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -603,7 +603,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def delete_organization_budget_v1_organizations_me_budgets_budget_id_delete(
+    def delete_organization_budget_api_v1_organizations_me_budgets_budget_id_delete(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -647,7 +647,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_budget_v1_organizations_me_budgets_budget_id_delete_serialize(
+        _param = self._delete_organization_budget_api_v1_organizations_me_budgets_budget_id_delete_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -671,7 +671,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def delete_organization_budget_v1_organizations_me_budgets_budget_id_delete_with_http_info(
+    def delete_organization_budget_api_v1_organizations_me_budgets_budget_id_delete_with_http_info(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -715,7 +715,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_budget_v1_organizations_me_budgets_budget_id_delete_serialize(
+        _param = self._delete_organization_budget_api_v1_organizations_me_budgets_budget_id_delete_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -739,7 +739,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def delete_organization_budget_v1_organizations_me_budgets_budget_id_delete_without_preload_content(
+    def delete_organization_budget_api_v1_organizations_me_budgets_budget_id_delete_without_preload_content(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -783,7 +783,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_budget_v1_organizations_me_budgets_budget_id_delete_serialize(
+        _param = self._delete_organization_budget_api_v1_organizations_me_budgets_budget_id_delete_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -802,7 +802,7 @@ class OrganizationBudgetsApi:
         return response_data.response
 
 
-    def _delete_organization_budget_v1_organizations_me_budgets_budget_id_delete_serialize(
+    def _delete_organization_budget_api_v1_organizations_me_budgets_budget_id_delete_serialize(
         self,
         budget_id,
         _request_auth,
@@ -851,7 +851,7 @@ class OrganizationBudgetsApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/organizations/me/budgets/{budget_id}',
+            resource_path='/api/v1/organizations/me/budgets/{budget_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -868,7 +868,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def delete_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_delete(
+    def delete_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_delete(
         self,
         ceiling_id: StrictStr,
         _request_timeout: Union[
@@ -912,7 +912,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_delete_serialize(
+        _param = self._delete_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_delete_serialize(
             ceiling_id=ceiling_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -936,7 +936,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def delete_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_delete_with_http_info(
+    def delete_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_delete_with_http_info(
         self,
         ceiling_id: StrictStr,
         _request_timeout: Union[
@@ -980,7 +980,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_delete_serialize(
+        _param = self._delete_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_delete_serialize(
             ceiling_id=ceiling_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1004,7 +1004,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def delete_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_delete_without_preload_content(
+    def delete_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_delete_without_preload_content(
         self,
         ceiling_id: StrictStr,
         _request_timeout: Union[
@@ -1048,7 +1048,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_delete_serialize(
+        _param = self._delete_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_delete_serialize(
             ceiling_id=ceiling_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1067,7 +1067,7 @@ class OrganizationBudgetsApi:
         return response_data.response
 
 
-    def _delete_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_delete_serialize(
+    def _delete_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_delete_serialize(
         self,
         ceiling_id,
         _request_auth,
@@ -1116,7 +1116,7 @@ class OrganizationBudgetsApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/organizations/me/spend-ceilings/{ceiling_id}',
+            resource_path='/api/v1/organizations/me/spend-ceilings/{ceiling_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1133,7 +1133,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def list_organization_budgets_v1_organizations_me_budgets_get(
+    def list_organization_budgets_api_v1_organizations_me_budgets_get(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1180,7 +1180,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_budgets_v1_organizations_me_budgets_get_serialize(
+        _param = self._list_organization_budgets_api_v1_organizations_me_budgets_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1205,7 +1205,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def list_organization_budgets_v1_organizations_me_budgets_get_with_http_info(
+    def list_organization_budgets_api_v1_organizations_me_budgets_get_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1252,7 +1252,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_budgets_v1_organizations_me_budgets_get_serialize(
+        _param = self._list_organization_budgets_api_v1_organizations_me_budgets_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1277,7 +1277,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def list_organization_budgets_v1_organizations_me_budgets_get_without_preload_content(
+    def list_organization_budgets_api_v1_organizations_me_budgets_get_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1324,7 +1324,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_budgets_v1_organizations_me_budgets_get_serialize(
+        _param = self._list_organization_budgets_api_v1_organizations_me_budgets_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1344,7 +1344,7 @@ class OrganizationBudgetsApi:
         return response_data.response
 
 
-    def _list_organization_budgets_v1_organizations_me_budgets_get_serialize(
+    def _list_organization_budgets_api_v1_organizations_me_budgets_get_serialize(
         self,
         skip,
         limit,
@@ -1400,7 +1400,7 @@ class OrganizationBudgetsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/budgets',
+            resource_path='/api/v1/organizations/me/budgets',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1417,7 +1417,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def list_organization_spend_ceilings_v1_organizations_me_spend_ceilings_get(
+    def list_organization_spend_ceilings_api_v1_organizations_me_spend_ceilings_get(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1464,7 +1464,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_spend_ceilings_v1_organizations_me_spend_ceilings_get_serialize(
+        _param = self._list_organization_spend_ceilings_api_v1_organizations_me_spend_ceilings_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1489,7 +1489,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def list_organization_spend_ceilings_v1_organizations_me_spend_ceilings_get_with_http_info(
+    def list_organization_spend_ceilings_api_v1_organizations_me_spend_ceilings_get_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1536,7 +1536,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_spend_ceilings_v1_organizations_me_spend_ceilings_get_serialize(
+        _param = self._list_organization_spend_ceilings_api_v1_organizations_me_spend_ceilings_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1561,7 +1561,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def list_organization_spend_ceilings_v1_organizations_me_spend_ceilings_get_without_preload_content(
+    def list_organization_spend_ceilings_api_v1_organizations_me_spend_ceilings_get_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1608,7 +1608,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_spend_ceilings_v1_organizations_me_spend_ceilings_get_serialize(
+        _param = self._list_organization_spend_ceilings_api_v1_organizations_me_spend_ceilings_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1628,7 +1628,7 @@ class OrganizationBudgetsApi:
         return response_data.response
 
 
-    def _list_organization_spend_ceilings_v1_organizations_me_spend_ceilings_get_serialize(
+    def _list_organization_spend_ceilings_api_v1_organizations_me_spend_ceilings_get_serialize(
         self,
         skip,
         limit,
@@ -1684,7 +1684,7 @@ class OrganizationBudgetsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/spend-ceilings',
+            resource_path='/api/v1/organizations/me/spend-ceilings',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1701,7 +1701,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def update_organization_budget_v1_organizations_me_budgets_budget_id_patch(
+    def update_organization_budget_api_v1_organizations_me_budgets_budget_id_patch(
         self,
         budget_id: StrictStr,
         organization_budget_update: OrganizationBudgetUpdate,
@@ -1748,7 +1748,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_organization_budget_v1_organizations_me_budgets_budget_id_patch_serialize(
+        _param = self._update_organization_budget_api_v1_organizations_me_budgets_budget_id_patch_serialize(
             budget_id=budget_id,
             organization_budget_update=organization_budget_update,
             _request_auth=_request_auth,
@@ -1773,7 +1773,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def update_organization_budget_v1_organizations_me_budgets_budget_id_patch_with_http_info(
+    def update_organization_budget_api_v1_organizations_me_budgets_budget_id_patch_with_http_info(
         self,
         budget_id: StrictStr,
         organization_budget_update: OrganizationBudgetUpdate,
@@ -1820,7 +1820,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_organization_budget_v1_organizations_me_budgets_budget_id_patch_serialize(
+        _param = self._update_organization_budget_api_v1_organizations_me_budgets_budget_id_patch_serialize(
             budget_id=budget_id,
             organization_budget_update=organization_budget_update,
             _request_auth=_request_auth,
@@ -1845,7 +1845,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def update_organization_budget_v1_organizations_me_budgets_budget_id_patch_without_preload_content(
+    def update_organization_budget_api_v1_organizations_me_budgets_budget_id_patch_without_preload_content(
         self,
         budget_id: StrictStr,
         organization_budget_update: OrganizationBudgetUpdate,
@@ -1892,7 +1892,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_organization_budget_v1_organizations_me_budgets_budget_id_patch_serialize(
+        _param = self._update_organization_budget_api_v1_organizations_me_budgets_budget_id_patch_serialize(
             budget_id=budget_id,
             organization_budget_update=organization_budget_update,
             _request_auth=_request_auth,
@@ -1912,7 +1912,7 @@ class OrganizationBudgetsApi:
         return response_data.response
 
 
-    def _update_organization_budget_v1_organizations_me_budgets_budget_id_patch_serialize(
+    def _update_organization_budget_api_v1_organizations_me_budgets_budget_id_patch_serialize(
         self,
         budget_id,
         organization_budget_update,
@@ -1977,7 +1977,7 @@ class OrganizationBudgetsApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/organizations/me/budgets/{budget_id}',
+            resource_path='/api/v1/organizations/me/budgets/{budget_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1994,7 +1994,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def update_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_patch(
+    def update_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_patch(
         self,
         ceiling_id: StrictStr,
         organization_scoped_budget_update: OrganizationScopedBudgetUpdate,
@@ -2041,7 +2041,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_patch_serialize(
+        _param = self._update_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_patch_serialize(
             ceiling_id=ceiling_id,
             organization_scoped_budget_update=organization_scoped_budget_update,
             _request_auth=_request_auth,
@@ -2066,7 +2066,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def update_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_patch_with_http_info(
+    def update_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_patch_with_http_info(
         self,
         ceiling_id: StrictStr,
         organization_scoped_budget_update: OrganizationScopedBudgetUpdate,
@@ -2113,7 +2113,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_patch_serialize(
+        _param = self._update_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_patch_serialize(
             ceiling_id=ceiling_id,
             organization_scoped_budget_update=organization_scoped_budget_update,
             _request_auth=_request_auth,
@@ -2138,7 +2138,7 @@ class OrganizationBudgetsApi:
 
 
     @validate_call
-    def update_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_patch_without_preload_content(
+    def update_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_patch_without_preload_content(
         self,
         ceiling_id: StrictStr,
         organization_scoped_budget_update: OrganizationScopedBudgetUpdate,
@@ -2185,7 +2185,7 @@ class OrganizationBudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_patch_serialize(
+        _param = self._update_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_patch_serialize(
             ceiling_id=ceiling_id,
             organization_scoped_budget_update=organization_scoped_budget_update,
             _request_auth=_request_auth,
@@ -2205,7 +2205,7 @@ class OrganizationBudgetsApi:
         return response_data.response
 
 
-    def _update_organization_spend_ceiling_v1_organizations_me_spend_ceilings_ceiling_id_patch_serialize(
+    def _update_organization_spend_ceiling_api_v1_organizations_me_spend_ceilings_ceiling_id_patch_serialize(
         self,
         ceiling_id,
         organization_scoped_budget_update,
@@ -2270,7 +2270,7 @@ class OrganizationBudgetsApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/organizations/me/spend-ceilings/{ceiling_id}',
+            resource_path='/api/v1/organizations/me/spend-ceilings/{ceiling_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

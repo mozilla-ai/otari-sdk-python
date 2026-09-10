@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class SearchToolsResponse(BaseModel):
     """
-    Every search tool ``POST /v1/search`` can name, by where it came from.
+    Every search tool ``POST /api/v1/search`` can name, by where it came from.
     """ # noqa: E501
     config: List[ConfigSearchToolSchema]
     stored: List[StoredSearchToolSchema]

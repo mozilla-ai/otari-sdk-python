@@ -42,7 +42,7 @@ class ModelsApi:
 
 
     @validate_call
-    def get_model_v1_models_model_id_get(
+    def get_model_api_v1_models_model_id_get(
         self,
         model_id: StrictStr,
         _request_timeout: Union[
@@ -86,7 +86,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_model_v1_models_model_id_get_serialize(
+        _param = self._get_model_api_v1_models_model_id_get_serialize(
             model_id=model_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -110,7 +110,7 @@ class ModelsApi:
 
 
     @validate_call
-    def get_model_v1_models_model_id_get_with_http_info(
+    def get_model_api_v1_models_model_id_get_with_http_info(
         self,
         model_id: StrictStr,
         _request_timeout: Union[
@@ -154,7 +154,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_model_v1_models_model_id_get_serialize(
+        _param = self._get_model_api_v1_models_model_id_get_serialize(
             model_id=model_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -178,7 +178,7 @@ class ModelsApi:
 
 
     @validate_call
-    def get_model_v1_models_model_id_get_without_preload_content(
+    def get_model_api_v1_models_model_id_get_without_preload_content(
         self,
         model_id: StrictStr,
         _request_timeout: Union[
@@ -222,7 +222,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_model_v1_models_model_id_get_serialize(
+        _param = self._get_model_api_v1_models_model_id_get_serialize(
             model_id=model_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -241,7 +241,7 @@ class ModelsApi:
         return response_data.response
 
 
-    def _get_model_v1_models_model_id_get_serialize(
+    def _get_model_api_v1_models_model_id_get_serialize(
         self,
         model_id,
         _request_auth,
@@ -290,7 +290,7 @@ class ModelsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/models/{model_id}',
+            resource_path='/api/v1/models/{model_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -307,7 +307,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_discoverable_models_v1_models_discoverable_get(
+    def list_discoverable_models_api_v1_models_discoverable_get(
         self,
         refresh: Annotated[Optional[StrictBool], Field(description="Re-dial every provider instead of answering from the discovery cache.")] = None,
         _request_timeout: Union[
@@ -325,7 +325,7 @@ class ModelsApi:
     ) -> DiscoverableModelsResponse:
         """List Discoverable Models
 
-        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is operator-gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
+        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /api/v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is operator-gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
 
         :param refresh: Re-dial every provider instead of answering from the discovery cache.
         :type refresh: bool
@@ -351,7 +351,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_discoverable_models_v1_models_discoverable_get_serialize(
+        _param = self._list_discoverable_models_api_v1_models_discoverable_get_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -375,7 +375,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_discoverable_models_v1_models_discoverable_get_with_http_info(
+    def list_discoverable_models_api_v1_models_discoverable_get_with_http_info(
         self,
         refresh: Annotated[Optional[StrictBool], Field(description="Re-dial every provider instead of answering from the discovery cache.")] = None,
         _request_timeout: Union[
@@ -393,7 +393,7 @@ class ModelsApi:
     ) -> ApiResponse[DiscoverableModelsResponse]:
         """List Discoverable Models
 
-        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is operator-gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
+        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /api/v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is operator-gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
 
         :param refresh: Re-dial every provider instead of answering from the discovery cache.
         :type refresh: bool
@@ -419,7 +419,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_discoverable_models_v1_models_discoverable_get_serialize(
+        _param = self._list_discoverable_models_api_v1_models_discoverable_get_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -443,7 +443,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_discoverable_models_v1_models_discoverable_get_without_preload_content(
+    def list_discoverable_models_api_v1_models_discoverable_get_without_preload_content(
         self,
         refresh: Annotated[Optional[StrictBool], Field(description="Re-dial every provider instead of answering from the discovery cache.")] = None,
         _request_timeout: Union[
@@ -461,7 +461,7 @@ class ModelsApi:
     ) -> RESTResponseType:
         """List Discoverable Models
 
-        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is operator-gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
+        List every model the configured provider credentials can reach.  Operator-facing counterpart to GET /api/v1/models, which serves a curated catalog to API callers. This reports each provider separately and keeps its error, so a provider with a bad key is distinguishable from one with no models. It is operator-gated because a provider error message describes the gateway's own configuration.  Answers from the discovery cache, which a background refresher keeps warm, so the call does not wait on a slow or unreachable provider. Each provider carries the ``checked_at`` its result was produced at; a null one has not been dialed yet. Pass ``refresh=true`` to force a live re-dial of every provider.
 
         :param refresh: Re-dial every provider instead of answering from the discovery cache.
         :type refresh: bool
@@ -487,7 +487,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_discoverable_models_v1_models_discoverable_get_serialize(
+        _param = self._list_discoverable_models_api_v1_models_discoverable_get_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -506,7 +506,7 @@ class ModelsApi:
         return response_data.response
 
 
-    def _list_discoverable_models_v1_models_discoverable_get_serialize(
+    def _list_discoverable_models_api_v1_models_discoverable_get_serialize(
         self,
         refresh,
         _request_auth,
@@ -557,7 +557,7 @@ class ModelsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/models/discoverable',
+            resource_path='/api/v1/models/discoverable',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -574,7 +574,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_model_metadata_v1_models_metadata_get(
+    def list_model_metadata_api_v1_models_metadata_get(
         self,
         _request_timeout: Union[
             None,
@@ -615,7 +615,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_model_metadata_v1_models_metadata_get_serialize(
+        _param = self._list_model_metadata_api_v1_models_metadata_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -637,7 +637,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_model_metadata_v1_models_metadata_get_with_http_info(
+    def list_model_metadata_api_v1_models_metadata_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -678,7 +678,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_model_metadata_v1_models_metadata_get_serialize(
+        _param = self._list_model_metadata_api_v1_models_metadata_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -700,7 +700,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_model_metadata_v1_models_metadata_get_without_preload_content(
+    def list_model_metadata_api_v1_models_metadata_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -741,7 +741,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_model_metadata_v1_models_metadata_get_serialize(
+        _param = self._list_model_metadata_api_v1_models_metadata_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -758,7 +758,7 @@ class ModelsApi:
         return response_data.response
 
 
-    def _list_model_metadata_v1_models_metadata_get_serialize(
+    def _list_model_metadata_api_v1_models_metadata_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -804,7 +804,7 @@ class ModelsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/models/metadata',
+            resource_path='/api/v1/models/metadata',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -821,7 +821,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_models_v1_models_get(
+    def list_models_api_v1_models_get(
         self,
         provider: Annotated[Optional[StrictStr], Field(description="Filter models by provider name")] = None,
         _request_timeout: Union[
@@ -865,7 +865,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_models_v1_models_get_serialize(
+        _param = self._list_models_api_v1_models_get_serialize(
             provider=provider,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -889,7 +889,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_models_v1_models_get_with_http_info(
+    def list_models_api_v1_models_get_with_http_info(
         self,
         provider: Annotated[Optional[StrictStr], Field(description="Filter models by provider name")] = None,
         _request_timeout: Union[
@@ -933,7 +933,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_models_v1_models_get_serialize(
+        _param = self._list_models_api_v1_models_get_serialize(
             provider=provider,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -957,7 +957,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_models_v1_models_get_without_preload_content(
+    def list_models_api_v1_models_get_without_preload_content(
         self,
         provider: Annotated[Optional[StrictStr], Field(description="Filter models by provider name")] = None,
         _request_timeout: Union[
@@ -1001,7 +1001,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_models_v1_models_get_serialize(
+        _param = self._list_models_api_v1_models_get_serialize(
             provider=provider,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1020,7 +1020,7 @@ class ModelsApi:
         return response_data.response
 
 
-    def _list_models_v1_models_get_serialize(
+    def _list_models_api_v1_models_get_serialize(
         self,
         provider,
         _request_auth,
@@ -1071,7 +1071,7 @@ class ModelsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/models',
+            resource_path='/api/v1/models',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

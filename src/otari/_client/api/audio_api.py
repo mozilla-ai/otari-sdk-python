@@ -38,7 +38,7 @@ class AudioApi:
 
 
     @validate_call
-    def create_speech_v1_audio_speech_post(
+    def create_speech_api_v1_audio_speech_post(
         self,
         audio_speech_request: AudioSpeechRequest,
         _request_timeout: Union[
@@ -82,7 +82,7 @@ class AudioApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_speech_v1_audio_speech_post_serialize(
+        _param = self._create_speech_api_v1_audio_speech_post_serialize(
             audio_speech_request=audio_speech_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -106,7 +106,7 @@ class AudioApi:
 
 
     @validate_call
-    def create_speech_v1_audio_speech_post_with_http_info(
+    def create_speech_api_v1_audio_speech_post_with_http_info(
         self,
         audio_speech_request: AudioSpeechRequest,
         _request_timeout: Union[
@@ -150,7 +150,7 @@ class AudioApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_speech_v1_audio_speech_post_serialize(
+        _param = self._create_speech_api_v1_audio_speech_post_serialize(
             audio_speech_request=audio_speech_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -174,7 +174,7 @@ class AudioApi:
 
 
     @validate_call
-    def create_speech_v1_audio_speech_post_without_preload_content(
+    def create_speech_api_v1_audio_speech_post_without_preload_content(
         self,
         audio_speech_request: AudioSpeechRequest,
         _request_timeout: Union[
@@ -218,7 +218,7 @@ class AudioApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_speech_v1_audio_speech_post_serialize(
+        _param = self._create_speech_api_v1_audio_speech_post_serialize(
             audio_speech_request=audio_speech_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -237,7 +237,7 @@ class AudioApi:
         return response_data.response
 
 
-    def _create_speech_v1_audio_speech_post_serialize(
+    def _create_speech_api_v1_audio_speech_post_serialize(
         self,
         audio_speech_request,
         _request_auth,
@@ -305,7 +305,7 @@ class AudioApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/audio/speech',
+            resource_path='/api/v1/audio/speech',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -322,7 +322,7 @@ class AudioApi:
 
 
     @validate_call
-    def create_transcription_v1_audio_transcriptions_post(
+    def create_transcription_api_v1_audio_transcriptions_post(
         self,
         file: StrictStr,
         model: StrictStr,
@@ -384,7 +384,7 @@ class AudioApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_transcription_v1_audio_transcriptions_post_serialize(
+        _param = self._create_transcription_api_v1_audio_transcriptions_post_serialize(
             file=file,
             model=model,
             language=language,
@@ -414,7 +414,7 @@ class AudioApi:
 
 
     @validate_call
-    def create_transcription_v1_audio_transcriptions_post_with_http_info(
+    def create_transcription_api_v1_audio_transcriptions_post_with_http_info(
         self,
         file: StrictStr,
         model: StrictStr,
@@ -476,7 +476,7 @@ class AudioApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_transcription_v1_audio_transcriptions_post_serialize(
+        _param = self._create_transcription_api_v1_audio_transcriptions_post_serialize(
             file=file,
             model=model,
             language=language,
@@ -506,7 +506,7 @@ class AudioApi:
 
 
     @validate_call
-    def create_transcription_v1_audio_transcriptions_post_without_preload_content(
+    def create_transcription_api_v1_audio_transcriptions_post_without_preload_content(
         self,
         file: StrictStr,
         model: StrictStr,
@@ -568,7 +568,7 @@ class AudioApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_transcription_v1_audio_transcriptions_post_serialize(
+        _param = self._create_transcription_api_v1_audio_transcriptions_post_serialize(
             file=file,
             model=model,
             language=language,
@@ -593,7 +593,7 @@ class AudioApi:
         return response_data.response
 
 
-    def _create_transcription_v1_audio_transcriptions_post_serialize(
+    def _create_transcription_api_v1_audio_transcriptions_post_serialize(
         self,
         file,
         model,
@@ -673,7 +673,7 @@ class AudioApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/audio/transcriptions',
+            resource_path='/api/v1/audio/transcriptions',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

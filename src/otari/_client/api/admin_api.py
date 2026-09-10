@@ -43,7 +43,7 @@ class AdminApi:
 
 
     @validate_call
-    def get_administration_access_v1_admin_access_get(
+    def get_administration_access_api_v1_admin_access_get(
         self,
         _request_timeout: Union[
             None,
@@ -84,7 +84,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_administration_access_v1_admin_access_get_serialize(
+        _param = self._get_administration_access_api_v1_admin_access_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -106,7 +106,7 @@ class AdminApi:
 
 
     @validate_call
-    def get_administration_access_v1_admin_access_get_with_http_info(
+    def get_administration_access_api_v1_admin_access_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -147,7 +147,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_administration_access_v1_admin_access_get_serialize(
+        _param = self._get_administration_access_api_v1_admin_access_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -169,7 +169,7 @@ class AdminApi:
 
 
     @validate_call
-    def get_administration_access_v1_admin_access_get_without_preload_content(
+    def get_administration_access_api_v1_admin_access_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -210,7 +210,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_administration_access_v1_admin_access_get_serialize(
+        _param = self._get_administration_access_api_v1_admin_access_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -227,7 +227,7 @@ class AdminApi:
         return response_data.response
 
 
-    def _get_administration_access_v1_admin_access_get_serialize(
+    def _get_administration_access_api_v1_admin_access_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -273,7 +273,7 @@ class AdminApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/admin/access',
+            resource_path='/api/v1/admin/access',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -290,7 +290,7 @@ class AdminApi:
 
 
     @validate_call
-    def list_deployment_users_v1_admin_users_get(
+    def list_deployment_users_api_v1_admin_users_get(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -309,7 +309,7 @@ class AdminApi:
     ) -> DeploymentUsersPublic:
         """List Deployment Users
 
-        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never.
+        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /api/v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never.
 
         :param skip: Number of records to skip
         :type skip: int
@@ -337,7 +337,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_deployment_users_v1_admin_users_get_serialize(
+        _param = self._list_deployment_users_api_v1_admin_users_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -362,7 +362,7 @@ class AdminApi:
 
 
     @validate_call
-    def list_deployment_users_v1_admin_users_get_with_http_info(
+    def list_deployment_users_api_v1_admin_users_get_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -381,7 +381,7 @@ class AdminApi:
     ) -> ApiResponse[DeploymentUsersPublic]:
         """List Deployment Users
 
-        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never.
+        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /api/v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never.
 
         :param skip: Number of records to skip
         :type skip: int
@@ -409,7 +409,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_deployment_users_v1_admin_users_get_serialize(
+        _param = self._list_deployment_users_api_v1_admin_users_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -434,7 +434,7 @@ class AdminApi:
 
 
     @validate_call
-    def list_deployment_users_v1_admin_users_get_without_preload_content(
+    def list_deployment_users_api_v1_admin_users_get_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -453,7 +453,7 @@ class AdminApi:
     ) -> RESTResponseType:
         """List Deployment Users
 
-        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never.
+        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /api/v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never.
 
         :param skip: Number of records to skip
         :type skip: int
@@ -481,7 +481,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_deployment_users_v1_admin_users_get_serialize(
+        _param = self._list_deployment_users_api_v1_admin_users_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -501,7 +501,7 @@ class AdminApi:
         return response_data.response
 
 
-    def _list_deployment_users_v1_admin_users_get_serialize(
+    def _list_deployment_users_api_v1_admin_users_get_serialize(
         self,
         skip,
         limit,
@@ -557,7 +557,7 @@ class AdminApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/admin/users',
+            resource_path='/api/v1/admin/users',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -574,7 +574,7 @@ class AdminApi:
 
 
     @validate_call
-    def update_deployment_user_v1_admin_users_user_id_patch(
+    def update_deployment_user_api_v1_admin_users_user_id_patch(
         self,
         user_id: UUID,
         deployment_user_update_request: DeploymentUserUpdateRequest,
@@ -621,7 +621,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_deployment_user_v1_admin_users_user_id_patch_serialize(
+        _param = self._update_deployment_user_api_v1_admin_users_user_id_patch_serialize(
             user_id=user_id,
             deployment_user_update_request=deployment_user_update_request,
             _request_auth=_request_auth,
@@ -646,7 +646,7 @@ class AdminApi:
 
 
     @validate_call
-    def update_deployment_user_v1_admin_users_user_id_patch_with_http_info(
+    def update_deployment_user_api_v1_admin_users_user_id_patch_with_http_info(
         self,
         user_id: UUID,
         deployment_user_update_request: DeploymentUserUpdateRequest,
@@ -693,7 +693,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_deployment_user_v1_admin_users_user_id_patch_serialize(
+        _param = self._update_deployment_user_api_v1_admin_users_user_id_patch_serialize(
             user_id=user_id,
             deployment_user_update_request=deployment_user_update_request,
             _request_auth=_request_auth,
@@ -718,7 +718,7 @@ class AdminApi:
 
 
     @validate_call
-    def update_deployment_user_v1_admin_users_user_id_patch_without_preload_content(
+    def update_deployment_user_api_v1_admin_users_user_id_patch_without_preload_content(
         self,
         user_id: UUID,
         deployment_user_update_request: DeploymentUserUpdateRequest,
@@ -765,7 +765,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_deployment_user_v1_admin_users_user_id_patch_serialize(
+        _param = self._update_deployment_user_api_v1_admin_users_user_id_patch_serialize(
             user_id=user_id,
             deployment_user_update_request=deployment_user_update_request,
             _request_auth=_request_auth,
@@ -785,7 +785,7 @@ class AdminApi:
         return response_data.response
 
 
-    def _update_deployment_user_v1_admin_users_user_id_patch_serialize(
+    def _update_deployment_user_api_v1_admin_users_user_id_patch_serialize(
         self,
         user_id,
         deployment_user_update_request,
@@ -850,7 +850,7 @@ class AdminApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/admin/users/{user_id}',
+            resource_path='/api/v1/admin/users/{user_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

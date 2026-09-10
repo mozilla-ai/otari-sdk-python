@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class OrganizationScopedBudgetUpdate(BaseModel):
     """
-    Relabel a ceiling, or point it at a different budget of this organization's.  The scope and the provider narrowing are not editable, for the reason ``PATCH /v1/scoped-budgets/{id}`` gives: changing either moves the ceiling to a different identity while carrying its spend, which is a delete and a create, not an update.
+    Relabel a ceiling, or point it at a different budget of this organization's.  The scope and the provider narrowing are not editable, for the reason the deployment-wide ceiling update gives: changing either moves the ceiling to a different identity while carrying its spend, which is a delete and a create, not an update.
     """ # noqa: E501
     budget_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = None
     name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = None

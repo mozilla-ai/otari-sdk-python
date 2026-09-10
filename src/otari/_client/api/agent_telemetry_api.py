@@ -44,7 +44,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_series_v1_agent_telemetry_series_get(
+    def agent_telemetry_series_api_v1_agent_telemetry_series_get(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -68,7 +68,7 @@ class AgentTelemetryApi:
     ) -> AgentTelemetryGroupedSeries:
         """Agent Telemetry Series
 
-        Row volume over time, split by user or API key (standalone).  Mirrors `/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
+        Row volume over time, split by user or API key (standalone).  Mirrors `/api/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
 
         :param group_by: Dimension to split the series by (required)
         :type group_by: str
@@ -106,7 +106,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_series_v1_agent_telemetry_series_get_serialize(
+        _param = self._agent_telemetry_series_api_v1_agent_telemetry_series_get_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -136,7 +136,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_series_v1_agent_telemetry_series_get_with_http_info(
+    def agent_telemetry_series_api_v1_agent_telemetry_series_get_with_http_info(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -160,7 +160,7 @@ class AgentTelemetryApi:
     ) -> ApiResponse[AgentTelemetryGroupedSeries]:
         """Agent Telemetry Series
 
-        Row volume over time, split by user or API key (standalone).  Mirrors `/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
+        Row volume over time, split by user or API key (standalone).  Mirrors `/api/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
 
         :param group_by: Dimension to split the series by (required)
         :type group_by: str
@@ -198,7 +198,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_series_v1_agent_telemetry_series_get_serialize(
+        _param = self._agent_telemetry_series_api_v1_agent_telemetry_series_get_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -228,7 +228,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_series_v1_agent_telemetry_series_get_without_preload_content(
+    def agent_telemetry_series_api_v1_agent_telemetry_series_get_without_preload_content(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -252,7 +252,7 @@ class AgentTelemetryApi:
     ) -> RESTResponseType:
         """Agent Telemetry Series
 
-        Row volume over time, split by user or API key (standalone).  Mirrors `/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
+        Row volume over time, split by user or API key (standalone).  Mirrors `/api/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
 
         :param group_by: Dimension to split the series by (required)
         :type group_by: str
@@ -290,7 +290,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_series_v1_agent_telemetry_series_get_serialize(
+        _param = self._agent_telemetry_series_api_v1_agent_telemetry_series_get_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -315,7 +315,7 @@ class AgentTelemetryApi:
         return response_data.response
 
 
-    def _agent_telemetry_series_v1_agent_telemetry_series_get_serialize(
+    def _agent_telemetry_series_api_v1_agent_telemetry_series_get_serialize(
         self,
         group_by,
         start_date,
@@ -416,7 +416,7 @@ class AgentTelemetryApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/agent-telemetry/series',
+            resource_path='/api/v1/agent-telemetry/series',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -433,13 +433,13 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_summary_v1_agent_telemetry_summary_get(
+    def agent_telemetry_summary_api_v1_agent_telemetry_summary_get(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
-        session_label: Annotated[Optional[StrictStr], Field(description="Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on")] = None,
+        session_label: Annotated[Optional[StrictStr], Field(description="Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /api/v1/usage/summary filters on")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         _request_timeout: Union[
             None,
@@ -456,7 +456,7 @@ class AgentTelemetryApi:
     ) -> AgentTelemetrySummary:
         """Agent Telemetry Summary
 
-        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
+        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/api/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
 
         :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -466,7 +466,7 @@ class AgentTelemetryApi:
         :type user_id: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
-        :param session_label: Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on
+        :param session_label: Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /api/v1/usage/summary filters on
         :type session_label: str
         :param bucket: Time-series granularity: 'hour' or 'day'
         :type bucket: str
@@ -492,7 +492,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_summary_v1_agent_telemetry_summary_get_serialize(
+        _param = self._agent_telemetry_summary_api_v1_agent_telemetry_summary_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -521,13 +521,13 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_summary_v1_agent_telemetry_summary_get_with_http_info(
+    def agent_telemetry_summary_api_v1_agent_telemetry_summary_get_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
-        session_label: Annotated[Optional[StrictStr], Field(description="Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on")] = None,
+        session_label: Annotated[Optional[StrictStr], Field(description="Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /api/v1/usage/summary filters on")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         _request_timeout: Union[
             None,
@@ -544,7 +544,7 @@ class AgentTelemetryApi:
     ) -> ApiResponse[AgentTelemetrySummary]:
         """Agent Telemetry Summary
 
-        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
+        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/api/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
 
         :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -554,7 +554,7 @@ class AgentTelemetryApi:
         :type user_id: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
-        :param session_label: Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on
+        :param session_label: Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /api/v1/usage/summary filters on
         :type session_label: str
         :param bucket: Time-series granularity: 'hour' or 'day'
         :type bucket: str
@@ -580,7 +580,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_summary_v1_agent_telemetry_summary_get_serialize(
+        _param = self._agent_telemetry_summary_api_v1_agent_telemetry_summary_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -609,13 +609,13 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_summary_v1_agent_telemetry_summary_get_without_preload_content(
+    def agent_telemetry_summary_api_v1_agent_telemetry_summary_get_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
-        session_label: Annotated[Optional[StrictStr], Field(description="Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on")] = None,
+        session_label: Annotated[Optional[StrictStr], Field(description="Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /api/v1/usage/summary filters on")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         _request_timeout: Union[
             None,
@@ -632,7 +632,7 @@ class AgentTelemetryApi:
     ) -> RESTResponseType:
         """Agent Telemetry Summary
 
-        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
+        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/api/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
 
         :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -642,7 +642,7 @@ class AgentTelemetryApi:
         :type user_id: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
-        :param session_label: Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /v1/usage/summary filters on
+        :param session_label: Filter to a single agent session. Matches agent_telemetry.session_label and, on the usage side of the join, the usage_logs.source_label that /api/v1/usage/summary filters on
         :type session_label: str
         :param bucket: Time-series granularity: 'hour' or 'day'
         :type bucket: str
@@ -668,7 +668,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_summary_v1_agent_telemetry_summary_get_serialize(
+        _param = self._agent_telemetry_summary_api_v1_agent_telemetry_summary_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -692,7 +692,7 @@ class AgentTelemetryApi:
         return response_data.response
 
 
-    def _agent_telemetry_summary_v1_agent_telemetry_summary_get_serialize(
+    def _agent_telemetry_summary_api_v1_agent_telemetry_summary_get_serialize(
         self,
         start_date,
         end_date,
@@ -788,7 +788,7 @@ class AgentTelemetryApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/agent-telemetry/summary',
+            resource_path='/api/v1/agent-telemetry/summary',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -805,7 +805,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def count_agent_telemetry_v1_agent_telemetry_count_get(
+    def count_agent_telemetry_api_v1_agent_telemetry_count_get(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -861,7 +861,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_agent_telemetry_v1_agent_telemetry_count_get_serialize(
+        _param = self._count_agent_telemetry_api_v1_agent_telemetry_count_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -889,7 +889,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def count_agent_telemetry_v1_agent_telemetry_count_get_with_http_info(
+    def count_agent_telemetry_api_v1_agent_telemetry_count_get_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -945,7 +945,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_agent_telemetry_v1_agent_telemetry_count_get_serialize(
+        _param = self._count_agent_telemetry_api_v1_agent_telemetry_count_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -973,7 +973,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def count_agent_telemetry_v1_agent_telemetry_count_get_without_preload_content(
+    def count_agent_telemetry_api_v1_agent_telemetry_count_get_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1029,7 +1029,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_agent_telemetry_v1_agent_telemetry_count_get_serialize(
+        _param = self._count_agent_telemetry_api_v1_agent_telemetry_count_get_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1052,7 +1052,7 @@ class AgentTelemetryApi:
         return response_data.response
 
 
-    def _count_agent_telemetry_v1_agent_telemetry_count_get_serialize(
+    def _count_agent_telemetry_api_v1_agent_telemetry_count_get_serialize(
         self,
         start_date,
         end_date,
@@ -1143,7 +1143,7 @@ class AgentTelemetryApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/agent-telemetry/count',
+            resource_path='/api/v1/agent-telemetry/count',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1160,7 +1160,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def delete_agent_telemetry_rows_v1_agent_telemetry_delete(
+    def delete_agent_telemetry_rows_api_v1_agent_telemetry_delete(
         self,
         agent_telemetry_delete_request: AgentTelemetryDeleteRequest,
         _request_timeout: Union[
@@ -1204,7 +1204,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_agent_telemetry_rows_v1_agent_telemetry_delete_serialize(
+        _param = self._delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_serialize(
             agent_telemetry_delete_request=agent_telemetry_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1228,7 +1228,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def delete_agent_telemetry_rows_v1_agent_telemetry_delete_with_http_info(
+    def delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_with_http_info(
         self,
         agent_telemetry_delete_request: AgentTelemetryDeleteRequest,
         _request_timeout: Union[
@@ -1272,7 +1272,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_agent_telemetry_rows_v1_agent_telemetry_delete_serialize(
+        _param = self._delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_serialize(
             agent_telemetry_delete_request=agent_telemetry_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1296,7 +1296,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def delete_agent_telemetry_rows_v1_agent_telemetry_delete_without_preload_content(
+    def delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_without_preload_content(
         self,
         agent_telemetry_delete_request: AgentTelemetryDeleteRequest,
         _request_timeout: Union[
@@ -1340,7 +1340,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_agent_telemetry_rows_v1_agent_telemetry_delete_serialize(
+        _param = self._delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_serialize(
             agent_telemetry_delete_request=agent_telemetry_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1359,7 +1359,7 @@ class AgentTelemetryApi:
         return response_data.response
 
 
-    def _delete_agent_telemetry_rows_v1_agent_telemetry_delete_serialize(
+    def _delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_serialize(
         self,
         agent_telemetry_delete_request,
         _request_auth,
@@ -1421,7 +1421,7 @@ class AgentTelemetryApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/agent-telemetry',
+            resource_path='/api/v1/agent-telemetry',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -25,7 +25,7 @@ from pydantic_core import to_jsonable_python
 
 class ScopedBudgetResponse(BaseModel):
     """
-    One scoped ceiling and its live counters.  Unlike ``/v1/budgets``, the counters are the row's own: a scoped ceiling is enforced against ``current_spend + reserved_spend``, so there is no rollup over users to compute.  Every limit, along with ``budget_duration_sec`` and ``reset_alignment``, is read off the budget rather than stored here, and carried on the wire so a caller can render a ceiling without fetching every budget to resolve one id.
+    One scoped ceiling and its live counters.  Unlike ``/api/v1/budgets``, the counters are the row's own: a scoped ceiling is enforced against ``current_spend + reserved_spend``, so there is no rollup over users to compute.  Every limit, along with ``budget_duration_sec`` and ``reset_alignment``, is read off the budget rather than stored here, and carried on the wire so a caller can render a ceiling without fetching every budget to resolve one id.
     """ # noqa: E501
     budget_duration_sec: Optional[StrictInt]
     budget_id: StrictStr

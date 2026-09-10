@@ -44,7 +44,7 @@ class McpServersApi:
 
 
     @validate_call
-    def create_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_post(
+    def create_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_post(
         self,
         workspace_id: UUID,
         workspace_mcp_server_create: WorkspaceMcpServerCreate,
@@ -91,7 +91,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_post_serialize(
+        _param = self._create_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_post_serialize(
             workspace_id=workspace_id,
             workspace_mcp_server_create=workspace_mcp_server_create,
             _request_auth=_request_auth,
@@ -116,7 +116,7 @@ class McpServersApi:
 
 
     @validate_call
-    def create_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_post_with_http_info(
+    def create_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_post_with_http_info(
         self,
         workspace_id: UUID,
         workspace_mcp_server_create: WorkspaceMcpServerCreate,
@@ -163,7 +163,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_post_serialize(
+        _param = self._create_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_post_serialize(
             workspace_id=workspace_id,
             workspace_mcp_server_create=workspace_mcp_server_create,
             _request_auth=_request_auth,
@@ -188,7 +188,7 @@ class McpServersApi:
 
 
     @validate_call
-    def create_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_post_without_preload_content(
+    def create_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_post_without_preload_content(
         self,
         workspace_id: UUID,
         workspace_mcp_server_create: WorkspaceMcpServerCreate,
@@ -235,7 +235,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_post_serialize(
+        _param = self._create_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_post_serialize(
             workspace_id=workspace_id,
             workspace_mcp_server_create=workspace_mcp_server_create,
             _request_auth=_request_auth,
@@ -255,7 +255,7 @@ class McpServersApi:
         return response_data.response
 
 
-    def _create_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_post_serialize(
+    def _create_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_post_serialize(
         self,
         workspace_id,
         workspace_mcp_server_create,
@@ -320,7 +320,7 @@ class McpServersApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/workspaces/{workspace_id}/mcp-servers',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -337,7 +337,7 @@ class McpServersApi:
 
 
     @validate_call
-    def delete_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_delete(
+    def delete_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_delete(
         self,
         workspace_id: UUID,
         server_id: UUID,
@@ -384,7 +384,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_delete_serialize(
+        _param = self._delete_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_delete_serialize(
             workspace_id=workspace_id,
             server_id=server_id,
             _request_auth=_request_auth,
@@ -409,7 +409,7 @@ class McpServersApi:
 
 
     @validate_call
-    def delete_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_delete_with_http_info(
+    def delete_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_delete_with_http_info(
         self,
         workspace_id: UUID,
         server_id: UUID,
@@ -456,7 +456,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_delete_serialize(
+        _param = self._delete_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_delete_serialize(
             workspace_id=workspace_id,
             server_id=server_id,
             _request_auth=_request_auth,
@@ -481,7 +481,7 @@ class McpServersApi:
 
 
     @validate_call
-    def delete_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_delete_without_preload_content(
+    def delete_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_delete_without_preload_content(
         self,
         workspace_id: UUID,
         server_id: UUID,
@@ -528,7 +528,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_delete_serialize(
+        _param = self._delete_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_delete_serialize(
             workspace_id=workspace_id,
             server_id=server_id,
             _request_auth=_request_auth,
@@ -548,7 +548,7 @@ class McpServersApi:
         return response_data.response
 
 
-    def _delete_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_delete_serialize(
+    def _delete_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_delete_serialize(
         self,
         workspace_id,
         server_id,
@@ -600,7 +600,7 @@ class McpServersApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/workspaces/{workspace_id}/mcp-servers/{server_id}',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -617,7 +617,7 @@ class McpServersApi:
 
 
     @validate_call
-    def list_workspace_mcp_servers_v1_workspaces_workspace_id_mcp_servers_get(
+    def list_workspace_mcp_servers_api_v1_workspaces_workspace_id_mcp_servers_get(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -667,7 +667,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_mcp_servers_v1_workspaces_workspace_id_mcp_servers_get_serialize(
+        _param = self._list_workspace_mcp_servers_api_v1_workspaces_workspace_id_mcp_servers_get_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -693,7 +693,7 @@ class McpServersApi:
 
 
     @validate_call
-    def list_workspace_mcp_servers_v1_workspaces_workspace_id_mcp_servers_get_with_http_info(
+    def list_workspace_mcp_servers_api_v1_workspaces_workspace_id_mcp_servers_get_with_http_info(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -743,7 +743,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_mcp_servers_v1_workspaces_workspace_id_mcp_servers_get_serialize(
+        _param = self._list_workspace_mcp_servers_api_v1_workspaces_workspace_id_mcp_servers_get_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -769,7 +769,7 @@ class McpServersApi:
 
 
     @validate_call
-    def list_workspace_mcp_servers_v1_workspaces_workspace_id_mcp_servers_get_without_preload_content(
+    def list_workspace_mcp_servers_api_v1_workspaces_workspace_id_mcp_servers_get_without_preload_content(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -819,7 +819,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_mcp_servers_v1_workspaces_workspace_id_mcp_servers_get_serialize(
+        _param = self._list_workspace_mcp_servers_api_v1_workspaces_workspace_id_mcp_servers_get_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -840,7 +840,7 @@ class McpServersApi:
         return response_data.response
 
 
-    def _list_workspace_mcp_servers_v1_workspaces_workspace_id_mcp_servers_get_serialize(
+    def _list_workspace_mcp_servers_api_v1_workspaces_workspace_id_mcp_servers_get_serialize(
         self,
         workspace_id,
         skip,
@@ -899,7 +899,7 @@ class McpServersApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/workspaces/{workspace_id}/mcp-servers',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -916,7 +916,7 @@ class McpServersApi:
 
 
     @validate_call
-    def update_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_patch(
+    def update_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_patch(
         self,
         workspace_id: UUID,
         server_id: UUID,
@@ -966,7 +966,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_patch_serialize(
+        _param = self._update_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_patch_serialize(
             workspace_id=workspace_id,
             server_id=server_id,
             workspace_mcp_server_update=workspace_mcp_server_update,
@@ -992,7 +992,7 @@ class McpServersApi:
 
 
     @validate_call
-    def update_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_patch_with_http_info(
+    def update_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_patch_with_http_info(
         self,
         workspace_id: UUID,
         server_id: UUID,
@@ -1042,7 +1042,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_patch_serialize(
+        _param = self._update_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_patch_serialize(
             workspace_id=workspace_id,
             server_id=server_id,
             workspace_mcp_server_update=workspace_mcp_server_update,
@@ -1068,7 +1068,7 @@ class McpServersApi:
 
 
     @validate_call
-    def update_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_patch_without_preload_content(
+    def update_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_patch_without_preload_content(
         self,
         workspace_id: UUID,
         server_id: UUID,
@@ -1118,7 +1118,7 @@ class McpServersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_patch_serialize(
+        _param = self._update_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_patch_serialize(
             workspace_id=workspace_id,
             server_id=server_id,
             workspace_mcp_server_update=workspace_mcp_server_update,
@@ -1139,7 +1139,7 @@ class McpServersApi:
         return response_data.response
 
 
-    def _update_workspace_mcp_server_v1_workspaces_workspace_id_mcp_servers_server_id_patch_serialize(
+    def _update_workspace_mcp_server_api_v1_workspaces_workspace_id_mcp_servers_server_id_patch_serialize(
         self,
         workspace_id,
         server_id,
@@ -1207,7 +1207,7 @@ class McpServersApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/workspaces/{workspace_id}/mcp-servers/{server_id}',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class PasskeySessionResponse(BaseModel):
     """
-    A dashboard session minted by a passkey (the token travels only in the cookie).  The same three fields ``POST /v1/auth/session`` answers, deliberately: the dashboard's sign-in path does not care which credential got it here.
+    A dashboard session minted by a passkey (the token travels only in the cookie).  The same three fields ``POST /api/v1/auth/session`` answers, deliberately: the dashboard's sign-in path does not care which credential got it here.
     """ # noqa: E501
     active_organization_id: UUID = Field(description="The organization that identity is acting in, which scopes every tenancy surface.")
     expires_at: datetime = Field(description="When the session cookie stops being accepted.")

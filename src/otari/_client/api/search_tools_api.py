@@ -43,7 +43,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def create_search_tool_v1_search_tools_post(
+    def create_search_tool_api_v1_search_tools_post(
         self,
         create_search_tool_request: CreateSearchToolRequest,
         _request_timeout: Union[
@@ -87,7 +87,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_search_tool_v1_search_tools_post_serialize(
+        _param = self._create_search_tool_api_v1_search_tools_post_serialize(
             create_search_tool_request=create_search_tool_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -111,7 +111,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def create_search_tool_v1_search_tools_post_with_http_info(
+    def create_search_tool_api_v1_search_tools_post_with_http_info(
         self,
         create_search_tool_request: CreateSearchToolRequest,
         _request_timeout: Union[
@@ -155,7 +155,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_search_tool_v1_search_tools_post_serialize(
+        _param = self._create_search_tool_api_v1_search_tools_post_serialize(
             create_search_tool_request=create_search_tool_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -179,7 +179,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def create_search_tool_v1_search_tools_post_without_preload_content(
+    def create_search_tool_api_v1_search_tools_post_without_preload_content(
         self,
         create_search_tool_request: CreateSearchToolRequest,
         _request_timeout: Union[
@@ -223,7 +223,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_search_tool_v1_search_tools_post_serialize(
+        _param = self._create_search_tool_api_v1_search_tools_post_serialize(
             create_search_tool_request=create_search_tool_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -242,7 +242,7 @@ class SearchToolsApi:
         return response_data.response
 
 
-    def _create_search_tool_v1_search_tools_post_serialize(
+    def _create_search_tool_api_v1_search_tools_post_serialize(
         self,
         create_search_tool_request,
         _request_auth,
@@ -304,7 +304,7 @@ class SearchToolsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/search-tools',
+            resource_path='/api/v1/search-tools',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -321,7 +321,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def delete_stored_search_tool_v1_search_tools_name_delete(
+    def delete_stored_search_tool_api_v1_search_tools_name_delete(
         self,
         name: StrictStr,
         _request_timeout: Union[
@@ -365,7 +365,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_stored_search_tool_v1_search_tools_name_delete_serialize(
+        _param = self._delete_stored_search_tool_api_v1_search_tools_name_delete_serialize(
             name=name,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -389,7 +389,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def delete_stored_search_tool_v1_search_tools_name_delete_with_http_info(
+    def delete_stored_search_tool_api_v1_search_tools_name_delete_with_http_info(
         self,
         name: StrictStr,
         _request_timeout: Union[
@@ -433,7 +433,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_stored_search_tool_v1_search_tools_name_delete_serialize(
+        _param = self._delete_stored_search_tool_api_v1_search_tools_name_delete_serialize(
             name=name,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -457,7 +457,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def delete_stored_search_tool_v1_search_tools_name_delete_without_preload_content(
+    def delete_stored_search_tool_api_v1_search_tools_name_delete_without_preload_content(
         self,
         name: StrictStr,
         _request_timeout: Union[
@@ -501,7 +501,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_stored_search_tool_v1_search_tools_name_delete_serialize(
+        _param = self._delete_stored_search_tool_api_v1_search_tools_name_delete_serialize(
             name=name,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -520,7 +520,7 @@ class SearchToolsApi:
         return response_data.response
 
 
-    def _delete_stored_search_tool_v1_search_tools_name_delete_serialize(
+    def _delete_stored_search_tool_api_v1_search_tools_name_delete_serialize(
         self,
         name,
         _request_auth,
@@ -569,7 +569,7 @@ class SearchToolsApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/search-tools/{name}',
+            resource_path='/api/v1/search-tools/{name}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -586,7 +586,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def list_all_search_tools_v1_search_tools_get(
+    def list_all_search_tools_api_v1_search_tools_get(
         self,
         _request_timeout: Union[
             None,
@@ -603,7 +603,7 @@ class SearchToolsApi:
     ) -> SearchToolsResponse:
         """List All Search Tools
 
-        List every search tool ``POST /v1/search`` can name.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set. Keys are never returned, only ``last4``.
+        List every search tool ``POST /api/v1/search`` can name.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set. Keys are never returned, only ``last4``.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -627,7 +627,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_all_search_tools_v1_search_tools_get_serialize(
+        _param = self._list_all_search_tools_api_v1_search_tools_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -649,7 +649,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def list_all_search_tools_v1_search_tools_get_with_http_info(
+    def list_all_search_tools_api_v1_search_tools_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -666,7 +666,7 @@ class SearchToolsApi:
     ) -> ApiResponse[SearchToolsResponse]:
         """List All Search Tools
 
-        List every search tool ``POST /v1/search`` can name.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set. Keys are never returned, only ``last4``.
+        List every search tool ``POST /api/v1/search`` can name.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set. Keys are never returned, only ``last4``.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -690,7 +690,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_all_search_tools_v1_search_tools_get_serialize(
+        _param = self._list_all_search_tools_api_v1_search_tools_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -712,7 +712,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def list_all_search_tools_v1_search_tools_get_without_preload_content(
+    def list_all_search_tools_api_v1_search_tools_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -729,7 +729,7 @@ class SearchToolsApi:
     ) -> RESTResponseType:
         """List All Search Tools
 
-        List every search tool ``POST /v1/search`` can name.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set. Keys are never returned, only ``last4``.
+        List every search tool ``POST /api/v1/search`` can name.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set. Keys are never returned, only ``last4``.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -753,7 +753,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_all_search_tools_v1_search_tools_get_serialize(
+        _param = self._list_all_search_tools_api_v1_search_tools_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -770,7 +770,7 @@ class SearchToolsApi:
         return response_data.response
 
 
-    def _list_all_search_tools_v1_search_tools_get_serialize(
+    def _list_all_search_tools_api_v1_search_tools_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -816,7 +816,7 @@ class SearchToolsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/search-tools',
+            resource_path='/api/v1/search-tools',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -833,7 +833,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def list_search_providers_v1_search_tools_providers_get(
+    def list_search_providers_api_v1_search_tools_providers_get(
         self,
         _request_timeout: Union[
             None,
@@ -874,7 +874,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_search_providers_v1_search_tools_providers_get_serialize(
+        _param = self._list_search_providers_api_v1_search_tools_providers_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -896,7 +896,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def list_search_providers_v1_search_tools_providers_get_with_http_info(
+    def list_search_providers_api_v1_search_tools_providers_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -937,7 +937,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_search_providers_v1_search_tools_providers_get_serialize(
+        _param = self._list_search_providers_api_v1_search_tools_providers_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -959,7 +959,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def list_search_providers_v1_search_tools_providers_get_without_preload_content(
+    def list_search_providers_api_v1_search_tools_providers_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1000,7 +1000,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_search_providers_v1_search_tools_providers_get_serialize(
+        _param = self._list_search_providers_api_v1_search_tools_providers_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1017,7 +1017,7 @@ class SearchToolsApi:
         return response_data.response
 
 
-    def _list_search_providers_v1_search_tools_providers_get_serialize(
+    def _list_search_providers_api_v1_search_tools_providers_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1063,7 +1063,7 @@ class SearchToolsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/search-tools/providers',
+            resource_path='/api/v1/search-tools/providers',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1080,7 +1080,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def reencrypt_stored_search_tool_keys_v1_search_tools_reencrypt_post(
+    def reencrypt_stored_search_tool_keys_api_v1_search_tools_reencrypt_post(
         self,
         _request_timeout: Union[
             None,
@@ -1097,7 +1097,7 @@ class SearchToolsApi:
     ) -> ReencryptSearchToolsResponse:
         """Reencrypt Stored Search Tool Keys
 
-        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /v1/provider-credentials/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
+        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/provider-credentials/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1121,7 +1121,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reencrypt_stored_search_tool_keys_v1_search_tools_reencrypt_post_serialize(
+        _param = self._reencrypt_stored_search_tool_keys_api_v1_search_tools_reencrypt_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1143,7 +1143,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def reencrypt_stored_search_tool_keys_v1_search_tools_reencrypt_post_with_http_info(
+    def reencrypt_stored_search_tool_keys_api_v1_search_tools_reencrypt_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -1160,7 +1160,7 @@ class SearchToolsApi:
     ) -> ApiResponse[ReencryptSearchToolsResponse]:
         """Reencrypt Stored Search Tool Keys
 
-        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /v1/provider-credentials/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
+        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/provider-credentials/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1184,7 +1184,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reencrypt_stored_search_tool_keys_v1_search_tools_reencrypt_post_serialize(
+        _param = self._reencrypt_stored_search_tool_keys_api_v1_search_tools_reencrypt_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1206,7 +1206,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def reencrypt_stored_search_tool_keys_v1_search_tools_reencrypt_post_without_preload_content(
+    def reencrypt_stored_search_tool_keys_api_v1_search_tools_reencrypt_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1223,7 +1223,7 @@ class SearchToolsApi:
     ) -> RESTResponseType:
         """Reencrypt Stored Search Tool Keys
 
-        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /v1/provider-credentials/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
+        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/provider-credentials/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1247,7 +1247,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reencrypt_stored_search_tool_keys_v1_search_tools_reencrypt_post_serialize(
+        _param = self._reencrypt_stored_search_tool_keys_api_v1_search_tools_reencrypt_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1264,7 +1264,7 @@ class SearchToolsApi:
         return response_data.response
 
 
-    def _reencrypt_stored_search_tool_keys_v1_search_tools_reencrypt_post_serialize(
+    def _reencrypt_stored_search_tool_keys_api_v1_search_tools_reencrypt_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1310,7 +1310,7 @@ class SearchToolsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/search-tools/reencrypt',
+            resource_path='/api/v1/search-tools/reencrypt',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1327,7 +1327,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def update_search_tool_v1_search_tools_name_patch(
+    def update_search_tool_api_v1_search_tools_name_patch(
         self,
         name: StrictStr,
         update_search_tool_request: UpdateSearchToolRequest,
@@ -1374,7 +1374,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_search_tool_v1_search_tools_name_patch_serialize(
+        _param = self._update_search_tool_api_v1_search_tools_name_patch_serialize(
             name=name,
             update_search_tool_request=update_search_tool_request,
             _request_auth=_request_auth,
@@ -1399,7 +1399,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def update_search_tool_v1_search_tools_name_patch_with_http_info(
+    def update_search_tool_api_v1_search_tools_name_patch_with_http_info(
         self,
         name: StrictStr,
         update_search_tool_request: UpdateSearchToolRequest,
@@ -1446,7 +1446,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_search_tool_v1_search_tools_name_patch_serialize(
+        _param = self._update_search_tool_api_v1_search_tools_name_patch_serialize(
             name=name,
             update_search_tool_request=update_search_tool_request,
             _request_auth=_request_auth,
@@ -1471,7 +1471,7 @@ class SearchToolsApi:
 
 
     @validate_call
-    def update_search_tool_v1_search_tools_name_patch_without_preload_content(
+    def update_search_tool_api_v1_search_tools_name_patch_without_preload_content(
         self,
         name: StrictStr,
         update_search_tool_request: UpdateSearchToolRequest,
@@ -1518,7 +1518,7 @@ class SearchToolsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_search_tool_v1_search_tools_name_patch_serialize(
+        _param = self._update_search_tool_api_v1_search_tools_name_patch_serialize(
             name=name,
             update_search_tool_request=update_search_tool_request,
             _request_auth=_request_auth,
@@ -1538,7 +1538,7 @@ class SearchToolsApi:
         return response_data.response
 
 
-    def _update_search_tool_v1_search_tools_name_patch_serialize(
+    def _update_search_tool_api_v1_search_tools_name_patch_serialize(
         self,
         name,
         update_search_tool_request,
@@ -1603,7 +1603,7 @@ class SearchToolsApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/search-tools/{name}',
+            resource_path='/api/v1/search-tools/{name}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

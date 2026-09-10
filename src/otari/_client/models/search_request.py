@@ -33,7 +33,7 @@ class SearchRequest(BaseModel):
     max_tokens_per_page: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Approximate cap on the page content returned per result")
     query: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The search query")
     search_domain_filter: Optional[Annotated[List[StrictStr], Field(max_length=20)]] = Field(default=None, description="Restrict results to these domains; prefix a domain with '-' to exclude it instead")
-    search_tool_name: Optional[StrictStr] = Field(default=None, description="Configured search tool to run against. Optional when exactly one tool is configured, and ignored on POST /v1/search/{search_tool_name}.")
+    search_tool_name: Optional[StrictStr] = Field(default=None, description="Configured search tool to run against. Optional when exactly one tool is configured, and ignored on POST /api/v1/search/{search_tool_name}.")
     user: Optional[StrictStr] = Field(default=None, description="User ID for usage attribution")
     __properties: ClassVar[List[str]] = ["country", "max_results", "max_tokens_per_page", "query", "search_domain_filter", "search_tool_name", "user"]
 

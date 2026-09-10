@@ -43,7 +43,7 @@ class PricingApi:
 
 
     @validate_call
-    def confirm_pricing_refresh_v1_pricing_refresh_confirm_post(
+    def confirm_pricing_refresh_api_v1_pricing_refresh_confirm_post(
         self,
         _request_timeout: Union[
             None,
@@ -84,7 +84,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._confirm_pricing_refresh_v1_pricing_refresh_confirm_post_serialize(
+        _param = self._confirm_pricing_refresh_api_v1_pricing_refresh_confirm_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -106,7 +106,7 @@ class PricingApi:
 
 
     @validate_call
-    def confirm_pricing_refresh_v1_pricing_refresh_confirm_post_with_http_info(
+    def confirm_pricing_refresh_api_v1_pricing_refresh_confirm_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -147,7 +147,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._confirm_pricing_refresh_v1_pricing_refresh_confirm_post_serialize(
+        _param = self._confirm_pricing_refresh_api_v1_pricing_refresh_confirm_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -169,7 +169,7 @@ class PricingApi:
 
 
     @validate_call
-    def confirm_pricing_refresh_v1_pricing_refresh_confirm_post_without_preload_content(
+    def confirm_pricing_refresh_api_v1_pricing_refresh_confirm_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -210,7 +210,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._confirm_pricing_refresh_v1_pricing_refresh_confirm_post_serialize(
+        _param = self._confirm_pricing_refresh_api_v1_pricing_refresh_confirm_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -227,7 +227,7 @@ class PricingApi:
         return response_data.response
 
 
-    def _confirm_pricing_refresh_v1_pricing_refresh_confirm_post_serialize(
+    def _confirm_pricing_refresh_api_v1_pricing_refresh_confirm_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -273,7 +273,7 @@ class PricingApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/pricing/refresh/confirm',
+            resource_path='/api/v1/pricing/refresh/confirm',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -290,7 +290,7 @@ class PricingApi:
 
 
     @validate_call
-    def delete_pricing_v1_pricing_model_key_delete(
+    def delete_pricing_api_v1_pricing_model_key_delete(
         self,
         model_key: StrictStr,
         effective_at: Annotated[Optional[datetime], Field(description="ISO datetime identifying a specific pricing row to delete")] = None,
@@ -337,7 +337,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_pricing_v1_pricing_model_key_delete_serialize(
+        _param = self._delete_pricing_api_v1_pricing_model_key_delete_serialize(
             model_key=model_key,
             effective_at=effective_at,
             _request_auth=_request_auth,
@@ -362,7 +362,7 @@ class PricingApi:
 
 
     @validate_call
-    def delete_pricing_v1_pricing_model_key_delete_with_http_info(
+    def delete_pricing_api_v1_pricing_model_key_delete_with_http_info(
         self,
         model_key: StrictStr,
         effective_at: Annotated[Optional[datetime], Field(description="ISO datetime identifying a specific pricing row to delete")] = None,
@@ -409,7 +409,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_pricing_v1_pricing_model_key_delete_serialize(
+        _param = self._delete_pricing_api_v1_pricing_model_key_delete_serialize(
             model_key=model_key,
             effective_at=effective_at,
             _request_auth=_request_auth,
@@ -434,7 +434,7 @@ class PricingApi:
 
 
     @validate_call
-    def delete_pricing_v1_pricing_model_key_delete_without_preload_content(
+    def delete_pricing_api_v1_pricing_model_key_delete_without_preload_content(
         self,
         model_key: StrictStr,
         effective_at: Annotated[Optional[datetime], Field(description="ISO datetime identifying a specific pricing row to delete")] = None,
@@ -481,7 +481,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_pricing_v1_pricing_model_key_delete_serialize(
+        _param = self._delete_pricing_api_v1_pricing_model_key_delete_serialize(
             model_key=model_key,
             effective_at=effective_at,
             _request_auth=_request_auth,
@@ -501,7 +501,7 @@ class PricingApi:
         return response_data.response
 
 
-    def _delete_pricing_v1_pricing_model_key_delete_serialize(
+    def _delete_pricing_api_v1_pricing_model_key_delete_serialize(
         self,
         model_key,
         effective_at,
@@ -564,7 +564,7 @@ class PricingApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/pricing/{model_key}',
+            resource_path='/api/v1/pricing/{model_key}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -581,272 +581,7 @@ class PricingApi:
 
 
     @validate_call
-    def get_pricing_history_v1_pricing_model_key_history_get(
-        self,
-        model_key: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[PricingResponse]:
-        """Get Pricing History
-
-        Return the full pricing history for a model.
-
-        :param model_key: (required)
-        :type model_key: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_pricing_history_v1_pricing_model_key_history_get_serialize(
-            model_key=model_key,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[PricingResponse]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_pricing_history_v1_pricing_model_key_history_get_with_http_info(
-        self,
-        model_key: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[PricingResponse]]:
-        """Get Pricing History
-
-        Return the full pricing history for a model.
-
-        :param model_key: (required)
-        :type model_key: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_pricing_history_v1_pricing_model_key_history_get_serialize(
-            model_key=model_key,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[PricingResponse]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_pricing_history_v1_pricing_model_key_history_get_without_preload_content(
-        self,
-        model_key: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get Pricing History
-
-        Return the full pricing history for a model.
-
-        :param model_key: (required)
-        :type model_key: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_pricing_history_v1_pricing_model_key_history_get_serialize(
-            model_key=model_key,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[PricingResponse]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_pricing_history_v1_pricing_model_key_history_get_serialize(
-        self,
-        model_key,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if model_key is not None:
-            _path_params['model_key'] = model_key
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'XApiKeyAuth', 
-            'ApiKeyAuth'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v1/pricing/{model_key}/history',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_pricing_v1_pricing_model_key_get(
+    def get_pricing_api_v1_pricing_model_key_get(
         self,
         model_key: StrictStr,
         as_of: Annotated[Optional[datetime], Field(description="ISO datetime for effective lookup")] = None,
@@ -893,7 +628,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_pricing_v1_pricing_model_key_get_serialize(
+        _param = self._get_pricing_api_v1_pricing_model_key_get_serialize(
             model_key=model_key,
             as_of=as_of,
             _request_auth=_request_auth,
@@ -918,7 +653,7 @@ class PricingApi:
 
 
     @validate_call
-    def get_pricing_v1_pricing_model_key_get_with_http_info(
+    def get_pricing_api_v1_pricing_model_key_get_with_http_info(
         self,
         model_key: StrictStr,
         as_of: Annotated[Optional[datetime], Field(description="ISO datetime for effective lookup")] = None,
@@ -965,7 +700,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_pricing_v1_pricing_model_key_get_serialize(
+        _param = self._get_pricing_api_v1_pricing_model_key_get_serialize(
             model_key=model_key,
             as_of=as_of,
             _request_auth=_request_auth,
@@ -990,7 +725,7 @@ class PricingApi:
 
 
     @validate_call
-    def get_pricing_v1_pricing_model_key_get_without_preload_content(
+    def get_pricing_api_v1_pricing_model_key_get_without_preload_content(
         self,
         model_key: StrictStr,
         as_of: Annotated[Optional[datetime], Field(description="ISO datetime for effective lookup")] = None,
@@ -1037,7 +772,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_pricing_v1_pricing_model_key_get_serialize(
+        _param = self._get_pricing_api_v1_pricing_model_key_get_serialize(
             model_key=model_key,
             as_of=as_of,
             _request_auth=_request_auth,
@@ -1057,7 +792,7 @@ class PricingApi:
         return response_data.response
 
 
-    def _get_pricing_v1_pricing_model_key_get_serialize(
+    def _get_pricing_api_v1_pricing_model_key_get_serialize(
         self,
         model_key,
         as_of,
@@ -1120,7 +855,7 @@ class PricingApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/pricing/{model_key}',
+            resource_path='/api/v1/pricing/{model_key}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1137,7 +872,272 @@ class PricingApi:
 
 
     @validate_call
-    def list_pricing_v1_pricing_get(
+    def get_pricing_history_api_v1_pricing_model_key_history_get(
+        self,
+        model_key: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> List[PricingResponse]:
+        """Get Pricing History
+
+        Return the full pricing history for a model.
+
+        :param model_key: (required)
+        :type model_key: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_pricing_history_api_v1_pricing_model_key_history_get_serialize(
+            model_key=model_key,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[PricingResponse]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_pricing_history_api_v1_pricing_model_key_history_get_with_http_info(
+        self,
+        model_key: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[List[PricingResponse]]:
+        """Get Pricing History
+
+        Return the full pricing history for a model.
+
+        :param model_key: (required)
+        :type model_key: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_pricing_history_api_v1_pricing_model_key_history_get_serialize(
+            model_key=model_key,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[PricingResponse]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_pricing_history_api_v1_pricing_model_key_history_get_without_preload_content(
+        self,
+        model_key: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Pricing History
+
+        Return the full pricing history for a model.
+
+        :param model_key: (required)
+        :type model_key: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_pricing_history_api_v1_pricing_model_key_history_get_serialize(
+            model_key=model_key,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[PricingResponse]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_pricing_history_api_v1_pricing_model_key_history_get_serialize(
+        self,
+        model_key,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if model_key is not None:
+            _path_params['model_key'] = model_key
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/pricing/{model_key}/history',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def list_pricing_api_v1_pricing_get(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1184,7 +1184,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_pricing_v1_pricing_get_serialize(
+        _param = self._list_pricing_api_v1_pricing_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1209,7 +1209,7 @@ class PricingApi:
 
 
     @validate_call
-    def list_pricing_v1_pricing_get_with_http_info(
+    def list_pricing_api_v1_pricing_get_with_http_info(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1256,7 +1256,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_pricing_v1_pricing_get_serialize(
+        _param = self._list_pricing_api_v1_pricing_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1281,7 +1281,7 @@ class PricingApi:
 
 
     @validate_call
-    def list_pricing_v1_pricing_get_without_preload_content(
+    def list_pricing_api_v1_pricing_get_without_preload_content(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1328,7 +1328,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_pricing_v1_pricing_get_serialize(
+        _param = self._list_pricing_api_v1_pricing_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1348,7 +1348,7 @@ class PricingApi:
         return response_data.response
 
 
-    def _list_pricing_v1_pricing_get_serialize(
+    def _list_pricing_api_v1_pricing_get_serialize(
         self,
         skip,
         limit,
@@ -1404,7 +1404,7 @@ class PricingApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/pricing',
+            resource_path='/api/v1/pricing',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1421,7 +1421,7 @@ class PricingApi:
 
 
     @validate_call
-    def preview_pricing_refresh_v1_pricing_refresh_post(
+    def preview_pricing_refresh_api_v1_pricing_refresh_post(
         self,
         _request_timeout: Union[
             None,
@@ -1462,7 +1462,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._preview_pricing_refresh_v1_pricing_refresh_post_serialize(
+        _param = self._preview_pricing_refresh_api_v1_pricing_refresh_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1484,7 +1484,7 @@ class PricingApi:
 
 
     @validate_call
-    def preview_pricing_refresh_v1_pricing_refresh_post_with_http_info(
+    def preview_pricing_refresh_api_v1_pricing_refresh_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -1525,7 +1525,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._preview_pricing_refresh_v1_pricing_refresh_post_serialize(
+        _param = self._preview_pricing_refresh_api_v1_pricing_refresh_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1547,7 +1547,7 @@ class PricingApi:
 
 
     @validate_call
-    def preview_pricing_refresh_v1_pricing_refresh_post_without_preload_content(
+    def preview_pricing_refresh_api_v1_pricing_refresh_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1588,7 +1588,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._preview_pricing_refresh_v1_pricing_refresh_post_serialize(
+        _param = self._preview_pricing_refresh_api_v1_pricing_refresh_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1605,7 +1605,7 @@ class PricingApi:
         return response_data.response
 
 
-    def _preview_pricing_refresh_v1_pricing_refresh_post_serialize(
+    def _preview_pricing_refresh_api_v1_pricing_refresh_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1651,7 +1651,7 @@ class PricingApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/pricing/refresh',
+            resource_path='/api/v1/pricing/refresh',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1668,7 +1668,7 @@ class PricingApi:
 
 
     @validate_call
-    def reject_pricing_refresh_v1_pricing_refresh_reject_post(
+    def reject_pricing_refresh_api_v1_pricing_refresh_reject_post(
         self,
         _request_timeout: Union[
             None,
@@ -1709,7 +1709,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reject_pricing_refresh_v1_pricing_refresh_reject_post_serialize(
+        _param = self._reject_pricing_refresh_api_v1_pricing_refresh_reject_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1731,7 +1731,7 @@ class PricingApi:
 
 
     @validate_call
-    def reject_pricing_refresh_v1_pricing_refresh_reject_post_with_http_info(
+    def reject_pricing_refresh_api_v1_pricing_refresh_reject_post_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -1772,7 +1772,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reject_pricing_refresh_v1_pricing_refresh_reject_post_serialize(
+        _param = self._reject_pricing_refresh_api_v1_pricing_refresh_reject_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1794,7 +1794,7 @@ class PricingApi:
 
 
     @validate_call
-    def reject_pricing_refresh_v1_pricing_refresh_reject_post_without_preload_content(
+    def reject_pricing_refresh_api_v1_pricing_refresh_reject_post_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1835,7 +1835,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reject_pricing_refresh_v1_pricing_refresh_reject_post_serialize(
+        _param = self._reject_pricing_refresh_api_v1_pricing_refresh_reject_post_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1852,7 +1852,7 @@ class PricingApi:
         return response_data.response
 
 
-    def _reject_pricing_refresh_v1_pricing_refresh_reject_post_serialize(
+    def _reject_pricing_refresh_api_v1_pricing_refresh_reject_post_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1891,7 +1891,7 @@ class PricingApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/pricing/refresh/reject',
+            resource_path='/api/v1/pricing/refresh/reject',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1908,7 +1908,7 @@ class PricingApi:
 
 
     @validate_call
-    def set_pricing_v1_pricing_post(
+    def set_pricing_api_v1_pricing_post(
         self,
         set_pricing_request: SetPricingRequest,
         _request_timeout: Union[
@@ -1952,7 +1952,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_pricing_v1_pricing_post_serialize(
+        _param = self._set_pricing_api_v1_pricing_post_serialize(
             set_pricing_request=set_pricing_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1976,7 +1976,7 @@ class PricingApi:
 
 
     @validate_call
-    def set_pricing_v1_pricing_post_with_http_info(
+    def set_pricing_api_v1_pricing_post_with_http_info(
         self,
         set_pricing_request: SetPricingRequest,
         _request_timeout: Union[
@@ -2020,7 +2020,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_pricing_v1_pricing_post_serialize(
+        _param = self._set_pricing_api_v1_pricing_post_serialize(
             set_pricing_request=set_pricing_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2044,7 +2044,7 @@ class PricingApi:
 
 
     @validate_call
-    def set_pricing_v1_pricing_post_without_preload_content(
+    def set_pricing_api_v1_pricing_post_without_preload_content(
         self,
         set_pricing_request: SetPricingRequest,
         _request_timeout: Union[
@@ -2088,7 +2088,7 @@ class PricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_pricing_v1_pricing_post_serialize(
+        _param = self._set_pricing_api_v1_pricing_post_serialize(
             set_pricing_request=set_pricing_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2107,7 +2107,7 @@ class PricingApi:
         return response_data.response
 
 
-    def _set_pricing_v1_pricing_post_serialize(
+    def _set_pricing_api_v1_pricing_post_serialize(
         self,
         set_pricing_request,
         _request_auth,
@@ -2169,7 +2169,7 @@ class PricingApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/pricing',
+            resource_path='/api/v1/pricing',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

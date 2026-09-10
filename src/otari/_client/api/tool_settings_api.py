@@ -40,7 +40,7 @@ class ToolSettingsApi:
 
 
     @validate_call
-    def get_tool_settings_v1_tool_settings_get(
+    def get_tool_settings_api_v1_tool_settings_get(
         self,
         _request_timeout: Union[
             None,
@@ -81,7 +81,7 @@ class ToolSettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_tool_settings_v1_tool_settings_get_serialize(
+        _param = self._get_tool_settings_api_v1_tool_settings_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -103,7 +103,7 @@ class ToolSettingsApi:
 
 
     @validate_call
-    def get_tool_settings_v1_tool_settings_get_with_http_info(
+    def get_tool_settings_api_v1_tool_settings_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -144,7 +144,7 @@ class ToolSettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_tool_settings_v1_tool_settings_get_serialize(
+        _param = self._get_tool_settings_api_v1_tool_settings_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -166,7 +166,7 @@ class ToolSettingsApi:
 
 
     @validate_call
-    def get_tool_settings_v1_tool_settings_get_without_preload_content(
+    def get_tool_settings_api_v1_tool_settings_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -207,7 +207,7 @@ class ToolSettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_tool_settings_v1_tool_settings_get_serialize(
+        _param = self._get_tool_settings_api_v1_tool_settings_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -224,7 +224,7 @@ class ToolSettingsApi:
         return response_data.response
 
 
-    def _get_tool_settings_v1_tool_settings_get_serialize(
+    def _get_tool_settings_api_v1_tool_settings_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -270,7 +270,7 @@ class ToolSettingsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/tool-settings',
+            resource_path='/api/v1/tool-settings',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -287,7 +287,7 @@ class ToolSettingsApi:
 
 
     @validate_call
-    def test_service_v1_tool_settings_service_test_post(
+    def test_service_api_v1_tool_settings_service_test_post(
         self,
         service: StrictStr,
         test_service_request: TestServiceRequest,
@@ -334,7 +334,7 @@ class ToolSettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_service_v1_tool_settings_service_test_post_serialize(
+        _param = self._test_service_api_v1_tool_settings_service_test_post_serialize(
             service=service,
             test_service_request=test_service_request,
             _request_auth=_request_auth,
@@ -359,7 +359,7 @@ class ToolSettingsApi:
 
 
     @validate_call
-    def test_service_v1_tool_settings_service_test_post_with_http_info(
+    def test_service_api_v1_tool_settings_service_test_post_with_http_info(
         self,
         service: StrictStr,
         test_service_request: TestServiceRequest,
@@ -406,7 +406,7 @@ class ToolSettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_service_v1_tool_settings_service_test_post_serialize(
+        _param = self._test_service_api_v1_tool_settings_service_test_post_serialize(
             service=service,
             test_service_request=test_service_request,
             _request_auth=_request_auth,
@@ -431,7 +431,7 @@ class ToolSettingsApi:
 
 
     @validate_call
-    def test_service_v1_tool_settings_service_test_post_without_preload_content(
+    def test_service_api_v1_tool_settings_service_test_post_without_preload_content(
         self,
         service: StrictStr,
         test_service_request: TestServiceRequest,
@@ -478,7 +478,7 @@ class ToolSettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_service_v1_tool_settings_service_test_post_serialize(
+        _param = self._test_service_api_v1_tool_settings_service_test_post_serialize(
             service=service,
             test_service_request=test_service_request,
             _request_auth=_request_auth,
@@ -498,7 +498,7 @@ class ToolSettingsApi:
         return response_data.response
 
 
-    def _test_service_v1_tool_settings_service_test_post_serialize(
+    def _test_service_api_v1_tool_settings_service_test_post_serialize(
         self,
         service,
         test_service_request,
@@ -563,7 +563,7 @@ class ToolSettingsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/tool-settings/{service}/test',
+            resource_path='/api/v1/tool-settings/{service}/test',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -580,7 +580,7 @@ class ToolSettingsApi:
 
 
     @validate_call
-    def update_tool_settings_v1_tool_settings_patch(
+    def update_tool_settings_api_v1_tool_settings_patch(
         self,
         update_tool_settings_request: UpdateToolSettingsRequest,
         _request_timeout: Union[
@@ -624,7 +624,7 @@ class ToolSettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_tool_settings_v1_tool_settings_patch_serialize(
+        _param = self._update_tool_settings_api_v1_tool_settings_patch_serialize(
             update_tool_settings_request=update_tool_settings_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -648,7 +648,7 @@ class ToolSettingsApi:
 
 
     @validate_call
-    def update_tool_settings_v1_tool_settings_patch_with_http_info(
+    def update_tool_settings_api_v1_tool_settings_patch_with_http_info(
         self,
         update_tool_settings_request: UpdateToolSettingsRequest,
         _request_timeout: Union[
@@ -692,7 +692,7 @@ class ToolSettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_tool_settings_v1_tool_settings_patch_serialize(
+        _param = self._update_tool_settings_api_v1_tool_settings_patch_serialize(
             update_tool_settings_request=update_tool_settings_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -716,7 +716,7 @@ class ToolSettingsApi:
 
 
     @validate_call
-    def update_tool_settings_v1_tool_settings_patch_without_preload_content(
+    def update_tool_settings_api_v1_tool_settings_patch_without_preload_content(
         self,
         update_tool_settings_request: UpdateToolSettingsRequest,
         _request_timeout: Union[
@@ -760,7 +760,7 @@ class ToolSettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_tool_settings_v1_tool_settings_patch_serialize(
+        _param = self._update_tool_settings_api_v1_tool_settings_patch_serialize(
             update_tool_settings_request=update_tool_settings_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -779,7 +779,7 @@ class ToolSettingsApi:
         return response_data.response
 
 
-    def _update_tool_settings_v1_tool_settings_patch_serialize(
+    def _update_tool_settings_api_v1_tool_settings_patch_serialize(
         self,
         update_tool_settings_request,
         _request_auth,
@@ -841,7 +841,7 @@ class ToolSettingsApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/tool-settings',
+            resource_path='/api/v1/tool-settings',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -38,7 +38,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
 
     @validate_call
-    def clear_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_delete(
+    def clear_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_delete(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -82,7 +82,7 @@ class WorkspaceCodeExecutionPolicyApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._clear_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_delete_serialize(
+        _param = self._clear_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_delete_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -106,7 +106,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
 
     @validate_call
-    def clear_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_delete_with_http_info(
+    def clear_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_delete_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -150,7 +150,7 @@ class WorkspaceCodeExecutionPolicyApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._clear_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_delete_serialize(
+        _param = self._clear_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_delete_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -174,7 +174,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
 
     @validate_call
-    def clear_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_delete_without_preload_content(
+    def clear_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_delete_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -218,7 +218,7 @@ class WorkspaceCodeExecutionPolicyApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._clear_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_delete_serialize(
+        _param = self._clear_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_delete_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -237,7 +237,7 @@ class WorkspaceCodeExecutionPolicyApi:
         return response_data.response
 
 
-    def _clear_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_delete_serialize(
+    def _clear_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_delete_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -286,7 +286,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/workspaces/{workspace_id}/code-execution-policy',
+            resource_path='/api/v1/workspaces/{workspace_id}/code-execution-policy',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -303,7 +303,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
 
     @validate_call
-    def get_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_get(
+    def get_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_get(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -347,7 +347,7 @@ class WorkspaceCodeExecutionPolicyApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_get_serialize(
+        _param = self._get_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_get_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -371,7 +371,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
 
     @validate_call
-    def get_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_get_with_http_info(
+    def get_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_get_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -415,7 +415,7 @@ class WorkspaceCodeExecutionPolicyApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_get_serialize(
+        _param = self._get_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_get_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -439,7 +439,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
 
     @validate_call
-    def get_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_get_without_preload_content(
+    def get_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_get_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -483,7 +483,7 @@ class WorkspaceCodeExecutionPolicyApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_get_serialize(
+        _param = self._get_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_get_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -502,7 +502,7 @@ class WorkspaceCodeExecutionPolicyApi:
         return response_data.response
 
 
-    def _get_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_get_serialize(
+    def _get_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_get_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -551,7 +551,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/workspaces/{workspace_id}/code-execution-policy',
+            resource_path='/api/v1/workspaces/{workspace_id}/code-execution-policy',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -568,7 +568,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
 
     @validate_call
-    def set_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_put(
+    def set_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_put(
         self,
         workspace_id: UUID,
         workspace_code_execution_policy_update: WorkspaceCodeExecutionPolicyUpdate,
@@ -615,7 +615,7 @@ class WorkspaceCodeExecutionPolicyApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_put_serialize(
+        _param = self._set_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_put_serialize(
             workspace_id=workspace_id,
             workspace_code_execution_policy_update=workspace_code_execution_policy_update,
             _request_auth=_request_auth,
@@ -640,7 +640,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
 
     @validate_call
-    def set_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_put_with_http_info(
+    def set_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_put_with_http_info(
         self,
         workspace_id: UUID,
         workspace_code_execution_policy_update: WorkspaceCodeExecutionPolicyUpdate,
@@ -687,7 +687,7 @@ class WorkspaceCodeExecutionPolicyApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_put_serialize(
+        _param = self._set_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_put_serialize(
             workspace_id=workspace_id,
             workspace_code_execution_policy_update=workspace_code_execution_policy_update,
             _request_auth=_request_auth,
@@ -712,7 +712,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
 
     @validate_call
-    def set_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_put_without_preload_content(
+    def set_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_put_without_preload_content(
         self,
         workspace_id: UUID,
         workspace_code_execution_policy_update: WorkspaceCodeExecutionPolicyUpdate,
@@ -759,7 +759,7 @@ class WorkspaceCodeExecutionPolicyApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_put_serialize(
+        _param = self._set_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_put_serialize(
             workspace_id=workspace_id,
             workspace_code_execution_policy_update=workspace_code_execution_policy_update,
             _request_auth=_request_auth,
@@ -779,7 +779,7 @@ class WorkspaceCodeExecutionPolicyApi:
         return response_data.response
 
 
-    def _set_workspace_code_execution_policy_v1_workspaces_workspace_id_code_execution_policy_put_serialize(
+    def _set_workspace_code_execution_policy_api_v1_workspaces_workspace_id_code_execution_policy_put_serialize(
         self,
         workspace_id,
         workspace_code_execution_policy_update,
@@ -844,7 +844,7 @@ class WorkspaceCodeExecutionPolicyApi:
 
         return self.api_client.param_serialize(
             method='PUT',
-            resource_path='/v1/workspaces/{workspace_id}/code-execution-policy',
+            resource_path='/api/v1/workspaces/{workspace_id}/code-execution-policy',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

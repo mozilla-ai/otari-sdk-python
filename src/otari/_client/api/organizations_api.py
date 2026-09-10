@@ -59,7 +59,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def accept_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_accept_post(
+    def accept_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_accept_post(
         self,
         organization_member_id: UUID,
         _request_timeout: Union[
@@ -77,7 +77,7 @@ class OrganizationsApi:
     ) -> AcceptInvitationResultPublic:
         """Accept Caller Pending Membership
 
-        Accept an invitation addressed to the caller, resolving it to an active membership.  Does the same work as ``POST /v1/invitations/accept``, including the workspace assignments parked at invite time, and answers the same shape. Addressed by membership id rather than by token: the caller is already the addressee, so a token would add nothing their session does not carry.  Idempotent for any membership the caller already holds ``active``, which is what two clicks before the list refreshes produces: it answers that membership's organization and role rather than a 404 for an action that worked. Deliberately not narrowed to memberships that got there by accepting, which would cost a lookup to tell the two apart and answer a caller nothing they cannot already read from ``GET /me/memberships``.  Answers 404 for a membership that is not the caller's own, whether or not it exists, and for one of theirs that is neither ``active`` nor holding an invitation. An invitation that has lapsed answers 400.
+        Accept an invitation addressed to the caller, resolving it to an active membership.  Does the same work as ``POST /api/v1/invitations/accept``, including the workspace assignments parked at invite time, and answers the same shape. Addressed by membership id rather than by token: the caller is already the addressee, so a token would add nothing their session does not carry.  Idempotent for any membership the caller already holds ``active``, which is what two clicks before the list refreshes produces: it answers that membership's organization and role rather than a 404 for an action that worked. Deliberately not narrowed to memberships that got there by accepting, which would cost a lookup to tell the two apart and answer a caller nothing they cannot already read from ``GET /me/memberships``.  Answers 404 for a membership that is not the caller's own, whether or not it exists, and for one of theirs that is neither ``active`` nor holding an invitation. An invitation that has lapsed answers 400.
 
         :param organization_member_id: (required)
         :type organization_member_id: UUID
@@ -103,7 +103,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._accept_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_accept_post_serialize(
+        _param = self._accept_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_accept_post_serialize(
             organization_member_id=organization_member_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -127,7 +127,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def accept_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_accept_post_with_http_info(
+    def accept_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_accept_post_with_http_info(
         self,
         organization_member_id: UUID,
         _request_timeout: Union[
@@ -145,7 +145,7 @@ class OrganizationsApi:
     ) -> ApiResponse[AcceptInvitationResultPublic]:
         """Accept Caller Pending Membership
 
-        Accept an invitation addressed to the caller, resolving it to an active membership.  Does the same work as ``POST /v1/invitations/accept``, including the workspace assignments parked at invite time, and answers the same shape. Addressed by membership id rather than by token: the caller is already the addressee, so a token would add nothing their session does not carry.  Idempotent for any membership the caller already holds ``active``, which is what two clicks before the list refreshes produces: it answers that membership's organization and role rather than a 404 for an action that worked. Deliberately not narrowed to memberships that got there by accepting, which would cost a lookup to tell the two apart and answer a caller nothing they cannot already read from ``GET /me/memberships``.  Answers 404 for a membership that is not the caller's own, whether or not it exists, and for one of theirs that is neither ``active`` nor holding an invitation. An invitation that has lapsed answers 400.
+        Accept an invitation addressed to the caller, resolving it to an active membership.  Does the same work as ``POST /api/v1/invitations/accept``, including the workspace assignments parked at invite time, and answers the same shape. Addressed by membership id rather than by token: the caller is already the addressee, so a token would add nothing their session does not carry.  Idempotent for any membership the caller already holds ``active``, which is what two clicks before the list refreshes produces: it answers that membership's organization and role rather than a 404 for an action that worked. Deliberately not narrowed to memberships that got there by accepting, which would cost a lookup to tell the two apart and answer a caller nothing they cannot already read from ``GET /me/memberships``.  Answers 404 for a membership that is not the caller's own, whether or not it exists, and for one of theirs that is neither ``active`` nor holding an invitation. An invitation that has lapsed answers 400.
 
         :param organization_member_id: (required)
         :type organization_member_id: UUID
@@ -171,7 +171,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._accept_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_accept_post_serialize(
+        _param = self._accept_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_accept_post_serialize(
             organization_member_id=organization_member_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -195,7 +195,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def accept_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_accept_post_without_preload_content(
+    def accept_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_accept_post_without_preload_content(
         self,
         organization_member_id: UUID,
         _request_timeout: Union[
@@ -213,7 +213,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """Accept Caller Pending Membership
 
-        Accept an invitation addressed to the caller, resolving it to an active membership.  Does the same work as ``POST /v1/invitations/accept``, including the workspace assignments parked at invite time, and answers the same shape. Addressed by membership id rather than by token: the caller is already the addressee, so a token would add nothing their session does not carry.  Idempotent for any membership the caller already holds ``active``, which is what two clicks before the list refreshes produces: it answers that membership's organization and role rather than a 404 for an action that worked. Deliberately not narrowed to memberships that got there by accepting, which would cost a lookup to tell the two apart and answer a caller nothing they cannot already read from ``GET /me/memberships``.  Answers 404 for a membership that is not the caller's own, whether or not it exists, and for one of theirs that is neither ``active`` nor holding an invitation. An invitation that has lapsed answers 400.
+        Accept an invitation addressed to the caller, resolving it to an active membership.  Does the same work as ``POST /api/v1/invitations/accept``, including the workspace assignments parked at invite time, and answers the same shape. Addressed by membership id rather than by token: the caller is already the addressee, so a token would add nothing their session does not carry.  Idempotent for any membership the caller already holds ``active``, which is what two clicks before the list refreshes produces: it answers that membership's organization and role rather than a 404 for an action that worked. Deliberately not narrowed to memberships that got there by accepting, which would cost a lookup to tell the two apart and answer a caller nothing they cannot already read from ``GET /me/memberships``.  Answers 404 for a membership that is not the caller's own, whether or not it exists, and for one of theirs that is neither ``active`` nor holding an invitation. An invitation that has lapsed answers 400.
 
         :param organization_member_id: (required)
         :type organization_member_id: UUID
@@ -239,7 +239,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._accept_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_accept_post_serialize(
+        _param = self._accept_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_accept_post_serialize(
             organization_member_id=organization_member_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -258,7 +258,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _accept_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_accept_post_serialize(
+    def _accept_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_accept_post_serialize(
         self,
         organization_member_id,
         _request_auth,
@@ -307,7 +307,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/pending-memberships/{organization_member_id}/accept',
+            resource_path='/api/v1/organizations/me/pending-memberships/{organization_member_id}/accept',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -324,7 +324,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def create_active_organization_domain_v1_organizations_me_domains_post(
+    def create_active_organization_domain_api_v1_organizations_me_domains_post(
         self,
         organization_domain_create_request: OrganizationDomainCreateRequest,
         _request_timeout: Union[
@@ -368,7 +368,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_active_organization_domain_v1_organizations_me_domains_post_serialize(
+        _param = self._create_active_organization_domain_api_v1_organizations_me_domains_post_serialize(
             organization_domain_create_request=organization_domain_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -392,7 +392,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def create_active_organization_domain_v1_organizations_me_domains_post_with_http_info(
+    def create_active_organization_domain_api_v1_organizations_me_domains_post_with_http_info(
         self,
         organization_domain_create_request: OrganizationDomainCreateRequest,
         _request_timeout: Union[
@@ -436,7 +436,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_active_organization_domain_v1_organizations_me_domains_post_serialize(
+        _param = self._create_active_organization_domain_api_v1_organizations_me_domains_post_serialize(
             organization_domain_create_request=organization_domain_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -460,7 +460,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def create_active_organization_domain_v1_organizations_me_domains_post_without_preload_content(
+    def create_active_organization_domain_api_v1_organizations_me_domains_post_without_preload_content(
         self,
         organization_domain_create_request: OrganizationDomainCreateRequest,
         _request_timeout: Union[
@@ -504,7 +504,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_active_organization_domain_v1_organizations_me_domains_post_serialize(
+        _param = self._create_active_organization_domain_api_v1_organizations_me_domains_post_serialize(
             organization_domain_create_request=organization_domain_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -523,7 +523,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _create_active_organization_domain_v1_organizations_me_domains_post_serialize(
+    def _create_active_organization_domain_api_v1_organizations_me_domains_post_serialize(
         self,
         organization_domain_create_request,
         _request_auth,
@@ -585,7 +585,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/domains',
+            resource_path='/api/v1/organizations/me/domains',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -602,7 +602,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def create_active_organization_member_v1_organizations_me_members_post(
+    def create_active_organization_member_api_v1_organizations_me_members_post(
         self,
         active_organization_member_create_request: ActiveOrganizationMemberCreateRequest,
         _request_timeout: Union[
@@ -646,7 +646,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_active_organization_member_v1_organizations_me_members_post_serialize(
+        _param = self._create_active_organization_member_api_v1_organizations_me_members_post_serialize(
             active_organization_member_create_request=active_organization_member_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -670,7 +670,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def create_active_organization_member_v1_organizations_me_members_post_with_http_info(
+    def create_active_organization_member_api_v1_organizations_me_members_post_with_http_info(
         self,
         active_organization_member_create_request: ActiveOrganizationMemberCreateRequest,
         _request_timeout: Union[
@@ -714,7 +714,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_active_organization_member_v1_organizations_me_members_post_serialize(
+        _param = self._create_active_organization_member_api_v1_organizations_me_members_post_serialize(
             active_organization_member_create_request=active_organization_member_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -738,7 +738,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def create_active_organization_member_v1_organizations_me_members_post_without_preload_content(
+    def create_active_organization_member_api_v1_organizations_me_members_post_without_preload_content(
         self,
         active_organization_member_create_request: ActiveOrganizationMemberCreateRequest,
         _request_timeout: Union[
@@ -782,7 +782,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_active_organization_member_v1_organizations_me_members_post_serialize(
+        _param = self._create_active_organization_member_api_v1_organizations_me_members_post_serialize(
             active_organization_member_create_request=active_organization_member_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -801,7 +801,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _create_active_organization_member_v1_organizations_me_members_post_serialize(
+    def _create_active_organization_member_api_v1_organizations_me_members_post_serialize(
         self,
         active_organization_member_create_request,
         _request_auth,
@@ -863,7 +863,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/members',
+            resource_path='/api/v1/organizations/me/members',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -880,7 +880,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def create_organization_v1_organizations_post(
+    def create_organization_api_v1_organizations_post(
         self,
         organization_create_request: OrganizationCreateRequest,
         _request_timeout: Union[
@@ -924,7 +924,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_v1_organizations_post_serialize(
+        _param = self._create_organization_api_v1_organizations_post_serialize(
             organization_create_request=organization_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -948,7 +948,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def create_organization_v1_organizations_post_with_http_info(
+    def create_organization_api_v1_organizations_post_with_http_info(
         self,
         organization_create_request: OrganizationCreateRequest,
         _request_timeout: Union[
@@ -992,7 +992,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_v1_organizations_post_serialize(
+        _param = self._create_organization_api_v1_organizations_post_serialize(
             organization_create_request=organization_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1016,7 +1016,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def create_organization_v1_organizations_post_without_preload_content(
+    def create_organization_api_v1_organizations_post_without_preload_content(
         self,
         organization_create_request: OrganizationCreateRequest,
         _request_timeout: Union[
@@ -1060,7 +1060,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_v1_organizations_post_serialize(
+        _param = self._create_organization_api_v1_organizations_post_serialize(
             organization_create_request=organization_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1079,7 +1079,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _create_organization_v1_organizations_post_serialize(
+    def _create_organization_api_v1_organizations_post_serialize(
         self,
         organization_create_request,
         _request_auth,
@@ -1141,7 +1141,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations',
+            resource_path='/api/v1/organizations',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1158,7 +1158,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def decline_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_decline_post(
+    def decline_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_decline_post(
         self,
         organization_member_id: UUID,
         _request_timeout: Union[
@@ -1202,7 +1202,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._decline_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_decline_post_serialize(
+        _param = self._decline_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_decline_post_serialize(
             organization_member_id=organization_member_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1226,7 +1226,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def decline_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_decline_post_with_http_info(
+    def decline_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_decline_post_with_http_info(
         self,
         organization_member_id: UUID,
         _request_timeout: Union[
@@ -1270,7 +1270,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._decline_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_decline_post_serialize(
+        _param = self._decline_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_decline_post_serialize(
             organization_member_id=organization_member_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1294,7 +1294,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def decline_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_decline_post_without_preload_content(
+    def decline_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_decline_post_without_preload_content(
         self,
         organization_member_id: UUID,
         _request_timeout: Union[
@@ -1338,7 +1338,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._decline_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_decline_post_serialize(
+        _param = self._decline_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_decline_post_serialize(
             organization_member_id=organization_member_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1357,7 +1357,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _decline_caller_pending_membership_v1_organizations_me_pending_memberships_organization_member_id_decline_post_serialize(
+    def _decline_caller_pending_membership_api_v1_organizations_me_pending_memberships_organization_member_id_decline_post_serialize(
         self,
         organization_member_id,
         _request_auth,
@@ -1406,7 +1406,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/pending-memberships/{organization_member_id}/decline',
+            resource_path='/api/v1/organizations/me/pending-memberships/{organization_member_id}/decline',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1423,7 +1423,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def delete_active_organization_domain_v1_organizations_me_domains_organization_domain_id_delete(
+    def delete_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_delete(
         self,
         organization_domain_id: UUID,
         _request_timeout: Union[
@@ -1467,7 +1467,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_active_organization_domain_v1_organizations_me_domains_organization_domain_id_delete_serialize(
+        _param = self._delete_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_delete_serialize(
             organization_domain_id=organization_domain_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1491,7 +1491,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def delete_active_organization_domain_v1_organizations_me_domains_organization_domain_id_delete_with_http_info(
+    def delete_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_delete_with_http_info(
         self,
         organization_domain_id: UUID,
         _request_timeout: Union[
@@ -1535,7 +1535,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_active_organization_domain_v1_organizations_me_domains_organization_domain_id_delete_serialize(
+        _param = self._delete_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_delete_serialize(
             organization_domain_id=organization_domain_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1559,7 +1559,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def delete_active_organization_domain_v1_organizations_me_domains_organization_domain_id_delete_without_preload_content(
+    def delete_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_delete_without_preload_content(
         self,
         organization_domain_id: UUID,
         _request_timeout: Union[
@@ -1603,7 +1603,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_active_organization_domain_v1_organizations_me_domains_organization_domain_id_delete_serialize(
+        _param = self._delete_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_delete_serialize(
             organization_domain_id=organization_domain_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1622,7 +1622,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _delete_active_organization_domain_v1_organizations_me_domains_organization_domain_id_delete_serialize(
+    def _delete_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_delete_serialize(
         self,
         organization_domain_id,
         _request_auth,
@@ -1671,7 +1671,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/organizations/me/domains/{organization_domain_id}',
+            resource_path='/api/v1/organizations/me/domains/{organization_domain_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1688,7 +1688,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def get_active_organization_context_v1_organizations_me_get(
+    def get_active_organization_context_api_v1_organizations_me_get(
         self,
         _request_timeout: Union[
             None,
@@ -1729,7 +1729,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_active_organization_context_v1_organizations_me_get_serialize(
+        _param = self._get_active_organization_context_api_v1_organizations_me_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1751,7 +1751,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def get_active_organization_context_v1_organizations_me_get_with_http_info(
+    def get_active_organization_context_api_v1_organizations_me_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -1792,7 +1792,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_active_organization_context_v1_organizations_me_get_serialize(
+        _param = self._get_active_organization_context_api_v1_organizations_me_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1814,7 +1814,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def get_active_organization_context_v1_organizations_me_get_without_preload_content(
+    def get_active_organization_context_api_v1_organizations_me_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1855,7 +1855,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_active_organization_context_v1_organizations_me_get_serialize(
+        _param = self._get_active_organization_context_api_v1_organizations_me_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1872,7 +1872,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _get_active_organization_context_v1_organizations_me_get_serialize(
+    def _get_active_organization_context_api_v1_organizations_me_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1918,7 +1918,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me',
+            resource_path='/api/v1/organizations/me',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1935,7 +1935,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def invite_active_organization_member_v1_organizations_me_member_invitations_post(
+    def invite_active_organization_member_api_v1_organizations_me_member_invitations_post(
         self,
         invite_organization_member_request: InviteOrganizationMemberRequest,
         _request_timeout: Union[
@@ -1953,7 +1953,7 @@ class OrganizationsApi:
     ) -> InviteOrganizationMemberResultPublic:
         """Invite Active Organization Member
 
-        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /v1/invitations/accept``). The response always carries the accept link, whether or not it was actually emailed (``mail_sent``), so an operator can share it themselves when mail is not configured or the send fails.
+        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /api/v1/invitations/accept``). The response always carries the accept link, whether or not it was actually emailed (``mail_sent``), so an operator can share it themselves when mail is not configured or the send fails.
 
         :param invite_organization_member_request: (required)
         :type invite_organization_member_request: InviteOrganizationMemberRequest
@@ -1979,7 +1979,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._invite_active_organization_member_v1_organizations_me_member_invitations_post_serialize(
+        _param = self._invite_active_organization_member_api_v1_organizations_me_member_invitations_post_serialize(
             invite_organization_member_request=invite_organization_member_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2003,7 +2003,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def invite_active_organization_member_v1_organizations_me_member_invitations_post_with_http_info(
+    def invite_active_organization_member_api_v1_organizations_me_member_invitations_post_with_http_info(
         self,
         invite_organization_member_request: InviteOrganizationMemberRequest,
         _request_timeout: Union[
@@ -2021,7 +2021,7 @@ class OrganizationsApi:
     ) -> ApiResponse[InviteOrganizationMemberResultPublic]:
         """Invite Active Organization Member
 
-        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /v1/invitations/accept``). The response always carries the accept link, whether or not it was actually emailed (``mail_sent``), so an operator can share it themselves when mail is not configured or the send fails.
+        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /api/v1/invitations/accept``). The response always carries the accept link, whether or not it was actually emailed (``mail_sent``), so an operator can share it themselves when mail is not configured or the send fails.
 
         :param invite_organization_member_request: (required)
         :type invite_organization_member_request: InviteOrganizationMemberRequest
@@ -2047,7 +2047,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._invite_active_organization_member_v1_organizations_me_member_invitations_post_serialize(
+        _param = self._invite_active_organization_member_api_v1_organizations_me_member_invitations_post_serialize(
             invite_organization_member_request=invite_organization_member_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2071,7 +2071,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def invite_active_organization_member_v1_organizations_me_member_invitations_post_without_preload_content(
+    def invite_active_organization_member_api_v1_organizations_me_member_invitations_post_without_preload_content(
         self,
         invite_organization_member_request: InviteOrganizationMemberRequest,
         _request_timeout: Union[
@@ -2089,7 +2089,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """Invite Active Organization Member
 
-        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /v1/invitations/accept``). The response always carries the accept link, whether or not it was actually emailed (``mail_sent``), so an operator can share it themselves when mail is not configured or the send fails.
+        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /api/v1/invitations/accept``). The response always carries the accept link, whether or not it was actually emailed (``mail_sent``), so an operator can share it themselves when mail is not configured or the send fails.
 
         :param invite_organization_member_request: (required)
         :type invite_organization_member_request: InviteOrganizationMemberRequest
@@ -2115,7 +2115,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._invite_active_organization_member_v1_organizations_me_member_invitations_post_serialize(
+        _param = self._invite_active_organization_member_api_v1_organizations_me_member_invitations_post_serialize(
             invite_organization_member_request=invite_organization_member_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2134,7 +2134,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _invite_active_organization_member_v1_organizations_me_member_invitations_post_serialize(
+    def _invite_active_organization_member_api_v1_organizations_me_member_invitations_post_serialize(
         self,
         invite_organization_member_request,
         _request_auth,
@@ -2196,7 +2196,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/member-invitations',
+            resource_path='/api/v1/organizations/me/member-invitations',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2213,7 +2213,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_active_organization_domains_v1_organizations_me_domains_get(
+    def list_active_organization_domains_api_v1_organizations_me_domains_get(
         self,
         _request_timeout: Union[
             None,
@@ -2254,7 +2254,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_active_organization_domains_v1_organizations_me_domains_get_serialize(
+        _param = self._list_active_organization_domains_api_v1_organizations_me_domains_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2276,7 +2276,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_active_organization_domains_v1_organizations_me_domains_get_with_http_info(
+    def list_active_organization_domains_api_v1_organizations_me_domains_get_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -2317,7 +2317,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_active_organization_domains_v1_organizations_me_domains_get_serialize(
+        _param = self._list_active_organization_domains_api_v1_organizations_me_domains_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2339,7 +2339,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_active_organization_domains_v1_organizations_me_domains_get_without_preload_content(
+    def list_active_organization_domains_api_v1_organizations_me_domains_get_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -2380,7 +2380,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_active_organization_domains_v1_organizations_me_domains_get_serialize(
+        _param = self._list_active_organization_domains_api_v1_organizations_me_domains_get_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2397,7 +2397,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _list_active_organization_domains_v1_organizations_me_domains_get_serialize(
+    def _list_active_organization_domains_api_v1_organizations_me_domains_get_serialize(
         self,
         _request_auth,
         _content_type,
@@ -2443,7 +2443,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/domains',
+            resource_path='/api/v1/organizations/me/domains',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2460,7 +2460,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_active_organization_members_v1_organizations_me_members_get(
+    def list_active_organization_members_api_v1_organizations_me_members_get(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -2507,7 +2507,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_active_organization_members_v1_organizations_me_members_get_serialize(
+        _param = self._list_active_organization_members_api_v1_organizations_me_members_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -2532,7 +2532,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_active_organization_members_v1_organizations_me_members_get_with_http_info(
+    def list_active_organization_members_api_v1_organizations_me_members_get_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -2579,7 +2579,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_active_organization_members_v1_organizations_me_members_get_serialize(
+        _param = self._list_active_organization_members_api_v1_organizations_me_members_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -2604,7 +2604,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_active_organization_members_v1_organizations_me_members_get_without_preload_content(
+    def list_active_organization_members_api_v1_organizations_me_members_get_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -2651,7 +2651,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_active_organization_members_v1_organizations_me_members_get_serialize(
+        _param = self._list_active_organization_members_api_v1_organizations_me_members_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -2671,7 +2671,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _list_active_organization_members_v1_organizations_me_members_get_serialize(
+    def _list_active_organization_members_api_v1_organizations_me_members_get_serialize(
         self,
         skip,
         limit,
@@ -2727,7 +2727,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/members',
+            resource_path='/api/v1/organizations/me/members',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2744,7 +2744,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_caller_organization_memberships_v1_organizations_me_memberships_get(
+    def list_caller_organization_memberships_api_v1_organizations_me_memberships_get(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -2791,7 +2791,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_caller_organization_memberships_v1_organizations_me_memberships_get_serialize(
+        _param = self._list_caller_organization_memberships_api_v1_organizations_me_memberships_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -2816,7 +2816,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_caller_organization_memberships_v1_organizations_me_memberships_get_with_http_info(
+    def list_caller_organization_memberships_api_v1_organizations_me_memberships_get_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -2863,7 +2863,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_caller_organization_memberships_v1_organizations_me_memberships_get_serialize(
+        _param = self._list_caller_organization_memberships_api_v1_organizations_me_memberships_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -2888,7 +2888,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_caller_organization_memberships_v1_organizations_me_memberships_get_without_preload_content(
+    def list_caller_organization_memberships_api_v1_organizations_me_memberships_get_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -2935,7 +2935,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_caller_organization_memberships_v1_organizations_me_memberships_get_serialize(
+        _param = self._list_caller_organization_memberships_api_v1_organizations_me_memberships_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -2955,7 +2955,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _list_caller_organization_memberships_v1_organizations_me_memberships_get_serialize(
+    def _list_caller_organization_memberships_api_v1_organizations_me_memberships_get_serialize(
         self,
         skip,
         limit,
@@ -3011,7 +3011,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/memberships',
+            resource_path='/api/v1/organizations/me/memberships',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3028,7 +3028,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_caller_pending_memberships_v1_organizations_me_pending_memberships_get(
+    def list_caller_pending_memberships_api_v1_organizations_me_pending_memberships_get(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -3047,7 +3047,7 @@ class OrganizationsApi:
     ) -> PendingOrganizationInvitationsPublic:
         """List Caller Pending Memberships
 
-        List the organization invitations still awaiting the caller.  The invitee's side of the invitation flow, where ``/me/member-invitations`` is the admin's. Not to be confused with ``GET /me/memberships``, which lists the organizations the caller is already an active member of and deliberately omits an ``invited`` one.  Takes no token, unlike ``/v1/invitations/*``: those are public because the recipient of an emailed link holds nothing else to prove anything with, while this caller is authenticated as the addressee and the membership's own ``user_id`` is what scopes the answer. An invitation whose deadline has passed is omitted rather than listed as unactionable.
+        List the organization invitations still awaiting the caller.  The invitee's side of the invitation flow, where ``/me/member-invitations`` is the admin's. Not to be confused with ``GET /me/memberships``, which lists the organizations the caller is already an active member of and deliberately omits an ``invited`` one.  Takes no token, unlike ``/api/v1/invitations/*``: those are public because the recipient of an emailed link holds nothing else to prove anything with, while this caller is authenticated as the addressee and the membership's own ``user_id`` is what scopes the answer. An invitation whose deadline has passed is omitted rather than listed as unactionable.
 
         :param skip: Number of records to skip
         :type skip: int
@@ -3075,7 +3075,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_caller_pending_memberships_v1_organizations_me_pending_memberships_get_serialize(
+        _param = self._list_caller_pending_memberships_api_v1_organizations_me_pending_memberships_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -3100,7 +3100,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_caller_pending_memberships_v1_organizations_me_pending_memberships_get_with_http_info(
+    def list_caller_pending_memberships_api_v1_organizations_me_pending_memberships_get_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -3119,7 +3119,7 @@ class OrganizationsApi:
     ) -> ApiResponse[PendingOrganizationInvitationsPublic]:
         """List Caller Pending Memberships
 
-        List the organization invitations still awaiting the caller.  The invitee's side of the invitation flow, where ``/me/member-invitations`` is the admin's. Not to be confused with ``GET /me/memberships``, which lists the organizations the caller is already an active member of and deliberately omits an ``invited`` one.  Takes no token, unlike ``/v1/invitations/*``: those are public because the recipient of an emailed link holds nothing else to prove anything with, while this caller is authenticated as the addressee and the membership's own ``user_id`` is what scopes the answer. An invitation whose deadline has passed is omitted rather than listed as unactionable.
+        List the organization invitations still awaiting the caller.  The invitee's side of the invitation flow, where ``/me/member-invitations`` is the admin's. Not to be confused with ``GET /me/memberships``, which lists the organizations the caller is already an active member of and deliberately omits an ``invited`` one.  Takes no token, unlike ``/api/v1/invitations/*``: those are public because the recipient of an emailed link holds nothing else to prove anything with, while this caller is authenticated as the addressee and the membership's own ``user_id`` is what scopes the answer. An invitation whose deadline has passed is omitted rather than listed as unactionable.
 
         :param skip: Number of records to skip
         :type skip: int
@@ -3147,7 +3147,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_caller_pending_memberships_v1_organizations_me_pending_memberships_get_serialize(
+        _param = self._list_caller_pending_memberships_api_v1_organizations_me_pending_memberships_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -3172,7 +3172,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def list_caller_pending_memberships_v1_organizations_me_pending_memberships_get_without_preload_content(
+    def list_caller_pending_memberships_api_v1_organizations_me_pending_memberships_get_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -3191,7 +3191,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """List Caller Pending Memberships
 
-        List the organization invitations still awaiting the caller.  The invitee's side of the invitation flow, where ``/me/member-invitations`` is the admin's. Not to be confused with ``GET /me/memberships``, which lists the organizations the caller is already an active member of and deliberately omits an ``invited`` one.  Takes no token, unlike ``/v1/invitations/*``: those are public because the recipient of an emailed link holds nothing else to prove anything with, while this caller is authenticated as the addressee and the membership's own ``user_id`` is what scopes the answer. An invitation whose deadline has passed is omitted rather than listed as unactionable.
+        List the organization invitations still awaiting the caller.  The invitee's side of the invitation flow, where ``/me/member-invitations`` is the admin's. Not to be confused with ``GET /me/memberships``, which lists the organizations the caller is already an active member of and deliberately omits an ``invited`` one.  Takes no token, unlike ``/api/v1/invitations/*``: those are public because the recipient of an emailed link holds nothing else to prove anything with, while this caller is authenticated as the addressee and the membership's own ``user_id`` is what scopes the answer. An invitation whose deadline has passed is omitted rather than listed as unactionable.
 
         :param skip: Number of records to skip
         :type skip: int
@@ -3219,7 +3219,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_caller_pending_memberships_v1_organizations_me_pending_memberships_get_serialize(
+        _param = self._list_caller_pending_memberships_api_v1_organizations_me_pending_memberships_get_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -3239,7 +3239,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _list_caller_pending_memberships_v1_organizations_me_pending_memberships_get_serialize(
+    def _list_caller_pending_memberships_api_v1_organizations_me_pending_memberships_get_serialize(
         self,
         skip,
         limit,
@@ -3295,7 +3295,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v1/organizations/me/pending-memberships',
+            resource_path='/api/v1/organizations/me/pending-memberships',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3312,7 +3312,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def remove_active_organization_member_v1_organizations_me_members_organization_member_id_delete(
+    def remove_active_organization_member_api_v1_organizations_me_members_organization_member_id_delete(
         self,
         organization_member_id: UUID,
         _request_timeout: Union[
@@ -3356,7 +3356,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_active_organization_member_v1_organizations_me_members_organization_member_id_delete_serialize(
+        _param = self._remove_active_organization_member_api_v1_organizations_me_members_organization_member_id_delete_serialize(
             organization_member_id=organization_member_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3380,7 +3380,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def remove_active_organization_member_v1_organizations_me_members_organization_member_id_delete_with_http_info(
+    def remove_active_organization_member_api_v1_organizations_me_members_organization_member_id_delete_with_http_info(
         self,
         organization_member_id: UUID,
         _request_timeout: Union[
@@ -3424,7 +3424,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_active_organization_member_v1_organizations_me_members_organization_member_id_delete_serialize(
+        _param = self._remove_active_organization_member_api_v1_organizations_me_members_organization_member_id_delete_serialize(
             organization_member_id=organization_member_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3448,7 +3448,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def remove_active_organization_member_v1_organizations_me_members_organization_member_id_delete_without_preload_content(
+    def remove_active_organization_member_api_v1_organizations_me_members_organization_member_id_delete_without_preload_content(
         self,
         organization_member_id: UUID,
         _request_timeout: Union[
@@ -3492,7 +3492,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_active_organization_member_v1_organizations_me_members_organization_member_id_delete_serialize(
+        _param = self._remove_active_organization_member_api_v1_organizations_me_members_organization_member_id_delete_serialize(
             organization_member_id=organization_member_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3511,7 +3511,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _remove_active_organization_member_v1_organizations_me_members_organization_member_id_delete_serialize(
+    def _remove_active_organization_member_api_v1_organizations_me_members_organization_member_id_delete_serialize(
         self,
         organization_member_id,
         _request_auth,
@@ -3560,7 +3560,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/organizations/me/members/{organization_member_id}',
+            resource_path='/api/v1/organizations/me/members/{organization_member_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3577,7 +3577,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def revoke_active_organization_member_invitation_v1_organizations_me_member_invitations_invitation_id_delete(
+    def revoke_active_organization_member_invitation_api_v1_organizations_me_member_invitations_invitation_id_delete(
         self,
         invitation_id: UUID,
         _request_timeout: Union[
@@ -3621,7 +3621,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._revoke_active_organization_member_invitation_v1_organizations_me_member_invitations_invitation_id_delete_serialize(
+        _param = self._revoke_active_organization_member_invitation_api_v1_organizations_me_member_invitations_invitation_id_delete_serialize(
             invitation_id=invitation_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3645,7 +3645,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def revoke_active_organization_member_invitation_v1_organizations_me_member_invitations_invitation_id_delete_with_http_info(
+    def revoke_active_organization_member_invitation_api_v1_organizations_me_member_invitations_invitation_id_delete_with_http_info(
         self,
         invitation_id: UUID,
         _request_timeout: Union[
@@ -3689,7 +3689,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._revoke_active_organization_member_invitation_v1_organizations_me_member_invitations_invitation_id_delete_serialize(
+        _param = self._revoke_active_organization_member_invitation_api_v1_organizations_me_member_invitations_invitation_id_delete_serialize(
             invitation_id=invitation_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3713,7 +3713,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def revoke_active_organization_member_invitation_v1_organizations_me_member_invitations_invitation_id_delete_without_preload_content(
+    def revoke_active_organization_member_invitation_api_v1_organizations_me_member_invitations_invitation_id_delete_without_preload_content(
         self,
         invitation_id: UUID,
         _request_timeout: Union[
@@ -3757,7 +3757,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._revoke_active_organization_member_invitation_v1_organizations_me_member_invitations_invitation_id_delete_serialize(
+        _param = self._revoke_active_organization_member_invitation_api_v1_organizations_me_member_invitations_invitation_id_delete_serialize(
             invitation_id=invitation_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3776,7 +3776,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _revoke_active_organization_member_invitation_v1_organizations_me_member_invitations_invitation_id_delete_serialize(
+    def _revoke_active_organization_member_invitation_api_v1_organizations_me_member_invitations_invitation_id_delete_serialize(
         self,
         invitation_id,
         _request_auth,
@@ -3825,7 +3825,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='DELETE',
-            resource_path='/v1/organizations/me/member-invitations/{invitation_id}',
+            resource_path='/api/v1/organizations/me/member-invitations/{invitation_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3842,7 +3842,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def switch_active_organization_v1_organizations_me_switch_post(
+    def switch_active_organization_api_v1_organizations_me_switch_post(
         self,
         switch_active_organization_request: SwitchActiveOrganizationRequest,
         _request_timeout: Union[
@@ -3886,7 +3886,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._switch_active_organization_v1_organizations_me_switch_post_serialize(
+        _param = self._switch_active_organization_api_v1_organizations_me_switch_post_serialize(
             switch_active_organization_request=switch_active_organization_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3910,7 +3910,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def switch_active_organization_v1_organizations_me_switch_post_with_http_info(
+    def switch_active_organization_api_v1_organizations_me_switch_post_with_http_info(
         self,
         switch_active_organization_request: SwitchActiveOrganizationRequest,
         _request_timeout: Union[
@@ -3954,7 +3954,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._switch_active_organization_v1_organizations_me_switch_post_serialize(
+        _param = self._switch_active_organization_api_v1_organizations_me_switch_post_serialize(
             switch_active_organization_request=switch_active_organization_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3978,7 +3978,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def switch_active_organization_v1_organizations_me_switch_post_without_preload_content(
+    def switch_active_organization_api_v1_organizations_me_switch_post_without_preload_content(
         self,
         switch_active_organization_request: SwitchActiveOrganizationRequest,
         _request_timeout: Union[
@@ -4022,7 +4022,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._switch_active_organization_v1_organizations_me_switch_post_serialize(
+        _param = self._switch_active_organization_api_v1_organizations_me_switch_post_serialize(
             switch_active_organization_request=switch_active_organization_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4041,7 +4041,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _switch_active_organization_v1_organizations_me_switch_post_serialize(
+    def _switch_active_organization_api_v1_organizations_me_switch_post_serialize(
         self,
         switch_active_organization_request,
         _request_auth,
@@ -4103,7 +4103,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/switch',
+            resource_path='/api/v1/organizations/me/switch',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4120,7 +4120,285 @@ class OrganizationsApi:
 
 
     @validate_call
-    def update_active_organization_domain_v1_organizations_me_domains_organization_domain_id_patch(
+    def update_active_organization_api_v1_organizations_me_patch(
+        self,
+        active_organization_update_request: ActiveOrganizationUpdateRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> OrganizationMembershipContextPublic:
+        """Update Active Organization
+
+        Rename the caller's active organization.
+
+        :param active_organization_update_request: (required)
+        :type active_organization_update_request: ActiveOrganizationUpdateRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_active_organization_api_v1_organizations_me_patch_serialize(
+            active_organization_update_request=active_organization_update_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "OrganizationMembershipContextPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def update_active_organization_api_v1_organizations_me_patch_with_http_info(
+        self,
+        active_organization_update_request: ActiveOrganizationUpdateRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[OrganizationMembershipContextPublic]:
+        """Update Active Organization
+
+        Rename the caller's active organization.
+
+        :param active_organization_update_request: (required)
+        :type active_organization_update_request: ActiveOrganizationUpdateRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_active_organization_api_v1_organizations_me_patch_serialize(
+            active_organization_update_request=active_organization_update_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "OrganizationMembershipContextPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def update_active_organization_api_v1_organizations_me_patch_without_preload_content(
+        self,
+        active_organization_update_request: ActiveOrganizationUpdateRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Update Active Organization
+
+        Rename the caller's active organization.
+
+        :param active_organization_update_request: (required)
+        :type active_organization_update_request: ActiveOrganizationUpdateRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_active_organization_api_v1_organizations_me_patch_serialize(
+            active_organization_update_request=active_organization_update_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "OrganizationMembershipContextPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _update_active_organization_api_v1_organizations_me_patch_serialize(
+        self,
+        active_organization_update_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if active_organization_update_request is not None:
+            _body_params = active_organization_update_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PATCH',
+            resource_path='/api/v1/organizations/me',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def update_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_patch(
         self,
         organization_domain_id: UUID,
         organization_domain_update_request: OrganizationDomainUpdateRequest,
@@ -4167,7 +4445,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_active_organization_domain_v1_organizations_me_domains_organization_domain_id_patch_serialize(
+        _param = self._update_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_patch_serialize(
             organization_domain_id=organization_domain_id,
             organization_domain_update_request=organization_domain_update_request,
             _request_auth=_request_auth,
@@ -4192,7 +4470,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def update_active_organization_domain_v1_organizations_me_domains_organization_domain_id_patch_with_http_info(
+    def update_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_patch_with_http_info(
         self,
         organization_domain_id: UUID,
         organization_domain_update_request: OrganizationDomainUpdateRequest,
@@ -4239,7 +4517,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_active_organization_domain_v1_organizations_me_domains_organization_domain_id_patch_serialize(
+        _param = self._update_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_patch_serialize(
             organization_domain_id=organization_domain_id,
             organization_domain_update_request=organization_domain_update_request,
             _request_auth=_request_auth,
@@ -4264,7 +4542,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def update_active_organization_domain_v1_organizations_me_domains_organization_domain_id_patch_without_preload_content(
+    def update_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_patch_without_preload_content(
         self,
         organization_domain_id: UUID,
         organization_domain_update_request: OrganizationDomainUpdateRequest,
@@ -4311,7 +4589,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_active_organization_domain_v1_organizations_me_domains_organization_domain_id_patch_serialize(
+        _param = self._update_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_patch_serialize(
             organization_domain_id=organization_domain_id,
             organization_domain_update_request=organization_domain_update_request,
             _request_auth=_request_auth,
@@ -4331,7 +4609,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _update_active_organization_domain_v1_organizations_me_domains_organization_domain_id_patch_serialize(
+    def _update_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_patch_serialize(
         self,
         organization_domain_id,
         organization_domain_update_request,
@@ -4396,7 +4674,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/organizations/me/domains/{organization_domain_id}',
+            resource_path='/api/v1/organizations/me/domains/{organization_domain_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4413,7 +4691,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def update_active_organization_member_v1_organizations_me_members_organization_member_id_patch(
+    def update_active_organization_member_api_v1_organizations_me_members_organization_member_id_patch(
         self,
         organization_member_id: UUID,
         active_organization_member_update_request: ActiveOrganizationMemberUpdateRequest,
@@ -4460,7 +4738,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_active_organization_member_v1_organizations_me_members_organization_member_id_patch_serialize(
+        _param = self._update_active_organization_member_api_v1_organizations_me_members_organization_member_id_patch_serialize(
             organization_member_id=organization_member_id,
             active_organization_member_update_request=active_organization_member_update_request,
             _request_auth=_request_auth,
@@ -4485,7 +4763,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def update_active_organization_member_v1_organizations_me_members_organization_member_id_patch_with_http_info(
+    def update_active_organization_member_api_v1_organizations_me_members_organization_member_id_patch_with_http_info(
         self,
         organization_member_id: UUID,
         active_organization_member_update_request: ActiveOrganizationMemberUpdateRequest,
@@ -4532,7 +4810,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_active_organization_member_v1_organizations_me_members_organization_member_id_patch_serialize(
+        _param = self._update_active_organization_member_api_v1_organizations_me_members_organization_member_id_patch_serialize(
             organization_member_id=organization_member_id,
             active_organization_member_update_request=active_organization_member_update_request,
             _request_auth=_request_auth,
@@ -4557,7 +4835,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def update_active_organization_member_v1_organizations_me_members_organization_member_id_patch_without_preload_content(
+    def update_active_organization_member_api_v1_organizations_me_members_organization_member_id_patch_without_preload_content(
         self,
         organization_member_id: UUID,
         active_organization_member_update_request: ActiveOrganizationMemberUpdateRequest,
@@ -4604,7 +4882,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_active_organization_member_v1_organizations_me_members_organization_member_id_patch_serialize(
+        _param = self._update_active_organization_member_api_v1_organizations_me_members_organization_member_id_patch_serialize(
             organization_member_id=organization_member_id,
             active_organization_member_update_request=active_organization_member_update_request,
             _request_auth=_request_auth,
@@ -4624,7 +4902,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _update_active_organization_member_v1_organizations_me_members_organization_member_id_patch_serialize(
+    def _update_active_organization_member_api_v1_organizations_me_members_organization_member_id_patch_serialize(
         self,
         organization_member_id,
         active_organization_member_update_request,
@@ -4689,7 +4967,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='PATCH',
-            resource_path='/v1/organizations/me/members/{organization_member_id}',
+            resource_path='/api/v1/organizations/me/members/{organization_member_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4706,285 +4984,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def update_active_organization_v1_organizations_me_patch(
-        self,
-        active_organization_update_request: ActiveOrganizationUpdateRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> OrganizationMembershipContextPublic:
-        """Update Active Organization
-
-        Rename the caller's active organization.
-
-        :param active_organization_update_request: (required)
-        :type active_organization_update_request: ActiveOrganizationUpdateRequest
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._update_active_organization_v1_organizations_me_patch_serialize(
-            active_organization_update_request=active_organization_update_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "OrganizationMembershipContextPublic",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def update_active_organization_v1_organizations_me_patch_with_http_info(
-        self,
-        active_organization_update_request: ActiveOrganizationUpdateRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[OrganizationMembershipContextPublic]:
-        """Update Active Organization
-
-        Rename the caller's active organization.
-
-        :param active_organization_update_request: (required)
-        :type active_organization_update_request: ActiveOrganizationUpdateRequest
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._update_active_organization_v1_organizations_me_patch_serialize(
-            active_organization_update_request=active_organization_update_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "OrganizationMembershipContextPublic",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def update_active_organization_v1_organizations_me_patch_without_preload_content(
-        self,
-        active_organization_update_request: ActiveOrganizationUpdateRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Update Active Organization
-
-        Rename the caller's active organization.
-
-        :param active_organization_update_request: (required)
-        :type active_organization_update_request: ActiveOrganizationUpdateRequest
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._update_active_organization_v1_organizations_me_patch_serialize(
-            active_organization_update_request=active_organization_update_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "OrganizationMembershipContextPublic",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _update_active_organization_v1_organizations_me_patch_serialize(
-        self,
-        active_organization_update_request,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-        if active_organization_update_request is not None:
-            _body_params = active_organization_update_request
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-        # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    [
-                        'application/json'
-                    ]
-                )
-            )
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'XApiKeyAuth', 
-            'ApiKeyAuth'
-        ]
-
-        return self.api_client.param_serialize(
-            method='PATCH',
-            resource_path='/v1/organizations/me',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def verify_active_organization_domain_v1_organizations_me_domains_organization_domain_id_verify_post(
+    def verify_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_verify_post(
         self,
         organization_domain_id: UUID,
         _request_timeout: Union[
@@ -5028,7 +5028,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._verify_active_organization_domain_v1_organizations_me_domains_organization_domain_id_verify_post_serialize(
+        _param = self._verify_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_verify_post_serialize(
             organization_domain_id=organization_domain_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5052,7 +5052,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def verify_active_organization_domain_v1_organizations_me_domains_organization_domain_id_verify_post_with_http_info(
+    def verify_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_verify_post_with_http_info(
         self,
         organization_domain_id: UUID,
         _request_timeout: Union[
@@ -5096,7 +5096,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._verify_active_organization_domain_v1_organizations_me_domains_organization_domain_id_verify_post_serialize(
+        _param = self._verify_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_verify_post_serialize(
             organization_domain_id=organization_domain_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5120,7 +5120,7 @@ class OrganizationsApi:
 
 
     @validate_call
-    def verify_active_organization_domain_v1_organizations_me_domains_organization_domain_id_verify_post_without_preload_content(
+    def verify_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_verify_post_without_preload_content(
         self,
         organization_domain_id: UUID,
         _request_timeout: Union[
@@ -5164,7 +5164,7 @@ class OrganizationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._verify_active_organization_domain_v1_organizations_me_domains_organization_domain_id_verify_post_serialize(
+        _param = self._verify_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_verify_post_serialize(
             organization_domain_id=organization_domain_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5183,7 +5183,7 @@ class OrganizationsApi:
         return response_data.response
 
 
-    def _verify_active_organization_domain_v1_organizations_me_domains_organization_domain_id_verify_post_serialize(
+    def _verify_active_organization_domain_api_v1_organizations_me_domains_organization_domain_id_verify_post_serialize(
         self,
         organization_domain_id,
         _request_auth,
@@ -5232,7 +5232,7 @@ class OrganizationsApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/organizations/me/domains/{organization_domain_id}/verify',
+            resource_path='/api/v1/organizations/me/domains/{organization_domain_id}/verify',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

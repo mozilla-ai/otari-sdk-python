@@ -37,7 +37,7 @@ class ImagesApi:
 
 
     @validate_call
-    def create_image_v1_images_generations_post(
+    def create_image_api_v1_images_generations_post(
         self,
         image_generation_request: ImageGenerationRequest,
         _request_timeout: Union[
@@ -81,7 +81,7 @@ class ImagesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_image_v1_images_generations_post_serialize(
+        _param = self._create_image_api_v1_images_generations_post_serialize(
             image_generation_request=image_generation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -105,7 +105,7 @@ class ImagesApi:
 
 
     @validate_call
-    def create_image_v1_images_generations_post_with_http_info(
+    def create_image_api_v1_images_generations_post_with_http_info(
         self,
         image_generation_request: ImageGenerationRequest,
         _request_timeout: Union[
@@ -149,7 +149,7 @@ class ImagesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_image_v1_images_generations_post_serialize(
+        _param = self._create_image_api_v1_images_generations_post_serialize(
             image_generation_request=image_generation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -173,7 +173,7 @@ class ImagesApi:
 
 
     @validate_call
-    def create_image_v1_images_generations_post_without_preload_content(
+    def create_image_api_v1_images_generations_post_without_preload_content(
         self,
         image_generation_request: ImageGenerationRequest,
         _request_timeout: Union[
@@ -217,7 +217,7 @@ class ImagesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_image_v1_images_generations_post_serialize(
+        _param = self._create_image_api_v1_images_generations_post_serialize(
             image_generation_request=image_generation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -236,7 +236,7 @@ class ImagesApi:
         return response_data.response
 
 
-    def _create_image_v1_images_generations_post_serialize(
+    def _create_image_api_v1_images_generations_post_serialize(
         self,
         image_generation_request,
         _request_auth,
@@ -298,7 +298,7 @@ class ImagesApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/v1/images/generations',
+            resource_path='/api/v1/images/generations',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
