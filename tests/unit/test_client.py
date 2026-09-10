@@ -10,6 +10,7 @@ streaming shim. Non-streaming calls are mocked at the generated transport
 from __future__ import annotations
 
 from typing import Any
+from uuid import UUID
 
 import httpx
 import pytest
@@ -91,6 +92,27 @@ IMAGE_RESPONSE: dict[str, Any] = {
 }
 
 TRANSCRIPTION_RESPONSE: dict[str, Any] = {"text": "hello world"}
+
+FILE_OBJECT: dict[str, Any] = {
+    "id": "file-abc123",
+    "object": "file",
+    "bytes": 12,
+    "created_at": 1,
+    "expires_at": None,
+    "filename": "report.pdf",
+    "purpose": "user_data",
+}
+
+FILE_LIST_RESPONSE: dict[str, Any] = {
+    "object": "list",
+    "data": [FILE_OBJECT],
+}
+
+FILE_DELETE_RESPONSE: dict[str, Any] = {
+    "id": "file-abc123",
+    "object": "file",
+    "deleted": True,
+}
 
 
 def _sse(*events: str) -> bytes:
@@ -563,6 +585,110 @@ class TestAudio:
         )
         assert result.text == "hello"
         assert result.json is None
+
+
+class TestFiles:
+    @respx.mock
+    def test_upload_file_sends_multipart_bytes(self) -> None:
+        route = respx.post("http://localhost:8000/v1/files").mock(
+            return_value=httpx.Response(200, json=FILE_OBJECT)
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = client.upload_file(
+            file=b"PDF-CONTENT",
+            filename="report.pdf",
+            content_type="application/pdf",
+            user="user-123",
+        )
+
+        assert result == FILE_OBJECT
+        request = route.calls.last.request
+        assert request.headers["otari-key"] == "Bearer vk"
+        assert request.headers["content-type"].startswith("multipart/form-data")
+        assert b'name="file"; filename="report.pdf"' in request.content
+        assert b"Content-Type: application/pdf" in request.content
+        assert b"PDF-CONTENT" in request.content
+        assert b'name="purpose"' in request.content
+        assert b"user_data" in request.content
+        assert b'name="user"' in request.content
+        assert b"user-123" in request.content
+
+    def test_list_files_returns_data_and_forwards_filters(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=FILE_LIST_RESPONSE)
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = client.list_files(
+            purpose="user_data",
+            user="user-123",
+            workspace_id=UUID("00000000-0000-0000-0000-000000000123"),
+        )
+
+        assert result == [FILE_OBJECT]
+        assert mock.last.method == "GET"
+        assert mock.last.url.endswith(
+            "/v1/files?user=user-123&purpose=user_data&"
+            "workspace_id=00000000-0000-0000-0000-000000000123"
+        )
+
+    def test_retrieve_file_returns_metadata(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=FILE_OBJECT)
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = client.retrieve_file("file-abc123", user="user-123")
+
+        assert result == FILE_OBJECT
+        assert mock.last.url.endswith("/v1/files/file-abc123?user=user-123")
+
+    @respx.mock
+    def test_download_file_returns_raw_bytes(self) -> None:
+        route = respx.get("http://localhost:8000/v1/files/file-abc123/content").mock(
+            return_value=httpx.Response(
+                200,
+                headers={"content-type": "application/pdf"},
+                content=b"PDF-CONTENT",
+            )
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = client.download_file("file-abc123", user="user-123")
+
+        assert result == b"PDF-CONTENT"
+        request = route.calls.last.request
+        assert request.headers["otari-key"] == "Bearer vk"
+        assert request.url.params["user"] == "user-123"
+
+    def test_delete_file_returns_confirmation(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=FILE_DELETE_RESPONSE)
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        result = client.delete_file("file-abc123", user="user-123")
+
+        assert result == FILE_DELETE_RESPONSE
+        assert mock.last.method == "DELETE"
+        assert mock.last.url.endswith("/v1/files/file-abc123?user=user-123")
+
+    @respx.mock
+    def test_download_file_encodes_the_file_id_as_one_path_segment(self) -> None:
+        route = respx.get(
+            "http://localhost:8000/v1/files/file%2F..%2Fsecret/content"
+        ).mock(return_value=httpx.Response(200, content=b"FILE"))
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        assert client.download_file("file/../secret") == b"FILE"
+        assert route.calls.last.request.url.raw_path == (
+            b"/v1/files/file%2F..%2Fsecret/content"
+        )
+
+    @respx.mock
+    def test_download_file_maps_errors(self) -> None:
+        respx.get("http://localhost:8000/v1/files/missing/content").mock(
+            return_value=httpx.Response(404, json={"detail": "File not found"})
+        )
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        with pytest.raises(ModelNotFoundError, match="File not found"):
+            client.download_file("missing")
 
 
 # ---------------------------------------------------------------------------

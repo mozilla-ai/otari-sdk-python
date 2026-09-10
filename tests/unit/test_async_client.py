@@ -31,6 +31,9 @@ from tests.unit.test_client import (
     CHAT_RESPONSE,
     COUNT_TOKENS_RESPONSE,
     EMBEDDING_RESPONSE,
+    FILE_DELETE_RESPONSE,
+    FILE_LIST_RESPONSE,
+    FILE_OBJECT,
     IMAGE_RESPONSE,
     MESSAGE_RESPONSE,
     MODELS_RESPONSE,
@@ -306,6 +309,83 @@ class TestAudio:
         request = route.calls.last.request
         assert request.headers["content-type"].startswith("multipart/form-data")
         assert b'name="file"' in request.content
+
+
+class TestFiles:
+    @respx.mock
+    async def test_upload_file_sends_multipart_bytes(self) -> None:
+        route = respx.post("http://localhost:8000/v1/files").mock(
+            return_value=httpx.Response(200, json=FILE_OBJECT)
+        )
+        client = AsyncOtariClient(
+            api_base="http://localhost:8000", api_key="vk"
+        )
+
+        result = await client.upload_file(
+            file=b"PDF-CONTENT",
+            filename="report.pdf",
+            content_type="application/pdf",
+        )
+
+        assert result == FILE_OBJECT
+        request = route.calls.last.request
+        assert request.headers["otari-key"] == "Bearer vk"
+        assert request.headers["content-type"].startswith("multipart/form-data")
+        assert b'name="file"; filename="report.pdf"' in request.content
+        assert b"Content-Type: application/pdf" in request.content
+        assert b"PDF-CONTENT" in request.content
+
+    async def test_list_files_returns_data(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=FILE_LIST_RESPONSE)
+        client = AsyncOtariClient(
+            api_base="http://localhost:8000", api_key="vk"
+        )
+
+        result = await client.list_files(purpose="user_data")
+
+        assert result == [FILE_OBJECT]
+        assert mock.last.url.endswith("/v1/files?purpose=user_data")
+
+    async def test_retrieve_file_returns_metadata(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=FILE_OBJECT)
+        client = AsyncOtariClient(
+            api_base="http://localhost:8000", api_key="vk"
+        )
+
+        result = await client.retrieve_file("file-abc123")
+
+        assert result == FILE_OBJECT
+        assert mock.last.url.endswith("/v1/files/file-abc123")
+
+    @respx.mock
+    async def test_download_file_returns_raw_bytes(self) -> None:
+        route = respx.get("http://localhost:8000/v1/files/file-abc123/content").mock(
+            return_value=httpx.Response(
+                200,
+                headers={"content-type": "application/pdf"},
+                content=b"PDF-CONTENT",
+            )
+        )
+        client = AsyncOtariClient(
+            api_base="http://localhost:8000", api_key="vk"
+        )
+
+        result = await client.download_file("file-abc123")
+
+        assert result == b"PDF-CONTENT"
+        assert route.calls.last.request.headers["otari-key"] == "Bearer vk"
+
+    async def test_delete_file_returns_confirmation(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=FILE_DELETE_RESPONSE)
+        client = AsyncOtariClient(
+            api_base="http://localhost:8000", api_key="vk"
+        )
+
+        result = await client.delete_file("file-abc123")
+
+        assert result == FILE_DELETE_RESPONSE
+        assert mock.last.method == "DELETE"
+        assert mock.last.url.endswith("/v1/files/file-abc123")
 
 
 class TestControlPlane:
