@@ -149,7 +149,10 @@ from otari._client.models.external_ingest_error import ExternalIngestError
 from otari._client.models.external_ingest_result import ExternalIngestResult
 from otari._client.models.external_usage_event import ExternalUsageEvent
 from otari._client.models.gateway_settings import GatewaySettings
+from otari._client.models.guardrail_catalog import GuardrailCatalog
 from otari._client.models.guardrail_config import GuardrailConfig
+from otari._client.models.guardrail_parameter_spec import GuardrailParameterSpec
+from otari._client.models.guardrail_profile_spec import GuardrailProfileSpec
 from otari._client.models.http_validation_error import HTTPValidationError
 from otari._client.models.img_image import IMGImage
 from otari._client.models.img_usage import IMGUsage

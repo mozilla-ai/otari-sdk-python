@@ -37,7 +37,7 @@ class ChatApi:
 
 
     @validate_call
-    def chat_completions_api_v1_chat_completions_post(
+    def chat_chat_completions(
         self,
         chat_completion_request: ChatCompletionRequest,
         _request_timeout: Union[
@@ -81,7 +81,7 @@ class ChatApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._chat_completions_api_v1_chat_completions_post_serialize(
+        _param = self._chat_chat_completions_serialize(
             chat_completion_request=chat_completion_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -105,7 +105,7 @@ class ChatApi:
 
 
     @validate_call
-    def chat_completions_api_v1_chat_completions_post_with_http_info(
+    def chat_chat_completions_with_http_info(
         self,
         chat_completion_request: ChatCompletionRequest,
         _request_timeout: Union[
@@ -149,7 +149,7 @@ class ChatApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._chat_completions_api_v1_chat_completions_post_serialize(
+        _param = self._chat_chat_completions_serialize(
             chat_completion_request=chat_completion_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -173,7 +173,7 @@ class ChatApi:
 
 
     @validate_call
-    def chat_completions_api_v1_chat_completions_post_without_preload_content(
+    def chat_chat_completions_without_preload_content(
         self,
         chat_completion_request: ChatCompletionRequest,
         _request_timeout: Union[
@@ -217,7 +217,7 @@ class ChatApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._chat_completions_api_v1_chat_completions_post_serialize(
+        _param = self._chat_chat_completions_serialize(
             chat_completion_request=chat_completion_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -236,7 +236,7 @@ class ChatApi:
         return response_data.response
 
 
-    def _chat_completions_api_v1_chat_completions_post_serialize(
+    def _chat_chat_completions_serialize(
         self,
         chat_completion_request,
         _request_auth,

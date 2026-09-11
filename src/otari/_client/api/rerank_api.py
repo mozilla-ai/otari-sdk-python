@@ -37,7 +37,7 @@ class RerankApi:
 
 
     @validate_call
-    def create_rerank_api_v1_rerank_post(
+    def rerank_create_rerank(
         self,
         rerank_request: RerankRequest,
         _request_timeout: Union[
@@ -81,7 +81,7 @@ class RerankApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_rerank_api_v1_rerank_post_serialize(
+        _param = self._rerank_create_rerank_serialize(
             rerank_request=rerank_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -105,7 +105,7 @@ class RerankApi:
 
 
     @validate_call
-    def create_rerank_api_v1_rerank_post_with_http_info(
+    def rerank_create_rerank_with_http_info(
         self,
         rerank_request: RerankRequest,
         _request_timeout: Union[
@@ -149,7 +149,7 @@ class RerankApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_rerank_api_v1_rerank_post_serialize(
+        _param = self._rerank_create_rerank_serialize(
             rerank_request=rerank_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -173,7 +173,7 @@ class RerankApi:
 
 
     @validate_call
-    def create_rerank_api_v1_rerank_post_without_preload_content(
+    def rerank_create_rerank_without_preload_content(
         self,
         rerank_request: RerankRequest,
         _request_timeout: Union[
@@ -217,7 +217,7 @@ class RerankApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_rerank_api_v1_rerank_post_serialize(
+        _param = self._rerank_create_rerank_serialize(
             rerank_request=rerank_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -236,7 +236,7 @@ class RerankApi:
         return response_data.response
 
 
-    def _create_rerank_api_v1_rerank_post_serialize(
+    def _rerank_create_rerank_serialize(
         self,
         rerank_request,
         _request_auth,

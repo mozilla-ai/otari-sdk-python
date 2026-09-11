@@ -42,7 +42,7 @@ class UsersApi:
 
 
     @validate_call
-    def create_user_api_v1_users_post(
+    def users_create_user(
         self,
         create_user_request: CreateUserRequest,
         _request_timeout: Union[
@@ -86,7 +86,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_user_api_v1_users_post_serialize(
+        _param = self._users_create_user_serialize(
             create_user_request=create_user_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -110,7 +110,7 @@ class UsersApi:
 
 
     @validate_call
-    def create_user_api_v1_users_post_with_http_info(
+    def users_create_user_with_http_info(
         self,
         create_user_request: CreateUserRequest,
         _request_timeout: Union[
@@ -154,7 +154,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_user_api_v1_users_post_serialize(
+        _param = self._users_create_user_serialize(
             create_user_request=create_user_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -178,7 +178,7 @@ class UsersApi:
 
 
     @validate_call
-    def create_user_api_v1_users_post_without_preload_content(
+    def users_create_user_without_preload_content(
         self,
         create_user_request: CreateUserRequest,
         _request_timeout: Union[
@@ -222,7 +222,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_user_api_v1_users_post_serialize(
+        _param = self._users_create_user_serialize(
             create_user_request=create_user_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -241,7 +241,7 @@ class UsersApi:
         return response_data.response
 
 
-    def _create_user_api_v1_users_post_serialize(
+    def _users_create_user_serialize(
         self,
         create_user_request,
         _request_auth,
@@ -320,7 +320,7 @@ class UsersApi:
 
 
     @validate_call
-    def delete_user_api_v1_users_user_id_delete(
+    def users_delete_user(
         self,
         user_id: StrictStr,
         _request_timeout: Union[
@@ -364,7 +364,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_user_api_v1_users_user_id_delete_serialize(
+        _param = self._users_delete_user_serialize(
             user_id=user_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -388,7 +388,7 @@ class UsersApi:
 
 
     @validate_call
-    def delete_user_api_v1_users_user_id_delete_with_http_info(
+    def users_delete_user_with_http_info(
         self,
         user_id: StrictStr,
         _request_timeout: Union[
@@ -432,7 +432,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_user_api_v1_users_user_id_delete_serialize(
+        _param = self._users_delete_user_serialize(
             user_id=user_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -456,7 +456,7 @@ class UsersApi:
 
 
     @validate_call
-    def delete_user_api_v1_users_user_id_delete_without_preload_content(
+    def users_delete_user_without_preload_content(
         self,
         user_id: StrictStr,
         _request_timeout: Union[
@@ -500,7 +500,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_user_api_v1_users_user_id_delete_serialize(
+        _param = self._users_delete_user_serialize(
             user_id=user_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -519,7 +519,7 @@ class UsersApi:
         return response_data.response
 
 
-    def _delete_user_api_v1_users_user_id_delete_serialize(
+    def _users_delete_user_serialize(
         self,
         user_id,
         _request_auth,
@@ -585,7 +585,7 @@ class UsersApi:
 
 
     @validate_call
-    def get_user_api_v1_users_user_id_get(
+    def users_get_user(
         self,
         user_id: StrictStr,
         _request_timeout: Union[
@@ -629,7 +629,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_user_api_v1_users_user_id_get_serialize(
+        _param = self._users_get_user_serialize(
             user_id=user_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -653,7 +653,7 @@ class UsersApi:
 
 
     @validate_call
-    def get_user_api_v1_users_user_id_get_with_http_info(
+    def users_get_user_with_http_info(
         self,
         user_id: StrictStr,
         _request_timeout: Union[
@@ -697,7 +697,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_user_api_v1_users_user_id_get_serialize(
+        _param = self._users_get_user_serialize(
             user_id=user_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -721,7 +721,7 @@ class UsersApi:
 
 
     @validate_call
-    def get_user_api_v1_users_user_id_get_without_preload_content(
+    def users_get_user_without_preload_content(
         self,
         user_id: StrictStr,
         _request_timeout: Union[
@@ -765,7 +765,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_user_api_v1_users_user_id_get_serialize(
+        _param = self._users_get_user_serialize(
             user_id=user_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -784,7 +784,7 @@ class UsersApi:
         return response_data.response
 
 
-    def _get_user_api_v1_users_user_id_get_serialize(
+    def _users_get_user_serialize(
         self,
         user_id,
         _request_auth,
@@ -850,7 +850,7 @@ class UsersApi:
 
 
     @validate_call
-    def get_user_usage_api_v1_users_user_id_usage_get(
+    def users_get_user_usage(
         self,
         user_id: StrictStr,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -900,7 +900,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_user_usage_api_v1_users_user_id_usage_get_serialize(
+        _param = self._users_get_user_usage_serialize(
             user_id=user_id,
             skip=skip,
             limit=limit,
@@ -926,7 +926,7 @@ class UsersApi:
 
 
     @validate_call
-    def get_user_usage_api_v1_users_user_id_usage_get_with_http_info(
+    def users_get_user_usage_with_http_info(
         self,
         user_id: StrictStr,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -976,7 +976,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_user_usage_api_v1_users_user_id_usage_get_serialize(
+        _param = self._users_get_user_usage_serialize(
             user_id=user_id,
             skip=skip,
             limit=limit,
@@ -1002,7 +1002,7 @@ class UsersApi:
 
 
     @validate_call
-    def get_user_usage_api_v1_users_user_id_usage_get_without_preload_content(
+    def users_get_user_usage_without_preload_content(
         self,
         user_id: StrictStr,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -1052,7 +1052,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_user_usage_api_v1_users_user_id_usage_get_serialize(
+        _param = self._users_get_user_usage_serialize(
             user_id=user_id,
             skip=skip,
             limit=limit,
@@ -1073,7 +1073,7 @@ class UsersApi:
         return response_data.response
 
 
-    def _get_user_usage_api_v1_users_user_id_usage_get_serialize(
+    def _users_get_user_usage_serialize(
         self,
         user_id,
         skip,
@@ -1149,7 +1149,7 @@ class UsersApi:
 
 
     @validate_call
-    def list_users_api_v1_users_get(
+    def users_list_users(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1196,7 +1196,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_users_api_v1_users_get_serialize(
+        _param = self._users_list_users_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1221,7 +1221,7 @@ class UsersApi:
 
 
     @validate_call
-    def list_users_api_v1_users_get_with_http_info(
+    def users_list_users_with_http_info(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1268,7 +1268,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_users_api_v1_users_get_serialize(
+        _param = self._users_list_users_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1293,7 +1293,7 @@ class UsersApi:
 
 
     @validate_call
-    def list_users_api_v1_users_get_without_preload_content(
+    def users_list_users_without_preload_content(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1340,7 +1340,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_users_api_v1_users_get_serialize(
+        _param = self._users_list_users_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1360,7 +1360,7 @@ class UsersApi:
         return response_data.response
 
 
-    def _list_users_api_v1_users_get_serialize(
+    def _users_list_users_serialize(
         self,
         skip,
         limit,
@@ -1433,7 +1433,7 @@ class UsersApi:
 
 
     @validate_call
-    def update_user_api_v1_users_user_id_patch(
+    def users_update_user(
         self,
         user_id: StrictStr,
         update_user_request: UpdateUserRequest,
@@ -1480,7 +1480,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_user_api_v1_users_user_id_patch_serialize(
+        _param = self._users_update_user_serialize(
             user_id=user_id,
             update_user_request=update_user_request,
             _request_auth=_request_auth,
@@ -1505,7 +1505,7 @@ class UsersApi:
 
 
     @validate_call
-    def update_user_api_v1_users_user_id_patch_with_http_info(
+    def users_update_user_with_http_info(
         self,
         user_id: StrictStr,
         update_user_request: UpdateUserRequest,
@@ -1552,7 +1552,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_user_api_v1_users_user_id_patch_serialize(
+        _param = self._users_update_user_serialize(
             user_id=user_id,
             update_user_request=update_user_request,
             _request_auth=_request_auth,
@@ -1577,7 +1577,7 @@ class UsersApi:
 
 
     @validate_call
-    def update_user_api_v1_users_user_id_patch_without_preload_content(
+    def users_update_user_without_preload_content(
         self,
         user_id: StrictStr,
         update_user_request: UpdateUserRequest,
@@ -1624,7 +1624,7 @@ class UsersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_user_api_v1_users_user_id_patch_serialize(
+        _param = self._users_update_user_serialize(
             user_id=user_id,
             update_user_request=update_user_request,
             _request_auth=_request_auth,
@@ -1644,7 +1644,7 @@ class UsersApi:
         return response_data.response
 
 
-    def _update_user_api_v1_users_user_id_patch_serialize(
+    def _users_update_user_serialize(
         self,
         user_id,
         update_user_request,

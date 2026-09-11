@@ -38,7 +38,7 @@ class FilesApi:
 
 
     @validate_call
-    def create_file_api_v1_files_post(
+    def files_create_file(
         self,
         file: StrictStr,
         purpose: Optional[StrictStr] = None,
@@ -88,7 +88,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_file_api_v1_files_post_serialize(
+        _param = self._files_create_file_serialize(
             file=file,
             purpose=purpose,
             user=user,
@@ -114,7 +114,7 @@ class FilesApi:
 
 
     @validate_call
-    def create_file_api_v1_files_post_with_http_info(
+    def files_create_file_with_http_info(
         self,
         file: StrictStr,
         purpose: Optional[StrictStr] = None,
@@ -164,7 +164,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_file_api_v1_files_post_serialize(
+        _param = self._files_create_file_serialize(
             file=file,
             purpose=purpose,
             user=user,
@@ -190,7 +190,7 @@ class FilesApi:
 
 
     @validate_call
-    def create_file_api_v1_files_post_without_preload_content(
+    def files_create_file_without_preload_content(
         self,
         file: StrictStr,
         purpose: Optional[StrictStr] = None,
@@ -240,7 +240,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_file_api_v1_files_post_serialize(
+        _param = self._files_create_file_serialize(
             file=file,
             purpose=purpose,
             user=user,
@@ -261,7 +261,7 @@ class FilesApi:
         return response_data.response
 
 
-    def _create_file_api_v1_files_post_serialize(
+    def _files_create_file_serialize(
         self,
         file,
         purpose,
@@ -346,7 +346,7 @@ class FilesApi:
 
 
     @validate_call
-    def delete_file_api_v1_files_file_id_delete(
+    def files_delete_file(
         self,
         file_id: StrictStr,
         user: Optional[StrictStr] = None,
@@ -393,7 +393,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_file_api_v1_files_file_id_delete_serialize(
+        _param = self._files_delete_file_serialize(
             file_id=file_id,
             user=user,
             _request_auth=_request_auth,
@@ -418,7 +418,7 @@ class FilesApi:
 
 
     @validate_call
-    def delete_file_api_v1_files_file_id_delete_with_http_info(
+    def files_delete_file_with_http_info(
         self,
         file_id: StrictStr,
         user: Optional[StrictStr] = None,
@@ -465,7 +465,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_file_api_v1_files_file_id_delete_serialize(
+        _param = self._files_delete_file_serialize(
             file_id=file_id,
             user=user,
             _request_auth=_request_auth,
@@ -490,7 +490,7 @@ class FilesApi:
 
 
     @validate_call
-    def delete_file_api_v1_files_file_id_delete_without_preload_content(
+    def files_delete_file_without_preload_content(
         self,
         file_id: StrictStr,
         user: Optional[StrictStr] = None,
@@ -537,7 +537,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_file_api_v1_files_file_id_delete_serialize(
+        _param = self._files_delete_file_serialize(
             file_id=file_id,
             user=user,
             _request_auth=_request_auth,
@@ -557,7 +557,7 @@ class FilesApi:
         return response_data.response
 
 
-    def _delete_file_api_v1_files_file_id_delete_serialize(
+    def _files_delete_file_serialize(
         self,
         file_id,
         user,
@@ -628,7 +628,7 @@ class FilesApi:
 
 
     @validate_call
-    def get_file_api_v1_files_file_id_get(
+    def files_get_file(
         self,
         file_id: StrictStr,
         user: Optional[StrictStr] = None,
@@ -675,7 +675,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_api_v1_files_file_id_get_serialize(
+        _param = self._files_get_file_serialize(
             file_id=file_id,
             user=user,
             _request_auth=_request_auth,
@@ -700,7 +700,7 @@ class FilesApi:
 
 
     @validate_call
-    def get_file_api_v1_files_file_id_get_with_http_info(
+    def files_get_file_with_http_info(
         self,
         file_id: StrictStr,
         user: Optional[StrictStr] = None,
@@ -747,7 +747,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_api_v1_files_file_id_get_serialize(
+        _param = self._files_get_file_serialize(
             file_id=file_id,
             user=user,
             _request_auth=_request_auth,
@@ -772,7 +772,7 @@ class FilesApi:
 
 
     @validate_call
-    def get_file_api_v1_files_file_id_get_without_preload_content(
+    def files_get_file_without_preload_content(
         self,
         file_id: StrictStr,
         user: Optional[StrictStr] = None,
@@ -819,7 +819,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_api_v1_files_file_id_get_serialize(
+        _param = self._files_get_file_serialize(
             file_id=file_id,
             user=user,
             _request_auth=_request_auth,
@@ -839,7 +839,7 @@ class FilesApi:
         return response_data.response
 
 
-    def _get_file_api_v1_files_file_id_get_serialize(
+    def _files_get_file_serialize(
         self,
         file_id,
         user,
@@ -910,7 +910,7 @@ class FilesApi:
 
 
     @validate_call
-    def get_file_content_api_v1_files_file_id_content_get(
+    def files_get_file_content(
         self,
         file_id: StrictStr,
         user: Optional[StrictStr] = None,
@@ -957,7 +957,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_content_api_v1_files_file_id_content_get_serialize(
+        _param = self._files_get_file_content_serialize(
             file_id=file_id,
             user=user,
             _request_auth=_request_auth,
@@ -982,7 +982,7 @@ class FilesApi:
 
 
     @validate_call
-    def get_file_content_api_v1_files_file_id_content_get_with_http_info(
+    def files_get_file_content_with_http_info(
         self,
         file_id: StrictStr,
         user: Optional[StrictStr] = None,
@@ -1029,7 +1029,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_content_api_v1_files_file_id_content_get_serialize(
+        _param = self._files_get_file_content_serialize(
             file_id=file_id,
             user=user,
             _request_auth=_request_auth,
@@ -1054,7 +1054,7 @@ class FilesApi:
 
 
     @validate_call
-    def get_file_content_api_v1_files_file_id_content_get_without_preload_content(
+    def files_get_file_content_without_preload_content(
         self,
         file_id: StrictStr,
         user: Optional[StrictStr] = None,
@@ -1101,7 +1101,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_content_api_v1_files_file_id_content_get_serialize(
+        _param = self._files_get_file_content_serialize(
             file_id=file_id,
             user=user,
             _request_auth=_request_auth,
@@ -1121,7 +1121,7 @@ class FilesApi:
         return response_data.response
 
 
-    def _get_file_content_api_v1_files_file_id_content_get_serialize(
+    def _files_get_file_content_serialize(
         self,
         file_id,
         user,
@@ -1194,7 +1194,7 @@ class FilesApi:
 
 
     @validate_call
-    def list_files_api_v1_files_get(
+    def files_list_files(
         self,
         user: Optional[StrictStr] = None,
         purpose: Optional[StrictStr] = None,
@@ -1244,7 +1244,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_files_api_v1_files_get_serialize(
+        _param = self._files_list_files_serialize(
             user=user,
             purpose=purpose,
             workspace_id=workspace_id,
@@ -1270,7 +1270,7 @@ class FilesApi:
 
 
     @validate_call
-    def list_files_api_v1_files_get_with_http_info(
+    def files_list_files_with_http_info(
         self,
         user: Optional[StrictStr] = None,
         purpose: Optional[StrictStr] = None,
@@ -1320,7 +1320,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_files_api_v1_files_get_serialize(
+        _param = self._files_list_files_serialize(
             user=user,
             purpose=purpose,
             workspace_id=workspace_id,
@@ -1346,7 +1346,7 @@ class FilesApi:
 
 
     @validate_call
-    def list_files_api_v1_files_get_without_preload_content(
+    def files_list_files_without_preload_content(
         self,
         user: Optional[StrictStr] = None,
         purpose: Optional[StrictStr] = None,
@@ -1396,7 +1396,7 @@ class FilesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_files_api_v1_files_get_serialize(
+        _param = self._files_list_files_serialize(
             user=user,
             purpose=purpose,
             workspace_id=workspace_id,
@@ -1417,7 +1417,7 @@ class FilesApi:
         return response_data.response
 
 
-    def _list_files_api_v1_files_get_serialize(
+    def _files_list_files_serialize(
         self,
         user,
         purpose,

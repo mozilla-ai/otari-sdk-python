@@ -39,7 +39,7 @@ class InvitationsApi:
 
 
     @validate_call
-    def accept_invitation_api_v1_invitations_accept_post(
+    def invitations_accept_invitation(
         self,
         accept_invitation_request: AcceptInvitationRequest,
         _request_timeout: Union[
@@ -83,7 +83,7 @@ class InvitationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._accept_invitation_api_v1_invitations_accept_post_serialize(
+        _param = self._invitations_accept_invitation_serialize(
             accept_invitation_request=accept_invitation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -107,7 +107,7 @@ class InvitationsApi:
 
 
     @validate_call
-    def accept_invitation_api_v1_invitations_accept_post_with_http_info(
+    def invitations_accept_invitation_with_http_info(
         self,
         accept_invitation_request: AcceptInvitationRequest,
         _request_timeout: Union[
@@ -151,7 +151,7 @@ class InvitationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._accept_invitation_api_v1_invitations_accept_post_serialize(
+        _param = self._invitations_accept_invitation_serialize(
             accept_invitation_request=accept_invitation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -175,7 +175,7 @@ class InvitationsApi:
 
 
     @validate_call
-    def accept_invitation_api_v1_invitations_accept_post_without_preload_content(
+    def invitations_accept_invitation_without_preload_content(
         self,
         accept_invitation_request: AcceptInvitationRequest,
         _request_timeout: Union[
@@ -219,7 +219,7 @@ class InvitationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._accept_invitation_api_v1_invitations_accept_post_serialize(
+        _param = self._invitations_accept_invitation_serialize(
             accept_invitation_request=accept_invitation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -238,7 +238,7 @@ class InvitationsApi:
         return response_data.response
 
 
-    def _accept_invitation_api_v1_invitations_accept_post_serialize(
+    def _invitations_accept_invitation_serialize(
         self,
         accept_invitation_request,
         _request_auth,
@@ -315,7 +315,7 @@ class InvitationsApi:
 
 
     @validate_call
-    def validate_invitation_api_v1_invitations_validate_post(
+    def invitations_validate_invitation(
         self,
         validate_invitation_request: ValidateInvitationRequest,
         _request_timeout: Union[
@@ -359,7 +359,7 @@ class InvitationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._validate_invitation_api_v1_invitations_validate_post_serialize(
+        _param = self._invitations_validate_invitation_serialize(
             validate_invitation_request=validate_invitation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -383,7 +383,7 @@ class InvitationsApi:
 
 
     @validate_call
-    def validate_invitation_api_v1_invitations_validate_post_with_http_info(
+    def invitations_validate_invitation_with_http_info(
         self,
         validate_invitation_request: ValidateInvitationRequest,
         _request_timeout: Union[
@@ -427,7 +427,7 @@ class InvitationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._validate_invitation_api_v1_invitations_validate_post_serialize(
+        _param = self._invitations_validate_invitation_serialize(
             validate_invitation_request=validate_invitation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -451,7 +451,7 @@ class InvitationsApi:
 
 
     @validate_call
-    def validate_invitation_api_v1_invitations_validate_post_without_preload_content(
+    def invitations_validate_invitation_without_preload_content(
         self,
         validate_invitation_request: ValidateInvitationRequest,
         _request_timeout: Union[
@@ -495,7 +495,7 @@ class InvitationsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._validate_invitation_api_v1_invitations_validate_post_serialize(
+        _param = self._invitations_validate_invitation_serialize(
             validate_invitation_request=validate_invitation_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -514,7 +514,7 @@ class InvitationsApi:
         return response_data.response
 
 
-    def _validate_invitation_api_v1_invitations_validate_post_serialize(
+    def _invitations_validate_invitation_serialize(
         self,
         validate_invitation_request,
         _request_auth,

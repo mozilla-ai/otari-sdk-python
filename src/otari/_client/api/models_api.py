@@ -42,7 +42,7 @@ class ModelsApi:
 
 
     @validate_call
-    def get_model_api_v1_models_model_id_get(
+    def models_get_model(
         self,
         model_id: StrictStr,
         _request_timeout: Union[
@@ -86,7 +86,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_model_api_v1_models_model_id_get_serialize(
+        _param = self._models_get_model_serialize(
             model_id=model_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -110,7 +110,7 @@ class ModelsApi:
 
 
     @validate_call
-    def get_model_api_v1_models_model_id_get_with_http_info(
+    def models_get_model_with_http_info(
         self,
         model_id: StrictStr,
         _request_timeout: Union[
@@ -154,7 +154,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_model_api_v1_models_model_id_get_serialize(
+        _param = self._models_get_model_serialize(
             model_id=model_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -178,7 +178,7 @@ class ModelsApi:
 
 
     @validate_call
-    def get_model_api_v1_models_model_id_get_without_preload_content(
+    def models_get_model_without_preload_content(
         self,
         model_id: StrictStr,
         _request_timeout: Union[
@@ -222,7 +222,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_model_api_v1_models_model_id_get_serialize(
+        _param = self._models_get_model_serialize(
             model_id=model_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -241,7 +241,7 @@ class ModelsApi:
         return response_data.response
 
 
-    def _get_model_api_v1_models_model_id_get_serialize(
+    def _models_get_model_serialize(
         self,
         model_id,
         _request_auth,
@@ -307,7 +307,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_discoverable_models_api_v1_models_discoverable_get(
+    def models_list_discoverable_models(
         self,
         refresh: Annotated[Optional[StrictBool], Field(description="Re-dial every provider instead of answering from the discovery cache.")] = None,
         _request_timeout: Union[
@@ -351,7 +351,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_discoverable_models_api_v1_models_discoverable_get_serialize(
+        _param = self._models_list_discoverable_models_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -375,7 +375,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_discoverable_models_api_v1_models_discoverable_get_with_http_info(
+    def models_list_discoverable_models_with_http_info(
         self,
         refresh: Annotated[Optional[StrictBool], Field(description="Re-dial every provider instead of answering from the discovery cache.")] = None,
         _request_timeout: Union[
@@ -419,7 +419,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_discoverable_models_api_v1_models_discoverable_get_serialize(
+        _param = self._models_list_discoverable_models_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -443,7 +443,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_discoverable_models_api_v1_models_discoverable_get_without_preload_content(
+    def models_list_discoverable_models_without_preload_content(
         self,
         refresh: Annotated[Optional[StrictBool], Field(description="Re-dial every provider instead of answering from the discovery cache.")] = None,
         _request_timeout: Union[
@@ -487,7 +487,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_discoverable_models_api_v1_models_discoverable_get_serialize(
+        _param = self._models_list_discoverable_models_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -506,7 +506,7 @@ class ModelsApi:
         return response_data.response
 
 
-    def _list_discoverable_models_api_v1_models_discoverable_get_serialize(
+    def _models_list_discoverable_models_serialize(
         self,
         refresh,
         _request_auth,
@@ -574,7 +574,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_model_metadata_api_v1_models_metadata_get(
+    def models_list_model_metadata(
         self,
         _request_timeout: Union[
             None,
@@ -615,7 +615,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_model_metadata_api_v1_models_metadata_get_serialize(
+        _param = self._models_list_model_metadata_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -637,7 +637,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_model_metadata_api_v1_models_metadata_get_with_http_info(
+    def models_list_model_metadata_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -678,7 +678,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_model_metadata_api_v1_models_metadata_get_serialize(
+        _param = self._models_list_model_metadata_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -700,7 +700,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_model_metadata_api_v1_models_metadata_get_without_preload_content(
+    def models_list_model_metadata_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -741,7 +741,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_model_metadata_api_v1_models_metadata_get_serialize(
+        _param = self._models_list_model_metadata_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -758,7 +758,7 @@ class ModelsApi:
         return response_data.response
 
 
-    def _list_model_metadata_api_v1_models_metadata_get_serialize(
+    def _models_list_model_metadata_serialize(
         self,
         _request_auth,
         _content_type,
@@ -821,7 +821,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_models_api_v1_models_get(
+    def models_list_models(
         self,
         provider: Annotated[Optional[StrictStr], Field(description="Filter models by provider name")] = None,
         _request_timeout: Union[
@@ -865,7 +865,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_models_api_v1_models_get_serialize(
+        _param = self._models_list_models_serialize(
             provider=provider,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -889,7 +889,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_models_api_v1_models_get_with_http_info(
+    def models_list_models_with_http_info(
         self,
         provider: Annotated[Optional[StrictStr], Field(description="Filter models by provider name")] = None,
         _request_timeout: Union[
@@ -933,7 +933,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_models_api_v1_models_get_serialize(
+        _param = self._models_list_models_serialize(
             provider=provider,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -957,7 +957,7 @@ class ModelsApi:
 
 
     @validate_call
-    def list_models_api_v1_models_get_without_preload_content(
+    def models_list_models_without_preload_content(
         self,
         provider: Annotated[Optional[StrictStr], Field(description="Filter models by provider name")] = None,
         _request_timeout: Union[
@@ -1001,7 +1001,7 @@ class ModelsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_models_api_v1_models_get_serialize(
+        _param = self._models_list_models_serialize(
             provider=provider,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1020,7 +1020,7 @@ class ModelsApi:
         return response_data.response
 
 
-    def _list_models_api_v1_models_get_serialize(
+    def _models_list_models_serialize(
         self,
         provider,
         _request_auth,

@@ -49,7 +49,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def add_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_post(
+    def provider_keys_add_workspace_provider_key_model_restriction(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -99,7 +99,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._add_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_post_serialize(
+        _param = self._provider_keys_add_workspace_provider_key_model_restriction_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             workspace_provider_model_restriction_request=workspace_provider_model_restriction_request,
@@ -125,7 +125,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def add_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_post_with_http_info(
+    def provider_keys_add_workspace_provider_key_model_restriction_with_http_info(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -175,7 +175,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._add_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_post_serialize(
+        _param = self._provider_keys_add_workspace_provider_key_model_restriction_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             workspace_provider_model_restriction_request=workspace_provider_model_restriction_request,
@@ -201,7 +201,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def add_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_post_without_preload_content(
+    def provider_keys_add_workspace_provider_key_model_restriction_without_preload_content(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -251,7 +251,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._add_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_post_serialize(
+        _param = self._provider_keys_add_workspace_provider_key_model_restriction_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             workspace_provider_model_restriction_request=workspace_provider_model_restriction_request,
@@ -272,7 +272,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _add_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_post_serialize(
+    def _provider_keys_add_workspace_provider_key_model_restriction_serialize(
         self,
         workspace_id,
         key_id,
@@ -357,7 +357,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def archive_org_provider_key_api_v1_organizations_me_provider_keys_key_id_archive_post(
+    def provider_keys_archive_org_provider_key(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -401,7 +401,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._archive_org_provider_key_api_v1_organizations_me_provider_keys_key_id_archive_post_serialize(
+        _param = self._provider_keys_archive_org_provider_key_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -425,7 +425,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def archive_org_provider_key_api_v1_organizations_me_provider_keys_key_id_archive_post_with_http_info(
+    def provider_keys_archive_org_provider_key_with_http_info(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -469,7 +469,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._archive_org_provider_key_api_v1_organizations_me_provider_keys_key_id_archive_post_serialize(
+        _param = self._provider_keys_archive_org_provider_key_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -493,7 +493,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def archive_org_provider_key_api_v1_organizations_me_provider_keys_key_id_archive_post_without_preload_content(
+    def provider_keys_archive_org_provider_key_without_preload_content(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -537,7 +537,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._archive_org_provider_key_api_v1_organizations_me_provider_keys_key_id_archive_post_serialize(
+        _param = self._provider_keys_archive_org_provider_key_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -556,7 +556,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _archive_org_provider_key_api_v1_organizations_me_provider_keys_key_id_archive_post_serialize(
+    def _provider_keys_archive_org_provider_key_serialize(
         self,
         key_id,
         _request_auth,
@@ -622,7 +622,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def create_org_provider_key_api_v1_organizations_me_provider_keys_post(
+    def provider_keys_create_org_provider_key(
         self,
         org_provider_key_create_request: OrgProviderKeyCreateRequest,
         _request_timeout: Union[
@@ -666,7 +666,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_org_provider_key_api_v1_organizations_me_provider_keys_post_serialize(
+        _param = self._provider_keys_create_org_provider_key_serialize(
             org_provider_key_create_request=org_provider_key_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -690,7 +690,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def create_org_provider_key_api_v1_organizations_me_provider_keys_post_with_http_info(
+    def provider_keys_create_org_provider_key_with_http_info(
         self,
         org_provider_key_create_request: OrgProviderKeyCreateRequest,
         _request_timeout: Union[
@@ -734,7 +734,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_org_provider_key_api_v1_organizations_me_provider_keys_post_serialize(
+        _param = self._provider_keys_create_org_provider_key_serialize(
             org_provider_key_create_request=org_provider_key_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -758,7 +758,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def create_org_provider_key_api_v1_organizations_me_provider_keys_post_without_preload_content(
+    def provider_keys_create_org_provider_key_without_preload_content(
         self,
         org_provider_key_create_request: OrgProviderKeyCreateRequest,
         _request_timeout: Union[
@@ -802,7 +802,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_org_provider_key_api_v1_organizations_me_provider_keys_post_serialize(
+        _param = self._provider_keys_create_org_provider_key_serialize(
             org_provider_key_create_request=org_provider_key_create_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -821,7 +821,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _create_org_provider_key_api_v1_organizations_me_provider_keys_post_serialize(
+    def _provider_keys_create_org_provider_key_serialize(
         self,
         org_provider_key_create_request,
         _request_auth,
@@ -900,7 +900,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def delete_org_provider_key_api_v1_organizations_me_provider_keys_key_id_delete(
+    def provider_keys_delete_org_provider_key(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -944,7 +944,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_org_provider_key_api_v1_organizations_me_provider_keys_key_id_delete_serialize(
+        _param = self._provider_keys_delete_org_provider_key_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -968,7 +968,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def delete_org_provider_key_api_v1_organizations_me_provider_keys_key_id_delete_with_http_info(
+    def provider_keys_delete_org_provider_key_with_http_info(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -1012,7 +1012,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_org_provider_key_api_v1_organizations_me_provider_keys_key_id_delete_serialize(
+        _param = self._provider_keys_delete_org_provider_key_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1036,7 +1036,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def delete_org_provider_key_api_v1_organizations_me_provider_keys_key_id_delete_without_preload_content(
+    def provider_keys_delete_org_provider_key_without_preload_content(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -1080,7 +1080,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_org_provider_key_api_v1_organizations_me_provider_keys_key_id_delete_serialize(
+        _param = self._provider_keys_delete_org_provider_key_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1099,7 +1099,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _delete_org_provider_key_api_v1_organizations_me_provider_keys_key_id_delete_serialize(
+    def _provider_keys_delete_org_provider_key_serialize(
         self,
         key_id,
         _request_auth,
@@ -1165,7 +1165,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def list_org_provider_keys_api_v1_organizations_me_provider_keys_get(
+    def provider_keys_list_org_provider_keys(
         self,
         include_archived: Annotated[Optional[StrictBool], Field(description="Include archived keys.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -1215,7 +1215,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_org_provider_keys_api_v1_organizations_me_provider_keys_get_serialize(
+        _param = self._provider_keys_list_org_provider_keys_serialize(
             include_archived=include_archived,
             skip=skip,
             limit=limit,
@@ -1241,7 +1241,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def list_org_provider_keys_api_v1_organizations_me_provider_keys_get_with_http_info(
+    def provider_keys_list_org_provider_keys_with_http_info(
         self,
         include_archived: Annotated[Optional[StrictBool], Field(description="Include archived keys.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -1291,7 +1291,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_org_provider_keys_api_v1_organizations_me_provider_keys_get_serialize(
+        _param = self._provider_keys_list_org_provider_keys_serialize(
             include_archived=include_archived,
             skip=skip,
             limit=limit,
@@ -1317,7 +1317,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def list_org_provider_keys_api_v1_organizations_me_provider_keys_get_without_preload_content(
+    def provider_keys_list_org_provider_keys_without_preload_content(
         self,
         include_archived: Annotated[Optional[StrictBool], Field(description="Include archived keys.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -1367,7 +1367,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_org_provider_keys_api_v1_organizations_me_provider_keys_get_serialize(
+        _param = self._provider_keys_list_org_provider_keys_serialize(
             include_archived=include_archived,
             skip=skip,
             limit=limit,
@@ -1388,7 +1388,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _list_org_provider_keys_api_v1_organizations_me_provider_keys_get_serialize(
+    def _provider_keys_list_org_provider_keys_serialize(
         self,
         include_archived,
         skip,
@@ -1466,7 +1466,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def list_workspace_provider_key_model_restrictions_api_v1_workspaces_workspace_id_provider_keys_key_id_models_get(
+    def provider_keys_list_workspace_provider_key_model_restrictions(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -1513,7 +1513,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_provider_key_model_restrictions_api_v1_workspaces_workspace_id_provider_keys_key_id_models_get_serialize(
+        _param = self._provider_keys_list_workspace_provider_key_model_restrictions_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             _request_auth=_request_auth,
@@ -1538,7 +1538,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def list_workspace_provider_key_model_restrictions_api_v1_workspaces_workspace_id_provider_keys_key_id_models_get_with_http_info(
+    def provider_keys_list_workspace_provider_key_model_restrictions_with_http_info(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -1585,7 +1585,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_provider_key_model_restrictions_api_v1_workspaces_workspace_id_provider_keys_key_id_models_get_serialize(
+        _param = self._provider_keys_list_workspace_provider_key_model_restrictions_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             _request_auth=_request_auth,
@@ -1610,7 +1610,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def list_workspace_provider_key_model_restrictions_api_v1_workspaces_workspace_id_provider_keys_key_id_models_get_without_preload_content(
+    def provider_keys_list_workspace_provider_key_model_restrictions_without_preload_content(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -1657,7 +1657,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_provider_key_model_restrictions_api_v1_workspaces_workspace_id_provider_keys_key_id_models_get_serialize(
+        _param = self._provider_keys_list_workspace_provider_key_model_restrictions_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             _request_auth=_request_auth,
@@ -1677,7 +1677,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _list_workspace_provider_key_model_restrictions_api_v1_workspaces_workspace_id_provider_keys_key_id_models_get_serialize(
+    def _provider_keys_list_workspace_provider_key_model_restrictions_serialize(
         self,
         workspace_id,
         key_id,
@@ -1746,7 +1746,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def list_workspace_provider_keys_api_v1_workspaces_workspace_id_provider_keys_get(
+    def provider_keys_list_workspace_provider_keys(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -1790,7 +1790,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_provider_keys_api_v1_workspaces_workspace_id_provider_keys_get_serialize(
+        _param = self._provider_keys_list_workspace_provider_keys_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1814,7 +1814,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def list_workspace_provider_keys_api_v1_workspaces_workspace_id_provider_keys_get_with_http_info(
+    def provider_keys_list_workspace_provider_keys_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -1858,7 +1858,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_provider_keys_api_v1_workspaces_workspace_id_provider_keys_get_serialize(
+        _param = self._provider_keys_list_workspace_provider_keys_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1882,7 +1882,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def list_workspace_provider_keys_api_v1_workspaces_workspace_id_provider_keys_get_without_preload_content(
+    def provider_keys_list_workspace_provider_keys_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -1926,7 +1926,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_provider_keys_api_v1_workspaces_workspace_id_provider_keys_get_serialize(
+        _param = self._provider_keys_list_workspace_provider_keys_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1945,7 +1945,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _list_workspace_provider_keys_api_v1_workspaces_workspace_id_provider_keys_get_serialize(
+    def _provider_keys_list_workspace_provider_keys_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -2011,7 +2011,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def remove_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_model_delete(
+    def provider_keys_remove_workspace_provider_key_model_restriction(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -2061,7 +2061,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_model_delete_serialize(
+        _param = self._provider_keys_remove_workspace_provider_key_model_restriction_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             model=model,
@@ -2087,7 +2087,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def remove_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_model_delete_with_http_info(
+    def provider_keys_remove_workspace_provider_key_model_restriction_with_http_info(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -2137,7 +2137,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_model_delete_serialize(
+        _param = self._provider_keys_remove_workspace_provider_key_model_restriction_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             model=model,
@@ -2163,7 +2163,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def remove_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_model_delete_without_preload_content(
+    def provider_keys_remove_workspace_provider_key_model_restriction_without_preload_content(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -2213,7 +2213,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_model_delete_serialize(
+        _param = self._provider_keys_remove_workspace_provider_key_model_restriction_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             model=model,
@@ -2234,7 +2234,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _remove_workspace_provider_key_model_restriction_api_v1_workspaces_workspace_id_provider_keys_key_id_models_model_delete_serialize(
+    def _provider_keys_remove_workspace_provider_key_model_restriction_serialize(
         self,
         workspace_id,
         key_id,
@@ -2306,7 +2306,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def reset_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_delete(
+    def provider_keys_reset_workspace_provider_key_override(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -2353,7 +2353,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reset_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_delete_serialize(
+        _param = self._provider_keys_reset_workspace_provider_key_override_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             _request_auth=_request_auth,
@@ -2378,7 +2378,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def reset_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_delete_with_http_info(
+    def provider_keys_reset_workspace_provider_key_override_with_http_info(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -2425,7 +2425,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reset_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_delete_serialize(
+        _param = self._provider_keys_reset_workspace_provider_key_override_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             _request_auth=_request_auth,
@@ -2450,7 +2450,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def reset_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_delete_without_preload_content(
+    def provider_keys_reset_workspace_provider_key_override_without_preload_content(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -2497,7 +2497,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reset_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_delete_serialize(
+        _param = self._provider_keys_reset_workspace_provider_key_override_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             _request_auth=_request_auth,
@@ -2517,7 +2517,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _reset_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_delete_serialize(
+    def _provider_keys_reset_workspace_provider_key_override_serialize(
         self,
         workspace_id,
         key_id,
@@ -2586,7 +2586,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def restore_org_provider_key_api_v1_organizations_me_provider_keys_key_id_restore_post(
+    def provider_keys_restore_org_provider_key(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -2630,7 +2630,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._restore_org_provider_key_api_v1_organizations_me_provider_keys_key_id_restore_post_serialize(
+        _param = self._provider_keys_restore_org_provider_key_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2654,7 +2654,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def restore_org_provider_key_api_v1_organizations_me_provider_keys_key_id_restore_post_with_http_info(
+    def provider_keys_restore_org_provider_key_with_http_info(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -2698,7 +2698,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._restore_org_provider_key_api_v1_organizations_me_provider_keys_key_id_restore_post_serialize(
+        _param = self._provider_keys_restore_org_provider_key_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2722,7 +2722,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def restore_org_provider_key_api_v1_organizations_me_provider_keys_key_id_restore_post_without_preload_content(
+    def provider_keys_restore_org_provider_key_without_preload_content(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -2766,7 +2766,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._restore_org_provider_key_api_v1_organizations_me_provider_keys_key_id_restore_post_serialize(
+        _param = self._provider_keys_restore_org_provider_key_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2785,7 +2785,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _restore_org_provider_key_api_v1_organizations_me_provider_keys_key_id_restore_post_serialize(
+    def _provider_keys_restore_org_provider_key_serialize(
         self,
         key_id,
         _request_auth,
@@ -2851,7 +2851,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def set_org_provider_key_default_api_v1_organizations_me_provider_keys_key_id_default_post(
+    def provider_keys_set_org_provider_key_default(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -2895,7 +2895,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_org_provider_key_default_api_v1_organizations_me_provider_keys_key_id_default_post_serialize(
+        _param = self._provider_keys_set_org_provider_key_default_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2919,7 +2919,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def set_org_provider_key_default_api_v1_organizations_me_provider_keys_key_id_default_post_with_http_info(
+    def provider_keys_set_org_provider_key_default_with_http_info(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -2963,7 +2963,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_org_provider_key_default_api_v1_organizations_me_provider_keys_key_id_default_post_serialize(
+        _param = self._provider_keys_set_org_provider_key_default_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2987,7 +2987,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def set_org_provider_key_default_api_v1_organizations_me_provider_keys_key_id_default_post_without_preload_content(
+    def provider_keys_set_org_provider_key_default_without_preload_content(
         self,
         key_id: UUID,
         _request_timeout: Union[
@@ -3031,7 +3031,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_org_provider_key_default_api_v1_organizations_me_provider_keys_key_id_default_post_serialize(
+        _param = self._provider_keys_set_org_provider_key_default_serialize(
             key_id=key_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3050,7 +3050,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _set_org_provider_key_default_api_v1_organizations_me_provider_keys_key_id_default_post_serialize(
+    def _provider_keys_set_org_provider_key_default_serialize(
         self,
         key_id,
         _request_auth,
@@ -3116,7 +3116,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def set_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_patch(
+    def provider_keys_set_workspace_provider_key_override(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -3166,7 +3166,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_patch_serialize(
+        _param = self._provider_keys_set_workspace_provider_key_override_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             workspace_provider_key_override_request=workspace_provider_key_override_request,
@@ -3192,7 +3192,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def set_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_patch_with_http_info(
+    def provider_keys_set_workspace_provider_key_override_with_http_info(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -3242,7 +3242,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_patch_serialize(
+        _param = self._provider_keys_set_workspace_provider_key_override_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             workspace_provider_key_override_request=workspace_provider_key_override_request,
@@ -3268,7 +3268,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def set_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_patch_without_preload_content(
+    def provider_keys_set_workspace_provider_key_override_without_preload_content(
         self,
         workspace_id: UUID,
         key_id: UUID,
@@ -3318,7 +3318,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_patch_serialize(
+        _param = self._provider_keys_set_workspace_provider_key_override_serialize(
             workspace_id=workspace_id,
             key_id=key_id,
             workspace_provider_key_override_request=workspace_provider_key_override_request,
@@ -3339,7 +3339,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _set_workspace_provider_key_override_api_v1_workspaces_workspace_id_provider_keys_key_id_patch_serialize(
+    def _provider_keys_set_workspace_provider_key_override_serialize(
         self,
         workspace_id,
         key_id,
@@ -3424,7 +3424,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def update_org_provider_key_api_v1_organizations_me_provider_keys_key_id_patch(
+    def provider_keys_update_org_provider_key(
         self,
         key_id: UUID,
         org_provider_key_update_request: OrgProviderKeyUpdateRequest,
@@ -3471,7 +3471,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_org_provider_key_api_v1_organizations_me_provider_keys_key_id_patch_serialize(
+        _param = self._provider_keys_update_org_provider_key_serialize(
             key_id=key_id,
             org_provider_key_update_request=org_provider_key_update_request,
             _request_auth=_request_auth,
@@ -3496,7 +3496,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def update_org_provider_key_api_v1_organizations_me_provider_keys_key_id_patch_with_http_info(
+    def provider_keys_update_org_provider_key_with_http_info(
         self,
         key_id: UUID,
         org_provider_key_update_request: OrgProviderKeyUpdateRequest,
@@ -3543,7 +3543,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_org_provider_key_api_v1_organizations_me_provider_keys_key_id_patch_serialize(
+        _param = self._provider_keys_update_org_provider_key_serialize(
             key_id=key_id,
             org_provider_key_update_request=org_provider_key_update_request,
             _request_auth=_request_auth,
@@ -3568,7 +3568,7 @@ class ProviderKeysApi:
 
 
     @validate_call
-    def update_org_provider_key_api_v1_organizations_me_provider_keys_key_id_patch_without_preload_content(
+    def provider_keys_update_org_provider_key_without_preload_content(
         self,
         key_id: UUID,
         org_provider_key_update_request: OrgProviderKeyUpdateRequest,
@@ -3615,7 +3615,7 @@ class ProviderKeysApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_org_provider_key_api_v1_organizations_me_provider_keys_key_id_patch_serialize(
+        _param = self._provider_keys_update_org_provider_key_serialize(
             key_id=key_id,
             org_provider_key_update_request=org_provider_key_update_request,
             _request_auth=_request_auth,
@@ -3635,7 +3635,7 @@ class ProviderKeysApi:
         return response_data.response
 
 
-    def _update_org_provider_key_api_v1_organizations_me_provider_keys_key_id_patch_serialize(
+    def _provider_keys_update_org_provider_key_serialize(
         self,
         key_id,
         org_provider_key_update_request,

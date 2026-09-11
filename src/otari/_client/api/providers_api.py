@@ -47,7 +47,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def create_stored_provider_api_v1_provider_credentials_post(
+    def providers_create_stored_provider(
         self,
         create_stored_provider_request: CreateStoredProviderRequest,
         _request_timeout: Union[
@@ -91,7 +91,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_stored_provider_api_v1_provider_credentials_post_serialize(
+        _param = self._providers_create_stored_provider_serialize(
             create_stored_provider_request=create_stored_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -115,7 +115,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def create_stored_provider_api_v1_provider_credentials_post_with_http_info(
+    def providers_create_stored_provider_with_http_info(
         self,
         create_stored_provider_request: CreateStoredProviderRequest,
         _request_timeout: Union[
@@ -159,7 +159,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_stored_provider_api_v1_provider_credentials_post_serialize(
+        _param = self._providers_create_stored_provider_serialize(
             create_stored_provider_request=create_stored_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -183,7 +183,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def create_stored_provider_api_v1_provider_credentials_post_without_preload_content(
+    def providers_create_stored_provider_without_preload_content(
         self,
         create_stored_provider_request: CreateStoredProviderRequest,
         _request_timeout: Union[
@@ -227,7 +227,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_stored_provider_api_v1_provider_credentials_post_serialize(
+        _param = self._providers_create_stored_provider_serialize(
             create_stored_provider_request=create_stored_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -246,7 +246,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _create_stored_provider_api_v1_provider_credentials_post_serialize(
+    def _providers_create_stored_provider_serialize(
         self,
         create_stored_provider_request,
         _request_auth,
@@ -325,7 +325,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def delete_stored_provider_api_v1_provider_credentials_instance_delete(
+    def providers_delete_stored_provider(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -369,7 +369,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_stored_provider_api_v1_provider_credentials_instance_delete_serialize(
+        _param = self._providers_delete_stored_provider_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -393,7 +393,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def delete_stored_provider_api_v1_provider_credentials_instance_delete_with_http_info(
+    def providers_delete_stored_provider_with_http_info(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -437,7 +437,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_stored_provider_api_v1_provider_credentials_instance_delete_serialize(
+        _param = self._providers_delete_stored_provider_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -461,7 +461,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def delete_stored_provider_api_v1_provider_credentials_instance_delete_without_preload_content(
+    def providers_delete_stored_provider_without_preload_content(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -505,7 +505,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_stored_provider_api_v1_provider_credentials_instance_delete_serialize(
+        _param = self._providers_delete_stored_provider_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -524,7 +524,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _delete_stored_provider_api_v1_provider_credentials_instance_delete_serialize(
+    def _providers_delete_stored_provider_serialize(
         self,
         instance,
         _request_auth,
@@ -590,7 +590,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_providers_api_v1_providers_get(
+    def providers_list_providers(
         self,
         _request_timeout: Union[
             None,
@@ -631,7 +631,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_providers_api_v1_providers_get_serialize(
+        _param = self._providers_list_providers_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -653,7 +653,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_providers_api_v1_providers_get_with_http_info(
+    def providers_list_providers_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -694,7 +694,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_providers_api_v1_providers_get_serialize(
+        _param = self._providers_list_providers_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -716,7 +716,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_providers_api_v1_providers_get_without_preload_content(
+    def providers_list_providers_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -757,7 +757,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_providers_api_v1_providers_get_serialize(
+        _param = self._providers_list_providers_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -774,7 +774,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _list_providers_api_v1_providers_get_serialize(
+    def _providers_list_providers_serialize(
         self,
         _request_auth,
         _content_type,
@@ -837,7 +837,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_stored_providers_api_v1_provider_credentials_get(
+    def providers_list_stored_providers(
         self,
         _request_timeout: Union[
             None,
@@ -878,7 +878,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_stored_providers_api_v1_provider_credentials_get_serialize(
+        _param = self._providers_list_stored_providers_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -900,7 +900,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_stored_providers_api_v1_provider_credentials_get_with_http_info(
+    def providers_list_stored_providers_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -941,7 +941,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_stored_providers_api_v1_provider_credentials_get_serialize(
+        _param = self._providers_list_stored_providers_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -963,7 +963,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def list_stored_providers_api_v1_provider_credentials_get_without_preload_content(
+    def providers_list_stored_providers_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1004,7 +1004,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_stored_providers_api_v1_provider_credentials_get_serialize(
+        _param = self._providers_list_stored_providers_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1021,7 +1021,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _list_stored_providers_api_v1_provider_credentials_get_serialize(
+    def _providers_list_stored_providers_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1084,7 +1084,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_api_v1_providers_catalog_get(
+    def providers_provider_catalog(
         self,
         _request_timeout: Union[
             None,
@@ -1125,7 +1125,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_catalog_api_v1_providers_catalog_get_serialize(
+        _param = self._providers_provider_catalog_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1147,7 +1147,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_api_v1_providers_catalog_get_with_http_info(
+    def providers_provider_catalog_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -1188,7 +1188,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_catalog_api_v1_providers_catalog_get_serialize(
+        _param = self._providers_provider_catalog_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1210,7 +1210,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_api_v1_providers_catalog_get_without_preload_content(
+    def providers_provider_catalog_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1251,7 +1251,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_catalog_api_v1_providers_catalog_get_serialize(
+        _param = self._providers_provider_catalog_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1268,7 +1268,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _provider_catalog_api_v1_providers_catalog_get_serialize(
+    def _providers_provider_catalog_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1331,7 +1331,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_detail_api_v1_providers_catalog_provider_id_get(
+    def providers_provider_catalog_detail(
         self,
         provider_id: StrictStr,
         _request_timeout: Union[
@@ -1375,7 +1375,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_catalog_detail_api_v1_providers_catalog_provider_id_get_serialize(
+        _param = self._providers_provider_catalog_detail_serialize(
             provider_id=provider_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1399,7 +1399,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_detail_api_v1_providers_catalog_provider_id_get_with_http_info(
+    def providers_provider_catalog_detail_with_http_info(
         self,
         provider_id: StrictStr,
         _request_timeout: Union[
@@ -1443,7 +1443,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_catalog_detail_api_v1_providers_catalog_provider_id_get_serialize(
+        _param = self._providers_provider_catalog_detail_serialize(
             provider_id=provider_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1467,7 +1467,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_catalog_detail_api_v1_providers_catalog_provider_id_get_without_preload_content(
+    def providers_provider_catalog_detail_without_preload_content(
         self,
         provider_id: StrictStr,
         _request_timeout: Union[
@@ -1511,7 +1511,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_catalog_detail_api_v1_providers_catalog_provider_id_get_serialize(
+        _param = self._providers_provider_catalog_detail_serialize(
             provider_id=provider_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1530,7 +1530,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _provider_catalog_detail_api_v1_providers_catalog_provider_id_get_serialize(
+    def _providers_provider_catalog_detail_serialize(
         self,
         provider_id,
         _request_auth,
@@ -1596,7 +1596,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_health_api_v1_providers_health_get(
+    def providers_provider_health(
         self,
         refresh: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -1640,7 +1640,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_health_api_v1_providers_health_get_serialize(
+        _param = self._providers_provider_health_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1664,7 +1664,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_health_api_v1_providers_health_get_with_http_info(
+    def providers_provider_health_with_http_info(
         self,
         refresh: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -1708,7 +1708,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_health_api_v1_providers_health_get_serialize(
+        _param = self._providers_provider_health_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1732,7 +1732,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def provider_health_api_v1_providers_health_get_without_preload_content(
+    def providers_provider_health_without_preload_content(
         self,
         refresh: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -1776,7 +1776,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._provider_health_api_v1_providers_health_get_serialize(
+        _param = self._providers_provider_health_serialize(
             refresh=refresh,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1795,7 +1795,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _provider_health_api_v1_providers_health_get_serialize(
+    def _providers_provider_health_serialize(
         self,
         refresh,
         _request_auth,
@@ -1863,7 +1863,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post(
+    def providers_reencrypt_stored_provider_keys(
         self,
         _request_timeout: Union[
             None,
@@ -1904,7 +1904,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_serialize(
+        _param = self._providers_reencrypt_stored_provider_keys_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1926,7 +1926,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_with_http_info(
+    def providers_reencrypt_stored_provider_keys_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -1967,7 +1967,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_serialize(
+        _param = self._providers_reencrypt_stored_provider_keys_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1989,7 +1989,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_without_preload_content(
+    def providers_reencrypt_stored_provider_keys_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -2030,7 +2030,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_serialize(
+        _param = self._providers_reencrypt_stored_provider_keys_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2047,7 +2047,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _reencrypt_stored_provider_keys_api_v1_provider_credentials_reencrypt_post_serialize(
+    def _providers_reencrypt_stored_provider_keys_serialize(
         self,
         _request_auth,
         _content_type,
@@ -2110,7 +2110,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_provider_connection_api_v1_provider_credentials_test_post(
+    def providers_test_provider_connection(
         self,
         test_provider_request: TestProviderRequest,
         _request_timeout: Union[
@@ -2154,7 +2154,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_provider_connection_api_v1_provider_credentials_test_post_serialize(
+        _param = self._providers_test_provider_connection_serialize(
             test_provider_request=test_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2178,7 +2178,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_provider_connection_api_v1_provider_credentials_test_post_with_http_info(
+    def providers_test_provider_connection_with_http_info(
         self,
         test_provider_request: TestProviderRequest,
         _request_timeout: Union[
@@ -2222,7 +2222,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_provider_connection_api_v1_provider_credentials_test_post_serialize(
+        _param = self._providers_test_provider_connection_serialize(
             test_provider_request=test_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2246,7 +2246,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_provider_connection_api_v1_provider_credentials_test_post_without_preload_content(
+    def providers_test_provider_connection_without_preload_content(
         self,
         test_provider_request: TestProviderRequest,
         _request_timeout: Union[
@@ -2290,7 +2290,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_provider_connection_api_v1_provider_credentials_test_post_serialize(
+        _param = self._providers_test_provider_connection_serialize(
             test_provider_request=test_provider_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2309,7 +2309,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _test_provider_connection_api_v1_provider_credentials_test_post_serialize(
+    def _providers_test_provider_connection_serialize(
         self,
         test_provider_request,
         _request_auth,
@@ -2388,7 +2388,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_stored_provider_api_v1_provider_credentials_instance_test_post(
+    def providers_test_stored_provider(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -2432,7 +2432,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_stored_provider_api_v1_provider_credentials_instance_test_post_serialize(
+        _param = self._providers_test_stored_provider_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2456,7 +2456,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_stored_provider_api_v1_provider_credentials_instance_test_post_with_http_info(
+    def providers_test_stored_provider_with_http_info(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -2500,7 +2500,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_stored_provider_api_v1_provider_credentials_instance_test_post_serialize(
+        _param = self._providers_test_stored_provider_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2524,7 +2524,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def test_stored_provider_api_v1_provider_credentials_instance_test_post_without_preload_content(
+    def providers_test_stored_provider_without_preload_content(
         self,
         instance: StrictStr,
         _request_timeout: Union[
@@ -2568,7 +2568,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._test_stored_provider_api_v1_provider_credentials_instance_test_post_serialize(
+        _param = self._providers_test_stored_provider_serialize(
             instance=instance,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2587,7 +2587,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _test_stored_provider_api_v1_provider_credentials_instance_test_post_serialize(
+    def _providers_test_stored_provider_serialize(
         self,
         instance,
         _request_auth,
@@ -2653,7 +2653,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def update_stored_provider_api_v1_provider_credentials_instance_patch(
+    def providers_update_stored_provider(
         self,
         instance: StrictStr,
         update_stored_provider_request: UpdateStoredProviderRequest,
@@ -2700,7 +2700,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_stored_provider_api_v1_provider_credentials_instance_patch_serialize(
+        _param = self._providers_update_stored_provider_serialize(
             instance=instance,
             update_stored_provider_request=update_stored_provider_request,
             _request_auth=_request_auth,
@@ -2725,7 +2725,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def update_stored_provider_api_v1_provider_credentials_instance_patch_with_http_info(
+    def providers_update_stored_provider_with_http_info(
         self,
         instance: StrictStr,
         update_stored_provider_request: UpdateStoredProviderRequest,
@@ -2772,7 +2772,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_stored_provider_api_v1_provider_credentials_instance_patch_serialize(
+        _param = self._providers_update_stored_provider_serialize(
             instance=instance,
             update_stored_provider_request=update_stored_provider_request,
             _request_auth=_request_auth,
@@ -2797,7 +2797,7 @@ class ProvidersApi:
 
 
     @validate_call
-    def update_stored_provider_api_v1_provider_credentials_instance_patch_without_preload_content(
+    def providers_update_stored_provider_without_preload_content(
         self,
         instance: StrictStr,
         update_stored_provider_request: UpdateStoredProviderRequest,
@@ -2844,7 +2844,7 @@ class ProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_stored_provider_api_v1_provider_credentials_instance_patch_serialize(
+        _param = self._providers_update_stored_provider_serialize(
             instance=instance,
             update_stored_provider_request=update_stored_provider_request,
             _request_auth=_request_auth,
@@ -2864,7 +2864,7 @@ class ProvidersApi:
         return response_data.response
 
 
-    def _update_stored_provider_api_v1_provider_credentials_instance_patch_serialize(
+    def _providers_update_stored_provider_serialize(
         self,
         instance,
         update_stored_provider_request,

@@ -51,7 +51,7 @@ class UsageApi:
 
 
     @validate_call
-    def count_usage_api_v1_usage_count_get(
+    def usage_count_usage(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -140,7 +140,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_usage_api_v1_usage_count_get_serialize(
+        _param = self._usage_count_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -179,7 +179,7 @@ class UsageApi:
 
 
     @validate_call
-    def count_usage_api_v1_usage_count_get_with_http_info(
+    def usage_count_usage_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -268,7 +268,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_usage_api_v1_usage_count_get_serialize(
+        _param = self._usage_count_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -307,7 +307,7 @@ class UsageApi:
 
 
     @validate_call
-    def count_usage_api_v1_usage_count_get_without_preload_content(
+    def usage_count_usage_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -396,7 +396,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_usage_api_v1_usage_count_get_serialize(
+        _param = self._usage_count_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -430,7 +430,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _count_usage_api_v1_usage_count_get_serialize(
+    def _usage_count_usage_serialize(
         self,
         start_date,
         end_date,
@@ -595,7 +595,7 @@ class UsageApi:
 
 
     @validate_call
-    def delete_usage_rows_api_v1_usage_delete(
+    def usage_delete_usage_rows(
         self,
         usage_delete_request: UsageDeleteRequest,
         _request_timeout: Union[
@@ -639,7 +639,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_usage_rows_api_v1_usage_delete_serialize(
+        _param = self._usage_delete_usage_rows_serialize(
             usage_delete_request=usage_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -663,7 +663,7 @@ class UsageApi:
 
 
     @validate_call
-    def delete_usage_rows_api_v1_usage_delete_with_http_info(
+    def usage_delete_usage_rows_with_http_info(
         self,
         usage_delete_request: UsageDeleteRequest,
         _request_timeout: Union[
@@ -707,7 +707,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_usage_rows_api_v1_usage_delete_serialize(
+        _param = self._usage_delete_usage_rows_serialize(
             usage_delete_request=usage_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -731,7 +731,7 @@ class UsageApi:
 
 
     @validate_call
-    def delete_usage_rows_api_v1_usage_delete_without_preload_content(
+    def usage_delete_usage_rows_without_preload_content(
         self,
         usage_delete_request: UsageDeleteRequest,
         _request_timeout: Union[
@@ -775,7 +775,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_usage_rows_api_v1_usage_delete_serialize(
+        _param = self._usage_delete_usage_rows_serialize(
             usage_delete_request=usage_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -794,7 +794,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _delete_usage_rows_api_v1_usage_delete_serialize(
+    def _usage_delete_usage_rows_serialize(
         self,
         usage_delete_request,
         _request_auth,
@@ -873,7 +873,7 @@ class UsageApi:
 
 
     @validate_call
-    def ingest_external_usage_api_v1_usage_external_events_post(
+    def usage_ingest_external_usage(
         self,
         external_events_request: ExternalEventsRequest,
         _request_timeout: Union[
@@ -917,7 +917,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._ingest_external_usage_api_v1_usage_external_events_post_serialize(
+        _param = self._usage_ingest_external_usage_serialize(
             external_events_request=external_events_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -941,7 +941,7 @@ class UsageApi:
 
 
     @validate_call
-    def ingest_external_usage_api_v1_usage_external_events_post_with_http_info(
+    def usage_ingest_external_usage_with_http_info(
         self,
         external_events_request: ExternalEventsRequest,
         _request_timeout: Union[
@@ -985,7 +985,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._ingest_external_usage_api_v1_usage_external_events_post_serialize(
+        _param = self._usage_ingest_external_usage_serialize(
             external_events_request=external_events_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1009,7 +1009,7 @@ class UsageApi:
 
 
     @validate_call
-    def ingest_external_usage_api_v1_usage_external_events_post_without_preload_content(
+    def usage_ingest_external_usage_without_preload_content(
         self,
         external_events_request: ExternalEventsRequest,
         _request_timeout: Union[
@@ -1053,7 +1053,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._ingest_external_usage_api_v1_usage_external_events_post_serialize(
+        _param = self._usage_ingest_external_usage_serialize(
             external_events_request=external_events_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1072,7 +1072,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _ingest_external_usage_api_v1_usage_external_events_post_serialize(
+    def _usage_ingest_external_usage_serialize(
         self,
         external_events_request,
         _request_auth,
@@ -1151,7 +1151,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_in_flight_api_v1_usage_in_flight_get(
+    def usage_list_in_flight(
         self,
         _request_timeout: Union[
             None,
@@ -1192,7 +1192,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_in_flight_api_v1_usage_in_flight_get_serialize(
+        _param = self._usage_list_in_flight_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1214,7 +1214,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_in_flight_api_v1_usage_in_flight_get_with_http_info(
+    def usage_list_in_flight_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -1255,7 +1255,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_in_flight_api_v1_usage_in_flight_get_serialize(
+        _param = self._usage_list_in_flight_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1277,7 +1277,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_in_flight_api_v1_usage_in_flight_get_without_preload_content(
+    def usage_list_in_flight_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -1318,7 +1318,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_in_flight_api_v1_usage_in_flight_get_serialize(
+        _param = self._usage_list_in_flight_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1335,7 +1335,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _list_in_flight_api_v1_usage_in_flight_get_serialize(
+    def _usage_list_in_flight_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1398,7 +1398,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_usage_api_v1_usage_get(
+    def usage_list_usage(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1493,7 +1493,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_usage_api_v1_usage_get_serialize(
+        _param = self._usage_list_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1534,7 +1534,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_usage_api_v1_usage_get_with_http_info(
+    def usage_list_usage_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1629,7 +1629,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_usage_api_v1_usage_get_serialize(
+        _param = self._usage_list_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1670,7 +1670,7 @@ class UsageApi:
 
 
     @validate_call
-    def list_usage_api_v1_usage_get_without_preload_content(
+    def usage_list_usage_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1765,7 +1765,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_usage_api_v1_usage_get_serialize(
+        _param = self._usage_list_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1801,7 +1801,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _list_usage_api_v1_usage_get_serialize(
+    def _usage_list_usage_serialize(
         self,
         start_date,
         end_date,
@@ -1976,7 +1976,7 @@ class UsageApi:
 
 
     @validate_call
-    def set_usage_price_rows_api_v1_usage_set_price_post(
+    def usage_set_usage_price_rows(
         self,
         usage_set_price_request: UsageSetPriceRequest,
         _request_timeout: Union[
@@ -2020,7 +2020,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_usage_price_rows_api_v1_usage_set_price_post_serialize(
+        _param = self._usage_set_usage_price_rows_serialize(
             usage_set_price_request=usage_set_price_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2044,7 +2044,7 @@ class UsageApi:
 
 
     @validate_call
-    def set_usage_price_rows_api_v1_usage_set_price_post_with_http_info(
+    def usage_set_usage_price_rows_with_http_info(
         self,
         usage_set_price_request: UsageSetPriceRequest,
         _request_timeout: Union[
@@ -2088,7 +2088,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_usage_price_rows_api_v1_usage_set_price_post_serialize(
+        _param = self._usage_set_usage_price_rows_serialize(
             usage_set_price_request=usage_set_price_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2112,7 +2112,7 @@ class UsageApi:
 
 
     @validate_call
-    def set_usage_price_rows_api_v1_usage_set_price_post_without_preload_content(
+    def usage_set_usage_price_rows_without_preload_content(
         self,
         usage_set_price_request: UsageSetPriceRequest,
         _request_timeout: Union[
@@ -2156,7 +2156,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_usage_price_rows_api_v1_usage_set_price_post_serialize(
+        _param = self._usage_set_usage_price_rows_serialize(
             usage_set_price_request=usage_set_price_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2175,7 +2175,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _set_usage_price_rows_api_v1_usage_set_price_post_serialize(
+    def _usage_set_usage_price_rows_serialize(
         self,
         usage_set_price_request,
         _request_auth,
@@ -2254,7 +2254,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_series_api_v1_usage_series_get(
+    def usage_usage_series(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2346,7 +2346,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_series_api_v1_usage_series_get_serialize(
+        _param = self._usage_usage_series_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -2386,7 +2386,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_series_api_v1_usage_series_get_with_http_info(
+    def usage_usage_series_with_http_info(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2478,7 +2478,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_series_api_v1_usage_series_get_serialize(
+        _param = self._usage_usage_series_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -2518,7 +2518,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_series_api_v1_usage_series_get_without_preload_content(
+    def usage_usage_series_without_preload_content(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2610,7 +2610,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_series_api_v1_usage_series_get_serialize(
+        _param = self._usage_usage_series_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -2645,7 +2645,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _usage_series_api_v1_usage_series_get_serialize(
+    def _usage_usage_series_serialize(
         self,
         group_by,
         start_date,
@@ -2814,7 +2814,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_summary_api_v1_usage_summary_get(
+    def usage_usage_summary(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2906,7 +2906,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_summary_api_v1_usage_summary_get_serialize(
+        _param = self._usage_usage_summary_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -2946,7 +2946,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_summary_api_v1_usage_summary_get_with_http_info(
+    def usage_usage_summary_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -3038,7 +3038,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_summary_api_v1_usage_summary_get_serialize(
+        _param = self._usage_usage_summary_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -3078,7 +3078,7 @@ class UsageApi:
 
 
     @validate_call
-    def usage_summary_api_v1_usage_summary_get_without_preload_content(
+    def usage_usage_summary_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -3170,7 +3170,7 @@ class UsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._usage_summary_api_v1_usage_summary_get_serialize(
+        _param = self._usage_usage_summary_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -3205,7 +3205,7 @@ class UsageApi:
         return response_data.response
 
 
-    def _usage_summary_api_v1_usage_summary_get_serialize(
+    def _usage_usage_summary_serialize(
         self,
         start_date,
         end_date,

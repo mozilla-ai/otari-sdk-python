@@ -37,7 +37,7 @@ class ResponsesApi:
 
 
     @validate_call
-    def create_response_api_v1_responses_post(
+    def responses_create_response(
         self,
         responses_request: ResponsesRequest,
         _request_timeout: Union[
@@ -81,7 +81,7 @@ class ResponsesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_response_api_v1_responses_post_serialize(
+        _param = self._responses_create_response_serialize(
             responses_request=responses_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -105,7 +105,7 @@ class ResponsesApi:
 
 
     @validate_call
-    def create_response_api_v1_responses_post_with_http_info(
+    def responses_create_response_with_http_info(
         self,
         responses_request: ResponsesRequest,
         _request_timeout: Union[
@@ -149,7 +149,7 @@ class ResponsesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_response_api_v1_responses_post_serialize(
+        _param = self._responses_create_response_serialize(
             responses_request=responses_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -173,7 +173,7 @@ class ResponsesApi:
 
 
     @validate_call
-    def create_response_api_v1_responses_post_without_preload_content(
+    def responses_create_response_without_preload_content(
         self,
         responses_request: ResponsesRequest,
         _request_timeout: Union[
@@ -217,7 +217,7 @@ class ResponsesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_response_api_v1_responses_post_serialize(
+        _param = self._responses_create_response_serialize(
             responses_request=responses_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -236,7 +236,7 @@ class ResponsesApi:
         return response_data.response
 
 
-    def _create_response_api_v1_responses_post_serialize(
+    def _responses_create_response_serialize(
         self,
         responses_request,
         _request_auth,

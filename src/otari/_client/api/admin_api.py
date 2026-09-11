@@ -43,7 +43,7 @@ class AdminApi:
 
 
     @validate_call
-    def get_administration_access_api_v1_admin_access_get(
+    def admin_get_administration_access(
         self,
         _request_timeout: Union[
             None,
@@ -84,7 +84,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_administration_access_api_v1_admin_access_get_serialize(
+        _param = self._admin_get_administration_access_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -106,7 +106,7 @@ class AdminApi:
 
 
     @validate_call
-    def get_administration_access_api_v1_admin_access_get_with_http_info(
+    def admin_get_administration_access_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -147,7 +147,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_administration_access_api_v1_admin_access_get_serialize(
+        _param = self._admin_get_administration_access_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -169,7 +169,7 @@ class AdminApi:
 
 
     @validate_call
-    def get_administration_access_api_v1_admin_access_get_without_preload_content(
+    def admin_get_administration_access_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -210,7 +210,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_administration_access_api_v1_admin_access_get_serialize(
+        _param = self._admin_get_administration_access_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -227,7 +227,7 @@ class AdminApi:
         return response_data.response
 
 
-    def _get_administration_access_api_v1_admin_access_get_serialize(
+    def _admin_get_administration_access_serialize(
         self,
         _request_auth,
         _content_type,
@@ -290,7 +290,7 @@ class AdminApi:
 
 
     @validate_call
-    def list_deployment_users_api_v1_admin_users_get(
+    def admin_list_deployment_users(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -337,7 +337,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_deployment_users_api_v1_admin_users_get_serialize(
+        _param = self._admin_list_deployment_users_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -362,7 +362,7 @@ class AdminApi:
 
 
     @validate_call
-    def list_deployment_users_api_v1_admin_users_get_with_http_info(
+    def admin_list_deployment_users_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -409,7 +409,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_deployment_users_api_v1_admin_users_get_serialize(
+        _param = self._admin_list_deployment_users_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -434,7 +434,7 @@ class AdminApi:
 
 
     @validate_call
-    def list_deployment_users_api_v1_admin_users_get_without_preload_content(
+    def admin_list_deployment_users_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -481,7 +481,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_deployment_users_api_v1_admin_users_get_serialize(
+        _param = self._admin_list_deployment_users_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -501,7 +501,7 @@ class AdminApi:
         return response_data.response
 
 
-    def _list_deployment_users_api_v1_admin_users_get_serialize(
+    def _admin_list_deployment_users_serialize(
         self,
         skip,
         limit,
@@ -574,7 +574,7 @@ class AdminApi:
 
 
     @validate_call
-    def update_deployment_user_api_v1_admin_users_user_id_patch(
+    def admin_update_deployment_user(
         self,
         user_id: UUID,
         deployment_user_update_request: DeploymentUserUpdateRequest,
@@ -621,7 +621,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_deployment_user_api_v1_admin_users_user_id_patch_serialize(
+        _param = self._admin_update_deployment_user_serialize(
             user_id=user_id,
             deployment_user_update_request=deployment_user_update_request,
             _request_auth=_request_auth,
@@ -646,7 +646,7 @@ class AdminApi:
 
 
     @validate_call
-    def update_deployment_user_api_v1_admin_users_user_id_patch_with_http_info(
+    def admin_update_deployment_user_with_http_info(
         self,
         user_id: UUID,
         deployment_user_update_request: DeploymentUserUpdateRequest,
@@ -693,7 +693,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_deployment_user_api_v1_admin_users_user_id_patch_serialize(
+        _param = self._admin_update_deployment_user_serialize(
             user_id=user_id,
             deployment_user_update_request=deployment_user_update_request,
             _request_auth=_request_auth,
@@ -718,7 +718,7 @@ class AdminApi:
 
 
     @validate_call
-    def update_deployment_user_api_v1_admin_users_user_id_patch_without_preload_content(
+    def admin_update_deployment_user_without_preload_content(
         self,
         user_id: UUID,
         deployment_user_update_request: DeploymentUserUpdateRequest,
@@ -765,7 +765,7 @@ class AdminApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_deployment_user_api_v1_admin_users_user_id_patch_serialize(
+        _param = self._admin_update_deployment_user_serialize(
             user_id=user_id,
             deployment_user_update_request=deployment_user_update_request,
             _request_auth=_request_auth,
@@ -785,7 +785,7 @@ class AdminApi:
         return response_data.response
 
 
-    def _update_deployment_user_api_v1_admin_users_user_id_patch_serialize(
+    def _admin_update_deployment_user_serialize(
         self,
         user_id,
         deployment_user_update_request,

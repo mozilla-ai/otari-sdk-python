@@ -38,7 +38,7 @@ class WorkspaceWebSearchApi:
 
 
     @validate_call
-    def clear_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_delete(
+    def workspace_web_search_clear_workspace_web_search_config(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -82,7 +82,7 @@ class WorkspaceWebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._clear_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_delete_serialize(
+        _param = self._workspace_web_search_clear_workspace_web_search_config_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -106,7 +106,7 @@ class WorkspaceWebSearchApi:
 
 
     @validate_call
-    def clear_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_delete_with_http_info(
+    def workspace_web_search_clear_workspace_web_search_config_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -150,7 +150,7 @@ class WorkspaceWebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._clear_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_delete_serialize(
+        _param = self._workspace_web_search_clear_workspace_web_search_config_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -174,7 +174,7 @@ class WorkspaceWebSearchApi:
 
 
     @validate_call
-    def clear_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_delete_without_preload_content(
+    def workspace_web_search_clear_workspace_web_search_config_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -218,7 +218,7 @@ class WorkspaceWebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._clear_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_delete_serialize(
+        _param = self._workspace_web_search_clear_workspace_web_search_config_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -237,7 +237,7 @@ class WorkspaceWebSearchApi:
         return response_data.response
 
 
-    def _clear_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_delete_serialize(
+    def _workspace_web_search_clear_workspace_web_search_config_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -303,7 +303,7 @@ class WorkspaceWebSearchApi:
 
 
     @validate_call
-    def get_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_get(
+    def workspace_web_search_get_workspace_web_search_config(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -347,7 +347,7 @@ class WorkspaceWebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_get_serialize(
+        _param = self._workspace_web_search_get_workspace_web_search_config_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -371,7 +371,7 @@ class WorkspaceWebSearchApi:
 
 
     @validate_call
-    def get_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_get_with_http_info(
+    def workspace_web_search_get_workspace_web_search_config_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -415,7 +415,7 @@ class WorkspaceWebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_get_serialize(
+        _param = self._workspace_web_search_get_workspace_web_search_config_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -439,7 +439,7 @@ class WorkspaceWebSearchApi:
 
 
     @validate_call
-    def get_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_get_without_preload_content(
+    def workspace_web_search_get_workspace_web_search_config_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -483,7 +483,7 @@ class WorkspaceWebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_get_serialize(
+        _param = self._workspace_web_search_get_workspace_web_search_config_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -502,7 +502,7 @@ class WorkspaceWebSearchApi:
         return response_data.response
 
 
-    def _get_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_get_serialize(
+    def _workspace_web_search_get_workspace_web_search_config_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -568,7 +568,7 @@ class WorkspaceWebSearchApi:
 
 
     @validate_call
-    def set_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_put(
+    def workspace_web_search_set_workspace_web_search_config(
         self,
         workspace_id: UUID,
         workspace_web_search_config_update: WorkspaceWebSearchConfigUpdate,
@@ -615,7 +615,7 @@ class WorkspaceWebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_put_serialize(
+        _param = self._workspace_web_search_set_workspace_web_search_config_serialize(
             workspace_id=workspace_id,
             workspace_web_search_config_update=workspace_web_search_config_update,
             _request_auth=_request_auth,
@@ -640,7 +640,7 @@ class WorkspaceWebSearchApi:
 
 
     @validate_call
-    def set_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_put_with_http_info(
+    def workspace_web_search_set_workspace_web_search_config_with_http_info(
         self,
         workspace_id: UUID,
         workspace_web_search_config_update: WorkspaceWebSearchConfigUpdate,
@@ -687,7 +687,7 @@ class WorkspaceWebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_put_serialize(
+        _param = self._workspace_web_search_set_workspace_web_search_config_serialize(
             workspace_id=workspace_id,
             workspace_web_search_config_update=workspace_web_search_config_update,
             _request_auth=_request_auth,
@@ -712,7 +712,7 @@ class WorkspaceWebSearchApi:
 
 
     @validate_call
-    def set_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_put_without_preload_content(
+    def workspace_web_search_set_workspace_web_search_config_without_preload_content(
         self,
         workspace_id: UUID,
         workspace_web_search_config_update: WorkspaceWebSearchConfigUpdate,
@@ -759,7 +759,7 @@ class WorkspaceWebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_put_serialize(
+        _param = self._workspace_web_search_set_workspace_web_search_config_serialize(
             workspace_id=workspace_id,
             workspace_web_search_config_update=workspace_web_search_config_update,
             _request_auth=_request_auth,
@@ -779,7 +779,7 @@ class WorkspaceWebSearchApi:
         return response_data.response
 
 
-    def _set_workspace_web_search_config_api_v1_workspaces_workspace_id_web_search_put_serialize(
+    def _workspace_web_search_set_workspace_web_search_config_serialize(
         self,
         workspace_id,
         workspace_web_search_config_update,

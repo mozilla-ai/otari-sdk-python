@@ -44,7 +44,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def count_organization_usage_api_v1_organizations_me_usage_count_get(
+    def organization_usage_count_organization_usage(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -133,7 +133,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_organization_usage_api_v1_organizations_me_usage_count_get_serialize(
+        _param = self._organization_usage_count_organization_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -172,7 +172,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def count_organization_usage_api_v1_organizations_me_usage_count_get_with_http_info(
+    def organization_usage_count_organization_usage_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -261,7 +261,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_organization_usage_api_v1_organizations_me_usage_count_get_serialize(
+        _param = self._organization_usage_count_organization_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -300,7 +300,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def count_organization_usage_api_v1_organizations_me_usage_count_get_without_preload_content(
+    def organization_usage_count_organization_usage_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -389,7 +389,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_organization_usage_api_v1_organizations_me_usage_count_get_serialize(
+        _param = self._organization_usage_count_organization_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -423,7 +423,7 @@ class OrganizationUsageApi:
         return response_data.response
 
 
-    def _count_organization_usage_api_v1_organizations_me_usage_count_get_serialize(
+    def _organization_usage_count_organization_usage_serialize(
         self,
         start_date,
         end_date,
@@ -588,7 +588,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def list_organization_usage_api_v1_organizations_me_usage_get(
+    def organization_usage_list_organization_usage(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -683,7 +683,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_usage_api_v1_organizations_me_usage_get_serialize(
+        _param = self._organization_usage_list_organization_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -724,7 +724,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def list_organization_usage_api_v1_organizations_me_usage_get_with_http_info(
+    def organization_usage_list_organization_usage_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -819,7 +819,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_usage_api_v1_organizations_me_usage_get_serialize(
+        _param = self._organization_usage_list_organization_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -860,7 +860,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def list_organization_usage_api_v1_organizations_me_usage_get_without_preload_content(
+    def organization_usage_list_organization_usage_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -955,7 +955,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_usage_api_v1_organizations_me_usage_get_serialize(
+        _param = self._organization_usage_list_organization_usage_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -991,7 +991,7 @@ class OrganizationUsageApi:
         return response_data.response
 
 
-    def _list_organization_usage_api_v1_organizations_me_usage_get_serialize(
+    def _organization_usage_list_organization_usage_serialize(
         self,
         start_date,
         end_date,
@@ -1166,7 +1166,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_series_api_v1_organizations_me_usage_series_get(
+    def organization_usage_organization_usage_series(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1258,7 +1258,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_series_api_v1_organizations_me_usage_series_get_serialize(
+        _param = self._organization_usage_organization_usage_series_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -1298,7 +1298,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_series_api_v1_organizations_me_usage_series_get_with_http_info(
+    def organization_usage_organization_usage_series_with_http_info(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1390,7 +1390,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_series_api_v1_organizations_me_usage_series_get_serialize(
+        _param = self._organization_usage_organization_usage_series_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -1430,7 +1430,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_series_api_v1_organizations_me_usage_series_get_without_preload_content(
+    def organization_usage_organization_usage_series_without_preload_content(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1522,7 +1522,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_series_api_v1_organizations_me_usage_series_get_serialize(
+        _param = self._organization_usage_organization_usage_series_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -1557,7 +1557,7 @@ class OrganizationUsageApi:
         return response_data.response
 
 
-    def _organization_usage_series_api_v1_organizations_me_usage_series_get_serialize(
+    def _organization_usage_organization_usage_series_serialize(
         self,
         group_by,
         start_date,
@@ -1726,7 +1726,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_summary_api_v1_organizations_me_usage_summary_get(
+    def organization_usage_organization_usage_summary(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1818,7 +1818,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_summary_api_v1_organizations_me_usage_summary_get_serialize(
+        _param = self._organization_usage_organization_usage_summary_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1858,7 +1858,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_summary_api_v1_organizations_me_usage_summary_get_with_http_info(
+    def organization_usage_organization_usage_summary_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1950,7 +1950,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_summary_api_v1_organizations_me_usage_summary_get_serialize(
+        _param = self._organization_usage_organization_usage_summary_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1990,7 +1990,7 @@ class OrganizationUsageApi:
 
 
     @validate_call
-    def organization_usage_summary_api_v1_organizations_me_usage_summary_get_without_preload_content(
+    def organization_usage_organization_usage_summary_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -2082,7 +2082,7 @@ class OrganizationUsageApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._organization_usage_summary_api_v1_organizations_me_usage_summary_get_serialize(
+        _param = self._organization_usage_organization_usage_summary_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -2117,7 +2117,7 @@ class OrganizationUsageApi:
         return response_data.response
 
 
-    def _organization_usage_summary_api_v1_organizations_me_usage_summary_get_serialize(
+    def _organization_usage_organization_usage_summary_serialize(
         self,
         start_date,
         end_date,
