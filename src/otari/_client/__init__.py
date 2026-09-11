@@ -210,7 +210,10 @@ __all__ = [
     "ExternalIngestResult",
     "ExternalUsageEvent",
     "GatewaySettings",
+    "GuardrailCatalog",
     "GuardrailConfig",
+    "GuardrailParameterSpec",
+    "GuardrailProfileSpec",
     "HTTPValidationError",
     "IMGImage",
     "IMGUsage",
@@ -765,7 +768,10 @@ from otari._client.models.external_ingest_error import ExternalIngestError as Ex
 from otari._client.models.external_ingest_result import ExternalIngestResult as ExternalIngestResult
 from otari._client.models.external_usage_event import ExternalUsageEvent as ExternalUsageEvent
 from otari._client.models.gateway_settings import GatewaySettings as GatewaySettings
+from otari._client.models.guardrail_catalog import GuardrailCatalog as GuardrailCatalog
 from otari._client.models.guardrail_config import GuardrailConfig as GuardrailConfig
+from otari._client.models.guardrail_parameter_spec import GuardrailParameterSpec as GuardrailParameterSpec
+from otari._client.models.guardrail_profile_spec import GuardrailProfileSpec as GuardrailProfileSpec
 from otari._client.models.http_validation_error import HTTPValidationError as HTTPValidationError
 from otari._client.models.img_image import IMGImage as IMGImage
 from otari._client.models.img_usage import IMGUsage as IMGUsage

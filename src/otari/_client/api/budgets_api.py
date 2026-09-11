@@ -42,7 +42,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def create_budget_api_v1_budgets_post(
+    def budgets_create_budget(
         self,
         create_budget_request: CreateBudgetRequest,
         _request_timeout: Union[
@@ -86,7 +86,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_budget_api_v1_budgets_post_serialize(
+        _param = self._budgets_create_budget_serialize(
             create_budget_request=create_budget_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -110,7 +110,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def create_budget_api_v1_budgets_post_with_http_info(
+    def budgets_create_budget_with_http_info(
         self,
         create_budget_request: CreateBudgetRequest,
         _request_timeout: Union[
@@ -154,7 +154,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_budget_api_v1_budgets_post_serialize(
+        _param = self._budgets_create_budget_serialize(
             create_budget_request=create_budget_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -178,7 +178,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def create_budget_api_v1_budgets_post_without_preload_content(
+    def budgets_create_budget_without_preload_content(
         self,
         create_budget_request: CreateBudgetRequest,
         _request_timeout: Union[
@@ -222,7 +222,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_budget_api_v1_budgets_post_serialize(
+        _param = self._budgets_create_budget_serialize(
             create_budget_request=create_budget_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -241,7 +241,7 @@ class BudgetsApi:
         return response_data.response
 
 
-    def _create_budget_api_v1_budgets_post_serialize(
+    def _budgets_create_budget_serialize(
         self,
         create_budget_request,
         _request_auth,
@@ -320,7 +320,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def delete_budget_api_v1_budgets_budget_id_delete(
+    def budgets_delete_budget(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -364,7 +364,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_budget_api_v1_budgets_budget_id_delete_serialize(
+        _param = self._budgets_delete_budget_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -388,7 +388,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def delete_budget_api_v1_budgets_budget_id_delete_with_http_info(
+    def budgets_delete_budget_with_http_info(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -432,7 +432,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_budget_api_v1_budgets_budget_id_delete_serialize(
+        _param = self._budgets_delete_budget_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -456,7 +456,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def delete_budget_api_v1_budgets_budget_id_delete_without_preload_content(
+    def budgets_delete_budget_without_preload_content(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -500,7 +500,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_budget_api_v1_budgets_budget_id_delete_serialize(
+        _param = self._budgets_delete_budget_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -519,7 +519,7 @@ class BudgetsApi:
         return response_data.response
 
 
-    def _delete_budget_api_v1_budgets_budget_id_delete_serialize(
+    def _budgets_delete_budget_serialize(
         self,
         budget_id,
         _request_auth,
@@ -585,7 +585,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def get_budget_api_v1_budgets_budget_id_get(
+    def budgets_get_budget(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -629,7 +629,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_budget_api_v1_budgets_budget_id_get_serialize(
+        _param = self._budgets_get_budget_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -653,7 +653,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def get_budget_api_v1_budgets_budget_id_get_with_http_info(
+    def budgets_get_budget_with_http_info(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -697,7 +697,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_budget_api_v1_budgets_budget_id_get_serialize(
+        _param = self._budgets_get_budget_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -721,7 +721,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def get_budget_api_v1_budgets_budget_id_get_without_preload_content(
+    def budgets_get_budget_without_preload_content(
         self,
         budget_id: StrictStr,
         _request_timeout: Union[
@@ -765,7 +765,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_budget_api_v1_budgets_budget_id_get_serialize(
+        _param = self._budgets_get_budget_serialize(
             budget_id=budget_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -784,7 +784,7 @@ class BudgetsApi:
         return response_data.response
 
 
-    def _get_budget_api_v1_budgets_budget_id_get_serialize(
+    def _budgets_get_budget_serialize(
         self,
         budget_id,
         _request_auth,
@@ -850,7 +850,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def list_budget_reset_logs_api_v1_budgets_budget_id_reset_logs_get(
+    def budgets_list_budget_reset_logs(
         self,
         budget_id: StrictStr,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -900,7 +900,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_budget_reset_logs_api_v1_budgets_budget_id_reset_logs_get_serialize(
+        _param = self._budgets_list_budget_reset_logs_serialize(
             budget_id=budget_id,
             skip=skip,
             limit=limit,
@@ -926,7 +926,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def list_budget_reset_logs_api_v1_budgets_budget_id_reset_logs_get_with_http_info(
+    def budgets_list_budget_reset_logs_with_http_info(
         self,
         budget_id: StrictStr,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -976,7 +976,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_budget_reset_logs_api_v1_budgets_budget_id_reset_logs_get_serialize(
+        _param = self._budgets_list_budget_reset_logs_serialize(
             budget_id=budget_id,
             skip=skip,
             limit=limit,
@@ -1002,7 +1002,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def list_budget_reset_logs_api_v1_budgets_budget_id_reset_logs_get_without_preload_content(
+    def budgets_list_budget_reset_logs_without_preload_content(
         self,
         budget_id: StrictStr,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -1052,7 +1052,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_budget_reset_logs_api_v1_budgets_budget_id_reset_logs_get_serialize(
+        _param = self._budgets_list_budget_reset_logs_serialize(
             budget_id=budget_id,
             skip=skip,
             limit=limit,
@@ -1073,7 +1073,7 @@ class BudgetsApi:
         return response_data.response
 
 
-    def _list_budget_reset_logs_api_v1_budgets_budget_id_reset_logs_get_serialize(
+    def _budgets_list_budget_reset_logs_serialize(
         self,
         budget_id,
         skip,
@@ -1149,7 +1149,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def list_budgets_api_v1_budgets_get(
+    def budgets_list_budgets(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1196,7 +1196,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_budgets_api_v1_budgets_get_serialize(
+        _param = self._budgets_list_budgets_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1221,7 +1221,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def list_budgets_api_v1_budgets_get_with_http_info(
+    def budgets_list_budgets_with_http_info(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1268,7 +1268,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_budgets_api_v1_budgets_get_serialize(
+        _param = self._budgets_list_budgets_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1293,7 +1293,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def list_budgets_api_v1_budgets_get_without_preload_content(
+    def budgets_list_budgets_without_preload_content(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
@@ -1340,7 +1340,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_budgets_api_v1_budgets_get_serialize(
+        _param = self._budgets_list_budgets_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1360,7 +1360,7 @@ class BudgetsApi:
         return response_data.response
 
 
-    def _list_budgets_api_v1_budgets_get_serialize(
+    def _budgets_list_budgets_serialize(
         self,
         skip,
         limit,
@@ -1433,7 +1433,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def update_budget_api_v1_budgets_budget_id_patch(
+    def budgets_update_budget(
         self,
         budget_id: StrictStr,
         update_budget_request: UpdateBudgetRequest,
@@ -1480,7 +1480,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_budget_api_v1_budgets_budget_id_patch_serialize(
+        _param = self._budgets_update_budget_serialize(
             budget_id=budget_id,
             update_budget_request=update_budget_request,
             _request_auth=_request_auth,
@@ -1505,7 +1505,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def update_budget_api_v1_budgets_budget_id_patch_with_http_info(
+    def budgets_update_budget_with_http_info(
         self,
         budget_id: StrictStr,
         update_budget_request: UpdateBudgetRequest,
@@ -1552,7 +1552,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_budget_api_v1_budgets_budget_id_patch_serialize(
+        _param = self._budgets_update_budget_serialize(
             budget_id=budget_id,
             update_budget_request=update_budget_request,
             _request_auth=_request_auth,
@@ -1577,7 +1577,7 @@ class BudgetsApi:
 
 
     @validate_call
-    def update_budget_api_v1_budgets_budget_id_patch_without_preload_content(
+    def budgets_update_budget_without_preload_content(
         self,
         budget_id: StrictStr,
         update_budget_request: UpdateBudgetRequest,
@@ -1624,7 +1624,7 @@ class BudgetsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_budget_api_v1_budgets_budget_id_patch_serialize(
+        _param = self._budgets_update_budget_serialize(
             budget_id=budget_id,
             update_budget_request=update_budget_request,
             _request_auth=_request_auth,
@@ -1644,7 +1644,7 @@ class BudgetsApi:
         return response_data.response
 
 
-    def _update_budget_api_v1_budgets_budget_id_patch_serialize(
+    def _budgets_update_budget_serialize(
         self,
         budget_id,
         update_budget_request,

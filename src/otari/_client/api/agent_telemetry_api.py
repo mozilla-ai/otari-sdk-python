@@ -44,7 +44,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_series_api_v1_agent_telemetry_series_get(
+    def agent_telemetry_agent_telemetry_series(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -106,7 +106,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_series_api_v1_agent_telemetry_series_get_serialize(
+        _param = self._agent_telemetry_agent_telemetry_series_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -136,7 +136,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_series_api_v1_agent_telemetry_series_get_with_http_info(
+    def agent_telemetry_agent_telemetry_series_with_http_info(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -198,7 +198,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_series_api_v1_agent_telemetry_series_get_serialize(
+        _param = self._agent_telemetry_agent_telemetry_series_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -228,7 +228,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_series_api_v1_agent_telemetry_series_get_without_preload_content(
+    def agent_telemetry_agent_telemetry_series_without_preload_content(
         self,
         group_by: Annotated[StrictStr, Field(description="Dimension to split the series by")],
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -290,7 +290,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_series_api_v1_agent_telemetry_series_get_serialize(
+        _param = self._agent_telemetry_agent_telemetry_series_serialize(
             group_by=group_by,
             start_date=start_date,
             end_date=end_date,
@@ -315,7 +315,7 @@ class AgentTelemetryApi:
         return response_data.response
 
 
-    def _agent_telemetry_series_api_v1_agent_telemetry_series_get_serialize(
+    def _agent_telemetry_agent_telemetry_series_serialize(
         self,
         group_by,
         start_date,
@@ -433,7 +433,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_summary_api_v1_agent_telemetry_summary_get(
+    def agent_telemetry_agent_telemetry_summary(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -492,7 +492,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_summary_api_v1_agent_telemetry_summary_get_serialize(
+        _param = self._agent_telemetry_agent_telemetry_summary_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -521,7 +521,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_summary_api_v1_agent_telemetry_summary_get_with_http_info(
+    def agent_telemetry_agent_telemetry_summary_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -580,7 +580,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_summary_api_v1_agent_telemetry_summary_get_serialize(
+        _param = self._agent_telemetry_agent_telemetry_summary_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -609,7 +609,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def agent_telemetry_summary_api_v1_agent_telemetry_summary_get_without_preload_content(
+    def agent_telemetry_agent_telemetry_summary_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -668,7 +668,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._agent_telemetry_summary_api_v1_agent_telemetry_summary_get_serialize(
+        _param = self._agent_telemetry_agent_telemetry_summary_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -692,7 +692,7 @@ class AgentTelemetryApi:
         return response_data.response
 
 
-    def _agent_telemetry_summary_api_v1_agent_telemetry_summary_get_serialize(
+    def _agent_telemetry_agent_telemetry_summary_serialize(
         self,
         start_date,
         end_date,
@@ -805,7 +805,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def count_agent_telemetry_api_v1_agent_telemetry_count_get(
+    def agent_telemetry_count_agent_telemetry(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -861,7 +861,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_agent_telemetry_api_v1_agent_telemetry_count_get_serialize(
+        _param = self._agent_telemetry_count_agent_telemetry_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -889,7 +889,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def count_agent_telemetry_api_v1_agent_telemetry_count_get_with_http_info(
+    def agent_telemetry_count_agent_telemetry_with_http_info(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -945,7 +945,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_agent_telemetry_api_v1_agent_telemetry_count_get_serialize(
+        _param = self._agent_telemetry_count_agent_telemetry_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -973,7 +973,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def count_agent_telemetry_api_v1_agent_telemetry_count_get_without_preload_content(
+    def agent_telemetry_count_agent_telemetry_without_preload_content(
         self,
         start_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
         end_date: Annotated[Optional[datetime], Field(description="Return rows with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
@@ -1029,7 +1029,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._count_agent_telemetry_api_v1_agent_telemetry_count_get_serialize(
+        _param = self._agent_telemetry_count_agent_telemetry_serialize(
             start_date=start_date,
             end_date=end_date,
             user_id=user_id,
@@ -1052,7 +1052,7 @@ class AgentTelemetryApi:
         return response_data.response
 
 
-    def _count_agent_telemetry_api_v1_agent_telemetry_count_get_serialize(
+    def _agent_telemetry_count_agent_telemetry_serialize(
         self,
         start_date,
         end_date,
@@ -1160,7 +1160,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def delete_agent_telemetry_rows_api_v1_agent_telemetry_delete(
+    def agent_telemetry_delete_agent_telemetry_rows(
         self,
         agent_telemetry_delete_request: AgentTelemetryDeleteRequest,
         _request_timeout: Union[
@@ -1204,7 +1204,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_serialize(
+        _param = self._agent_telemetry_delete_agent_telemetry_rows_serialize(
             agent_telemetry_delete_request=agent_telemetry_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1228,7 +1228,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_with_http_info(
+    def agent_telemetry_delete_agent_telemetry_rows_with_http_info(
         self,
         agent_telemetry_delete_request: AgentTelemetryDeleteRequest,
         _request_timeout: Union[
@@ -1272,7 +1272,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_serialize(
+        _param = self._agent_telemetry_delete_agent_telemetry_rows_serialize(
             agent_telemetry_delete_request=agent_telemetry_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1296,7 +1296,7 @@ class AgentTelemetryApi:
 
 
     @validate_call
-    def delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_without_preload_content(
+    def agent_telemetry_delete_agent_telemetry_rows_without_preload_content(
         self,
         agent_telemetry_delete_request: AgentTelemetryDeleteRequest,
         _request_timeout: Union[
@@ -1340,7 +1340,7 @@ class AgentTelemetryApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_serialize(
+        _param = self._agent_telemetry_delete_agent_telemetry_rows_serialize(
             agent_telemetry_delete_request=agent_telemetry_delete_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1359,7 +1359,7 @@ class AgentTelemetryApi:
         return response_data.response
 
 
-    def _delete_agent_telemetry_rows_api_v1_agent_telemetry_delete_serialize(
+    def _agent_telemetry_delete_agent_telemetry_rows_serialize(
         self,
         agent_telemetry_delete_request,
         _request_auth,

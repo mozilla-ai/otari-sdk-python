@@ -41,7 +41,7 @@ class AliasesApi:
 
 
     @validate_call
-    def delete_alias_api_v1_aliases_name_delete(
+    def aliases_delete_alias(
         self,
         name: StrictStr,
         user_id: Annotated[Optional[StrictStr], Field(description="Delete the alias scoped to this user. Omit to delete the workspace-wide alias of that name.")] = None,
@@ -91,7 +91,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_alias_api_v1_aliases_name_delete_serialize(
+        _param = self._aliases_delete_alias_serialize(
             name=name,
             user_id=user_id,
             workspace_id=workspace_id,
@@ -117,7 +117,7 @@ class AliasesApi:
 
 
     @validate_call
-    def delete_alias_api_v1_aliases_name_delete_with_http_info(
+    def aliases_delete_alias_with_http_info(
         self,
         name: StrictStr,
         user_id: Annotated[Optional[StrictStr], Field(description="Delete the alias scoped to this user. Omit to delete the workspace-wide alias of that name.")] = None,
@@ -167,7 +167,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_alias_api_v1_aliases_name_delete_serialize(
+        _param = self._aliases_delete_alias_serialize(
             name=name,
             user_id=user_id,
             workspace_id=workspace_id,
@@ -193,7 +193,7 @@ class AliasesApi:
 
 
     @validate_call
-    def delete_alias_api_v1_aliases_name_delete_without_preload_content(
+    def aliases_delete_alias_without_preload_content(
         self,
         name: StrictStr,
         user_id: Annotated[Optional[StrictStr], Field(description="Delete the alias scoped to this user. Omit to delete the workspace-wide alias of that name.")] = None,
@@ -243,7 +243,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_alias_api_v1_aliases_name_delete_serialize(
+        _param = self._aliases_delete_alias_serialize(
             name=name,
             user_id=user_id,
             workspace_id=workspace_id,
@@ -264,7 +264,7 @@ class AliasesApi:
         return response_data.response
 
 
-    def _delete_alias_api_v1_aliases_name_delete_serialize(
+    def _aliases_delete_alias_serialize(
         self,
         name,
         user_id,
@@ -340,7 +340,7 @@ class AliasesApi:
 
 
     @validate_call
-    def delete_organization_alias_api_v1_organizations_me_aliases_name_delete(
+    def aliases_delete_organization_alias(
         self,
         name: StrictStr,
         workspace_id: Annotated[Optional[UUID], Field(description="Delete the alias in this workspace of the caller's organization.")] = None,
@@ -387,7 +387,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_alias_api_v1_organizations_me_aliases_name_delete_serialize(
+        _param = self._aliases_delete_organization_alias_serialize(
             name=name,
             workspace_id=workspace_id,
             _request_auth=_request_auth,
@@ -412,7 +412,7 @@ class AliasesApi:
 
 
     @validate_call
-    def delete_organization_alias_api_v1_organizations_me_aliases_name_delete_with_http_info(
+    def aliases_delete_organization_alias_with_http_info(
         self,
         name: StrictStr,
         workspace_id: Annotated[Optional[UUID], Field(description="Delete the alias in this workspace of the caller's organization.")] = None,
@@ -459,7 +459,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_alias_api_v1_organizations_me_aliases_name_delete_serialize(
+        _param = self._aliases_delete_organization_alias_serialize(
             name=name,
             workspace_id=workspace_id,
             _request_auth=_request_auth,
@@ -484,7 +484,7 @@ class AliasesApi:
 
 
     @validate_call
-    def delete_organization_alias_api_v1_organizations_me_aliases_name_delete_without_preload_content(
+    def aliases_delete_organization_alias_without_preload_content(
         self,
         name: StrictStr,
         workspace_id: Annotated[Optional[UUID], Field(description="Delete the alias in this workspace of the caller's organization.")] = None,
@@ -531,7 +531,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_alias_api_v1_organizations_me_aliases_name_delete_serialize(
+        _param = self._aliases_delete_organization_alias_serialize(
             name=name,
             workspace_id=workspace_id,
             _request_auth=_request_auth,
@@ -551,7 +551,7 @@ class AliasesApi:
         return response_data.response
 
 
-    def _delete_organization_alias_api_v1_organizations_me_aliases_name_delete_serialize(
+    def _aliases_delete_organization_alias_serialize(
         self,
         name,
         workspace_id,
@@ -622,7 +622,7 @@ class AliasesApi:
 
 
     @validate_call
-    def list_aliases_api_v1_aliases_get(
+    def aliases_list_aliases(
         self,
         workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace.")] = None,
         _request_timeout: Union[
@@ -666,7 +666,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_aliases_api_v1_aliases_get_serialize(
+        _param = self._aliases_list_aliases_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -690,7 +690,7 @@ class AliasesApi:
 
 
     @validate_call
-    def list_aliases_api_v1_aliases_get_with_http_info(
+    def aliases_list_aliases_with_http_info(
         self,
         workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace.")] = None,
         _request_timeout: Union[
@@ -734,7 +734,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_aliases_api_v1_aliases_get_serialize(
+        _param = self._aliases_list_aliases_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -758,7 +758,7 @@ class AliasesApi:
 
 
     @validate_call
-    def list_aliases_api_v1_aliases_get_without_preload_content(
+    def aliases_list_aliases_without_preload_content(
         self,
         workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace.")] = None,
         _request_timeout: Union[
@@ -802,7 +802,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_aliases_api_v1_aliases_get_serialize(
+        _param = self._aliases_list_aliases_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -821,7 +821,7 @@ class AliasesApi:
         return response_data.response
 
 
-    def _list_aliases_api_v1_aliases_get_serialize(
+    def _aliases_list_aliases_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -889,7 +889,7 @@ class AliasesApi:
 
 
     @validate_call
-    def list_visible_aliases_api_v1_organizations_me_aliases_get(
+    def aliases_list_visible_aliases(
         self,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum entries to return, stored and config-file together.")] = None,
         _request_timeout: Union[
@@ -933,7 +933,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_visible_aliases_api_v1_organizations_me_aliases_get_serialize(
+        _param = self._aliases_list_visible_aliases_serialize(
             limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -957,7 +957,7 @@ class AliasesApi:
 
 
     @validate_call
-    def list_visible_aliases_api_v1_organizations_me_aliases_get_with_http_info(
+    def aliases_list_visible_aliases_with_http_info(
         self,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum entries to return, stored and config-file together.")] = None,
         _request_timeout: Union[
@@ -1001,7 +1001,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_visible_aliases_api_v1_organizations_me_aliases_get_serialize(
+        _param = self._aliases_list_visible_aliases_serialize(
             limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1025,7 +1025,7 @@ class AliasesApi:
 
 
     @validate_call
-    def list_visible_aliases_api_v1_organizations_me_aliases_get_without_preload_content(
+    def aliases_list_visible_aliases_without_preload_content(
         self,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum entries to return, stored and config-file together.")] = None,
         _request_timeout: Union[
@@ -1069,7 +1069,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_visible_aliases_api_v1_organizations_me_aliases_get_serialize(
+        _param = self._aliases_list_visible_aliases_serialize(
             limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1088,7 +1088,7 @@ class AliasesApi:
         return response_data.response
 
 
-    def _list_visible_aliases_api_v1_organizations_me_aliases_get_serialize(
+    def _aliases_list_visible_aliases_serialize(
         self,
         limit,
         _request_auth,
@@ -1156,7 +1156,7 @@ class AliasesApi:
 
 
     @validate_call
-    def set_alias_api_v1_aliases_post(
+    def aliases_set_alias(
         self,
         alias_request: AliasRequest,
         _request_timeout: Union[
@@ -1200,7 +1200,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_alias_api_v1_aliases_post_serialize(
+        _param = self._aliases_set_alias_serialize(
             alias_request=alias_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1224,7 +1224,7 @@ class AliasesApi:
 
 
     @validate_call
-    def set_alias_api_v1_aliases_post_with_http_info(
+    def aliases_set_alias_with_http_info(
         self,
         alias_request: AliasRequest,
         _request_timeout: Union[
@@ -1268,7 +1268,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_alias_api_v1_aliases_post_serialize(
+        _param = self._aliases_set_alias_serialize(
             alias_request=alias_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1292,7 +1292,7 @@ class AliasesApi:
 
 
     @validate_call
-    def set_alias_api_v1_aliases_post_without_preload_content(
+    def aliases_set_alias_without_preload_content(
         self,
         alias_request: AliasRequest,
         _request_timeout: Union[
@@ -1336,7 +1336,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_alias_api_v1_aliases_post_serialize(
+        _param = self._aliases_set_alias_serialize(
             alias_request=alias_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1355,7 +1355,7 @@ class AliasesApi:
         return response_data.response
 
 
-    def _set_alias_api_v1_aliases_post_serialize(
+    def _aliases_set_alias_serialize(
         self,
         alias_request,
         _request_auth,
@@ -1434,7 +1434,7 @@ class AliasesApi:
 
 
     @validate_call
-    def set_organization_alias_api_v1_organizations_me_aliases_post(
+    def aliases_set_organization_alias(
         self,
         alias_request: AliasRequest,
         _request_timeout: Union[
@@ -1478,7 +1478,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_organization_alias_api_v1_organizations_me_aliases_post_serialize(
+        _param = self._aliases_set_organization_alias_serialize(
             alias_request=alias_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1502,7 +1502,7 @@ class AliasesApi:
 
 
     @validate_call
-    def set_organization_alias_api_v1_organizations_me_aliases_post_with_http_info(
+    def aliases_set_organization_alias_with_http_info(
         self,
         alias_request: AliasRequest,
         _request_timeout: Union[
@@ -1546,7 +1546,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_organization_alias_api_v1_organizations_me_aliases_post_serialize(
+        _param = self._aliases_set_organization_alias_serialize(
             alias_request=alias_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1570,7 +1570,7 @@ class AliasesApi:
 
 
     @validate_call
-    def set_organization_alias_api_v1_organizations_me_aliases_post_without_preload_content(
+    def aliases_set_organization_alias_without_preload_content(
         self,
         alias_request: AliasRequest,
         _request_timeout: Union[
@@ -1614,7 +1614,7 @@ class AliasesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_organization_alias_api_v1_organizations_me_aliases_post_serialize(
+        _param = self._aliases_set_organization_alias_serialize(
             alias_request=alias_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1633,7 +1633,7 @@ class AliasesApi:
         return response_data.response
 
 
-    def _set_organization_alias_api_v1_organizations_me_aliases_post_serialize(
+    def _aliases_set_organization_alias_serialize(
         self,
         alias_request,
         _request_auth,

@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class OrganizationGuardrailPublic(BaseModel):
     """
-    The API-facing shape. Never carries the credential, only whether one is set.
+    The API-facing shape. Never carries the credential, nor a credential-shaped parameter.  ``validate_kwargs`` is the second place a credential lives on this row, and the one with no column of its own: a guardrail class can take a vendor key as a parameter, so the form offers a box for it and whatever is typed there is stored as plain JSON. It is masked the way ``org_provider_keys.client_args`` is, by the *name* of the entry rather than by what the guardrail catalog says about it, so the mask still applies when the guardrails service is down and no catalog can be read.
     """ # noqa: E501
     applies_to_all_workspaces: StrictBool
     created_at: StrictStr

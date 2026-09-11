@@ -39,7 +39,7 @@ class WebSearchApi:
 
 
     @validate_call
-    def web_search_api_v1_web_search_search_get(
+    def web_search_web_search(
         self,
         q: Annotated[str, Field(min_length=1, strict=True, description="The search query.")],
         max_results: Optional[Annotated[int, Field(le=20, strict=True, ge=1)]] = None,
@@ -101,7 +101,7 @@ class WebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._web_search_api_v1_web_search_search_get_serialize(
+        _param = self._web_search_web_search_serialize(
             q=q,
             max_results=max_results,
             search_depth=search_depth,
@@ -131,7 +131,7 @@ class WebSearchApi:
 
 
     @validate_call
-    def web_search_api_v1_web_search_search_get_with_http_info(
+    def web_search_web_search_with_http_info(
         self,
         q: Annotated[str, Field(min_length=1, strict=True, description="The search query.")],
         max_results: Optional[Annotated[int, Field(le=20, strict=True, ge=1)]] = None,
@@ -193,7 +193,7 @@ class WebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._web_search_api_v1_web_search_search_get_serialize(
+        _param = self._web_search_web_search_serialize(
             q=q,
             max_results=max_results,
             search_depth=search_depth,
@@ -223,7 +223,7 @@ class WebSearchApi:
 
 
     @validate_call
-    def web_search_api_v1_web_search_search_get_without_preload_content(
+    def web_search_web_search_without_preload_content(
         self,
         q: Annotated[str, Field(min_length=1, strict=True, description="The search query.")],
         max_results: Optional[Annotated[int, Field(le=20, strict=True, ge=1)]] = None,
@@ -285,7 +285,7 @@ class WebSearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._web_search_api_v1_web_search_search_get_serialize(
+        _param = self._web_search_web_search_serialize(
             q=q,
             max_results=max_results,
             search_depth=search_depth,
@@ -310,7 +310,7 @@ class WebSearchApi:
         return response_data.response
 
 
-    def _web_search_api_v1_web_search_search_get_serialize(
+    def _web_search_web_search_serialize(
         self,
         q,
         max_results,

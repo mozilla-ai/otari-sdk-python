@@ -36,7 +36,7 @@ class BootstrapApi:
 
 
     @validate_call
-    def get_bootstrap_api_v1_bootstrap_get(
+    def bootstrap_get_bootstrap(
         self,
         _request_timeout: Union[
             None,
@@ -77,7 +77,7 @@ class BootstrapApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_bootstrap_api_v1_bootstrap_get_serialize(
+        _param = self._bootstrap_get_bootstrap_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -99,7 +99,7 @@ class BootstrapApi:
 
 
     @validate_call
-    def get_bootstrap_api_v1_bootstrap_get_with_http_info(
+    def bootstrap_get_bootstrap_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -140,7 +140,7 @@ class BootstrapApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_bootstrap_api_v1_bootstrap_get_serialize(
+        _param = self._bootstrap_get_bootstrap_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -162,7 +162,7 @@ class BootstrapApi:
 
 
     @validate_call
-    def get_bootstrap_api_v1_bootstrap_get_without_preload_content(
+    def bootstrap_get_bootstrap_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -203,7 +203,7 @@ class BootstrapApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_bootstrap_api_v1_bootstrap_get_serialize(
+        _param = self._bootstrap_get_bootstrap_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -220,7 +220,7 @@ class BootstrapApi:
         return response_data.response
 
 
-    def _get_bootstrap_api_v1_bootstrap_get_serialize(
+    def _bootstrap_get_bootstrap_serialize(
         self,
         _request_auth,
         _content_type,

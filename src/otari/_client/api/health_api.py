@@ -37,7 +37,7 @@ class HealthApi:
 
 
     @validate_call
-    def health_check_api_v1_health_get(
+    def health_health_check(
         self,
         _request_timeout: Union[
             None,
@@ -78,7 +78,7 @@ class HealthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._health_check_api_v1_health_get_serialize(
+        _param = self._health_health_check_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -100,7 +100,7 @@ class HealthApi:
 
 
     @validate_call
-    def health_check_api_v1_health_get_with_http_info(
+    def health_health_check_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -141,7 +141,7 @@ class HealthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._health_check_api_v1_health_get_serialize(
+        _param = self._health_health_check_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -163,7 +163,7 @@ class HealthApi:
 
 
     @validate_call
-    def health_check_api_v1_health_get_without_preload_content(
+    def health_health_check_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -204,7 +204,7 @@ class HealthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._health_check_api_v1_health_get_serialize(
+        _param = self._health_health_check_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -221,7 +221,7 @@ class HealthApi:
         return response_data.response
 
 
-    def _health_check_api_v1_health_get_serialize(
+    def _health_health_check_serialize(
         self,
         _request_auth,
         _content_type,
@@ -282,7 +282,7 @@ class HealthApi:
 
 
     @validate_call
-    def health_liveness_api_v1_health_liveness_get(
+    def health_health_liveness(
         self,
         _request_timeout: Union[
             None,
@@ -323,7 +323,7 @@ class HealthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._health_liveness_api_v1_health_liveness_get_serialize(
+        _param = self._health_health_liveness_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -345,7 +345,7 @@ class HealthApi:
 
 
     @validate_call
-    def health_liveness_api_v1_health_liveness_get_with_http_info(
+    def health_health_liveness_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -386,7 +386,7 @@ class HealthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._health_liveness_api_v1_health_liveness_get_serialize(
+        _param = self._health_health_liveness_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -408,7 +408,7 @@ class HealthApi:
 
 
     @validate_call
-    def health_liveness_api_v1_health_liveness_get_without_preload_content(
+    def health_health_liveness_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -449,7 +449,7 @@ class HealthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._health_liveness_api_v1_health_liveness_get_serialize(
+        _param = self._health_health_liveness_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -466,7 +466,7 @@ class HealthApi:
         return response_data.response
 
 
-    def _health_liveness_api_v1_health_liveness_get_serialize(
+    def _health_health_liveness_serialize(
         self,
         _request_auth,
         _content_type,
@@ -527,7 +527,7 @@ class HealthApi:
 
 
     @validate_call
-    def health_readiness_api_v1_health_readiness_get(
+    def health_health_readiness(
         self,
         _request_timeout: Union[
             None,
@@ -568,7 +568,7 @@ class HealthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._health_readiness_api_v1_health_readiness_get_serialize(
+        _param = self._health_health_readiness_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -590,7 +590,7 @@ class HealthApi:
 
 
     @validate_call
-    def health_readiness_api_v1_health_readiness_get_with_http_info(
+    def health_health_readiness_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -631,7 +631,7 @@ class HealthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._health_readiness_api_v1_health_readiness_get_serialize(
+        _param = self._health_health_readiness_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -653,7 +653,7 @@ class HealthApi:
 
 
     @validate_call
-    def health_readiness_api_v1_health_readiness_get_without_preload_content(
+    def health_health_readiness_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -694,7 +694,7 @@ class HealthApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._health_readiness_api_v1_health_readiness_get_serialize(
+        _param = self._health_health_readiness_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -711,7 +711,7 @@ class HealthApi:
         return response_data.response
 
 
-    def _health_readiness_api_v1_health_readiness_get_serialize(
+    def _health_health_readiness_serialize(
         self,
         _request_auth,
         _content_type,

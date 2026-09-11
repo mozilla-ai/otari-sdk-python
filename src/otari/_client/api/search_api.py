@@ -39,7 +39,7 @@ class SearchApi:
 
 
     @validate_call
-    def create_search_api_v1_search_post(
+    def search_create_search(
         self,
         search_request: SearchRequest,
         _request_timeout: Union[
@@ -83,7 +83,7 @@ class SearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_search_api_v1_search_post_serialize(
+        _param = self._search_create_search_serialize(
             search_request=search_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -107,7 +107,7 @@ class SearchApi:
 
 
     @validate_call
-    def create_search_api_v1_search_post_with_http_info(
+    def search_create_search_with_http_info(
         self,
         search_request: SearchRequest,
         _request_timeout: Union[
@@ -151,7 +151,7 @@ class SearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_search_api_v1_search_post_serialize(
+        _param = self._search_create_search_serialize(
             search_request=search_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -175,7 +175,7 @@ class SearchApi:
 
 
     @validate_call
-    def create_search_api_v1_search_post_without_preload_content(
+    def search_create_search_without_preload_content(
         self,
         search_request: SearchRequest,
         _request_timeout: Union[
@@ -219,7 +219,7 @@ class SearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_search_api_v1_search_post_serialize(
+        _param = self._search_create_search_serialize(
             search_request=search_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -238,7 +238,7 @@ class SearchApi:
         return response_data.response
 
 
-    def _create_search_api_v1_search_post_serialize(
+    def _search_create_search_serialize(
         self,
         search_request,
         _request_auth,
@@ -317,7 +317,7 @@ class SearchApi:
 
 
     @validate_call
-    def create_search_for_tool_api_v1_search_search_tool_name_post(
+    def search_create_search_for_tool(
         self,
         search_tool_name: Annotated[StrictStr, Field(description="Configured search tool to run against")],
         search_request: SearchRequest,
@@ -364,7 +364,7 @@ class SearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_search_for_tool_api_v1_search_search_tool_name_post_serialize(
+        _param = self._search_create_search_for_tool_serialize(
             search_tool_name=search_tool_name,
             search_request=search_request,
             _request_auth=_request_auth,
@@ -389,7 +389,7 @@ class SearchApi:
 
 
     @validate_call
-    def create_search_for_tool_api_v1_search_search_tool_name_post_with_http_info(
+    def search_create_search_for_tool_with_http_info(
         self,
         search_tool_name: Annotated[StrictStr, Field(description="Configured search tool to run against")],
         search_request: SearchRequest,
@@ -436,7 +436,7 @@ class SearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_search_for_tool_api_v1_search_search_tool_name_post_serialize(
+        _param = self._search_create_search_for_tool_serialize(
             search_tool_name=search_tool_name,
             search_request=search_request,
             _request_auth=_request_auth,
@@ -461,7 +461,7 @@ class SearchApi:
 
 
     @validate_call
-    def create_search_for_tool_api_v1_search_search_tool_name_post_without_preload_content(
+    def search_create_search_for_tool_without_preload_content(
         self,
         search_tool_name: Annotated[StrictStr, Field(description="Configured search tool to run against")],
         search_request: SearchRequest,
@@ -508,7 +508,7 @@ class SearchApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_search_for_tool_api_v1_search_search_tool_name_post_serialize(
+        _param = self._search_create_search_for_tool_serialize(
             search_tool_name=search_tool_name,
             search_request=search_request,
             _request_auth=_request_auth,
@@ -528,7 +528,7 @@ class SearchApi:
         return response_data.response
 
 
-    def _create_search_for_tool_api_v1_search_search_tool_name_post_serialize(
+    def _search_create_search_for_tool_serialize(
         self,
         search_tool_name,
         search_request,

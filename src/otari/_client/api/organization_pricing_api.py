@@ -43,7 +43,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def create_organization_pricing_api_v1_organizations_me_pricing_post(
+    def organization_pricing_create_organization_pricing(
         self,
         organization_model_pricing_create: OrganizationModelPricingCreate,
         _request_timeout: Union[
@@ -87,7 +87,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_pricing_api_v1_organizations_me_pricing_post_serialize(
+        _param = self._organization_pricing_create_organization_pricing_serialize(
             organization_model_pricing_create=organization_model_pricing_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -111,7 +111,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def create_organization_pricing_api_v1_organizations_me_pricing_post_with_http_info(
+    def organization_pricing_create_organization_pricing_with_http_info(
         self,
         organization_model_pricing_create: OrganizationModelPricingCreate,
         _request_timeout: Union[
@@ -155,7 +155,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_pricing_api_v1_organizations_me_pricing_post_serialize(
+        _param = self._organization_pricing_create_organization_pricing_serialize(
             organization_model_pricing_create=organization_model_pricing_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -179,7 +179,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def create_organization_pricing_api_v1_organizations_me_pricing_post_without_preload_content(
+    def organization_pricing_create_organization_pricing_without_preload_content(
         self,
         organization_model_pricing_create: OrganizationModelPricingCreate,
         _request_timeout: Union[
@@ -223,7 +223,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_organization_pricing_api_v1_organizations_me_pricing_post_serialize(
+        _param = self._organization_pricing_create_organization_pricing_serialize(
             organization_model_pricing_create=organization_model_pricing_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -242,7 +242,7 @@ class OrganizationPricingApi:
         return response_data.response
 
 
-    def _create_organization_pricing_api_v1_organizations_me_pricing_post_serialize(
+    def _organization_pricing_create_organization_pricing_serialize(
         self,
         organization_model_pricing_create,
         _request_auth,
@@ -321,7 +321,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete(
+    def organization_pricing_delete_organization_pricing(
         self,
         pricing_id: UUID,
         _request_timeout: Union[
@@ -365,7 +365,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_serialize(
+        _param = self._organization_pricing_delete_organization_pricing_serialize(
             pricing_id=pricing_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -389,7 +389,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_with_http_info(
+    def organization_pricing_delete_organization_pricing_with_http_info(
         self,
         pricing_id: UUID,
         _request_timeout: Union[
@@ -433,7 +433,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_serialize(
+        _param = self._organization_pricing_delete_organization_pricing_serialize(
             pricing_id=pricing_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -457,7 +457,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_without_preload_content(
+    def organization_pricing_delete_organization_pricing_without_preload_content(
         self,
         pricing_id: UUID,
         _request_timeout: Union[
@@ -501,7 +501,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_serialize(
+        _param = self._organization_pricing_delete_organization_pricing_serialize(
             pricing_id=pricing_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -520,7 +520,7 @@ class OrganizationPricingApi:
         return response_data.response
 
 
-    def _delete_organization_pricing_api_v1_organizations_me_pricing_pricing_id_delete_serialize(
+    def _organization_pricing_delete_organization_pricing_serialize(
         self,
         pricing_id,
         _request_auth,
@@ -586,7 +586,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def list_organization_pricing_api_v1_organizations_me_pricing_get(
+    def organization_pricing_list_organization_pricing(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -633,7 +633,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_pricing_api_v1_organizations_me_pricing_get_serialize(
+        _param = self._organization_pricing_list_organization_pricing_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -658,7 +658,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def list_organization_pricing_api_v1_organizations_me_pricing_get_with_http_info(
+    def organization_pricing_list_organization_pricing_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -705,7 +705,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_pricing_api_v1_organizations_me_pricing_get_serialize(
+        _param = self._organization_pricing_list_organization_pricing_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -730,7 +730,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def list_organization_pricing_api_v1_organizations_me_pricing_get_without_preload_content(
+    def organization_pricing_list_organization_pricing_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -777,7 +777,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_organization_pricing_api_v1_organizations_me_pricing_get_serialize(
+        _param = self._organization_pricing_list_organization_pricing_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -797,7 +797,7 @@ class OrganizationPricingApi:
         return response_data.response
 
 
-    def _list_organization_pricing_api_v1_organizations_me_pricing_get_serialize(
+    def _organization_pricing_list_organization_pricing_serialize(
         self,
         skip,
         limit,
@@ -870,7 +870,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put(
+    def organization_pricing_replace_organization_pricing(
         self,
         pricing_id: UUID,
         organization_model_pricing_update: OrganizationModelPricingUpdate,
@@ -917,7 +917,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_serialize(
+        _param = self._organization_pricing_replace_organization_pricing_serialize(
             pricing_id=pricing_id,
             organization_model_pricing_update=organization_model_pricing_update,
             _request_auth=_request_auth,
@@ -942,7 +942,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_with_http_info(
+    def organization_pricing_replace_organization_pricing_with_http_info(
         self,
         pricing_id: UUID,
         organization_model_pricing_update: OrganizationModelPricingUpdate,
@@ -989,7 +989,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_serialize(
+        _param = self._organization_pricing_replace_organization_pricing_serialize(
             pricing_id=pricing_id,
             organization_model_pricing_update=organization_model_pricing_update,
             _request_auth=_request_auth,
@@ -1014,7 +1014,7 @@ class OrganizationPricingApi:
 
 
     @validate_call
-    def replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_without_preload_content(
+    def organization_pricing_replace_organization_pricing_without_preload_content(
         self,
         pricing_id: UUID,
         organization_model_pricing_update: OrganizationModelPricingUpdate,
@@ -1061,7 +1061,7 @@ class OrganizationPricingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_serialize(
+        _param = self._organization_pricing_replace_organization_pricing_serialize(
             pricing_id=pricing_id,
             organization_model_pricing_update=organization_model_pricing_update,
             _request_auth=_request_auth,
@@ -1081,7 +1081,7 @@ class OrganizationPricingApi:
         return response_data.response
 
 
-    def _replace_organization_pricing_api_v1_organizations_me_pricing_pricing_id_put_serialize(
+    def _organization_pricing_replace_organization_pricing_serialize(
         self,
         pricing_id,
         organization_model_pricing_update,

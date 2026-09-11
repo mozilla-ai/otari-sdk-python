@@ -46,7 +46,7 @@ class RoutingApi:
 
 
     @validate_call
-    def delete_organization_routing_policy_api_v1_organizations_me_routing_policies_name_delete(
+    def routing_delete_organization_routing_policy(
         self,
         name: StrictStr,
         workspace_id: Annotated[Optional[UUID], Field(description="Delete the policy in this workspace of the caller's organization.")] = None,
@@ -93,7 +93,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_routing_policy_api_v1_organizations_me_routing_policies_name_delete_serialize(
+        _param = self._routing_delete_organization_routing_policy_serialize(
             name=name,
             workspace_id=workspace_id,
             _request_auth=_request_auth,
@@ -118,7 +118,7 @@ class RoutingApi:
 
 
     @validate_call
-    def delete_organization_routing_policy_api_v1_organizations_me_routing_policies_name_delete_with_http_info(
+    def routing_delete_organization_routing_policy_with_http_info(
         self,
         name: StrictStr,
         workspace_id: Annotated[Optional[UUID], Field(description="Delete the policy in this workspace of the caller's organization.")] = None,
@@ -165,7 +165,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_routing_policy_api_v1_organizations_me_routing_policies_name_delete_serialize(
+        _param = self._routing_delete_organization_routing_policy_serialize(
             name=name,
             workspace_id=workspace_id,
             _request_auth=_request_auth,
@@ -190,7 +190,7 @@ class RoutingApi:
 
 
     @validate_call
-    def delete_organization_routing_policy_api_v1_organizations_me_routing_policies_name_delete_without_preload_content(
+    def routing_delete_organization_routing_policy_without_preload_content(
         self,
         name: StrictStr,
         workspace_id: Annotated[Optional[UUID], Field(description="Delete the policy in this workspace of the caller's organization.")] = None,
@@ -237,7 +237,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_organization_routing_policy_api_v1_organizations_me_routing_policies_name_delete_serialize(
+        _param = self._routing_delete_organization_routing_policy_serialize(
             name=name,
             workspace_id=workspace_id,
             _request_auth=_request_auth,
@@ -257,7 +257,7 @@ class RoutingApi:
         return response_data.response
 
 
-    def _delete_organization_routing_policy_api_v1_organizations_me_routing_policies_name_delete_serialize(
+    def _routing_delete_organization_routing_policy_serialize(
         self,
         name,
         workspace_id,
@@ -328,7 +328,7 @@ class RoutingApi:
 
 
     @validate_call
-    def delete_policy_api_v1_routing_policies_name_delete(
+    def routing_delete_policy(
         self,
         name: StrictStr,
         user_id: Annotated[Optional[StrictStr], Field(description="Delete the policy scoped to this user. Omit to delete the workspace-wide one.")] = None,
@@ -378,7 +378,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_policy_api_v1_routing_policies_name_delete_serialize(
+        _param = self._routing_delete_policy_serialize(
             name=name,
             user_id=user_id,
             workspace_id=workspace_id,
@@ -404,7 +404,7 @@ class RoutingApi:
 
 
     @validate_call
-    def delete_policy_api_v1_routing_policies_name_delete_with_http_info(
+    def routing_delete_policy_with_http_info(
         self,
         name: StrictStr,
         user_id: Annotated[Optional[StrictStr], Field(description="Delete the policy scoped to this user. Omit to delete the workspace-wide one.")] = None,
@@ -454,7 +454,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_policy_api_v1_routing_policies_name_delete_serialize(
+        _param = self._routing_delete_policy_serialize(
             name=name,
             user_id=user_id,
             workspace_id=workspace_id,
@@ -480,7 +480,7 @@ class RoutingApi:
 
 
     @validate_call
-    def delete_policy_api_v1_routing_policies_name_delete_without_preload_content(
+    def routing_delete_policy_without_preload_content(
         self,
         name: StrictStr,
         user_id: Annotated[Optional[StrictStr], Field(description="Delete the policy scoped to this user. Omit to delete the workspace-wide one.")] = None,
@@ -530,7 +530,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_policy_api_v1_routing_policies_name_delete_serialize(
+        _param = self._routing_delete_policy_serialize(
             name=name,
             user_id=user_id,
             workspace_id=workspace_id,
@@ -551,7 +551,7 @@ class RoutingApi:
         return response_data.response
 
 
-    def _delete_policy_api_v1_routing_policies_name_delete_serialize(
+    def _routing_delete_policy_serialize(
         self,
         name,
         user_id,
@@ -627,7 +627,7 @@ class RoutingApi:
 
 
     @validate_call
-    def explain_policy_api_v1_routing_policies_explain_post(
+    def routing_explain_policy(
         self,
         explain_request: ExplainRequest,
         _request_timeout: Union[
@@ -671,7 +671,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._explain_policy_api_v1_routing_policies_explain_post_serialize(
+        _param = self._routing_explain_policy_serialize(
             explain_request=explain_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -695,7 +695,7 @@ class RoutingApi:
 
 
     @validate_call
-    def explain_policy_api_v1_routing_policies_explain_post_with_http_info(
+    def routing_explain_policy_with_http_info(
         self,
         explain_request: ExplainRequest,
         _request_timeout: Union[
@@ -739,7 +739,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._explain_policy_api_v1_routing_policies_explain_post_serialize(
+        _param = self._routing_explain_policy_serialize(
             explain_request=explain_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -763,7 +763,7 @@ class RoutingApi:
 
 
     @validate_call
-    def explain_policy_api_v1_routing_policies_explain_post_without_preload_content(
+    def routing_explain_policy_without_preload_content(
         self,
         explain_request: ExplainRequest,
         _request_timeout: Union[
@@ -807,7 +807,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._explain_policy_api_v1_routing_policies_explain_post_serialize(
+        _param = self._routing_explain_policy_serialize(
             explain_request=explain_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -826,7 +826,7 @@ class RoutingApi:
         return response_data.response
 
 
-    def _explain_policy_api_v1_routing_policies_explain_post_serialize(
+    def _routing_explain_policy_serialize(
         self,
         explain_request,
         _request_auth,
@@ -905,7 +905,7 @@ class RoutingApi:
 
 
     @validate_call
-    def list_policies_api_v1_routing_policies_get(
+    def routing_list_policies(
         self,
         workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.")] = None,
         _request_timeout: Union[
@@ -949,7 +949,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_policies_api_v1_routing_policies_get_serialize(
+        _param = self._routing_list_policies_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -973,7 +973,7 @@ class RoutingApi:
 
 
     @validate_call
-    def list_policies_api_v1_routing_policies_get_with_http_info(
+    def routing_list_policies_with_http_info(
         self,
         workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.")] = None,
         _request_timeout: Union[
@@ -1017,7 +1017,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_policies_api_v1_routing_policies_get_serialize(
+        _param = self._routing_list_policies_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1041,7 +1041,7 @@ class RoutingApi:
 
 
     @validate_call
-    def list_policies_api_v1_routing_policies_get_without_preload_content(
+    def routing_list_policies_without_preload_content(
         self,
         workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.")] = None,
         _request_timeout: Union[
@@ -1085,7 +1085,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_policies_api_v1_routing_policies_get_serialize(
+        _param = self._routing_list_policies_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1104,7 +1104,7 @@ class RoutingApi:
         return response_data.response
 
 
-    def _list_policies_api_v1_routing_policies_get_serialize(
+    def _routing_list_policies_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -1172,7 +1172,7 @@ class RoutingApi:
 
 
     @validate_call
-    def list_visible_routing_policies_api_v1_organizations_me_routing_policies_get(
+    def routing_list_visible_routing_policies(
         self,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum entries to return, stored and config-file together.")] = None,
         _request_timeout: Union[
@@ -1216,7 +1216,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_visible_routing_policies_api_v1_organizations_me_routing_policies_get_serialize(
+        _param = self._routing_list_visible_routing_policies_serialize(
             limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1240,7 +1240,7 @@ class RoutingApi:
 
 
     @validate_call
-    def list_visible_routing_policies_api_v1_organizations_me_routing_policies_get_with_http_info(
+    def routing_list_visible_routing_policies_with_http_info(
         self,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum entries to return, stored and config-file together.")] = None,
         _request_timeout: Union[
@@ -1284,7 +1284,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_visible_routing_policies_api_v1_organizations_me_routing_policies_get_serialize(
+        _param = self._routing_list_visible_routing_policies_serialize(
             limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1308,7 +1308,7 @@ class RoutingApi:
 
 
     @validate_call
-    def list_visible_routing_policies_api_v1_organizations_me_routing_policies_get_without_preload_content(
+    def routing_list_visible_routing_policies_without_preload_content(
         self,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum entries to return, stored and config-file together.")] = None,
         _request_timeout: Union[
@@ -1352,7 +1352,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_visible_routing_policies_api_v1_organizations_me_routing_policies_get_serialize(
+        _param = self._routing_list_visible_routing_policies_serialize(
             limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1371,7 +1371,7 @@ class RoutingApi:
         return response_data.response
 
 
-    def _list_visible_routing_policies_api_v1_organizations_me_routing_policies_get_serialize(
+    def _routing_list_visible_routing_policies_serialize(
         self,
         limit,
         _request_auth,
@@ -1439,7 +1439,7 @@ class RoutingApi:
 
 
     @validate_call
-    def rank_candidates_api_v1_routing_preferences_rank_post(
+    def routing_rank_candidates(
         self,
         rank_request: RankRequest,
         _request_timeout: Union[
@@ -1483,7 +1483,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rank_candidates_api_v1_routing_preferences_rank_post_serialize(
+        _param = self._routing_rank_candidates_serialize(
             rank_request=rank_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1507,7 +1507,7 @@ class RoutingApi:
 
 
     @validate_call
-    def rank_candidates_api_v1_routing_preferences_rank_post_with_http_info(
+    def routing_rank_candidates_with_http_info(
         self,
         rank_request: RankRequest,
         _request_timeout: Union[
@@ -1551,7 +1551,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rank_candidates_api_v1_routing_preferences_rank_post_serialize(
+        _param = self._routing_rank_candidates_serialize(
             rank_request=rank_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1575,7 +1575,7 @@ class RoutingApi:
 
 
     @validate_call
-    def rank_candidates_api_v1_routing_preferences_rank_post_without_preload_content(
+    def routing_rank_candidates_without_preload_content(
         self,
         rank_request: RankRequest,
         _request_timeout: Union[
@@ -1619,7 +1619,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rank_candidates_api_v1_routing_preferences_rank_post_serialize(
+        _param = self._routing_rank_candidates_serialize(
             rank_request=rank_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1638,7 +1638,7 @@ class RoutingApi:
         return response_data.response
 
 
-    def _rank_candidates_api_v1_routing_preferences_rank_post_serialize(
+    def _routing_rank_candidates_serialize(
         self,
         rank_request,
         _request_auth,
@@ -1717,7 +1717,7 @@ class RoutingApi:
 
 
     @validate_call
-    def routing_memory_status_api_v1_routing_status_get(
+    def routing_routing_memory_status(
         self,
         user_id: Annotated[StrictStr, Field(description="Whose routing memory to report on.")],
         workspace_id: Annotated[Optional[UUID], Field(description="Which workspace's routing memory to report on. Omit for the default workspace.")] = None,
@@ -1764,7 +1764,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._routing_memory_status_api_v1_routing_status_get_serialize(
+        _param = self._routing_routing_memory_status_serialize(
             user_id=user_id,
             workspace_id=workspace_id,
             _request_auth=_request_auth,
@@ -1789,7 +1789,7 @@ class RoutingApi:
 
 
     @validate_call
-    def routing_memory_status_api_v1_routing_status_get_with_http_info(
+    def routing_routing_memory_status_with_http_info(
         self,
         user_id: Annotated[StrictStr, Field(description="Whose routing memory to report on.")],
         workspace_id: Annotated[Optional[UUID], Field(description="Which workspace's routing memory to report on. Omit for the default workspace.")] = None,
@@ -1836,7 +1836,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._routing_memory_status_api_v1_routing_status_get_serialize(
+        _param = self._routing_routing_memory_status_serialize(
             user_id=user_id,
             workspace_id=workspace_id,
             _request_auth=_request_auth,
@@ -1861,7 +1861,7 @@ class RoutingApi:
 
 
     @validate_call
-    def routing_memory_status_api_v1_routing_status_get_without_preload_content(
+    def routing_routing_memory_status_without_preload_content(
         self,
         user_id: Annotated[StrictStr, Field(description="Whose routing memory to report on.")],
         workspace_id: Annotated[Optional[UUID], Field(description="Which workspace's routing memory to report on. Omit for the default workspace.")] = None,
@@ -1908,7 +1908,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._routing_memory_status_api_v1_routing_status_get_serialize(
+        _param = self._routing_routing_memory_status_serialize(
             user_id=user_id,
             workspace_id=workspace_id,
             _request_auth=_request_auth,
@@ -1928,7 +1928,7 @@ class RoutingApi:
         return response_data.response
 
 
-    def _routing_memory_status_api_v1_routing_status_get_serialize(
+    def _routing_routing_memory_status_serialize(
         self,
         user_id,
         workspace_id,
@@ -2001,7 +2001,7 @@ class RoutingApi:
 
 
     @validate_call
-    def set_organization_routing_policy_api_v1_organizations_me_routing_policies_post(
+    def routing_set_organization_routing_policy(
         self,
         policy_request: PolicyRequest,
         _request_timeout: Union[
@@ -2045,7 +2045,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_organization_routing_policy_api_v1_organizations_me_routing_policies_post_serialize(
+        _param = self._routing_set_organization_routing_policy_serialize(
             policy_request=policy_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2069,7 +2069,7 @@ class RoutingApi:
 
 
     @validate_call
-    def set_organization_routing_policy_api_v1_organizations_me_routing_policies_post_with_http_info(
+    def routing_set_organization_routing_policy_with_http_info(
         self,
         policy_request: PolicyRequest,
         _request_timeout: Union[
@@ -2113,7 +2113,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_organization_routing_policy_api_v1_organizations_me_routing_policies_post_serialize(
+        _param = self._routing_set_organization_routing_policy_serialize(
             policy_request=policy_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2137,7 +2137,7 @@ class RoutingApi:
 
 
     @validate_call
-    def set_organization_routing_policy_api_v1_organizations_me_routing_policies_post_without_preload_content(
+    def routing_set_organization_routing_policy_without_preload_content(
         self,
         policy_request: PolicyRequest,
         _request_timeout: Union[
@@ -2181,7 +2181,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_organization_routing_policy_api_v1_organizations_me_routing_policies_post_serialize(
+        _param = self._routing_set_organization_routing_policy_serialize(
             policy_request=policy_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2200,7 +2200,7 @@ class RoutingApi:
         return response_data.response
 
 
-    def _set_organization_routing_policy_api_v1_organizations_me_routing_policies_post_serialize(
+    def _routing_set_organization_routing_policy_serialize(
         self,
         policy_request,
         _request_auth,
@@ -2279,7 +2279,7 @@ class RoutingApi:
 
 
     @validate_call
-    def set_policy_api_v1_routing_policies_post(
+    def routing_set_policy(
         self,
         policy_request: PolicyRequest,
         _request_timeout: Union[
@@ -2323,7 +2323,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_policy_api_v1_routing_policies_post_serialize(
+        _param = self._routing_set_policy_serialize(
             policy_request=policy_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2347,7 +2347,7 @@ class RoutingApi:
 
 
     @validate_call
-    def set_policy_api_v1_routing_policies_post_with_http_info(
+    def routing_set_policy_with_http_info(
         self,
         policy_request: PolicyRequest,
         _request_timeout: Union[
@@ -2391,7 +2391,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_policy_api_v1_routing_policies_post_serialize(
+        _param = self._routing_set_policy_serialize(
             policy_request=policy_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2415,7 +2415,7 @@ class RoutingApi:
 
 
     @validate_call
-    def set_policy_api_v1_routing_policies_post_without_preload_content(
+    def routing_set_policy_without_preload_content(
         self,
         policy_request: PolicyRequest,
         _request_timeout: Union[
@@ -2459,7 +2459,7 @@ class RoutingApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._set_policy_api_v1_routing_policies_post_serialize(
+        _param = self._routing_set_policy_serialize(
             policy_request=policy_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2478,7 +2478,7 @@ class RoutingApi:
         return response_data.response
 
 
-    def _set_policy_api_v1_routing_policies_post_serialize(
+    def _routing_set_policy_serialize(
         self,
         policy_request,
         _request_auth,

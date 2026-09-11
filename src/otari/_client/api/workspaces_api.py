@@ -46,7 +46,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post(
+    def workspaces_add_workspace_member(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -96,7 +96,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_serialize(
+        _param = self._workspaces_add_workspace_member_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             role=role,
@@ -122,7 +122,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_with_http_info(
+    def workspaces_add_workspace_member_with_http_info(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -172,7 +172,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_serialize(
+        _param = self._workspaces_add_workspace_member_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             role=role,
@@ -198,7 +198,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_without_preload_content(
+    def workspaces_add_workspace_member_without_preload_content(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -248,7 +248,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_serialize(
+        _param = self._workspaces_add_workspace_member_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             role=role,
@@ -269,7 +269,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _add_workspace_member_api_v1_workspaces_workspace_id_members_user_id_post_serialize(
+    def _workspaces_add_workspace_member_serialize(
         self,
         workspace_id,
         user_id,
@@ -343,7 +343,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def create_workspace_api_v1_workspaces_post(
+    def workspaces_create_workspace(
         self,
         workspace_create: WorkspaceCreate,
         _request_timeout: Union[
@@ -387,7 +387,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_api_v1_workspaces_post_serialize(
+        _param = self._workspaces_create_workspace_serialize(
             workspace_create=workspace_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -411,7 +411,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def create_workspace_api_v1_workspaces_post_with_http_info(
+    def workspaces_create_workspace_with_http_info(
         self,
         workspace_create: WorkspaceCreate,
         _request_timeout: Union[
@@ -455,7 +455,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_api_v1_workspaces_post_serialize(
+        _param = self._workspaces_create_workspace_serialize(
             workspace_create=workspace_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -479,7 +479,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def create_workspace_api_v1_workspaces_post_without_preload_content(
+    def workspaces_create_workspace_without_preload_content(
         self,
         workspace_create: WorkspaceCreate,
         _request_timeout: Union[
@@ -523,7 +523,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._create_workspace_api_v1_workspaces_post_serialize(
+        _param = self._workspaces_create_workspace_serialize(
             workspace_create=workspace_create,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -542,7 +542,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _create_workspace_api_v1_workspaces_post_serialize(
+    def _workspaces_create_workspace_serialize(
         self,
         workspace_create,
         _request_auth,
@@ -621,7 +621,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def delete_workspace_api_v1_workspaces_workspace_id_delete(
+    def workspaces_delete_workspace(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -665,7 +665,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_api_v1_workspaces_workspace_id_delete_serialize(
+        _param = self._workspaces_delete_workspace_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -689,7 +689,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def delete_workspace_api_v1_workspaces_workspace_id_delete_with_http_info(
+    def workspaces_delete_workspace_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -733,7 +733,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_api_v1_workspaces_workspace_id_delete_serialize(
+        _param = self._workspaces_delete_workspace_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -757,7 +757,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def delete_workspace_api_v1_workspaces_workspace_id_delete_without_preload_content(
+    def workspaces_delete_workspace_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -801,7 +801,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._delete_workspace_api_v1_workspaces_workspace_id_delete_serialize(
+        _param = self._workspaces_delete_workspace_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -820,7 +820,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _delete_workspace_api_v1_workspaces_workspace_id_delete_serialize(
+    def _workspaces_delete_workspace_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -886,7 +886,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def get_workspace_api_v1_workspaces_workspace_id_get(
+    def workspaces_get_workspace(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -930,7 +930,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_api_v1_workspaces_workspace_id_get_serialize(
+        _param = self._workspaces_get_workspace_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -954,7 +954,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def get_workspace_api_v1_workspaces_workspace_id_get_with_http_info(
+    def workspaces_get_workspace_with_http_info(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -998,7 +998,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_api_v1_workspaces_workspace_id_get_serialize(
+        _param = self._workspaces_get_workspace_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1022,7 +1022,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def get_workspace_api_v1_workspaces_workspace_id_get_without_preload_content(
+    def workspaces_get_workspace_without_preload_content(
         self,
         workspace_id: UUID,
         _request_timeout: Union[
@@ -1066,7 +1066,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_workspace_api_v1_workspaces_workspace_id_get_serialize(
+        _param = self._workspaces_get_workspace_serialize(
             workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1085,7 +1085,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _get_workspace_api_v1_workspaces_workspace_id_get_serialize(
+    def _workspaces_get_workspace_serialize(
         self,
         workspace_id,
         _request_auth,
@@ -1151,7 +1151,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspace_members_api_v1_workspaces_workspace_id_members_get(
+    def workspaces_list_workspace_members(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -1201,7 +1201,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_members_api_v1_workspaces_workspace_id_members_get_serialize(
+        _param = self._workspaces_list_workspace_members_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -1227,7 +1227,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspace_members_api_v1_workspaces_workspace_id_members_get_with_http_info(
+    def workspaces_list_workspace_members_with_http_info(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -1277,7 +1277,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_members_api_v1_workspaces_workspace_id_members_get_serialize(
+        _param = self._workspaces_list_workspace_members_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -1303,7 +1303,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspace_members_api_v1_workspaces_workspace_id_members_get_without_preload_content(
+    def workspaces_list_workspace_members_without_preload_content(
         self,
         workspace_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
@@ -1353,7 +1353,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspace_members_api_v1_workspaces_workspace_id_members_get_serialize(
+        _param = self._workspaces_list_workspace_members_serialize(
             workspace_id=workspace_id,
             skip=skip,
             limit=limit,
@@ -1374,7 +1374,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _list_workspace_members_api_v1_workspaces_workspace_id_members_get_serialize(
+    def _workspaces_list_workspace_members_serialize(
         self,
         workspace_id,
         skip,
@@ -1450,7 +1450,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspaces_api_v1_workspaces_get(
+    def workspaces_list_workspaces(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1497,7 +1497,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspaces_api_v1_workspaces_get_serialize(
+        _param = self._workspaces_list_workspaces_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1522,7 +1522,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspaces_api_v1_workspaces_get_with_http_info(
+    def workspaces_list_workspaces_with_http_info(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1569,7 +1569,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspaces_api_v1_workspaces_get_serialize(
+        _param = self._workspaces_list_workspaces_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1594,7 +1594,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def list_workspaces_api_v1_workspaces_get_without_preload_content(
+    def workspaces_list_workspaces_without_preload_content(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
@@ -1641,7 +1641,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._list_workspaces_api_v1_workspaces_get_serialize(
+        _param = self._workspaces_list_workspaces_serialize(
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -1661,7 +1661,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _list_workspaces_api_v1_workspaces_get_serialize(
+    def _workspaces_list_workspaces_serialize(
         self,
         skip,
         limit,
@@ -1734,7 +1734,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete(
+    def workspaces_remove_workspace_member(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -1781,7 +1781,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_serialize(
+        _param = self._workspaces_remove_workspace_member_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             _request_auth=_request_auth,
@@ -1806,7 +1806,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_with_http_info(
+    def workspaces_remove_workspace_member_with_http_info(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -1853,7 +1853,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_serialize(
+        _param = self._workspaces_remove_workspace_member_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             _request_auth=_request_auth,
@@ -1878,7 +1878,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_without_preload_content(
+    def workspaces_remove_workspace_member_without_preload_content(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -1925,7 +1925,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_serialize(
+        _param = self._workspaces_remove_workspace_member_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             _request_auth=_request_auth,
@@ -1945,7 +1945,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _remove_workspace_member_api_v1_workspaces_workspace_id_members_user_id_delete_serialize(
+    def _workspaces_remove_workspace_member_serialize(
         self,
         workspace_id,
         user_id,
@@ -2014,7 +2014,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def update_workspace_api_v1_workspaces_workspace_id_patch(
+    def workspaces_update_workspace(
         self,
         workspace_id: UUID,
         workspace_update: WorkspaceUpdate,
@@ -2061,7 +2061,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_api_v1_workspaces_workspace_id_patch_serialize(
+        _param = self._workspaces_update_workspace_serialize(
             workspace_id=workspace_id,
             workspace_update=workspace_update,
             _request_auth=_request_auth,
@@ -2086,7 +2086,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def update_workspace_api_v1_workspaces_workspace_id_patch_with_http_info(
+    def workspaces_update_workspace_with_http_info(
         self,
         workspace_id: UUID,
         workspace_update: WorkspaceUpdate,
@@ -2133,7 +2133,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_api_v1_workspaces_workspace_id_patch_serialize(
+        _param = self._workspaces_update_workspace_serialize(
             workspace_id=workspace_id,
             workspace_update=workspace_update,
             _request_auth=_request_auth,
@@ -2158,7 +2158,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def update_workspace_api_v1_workspaces_workspace_id_patch_without_preload_content(
+    def workspaces_update_workspace_without_preload_content(
         self,
         workspace_id: UUID,
         workspace_update: WorkspaceUpdate,
@@ -2205,7 +2205,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_api_v1_workspaces_workspace_id_patch_serialize(
+        _param = self._workspaces_update_workspace_serialize(
             workspace_id=workspace_id,
             workspace_update=workspace_update,
             _request_auth=_request_auth,
@@ -2225,7 +2225,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _update_workspace_api_v1_workspaces_workspace_id_patch_serialize(
+    def _workspaces_update_workspace_serialize(
         self,
         workspace_id,
         workspace_update,
@@ -2307,7 +2307,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch(
+    def workspaces_update_workspace_member_role(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -2357,7 +2357,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_serialize(
+        _param = self._workspaces_update_workspace_member_role_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             role=role,
@@ -2383,7 +2383,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_with_http_info(
+    def workspaces_update_workspace_member_role_with_http_info(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -2433,7 +2433,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_serialize(
+        _param = self._workspaces_update_workspace_member_role_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             role=role,
@@ -2459,7 +2459,7 @@ class WorkspacesApi:
 
 
     @validate_call
-    def update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_without_preload_content(
+    def workspaces_update_workspace_member_role_without_preload_content(
         self,
         workspace_id: UUID,
         user_id: UUID,
@@ -2509,7 +2509,7 @@ class WorkspacesApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_serialize(
+        _param = self._workspaces_update_workspace_member_role_serialize(
             workspace_id=workspace_id,
             user_id=user_id,
             role=role,
@@ -2530,7 +2530,7 @@ class WorkspacesApi:
         return response_data.response
 
 
-    def _update_workspace_member_role_api_v1_workspaces_workspace_id_members_user_id_patch_serialize(
+    def _workspaces_update_workspace_member_role_serialize(
         self,
         workspace_id,
         user_id,

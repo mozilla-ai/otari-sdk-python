@@ -36,7 +36,7 @@ class OrganizationGuardrailUpdate(BaseModel):
     on_unavailable: Optional[StrictStr] = None
     profile: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None
     url: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = None
-    validate_kwargs: Optional[Dict[str, Any]] = None
+    validate_kwargs: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     workspace_ids: Optional[Annotated[List[UUID], Field(max_length=500)]] = None
     __properties: ClassVar[List[str]] = ["applies_to_all_workspaces", "credential", "enabled", "mode", "on_unavailable", "profile", "url", "validate_kwargs", "workspace_ids"]
 

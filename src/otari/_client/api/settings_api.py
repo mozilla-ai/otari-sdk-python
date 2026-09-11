@@ -43,7 +43,7 @@ class SettingsApi:
 
 
     @validate_call
-    def get_mail_settings_api_v1_settings_mail_get(
+    def settings_get_mail_settings(
         self,
         _request_timeout: Union[
             None,
@@ -84,7 +84,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_mail_settings_api_v1_settings_mail_get_serialize(
+        _param = self._settings_get_mail_settings_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -106,7 +106,7 @@ class SettingsApi:
 
 
     @validate_call
-    def get_mail_settings_api_v1_settings_mail_get_with_http_info(
+    def settings_get_mail_settings_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -147,7 +147,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_mail_settings_api_v1_settings_mail_get_serialize(
+        _param = self._settings_get_mail_settings_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -169,7 +169,7 @@ class SettingsApi:
 
 
     @validate_call
-    def get_mail_settings_api_v1_settings_mail_get_without_preload_content(
+    def settings_get_mail_settings_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -210,7 +210,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_mail_settings_api_v1_settings_mail_get_serialize(
+        _param = self._settings_get_mail_settings_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -227,7 +227,7 @@ class SettingsApi:
         return response_data.response
 
 
-    def _get_mail_settings_api_v1_settings_mail_get_serialize(
+    def _settings_get_mail_settings_serialize(
         self,
         _request_auth,
         _content_type,
@@ -290,7 +290,7 @@ class SettingsApi:
 
 
     @validate_call
-    def get_maintenance_mode_api_v1_settings_maintenance_mode_get(
+    def settings_get_maintenance_mode(
         self,
         _request_timeout: Union[
             None,
@@ -331,7 +331,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_maintenance_mode_api_v1_settings_maintenance_mode_get_serialize(
+        _param = self._settings_get_maintenance_mode_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -353,7 +353,7 @@ class SettingsApi:
 
 
     @validate_call
-    def get_maintenance_mode_api_v1_settings_maintenance_mode_get_with_http_info(
+    def settings_get_maintenance_mode_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -394,7 +394,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_maintenance_mode_api_v1_settings_maintenance_mode_get_serialize(
+        _param = self._settings_get_maintenance_mode_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -416,7 +416,7 @@ class SettingsApi:
 
 
     @validate_call
-    def get_maintenance_mode_api_v1_settings_maintenance_mode_get_without_preload_content(
+    def settings_get_maintenance_mode_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -457,7 +457,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_maintenance_mode_api_v1_settings_maintenance_mode_get_serialize(
+        _param = self._settings_get_maintenance_mode_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -474,7 +474,7 @@ class SettingsApi:
         return response_data.response
 
 
-    def _get_maintenance_mode_api_v1_settings_maintenance_mode_get_serialize(
+    def _settings_get_maintenance_mode_serialize(
         self,
         _request_auth,
         _content_type,
@@ -537,7 +537,7 @@ class SettingsApi:
 
 
     @validate_call
-    def get_settings_api_v1_settings_get(
+    def settings_get_settings(
         self,
         _request_timeout: Union[
             None,
@@ -578,7 +578,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_settings_api_v1_settings_get_serialize(
+        _param = self._settings_get_settings_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -600,7 +600,7 @@ class SettingsApi:
 
 
     @validate_call
-    def get_settings_api_v1_settings_get_with_http_info(
+    def settings_get_settings_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -641,7 +641,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_settings_api_v1_settings_get_serialize(
+        _param = self._settings_get_settings_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -663,7 +663,7 @@ class SettingsApi:
 
 
     @validate_call
-    def get_settings_api_v1_settings_get_without_preload_content(
+    def settings_get_settings_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -704,7 +704,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_settings_api_v1_settings_get_serialize(
+        _param = self._settings_get_settings_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -721,7 +721,7 @@ class SettingsApi:
         return response_data.response
 
 
-    def _get_settings_api_v1_settings_get_serialize(
+    def _settings_get_settings_serialize(
         self,
         _request_auth,
         _content_type,
@@ -784,7 +784,7 @@ class SettingsApi:
 
 
     @validate_call
-    def rotate_master_key_api_v1_settings_master_key_rotate_post(
+    def settings_rotate_master_key(
         self,
         _request_timeout: Union[
             None,
@@ -825,7 +825,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rotate_master_key_api_v1_settings_master_key_rotate_post_serialize(
+        _param = self._settings_rotate_master_key_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -847,7 +847,7 @@ class SettingsApi:
 
 
     @validate_call
-    def rotate_master_key_api_v1_settings_master_key_rotate_post_with_http_info(
+    def settings_rotate_master_key_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -888,7 +888,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rotate_master_key_api_v1_settings_master_key_rotate_post_serialize(
+        _param = self._settings_rotate_master_key_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -910,7 +910,7 @@ class SettingsApi:
 
 
     @validate_call
-    def rotate_master_key_api_v1_settings_master_key_rotate_post_without_preload_content(
+    def settings_rotate_master_key_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -951,7 +951,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._rotate_master_key_api_v1_settings_master_key_rotate_post_serialize(
+        _param = self._settings_rotate_master_key_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -968,7 +968,7 @@ class SettingsApi:
         return response_data.response
 
 
-    def _rotate_master_key_api_v1_settings_master_key_rotate_post_serialize(
+    def _settings_rotate_master_key_serialize(
         self,
         _request_auth,
         _content_type,
@@ -1031,7 +1031,7 @@ class SettingsApi:
 
 
     @validate_call
-    def send_test_mail_api_v1_settings_mail_test_post(
+    def settings_send_test_mail(
         self,
         send_test_mail_request: SendTestMailRequest,
         _request_timeout: Union[
@@ -1075,7 +1075,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._send_test_mail_api_v1_settings_mail_test_post_serialize(
+        _param = self._settings_send_test_mail_serialize(
             send_test_mail_request=send_test_mail_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1099,7 +1099,7 @@ class SettingsApi:
 
 
     @validate_call
-    def send_test_mail_api_v1_settings_mail_test_post_with_http_info(
+    def settings_send_test_mail_with_http_info(
         self,
         send_test_mail_request: SendTestMailRequest,
         _request_timeout: Union[
@@ -1143,7 +1143,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._send_test_mail_api_v1_settings_mail_test_post_serialize(
+        _param = self._settings_send_test_mail_serialize(
             send_test_mail_request=send_test_mail_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1167,7 +1167,7 @@ class SettingsApi:
 
 
     @validate_call
-    def send_test_mail_api_v1_settings_mail_test_post_without_preload_content(
+    def settings_send_test_mail_without_preload_content(
         self,
         send_test_mail_request: SendTestMailRequest,
         _request_timeout: Union[
@@ -1211,7 +1211,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._send_test_mail_api_v1_settings_mail_test_post_serialize(
+        _param = self._settings_send_test_mail_serialize(
             send_test_mail_request=send_test_mail_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1230,7 +1230,7 @@ class SettingsApi:
         return response_data.response
 
 
-    def _send_test_mail_api_v1_settings_mail_test_post_serialize(
+    def _settings_send_test_mail_serialize(
         self,
         send_test_mail_request,
         _request_auth,
@@ -1309,7 +1309,7 @@ class SettingsApi:
 
 
     @validate_call
-    def update_maintenance_mode_api_v1_settings_maintenance_mode_patch(
+    def settings_update_maintenance_mode(
         self,
         update_maintenance_mode_request: UpdateMaintenanceModeRequest,
         _request_timeout: Union[
@@ -1353,7 +1353,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_maintenance_mode_api_v1_settings_maintenance_mode_patch_serialize(
+        _param = self._settings_update_maintenance_mode_serialize(
             update_maintenance_mode_request=update_maintenance_mode_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1377,7 +1377,7 @@ class SettingsApi:
 
 
     @validate_call
-    def update_maintenance_mode_api_v1_settings_maintenance_mode_patch_with_http_info(
+    def settings_update_maintenance_mode_with_http_info(
         self,
         update_maintenance_mode_request: UpdateMaintenanceModeRequest,
         _request_timeout: Union[
@@ -1421,7 +1421,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_maintenance_mode_api_v1_settings_maintenance_mode_patch_serialize(
+        _param = self._settings_update_maintenance_mode_serialize(
             update_maintenance_mode_request=update_maintenance_mode_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1445,7 +1445,7 @@ class SettingsApi:
 
 
     @validate_call
-    def update_maintenance_mode_api_v1_settings_maintenance_mode_patch_without_preload_content(
+    def settings_update_maintenance_mode_without_preload_content(
         self,
         update_maintenance_mode_request: UpdateMaintenanceModeRequest,
         _request_timeout: Union[
@@ -1489,7 +1489,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_maintenance_mode_api_v1_settings_maintenance_mode_patch_serialize(
+        _param = self._settings_update_maintenance_mode_serialize(
             update_maintenance_mode_request=update_maintenance_mode_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1508,7 +1508,7 @@ class SettingsApi:
         return response_data.response
 
 
-    def _update_maintenance_mode_api_v1_settings_maintenance_mode_patch_serialize(
+    def _settings_update_maintenance_mode_serialize(
         self,
         update_maintenance_mode_request,
         _request_auth,
@@ -1587,7 +1587,7 @@ class SettingsApi:
 
 
     @validate_call
-    def update_settings_api_v1_settings_patch(
+    def settings_update_settings(
         self,
         update_settings_request: UpdateSettingsRequest,
         _request_timeout: Union[
@@ -1631,7 +1631,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_settings_api_v1_settings_patch_serialize(
+        _param = self._settings_update_settings_serialize(
             update_settings_request=update_settings_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1655,7 +1655,7 @@ class SettingsApi:
 
 
     @validate_call
-    def update_settings_api_v1_settings_patch_with_http_info(
+    def settings_update_settings_with_http_info(
         self,
         update_settings_request: UpdateSettingsRequest,
         _request_timeout: Union[
@@ -1699,7 +1699,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_settings_api_v1_settings_patch_serialize(
+        _param = self._settings_update_settings_serialize(
             update_settings_request=update_settings_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1723,7 +1723,7 @@ class SettingsApi:
 
 
     @validate_call
-    def update_settings_api_v1_settings_patch_without_preload_content(
+    def settings_update_settings_without_preload_content(
         self,
         update_settings_request: UpdateSettingsRequest,
         _request_timeout: Union[
@@ -1767,7 +1767,7 @@ class SettingsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_settings_api_v1_settings_patch_serialize(
+        _param = self._settings_update_settings_serialize(
             update_settings_request=update_settings_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1786,7 +1786,7 @@ class SettingsApi:
         return response_data.response
 
 
-    def _update_settings_api_v1_settings_patch_serialize(
+    def _settings_update_settings_serialize(
         self,
         update_settings_request,
         _request_auth,
