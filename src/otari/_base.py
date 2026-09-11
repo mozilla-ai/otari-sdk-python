@@ -252,7 +252,13 @@ def _url_encode(value: str) -> str:
 
 
 def extract_detail(error: ApiException) -> str:
-    """Pull the gateway's human-readable detail from an ``ApiException`` body."""
+    """Pull the gateway's human-readable detail from an ``ApiException`` body.
+
+    Recognizes the FastAPI/gateway ``{"detail": "..."}`` shape and the
+    OpenAI-style ``{"error": {"message": "..."}}`` / ``{"error": "..."}``
+    shapes, mirroring ``extract_detail`` in the Rust SDK (``core.rs``) and
+    ``detailFromObject`` in the TS SDK (``mapError.ts``).
+    """
     body = error.body
     if isinstance(body, (bytes, bytearray)):
         body = body.decode("utf-8", "replace")
@@ -265,8 +271,12 @@ def extract_detail(error: ApiException) -> str:
             detail = parsed.get("detail") or parsed.get("message") or parsed.get("error")
             if isinstance(detail, str):
                 return detail
+            if isinstance(detail, dict):
+                nested = detail.get("message")
+                if isinstance(nested, str):
+                    return nested
             if detail is not None:
-                return str(detail)
+                return json.dumps(detail)
         return body
     return error.reason or "An error occurred"
 
