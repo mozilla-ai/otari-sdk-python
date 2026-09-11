@@ -4104,7 +4104,7 @@ class AuthApi:
     ) -> SignupResponse:
         """Signup
 
-        Claim a roster identity, or do nothing: the response never says which.  No session is minted. A newly claimed identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.
+        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.
 
         :param signup_request: (required)
         :type signup_request: SignupRequest
@@ -4172,7 +4172,7 @@ class AuthApi:
     ) -> ApiResponse[SignupResponse]:
         """Signup
 
-        Claim a roster identity, or do nothing: the response never says which.  No session is minted. A newly claimed identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.
+        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.
 
         :param signup_request: (required)
         :type signup_request: SignupRequest
@@ -4240,7 +4240,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Signup
 
-        Claim a roster identity, or do nothing: the response never says which.  No session is minted. A newly claimed identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.
+        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.
 
         :param signup_request: (required)
         :type signup_request: SignupRequest
