@@ -18,24 +18,21 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceProviderKeyOverridePublic(BaseModel):
+class PlaygroundMcpServer(BaseModel):
     """
-    The effective view for one workspace+key: raw override flags plus the resolution.
+    One of the workspace's MCP servers, as the tools menu lists it.
     """ # noqa: E501
-    allowed_models: List[StrictStr]
-    disabled: StrictBool
-    is_default: StrictBool
-    is_effective_default: StrictBool
-    is_effective_enabled: StrictBool
-    org_provider_key_id: UUID
-    workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "disabled", "is_default", "is_effective_default", "is_effective_enabled", "org_provider_key_id", "workspace_id"]
+    enabled: StrictBool
+    id: UUID
+    name: StrictStr
+    purpose_hint: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["enabled", "id", "name", "purpose_hint"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +52,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a JSON string"""
+        """Create an instance of PlaygroundMcpServer from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,11 +73,16 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if purpose_hint (nullable) is None
+        # and model_fields_set contains the field
+        if self.purpose_hint is None and "purpose_hint" in self.model_fields_set:
+            _dict['purpose_hint'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a dict"""
+        """Create an instance of PlaygroundMcpServer from a dict"""
         if obj is None:
             return None
 
@@ -88,13 +90,10 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "allowed_models": obj.get("allowed_models"),
-            "disabled": obj.get("disabled"),
-            "is_default": obj.get("is_default"),
-            "is_effective_default": obj.get("is_effective_default"),
-            "is_effective_enabled": obj.get("is_effective_enabled"),
-            "org_provider_key_id": obj.get("org_provider_key_id"),
-            "workspace_id": obj.get("workspace_id")
+            "enabled": obj.get("enabled"),
+            "id": obj.get("id"),
+            "name": obj.get("name"),
+            "purpose_hint": obj.get("purpose_hint")
         })
         return _obj
 

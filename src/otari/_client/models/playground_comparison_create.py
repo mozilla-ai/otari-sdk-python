@@ -17,25 +17,33 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
+from typing_extensions import Annotated
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceProviderKeyOverridePublic(BaseModel):
+class PlaygroundComparisonCreate(BaseModel):
     """
-    The effective view for one workspace+key: raw override flags plus the resolution.
+    One rated A/B exchange.  Both answers in full, which is the disclosure the comparison consent flag covers: a preference with no answers attached is a datum nobody can later check, and the page's own history list shows the question and the two model ids from these columns.
     """ # noqa: E501
-    allowed_models: List[StrictStr]
-    disabled: StrictBool
-    is_default: StrictBool
-    is_effective_default: StrictBool
-    is_effective_enabled: StrictBool
-    org_provider_key_id: UUID
+    model_a: Annotated[str, Field(strict=True, max_length=512)]
+    model_a_answer: Annotated[str, Field(strict=True, max_length=200000)]
+    model_b: Annotated[str, Field(strict=True, max_length=512)]
+    model_b_answer: Annotated[str, Field(strict=True, max_length=200000)]
+    preference: StrictStr
+    user_question: Annotated[str, Field(min_length=1, strict=True, max_length=200000)]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "disabled", "is_default", "is_effective_default", "is_effective_enabled", "org_provider_key_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["model_a", "model_a_answer", "model_b", "model_b_answer", "preference", "user_question", "workspace_id"]
+
+    @field_validator('preference')
+    def preference_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['model_a', 'model_b', 'tie']):
+            raise ValueError("must be one of enum values ('model_a', 'model_b', 'tie')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +63,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a JSON string"""
+        """Create an instance of PlaygroundComparisonCreate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,7 +88,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a dict"""
+        """Create an instance of PlaygroundComparisonCreate from a dict"""
         if obj is None:
             return None
 
@@ -88,12 +96,12 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "allowed_models": obj.get("allowed_models"),
-            "disabled": obj.get("disabled"),
-            "is_default": obj.get("is_default"),
-            "is_effective_default": obj.get("is_effective_default"),
-            "is_effective_enabled": obj.get("is_effective_enabled"),
-            "org_provider_key_id": obj.get("org_provider_key_id"),
+            "model_a": obj.get("model_a"),
+            "model_a_answer": obj.get("model_a_answer"),
+            "model_b": obj.get("model_b"),
+            "model_b_answer": obj.get("model_b_answer"),
+            "preference": obj.get("preference"),
+            "user_question": obj.get("user_question"),
             "workspace_id": obj.get("workspace_id")
         })
         return _obj

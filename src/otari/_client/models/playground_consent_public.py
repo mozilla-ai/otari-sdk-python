@@ -17,25 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
-from uuid import UUID
+from pydantic import BaseModel, ConfigDict, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceProviderKeyOverridePublic(BaseModel):
+class PlaygroundConsentPublic(BaseModel):
     """
-    The effective view for one workspace+key: raw override flags plus the resolution.
+    What this identity has agreed the Playground may store.  Two flags rather than one, matching what the page asks for at the moment it asks: saving a transcript and recording a model preference are different disclosures (the second stores *both* models' full answers), and the old page asked about each separately at the point of use. An identity with no stored row reads back as both false.
     """ # noqa: E501
-    allowed_models: List[StrictStr]
-    disabled: StrictBool
-    is_default: StrictBool
-    is_effective_default: StrictBool
-    is_effective_enabled: StrictBool
-    org_provider_key_id: UUID
-    workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "disabled", "is_default", "is_effective_default", "is_effective_enabled", "org_provider_key_id", "workspace_id"]
+    store_comparisons: Optional[StrictBool] = False
+    store_conversations: Optional[StrictBool] = False
+    __properties: ClassVar[List[str]] = ["store_comparisons", "store_conversations"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +49,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a JSON string"""
+        """Create an instance of PlaygroundConsentPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,7 +74,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a dict"""
+        """Create an instance of PlaygroundConsentPublic from a dict"""
         if obj is None:
             return None
 
@@ -88,13 +82,8 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "allowed_models": obj.get("allowed_models"),
-            "disabled": obj.get("disabled"),
-            "is_default": obj.get("is_default"),
-            "is_effective_default": obj.get("is_effective_default"),
-            "is_effective_enabled": obj.get("is_effective_enabled"),
-            "org_provider_key_id": obj.get("org_provider_key_id"),
-            "workspace_id": obj.get("workspace_id")
+            "store_comparisons": obj.get("store_comparisons") if obj.get("store_comparisons") is not None else False,
+            "store_conversations": obj.get("store_conversations") if obj.get("store_conversations") is not None else False
         })
         return _obj
 
