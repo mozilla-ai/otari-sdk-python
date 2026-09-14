@@ -17,22 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
+from otari._client.models.built_in_guardrail_spec import BuiltInGuardrailSpec
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SignupRequest(BaseModel):
+class BuiltInGuardrailCatalog(BaseModel):
     """
-    Set a password for an address, claiming or registering it.
+    Every guardrail this gateway ships, whether or not it can currently run it.
     """ # noqa: E501
-    email: Annotated[str, Field(strict=True, max_length=255)] = Field(description="The address to sign in with. An address an admin added or invited where this deployment keeps signup closed; any address where the bootstrap reports open_signup.")
-    full_name: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Filled in only if not already set.")
-    password: Annotated[str, Field(min_length=8, strict=True, max_length=1024)] = Field(description="The password to sign in with once verified. At least 8 characters, at most 72 bytes.")
-    terms_accepted: Optional[StrictBool] = Field(default=False, description="Whether the caller accepted this deployment's terms.")
-    __properties: ClassVar[List[str]] = ["email", "full_name", "password", "terms_accepted"]
+    guardrails: Optional[List[BuiltInGuardrailSpec]] = None
+    __properties: ClassVar[List[str]] = ["guardrails"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +49,7 @@ class SignupRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SignupRequest from a JSON string"""
+        """Create an instance of BuiltInGuardrailCatalog from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,16 +70,18 @@ class SignupRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if full_name (nullable) is None
-        # and model_fields_set contains the field
-        if self.full_name is None and "full_name" in self.model_fields_set:
-            _dict['full_name'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of each item in guardrails (list)
+        _items = []
+        if self.guardrails:
+            for _item_guardrails in self.guardrails:
+                if _item_guardrails:
+                    _items.append(_item_guardrails.to_dict())
+            _dict['guardrails'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SignupRequest from a dict"""
+        """Create an instance of BuiltInGuardrailCatalog from a dict"""
         if obj is None:
             return None
 
@@ -90,10 +89,7 @@ class SignupRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "email": obj.get("email"),
-            "full_name": obj.get("full_name"),
-            "password": obj.get("password"),
-            "terms_accepted": obj.get("terms_accepted") if obj.get("terms_accepted") is not None else False
+            "guardrails": [BuiltInGuardrailSpec.from_dict(_item) for _item in obj["guardrails"]] if obj.get("guardrails") is not None else None
         })
         return _obj
 

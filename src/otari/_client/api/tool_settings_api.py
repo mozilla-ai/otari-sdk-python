@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import StrictStr
+from otari._client.models.built_in_guardrail_catalog import BuiltInGuardrailCatalog
 from otari._client.models.guardrail_catalog import GuardrailCatalog
 from otari._client.models.test_service_request import TestServiceRequest
 from otari._client.models.test_service_response import TestServiceResponse
@@ -272,6 +273,253 @@ class ToolSettingsApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/api/v1/tool-settings',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def tool_settings_list_builtin_guardrails(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> BuiltInGuardrailCatalog:
+        """List Builtin Guardrails
+
+        List the guardrails this gateway can run itself, for the form that defines one.  Every guardrail ``any_guardrail`` ships, with the constructor and per-call arguments each one takes, so a guardrail is configured by picking it and filling typed fields. A parameter names the environment variable that fills it where one exists, and ``requirement_groups`` carries the constraints satisfied by any of several parameters, which no single required flag can state. This is the counterpart of ``GET /api/v1/providers/catalog``: the same picker, for a guardrail rather than a provider, and on the same gate that one takes.  Reaches no service, so there is no unavailable state to report. ``runnable`` says whether the modules a guardrail's backend needs are installed here, probed rather than imported, and ``missing_extra`` names the Otari extra that would fix it.  On the operator router rather than the reader beside it, on both halves of what it answers. It is the input to a write that stores a vendor API key deployment-wide, which is an operator's action alone; and ``runnable`` describes the host's installed packages, which is infrastructure rather than something a tenant is owed about their own requests. A profile *name* is the one thing a caller needs, and the profiles read next door is where the set of those is published.  Not on ``verify_catalog_reader`` either: that plane is a closed set of three deployment-describing reads a data-plane key may make, and this is a management read, not one of them.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._tool_settings_list_builtin_guardrails_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "BuiltInGuardrailCatalog",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def tool_settings_list_builtin_guardrails_with_http_info(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[BuiltInGuardrailCatalog]:
+        """List Builtin Guardrails
+
+        List the guardrails this gateway can run itself, for the form that defines one.  Every guardrail ``any_guardrail`` ships, with the constructor and per-call arguments each one takes, so a guardrail is configured by picking it and filling typed fields. A parameter names the environment variable that fills it where one exists, and ``requirement_groups`` carries the constraints satisfied by any of several parameters, which no single required flag can state. This is the counterpart of ``GET /api/v1/providers/catalog``: the same picker, for a guardrail rather than a provider, and on the same gate that one takes.  Reaches no service, so there is no unavailable state to report. ``runnable`` says whether the modules a guardrail's backend needs are installed here, probed rather than imported, and ``missing_extra`` names the Otari extra that would fix it.  On the operator router rather than the reader beside it, on both halves of what it answers. It is the input to a write that stores a vendor API key deployment-wide, which is an operator's action alone; and ``runnable`` describes the host's installed packages, which is infrastructure rather than something a tenant is owed about their own requests. A profile *name* is the one thing a caller needs, and the profiles read next door is where the set of those is published.  Not on ``verify_catalog_reader`` either: that plane is a closed set of three deployment-describing reads a data-plane key may make, and this is a management read, not one of them.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._tool_settings_list_builtin_guardrails_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "BuiltInGuardrailCatalog",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def tool_settings_list_builtin_guardrails_without_preload_content(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """List Builtin Guardrails
+
+        List the guardrails this gateway can run itself, for the form that defines one.  Every guardrail ``any_guardrail`` ships, with the constructor and per-call arguments each one takes, so a guardrail is configured by picking it and filling typed fields. A parameter names the environment variable that fills it where one exists, and ``requirement_groups`` carries the constraints satisfied by any of several parameters, which no single required flag can state. This is the counterpart of ``GET /api/v1/providers/catalog``: the same picker, for a guardrail rather than a provider, and on the same gate that one takes.  Reaches no service, so there is no unavailable state to report. ``runnable`` says whether the modules a guardrail's backend needs are installed here, probed rather than imported, and ``missing_extra`` names the Otari extra that would fix it.  On the operator router rather than the reader beside it, on both halves of what it answers. It is the input to a write that stores a vendor API key deployment-wide, which is an operator's action alone; and ``runnable`` describes the host's installed packages, which is infrastructure rather than something a tenant is owed about their own requests. A profile *name* is the one thing a caller needs, and the profiles read next door is where the set of those is published.  Not on ``verify_catalog_reader`` either: that plane is a closed set of three deployment-describing reads a data-plane key may make, and this is a management read, not one of them.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._tool_settings_list_builtin_guardrails_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "BuiltInGuardrailCatalog",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _tool_settings_list_builtin_guardrails_serialize(
+        self,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/tool-settings/guardrails/catalog',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -45,11 +45,14 @@ from otari._client.models.audio_content import AudioContent
 from otari._client.models.audio_speech_request import AudioSpeechRequest
 from otari._client.models.authenticate_passkey_request import AuthenticatePasskeyRequest
 from otari._client.models.authorize_response import AuthorizeResponse
+from otari._client.models.backend_type import BackendType
 from otari._client.models.batch_request_item import BatchRequestItem
 from otari._client.models.billing_meters import BillingMeters
 from otari._client.models.blob_resource_contents import BlobResourceContents
 from otari._client.models.budget_reset_log_response import BudgetResetLogResponse
 from otari._client.models.budget_response import BudgetResponse
+from otari._client.models.built_in_guardrail_catalog import BuiltInGuardrailCatalog
+from otari._client.models.built_in_guardrail_spec import BuiltInGuardrailSpec
 from otari._client.models.cc_chat_completion_audio import CCChatCompletionAudio
 from otari._client.models.cc_chat_completion_message import CCChatCompletionMessage
 from otari._client.models.cc_chat_completion_message_custom_tool_call import CCChatCompletionMessageCustomToolCall
@@ -150,9 +153,11 @@ from otari._client.models.external_ingest_result import ExternalIngestResult
 from otari._client.models.external_usage_event import ExternalUsageEvent
 from otari._client.models.gateway_settings import GatewaySettings
 from otari._client.models.guardrail_catalog import GuardrailCatalog
+from otari._client.models.guardrail_category import GuardrailCategory
 from otari._client.models.guardrail_config import GuardrailConfig
 from otari._client.models.guardrail_parameter_spec import GuardrailParameterSpec
 from otari._client.models.guardrail_profile_spec import GuardrailProfileSpec
+from otari._client.models.guardrail_stage import GuardrailStage
 from otari._client.models.http_validation_error import HTTPValidationError
 from otari._client.models.img_image import IMGImage
 from otari._client.models.img_usage import IMGUsage
@@ -365,6 +370,7 @@ from otari._client.models.organization_scoped_budget_create import OrganizationS
 from otari._client.models.organization_scoped_budget_public import OrganizationScopedBudgetPublic
 from otari._client.models.organization_scoped_budget_update import OrganizationScopedBudgetUpdate
 from otari._client.models.organization_scoped_budgets_public import OrganizationScopedBudgetsPublic
+from otari._client.models.output_shape import OutputShape
 from otari._client.models.passkey_session_response import PasskeySessionResponse
 from otari._client.models.password_response import PasswordResponse
 from otari._client.models.pending_organization_invitation_public import PendingOrganizationInvitationPublic
@@ -395,6 +401,7 @@ from otari._client.models.reencrypt_search_tools_response import ReencryptSearch
 from otari._client.models.register_passkey_request import RegisterPasskeyRequest
 from otari._client.models.request_password_reset_request import RequestPasswordResetRequest
 from otari._client.models.request_password_reset_response import RequestPasswordResetResponse
+from otari._client.models.requirement_group import RequirementGroup
 from otari._client.models.rerank_request import RerankRequest
 from otari._client.models.rerank_response import RerankResponse
 from otari._client.models.resend_verification_request import ResendVerificationRequest
@@ -476,6 +483,7 @@ from otari._client.models.validate_invitation_request import ValidateInvitationR
 from otari._client.models.validation_error import ValidationError
 from otari._client.models.value import Value
 from otari._client.models.value1 import Value1
+from otari._client.models.variant_license import VariantLicense
 from otari._client.models.verify_email_request import VerifyEmailRequest
 from otari._client.models.verify_email_response import VerifyEmailResponse
 from otari._client.models.web_authn_credential_public import WebAuthnCredentialPublic

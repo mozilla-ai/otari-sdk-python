@@ -17,22 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SignupRequest(BaseModel):
+class RequirementGroup(BaseModel):
     """
-    Set a password for an address, claiming or registering it.
+    A guardrail-level \"at least one of these must be provided\" constraint.  Some guardrails require *a value* that no single parameter's :attr:`ParameterSpec.required` or :attr:`ParameterSpec.effectively_required` can express, because it can be satisfied by any of several parameters — e.g. watsonx needs a ``project_id`` *or* a ``space_id``. Each group names the interchangeable parameters (and any environment variables that also satisfy it); a config UI should require the user to supply at least one member.
     """ # noqa: E501
-    email: Annotated[str, Field(strict=True, max_length=255)] = Field(description="The address to sign in with. An address an admin added or invited where this deployment keeps signup closed; any address where the bootstrap reports open_signup.")
-    full_name: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Filled in only if not already set.")
-    password: Annotated[str, Field(min_length=8, strict=True, max_length=1024)] = Field(description="The password to sign in with once verified. At least 8 characters, at most 72 bytes.")
-    terms_accepted: Optional[StrictBool] = Field(default=False, description="Whether the caller accepted this deployment's terms.")
-    __properties: ClassVar[List[str]] = ["email", "full_name", "password", "terms_accepted"]
+    description: StrictStr
+    env_vars: Optional[List[StrictStr]] = None
+    parameters: List[StrictStr]
+    __properties: ClassVar[List[str]] = ["description", "env_vars", "parameters"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +50,7 @@ class SignupRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SignupRequest from a JSON string"""
+        """Create an instance of RequirementGroup from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,16 +71,11 @@ class SignupRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if full_name (nullable) is None
-        # and model_fields_set contains the field
-        if self.full_name is None and "full_name" in self.model_fields_set:
-            _dict['full_name'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SignupRequest from a dict"""
+        """Create an instance of RequirementGroup from a dict"""
         if obj is None:
             return None
 
@@ -90,10 +83,9 @@ class SignupRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "email": obj.get("email"),
-            "full_name": obj.get("full_name"),
-            "password": obj.get("password"),
-            "terms_accepted": obj.get("terms_accepted") if obj.get("terms_accepted") is not None else False
+            "description": obj.get("description"),
+            "env_vars": obj.get("env_vars"),
+            "parameters": obj.get("parameters")
         })
         return _obj
 
