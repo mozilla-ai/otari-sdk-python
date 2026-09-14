@@ -30,11 +30,13 @@ class GuardrailParameterSpec(BaseModel):
     choices: Optional[List[StrictStr]] = Field(default=None, description="Allowed values for an enum parameter")
     default: Optional[Any] = None
     description: Optional[StrictStr] = Field(default=None, description="One-line help text from the guardrail's docstring")
+    env_var: Optional[StrictStr] = Field(default=None, description="The environment variable that supplies this parameter when no value is stored, so a form can offer that instead of demanding a credential the deployment already has")
     name: StrictStr = Field(description="The keyword argument's name, as it is sent in validate_kwargs")
     required: StrictBool = Field(description="Whether a value must be supplied for the guardrail to run. Folds together the signature having no default and upstream's effectively-required flag, which covers a parameter that defaults to a value the guardrail then refuses to run without")
     secret: Optional[StrictBool] = Field(default=False, description="Whether the value is a credential, so a form masks it and never echoes it back")
+    storable: Optional[StrictBool] = Field(default=True, description="Whether a saved value can stand in for this parameter. False for a secret whose type is json, which upstream uses for a live object (an authenticated SDK client or session) that cannot be written down. A form offers no field for one")
     type: StrictStr = Field(description="Value shape, so a form can render the matching control")
-    __properties: ClassVar[List[str]] = ["choices", "default", "description", "name", "required", "secret", "type"]
+    __properties: ClassVar[List[str]] = ["choices", "default", "description", "env_var", "name", "required", "secret", "storable", "type"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -97,6 +99,11 @@ class GuardrailParameterSpec(BaseModel):
         if self.description is None and "description" in self.model_fields_set:
             _dict['description'] = None
 
+        # set to None if env_var (nullable) is None
+        # and model_fields_set contains the field
+        if self.env_var is None and "env_var" in self.model_fields_set:
+            _dict['env_var'] = None
+
         return _dict
 
     @classmethod
@@ -112,9 +119,11 @@ class GuardrailParameterSpec(BaseModel):
             "choices": obj.get("choices"),
             "default": obj.get("default"),
             "description": obj.get("description"),
+            "env_var": obj.get("env_var"),
             "name": obj.get("name"),
             "required": obj.get("required"),
             "secret": obj.get("secret") if obj.get("secret") is not None else False,
+            "storable": obj.get("storable") if obj.get("storable") is not None else True,
             "type": obj.get("type")
         })
         return _obj
