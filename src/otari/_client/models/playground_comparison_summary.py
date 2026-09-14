@@ -17,25 +17,26 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceProviderKeyOverridePublic(BaseModel):
+class PlaygroundComparisonSummary(BaseModel):
     """
-    The effective view for one workspace+key: raw override flags plus the resolution.
+    A row in the comparison history: the question, the pair, the verdict.  Deliberately without the two answers. The list shows a dozen rows at once and none of them renders an answer body, so sending them would move megabytes to draw a few lines of text. There is no detail endpoint either, because the page has no screen that reads one back: a comparison is a judgment that was recorded, not a transcript to resume.
     """ # noqa: E501
-    allowed_models: List[StrictStr]
-    disabled: StrictBool
-    is_default: StrictBool
-    is_effective_default: StrictBool
-    is_effective_enabled: StrictBool
-    org_provider_key_id: UUID
+    created_at: datetime
+    id: UUID
+    model_a: StrictStr
+    model_b: StrictStr
+    preference: StrictStr
+    user_question: StrictStr
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "disabled", "is_default", "is_effective_default", "is_effective_enabled", "org_provider_key_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["created_at", "id", "model_a", "model_b", "preference", "user_question", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +56,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a JSON string"""
+        """Create an instance of PlaygroundComparisonSummary from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,7 +81,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a dict"""
+        """Create an instance of PlaygroundComparisonSummary from a dict"""
         if obj is None:
             return None
 
@@ -88,12 +89,12 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "allowed_models": obj.get("allowed_models"),
-            "disabled": obj.get("disabled"),
-            "is_default": obj.get("is_default"),
-            "is_effective_default": obj.get("is_effective_default"),
-            "is_effective_enabled": obj.get("is_effective_enabled"),
-            "org_provider_key_id": obj.get("org_provider_key_id"),
+            "created_at": obj.get("created_at"),
+            "id": obj.get("id"),
+            "model_a": obj.get("model_a"),
+            "model_b": obj.get("model_b"),
+            "preference": obj.get("preference"),
+            "user_question": obj.get("user_question"),
             "workspace_id": obj.get("workspace_id")
         })
         return _obj

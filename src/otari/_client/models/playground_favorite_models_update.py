@@ -17,25 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
-from uuid import UUID
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceProviderKeyOverridePublic(BaseModel):
+class PlaygroundFavoriteModelsUpdate(BaseModel):
     """
-    The effective view for one workspace+key: raw override flags plus the resolution.
+    The whole pin list, replacing whatever was stored.  A replace rather than a toggle endpoint, because the client already holds the list it is rendering and the order is part of it (a newly pinned model leads). Two tabs racing therefore resolve to one of the two lists rather than to an interleaving neither of them showed.
     """ # noqa: E501
-    allowed_models: List[StrictStr]
-    disabled: StrictBool
-    is_default: StrictBool
-    is_effective_default: StrictBool
-    is_effective_enabled: StrictBool
-    org_provider_key_id: UUID
-    workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "disabled", "is_default", "is_effective_default", "is_effective_enabled", "org_provider_key_id", "workspace_id"]
+    model_keys: Annotated[List[Annotated[str, Field(strict=True, max_length=512)]], Field(max_length=50)]
+    __properties: ClassVar[List[str]] = ["model_keys"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +49,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a JSON string"""
+        """Create an instance of PlaygroundFavoriteModelsUpdate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,7 +74,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a dict"""
+        """Create an instance of PlaygroundFavoriteModelsUpdate from a dict"""
         if obj is None:
             return None
 
@@ -88,13 +82,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "allowed_models": obj.get("allowed_models"),
-            "disabled": obj.get("disabled"),
-            "is_default": obj.get("is_default"),
-            "is_effective_default": obj.get("is_effective_default"),
-            "is_effective_enabled": obj.get("is_effective_enabled"),
-            "org_provider_key_id": obj.get("org_provider_key_id"),
-            "workspace_id": obj.get("workspace_id")
+            "model_keys": obj.get("model_keys")
         })
         return _obj
 

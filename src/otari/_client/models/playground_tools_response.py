@@ -17,25 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List
-from uuid import UUID
+from otari._client.models.playground_mcp_server import PlaygroundMcpServer
+from otari._client.models.playground_tool_status import PlaygroundToolStatus
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceProviderKeyOverridePublic(BaseModel):
+class PlaygroundToolsResponse(BaseModel):
     """
-    The effective view for one workspace+key: raw override flags plus the resolution.
+    What the caller's workspace may attach to a Playground message.
     """ # noqa: E501
-    allowed_models: List[StrictStr]
-    disabled: StrictBool
-    is_default: StrictBool
-    is_effective_default: StrictBool
-    is_effective_enabled: StrictBool
-    org_provider_key_id: UUID
-    workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "disabled", "is_default", "is_effective_default", "is_effective_enabled", "org_provider_key_id", "workspace_id"]
+    code_execution: PlaygroundToolStatus
+    mcp_servers: List[PlaygroundMcpServer]
+    web_search: PlaygroundToolStatus
+    __properties: ClassVar[List[str]] = ["code_execution", "mcp_servers", "web_search"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +52,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a JSON string"""
+        """Create an instance of PlaygroundToolsResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,11 +73,24 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of code_execution
+        if self.code_execution:
+            _dict['code_execution'] = self.code_execution.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in mcp_servers (list)
+        _items = []
+        if self.mcp_servers:
+            for _item_mcp_servers in self.mcp_servers:
+                if _item_mcp_servers:
+                    _items.append(_item_mcp_servers.to_dict())
+            _dict['mcp_servers'] = _items
+        # override the default output from pydantic by calling `to_dict()` of web_search
+        if self.web_search:
+            _dict['web_search'] = self.web_search.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a dict"""
+        """Create an instance of PlaygroundToolsResponse from a dict"""
         if obj is None:
             return None
 
@@ -88,13 +98,9 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "allowed_models": obj.get("allowed_models"),
-            "disabled": obj.get("disabled"),
-            "is_default": obj.get("is_default"),
-            "is_effective_default": obj.get("is_effective_default"),
-            "is_effective_enabled": obj.get("is_effective_enabled"),
-            "org_provider_key_id": obj.get("org_provider_key_id"),
-            "workspace_id": obj.get("workspace_id")
+            "code_execution": PlaygroundToolStatus.from_dict(obj["code_execution"]) if obj.get("code_execution") is not None else None,
+            "mcp_servers": [PlaygroundMcpServer.from_dict(_item) for _item in obj["mcp_servers"]] if obj.get("mcp_servers") is not None else None,
+            "web_search": PlaygroundToolStatus.from_dict(obj["web_search"]) if obj.get("web_search") is not None else None
         })
         return _obj
 

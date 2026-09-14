@@ -45,6 +45,7 @@ __all__ = [
     "OrganizationUsageApi",
     "OrganizationsApi",
     "OtelApi",
+    "PlaygroundApi",
     "PricingApi",
     "ProviderKeysApi",
     "ProvidersApi",
@@ -436,6 +437,22 @@ __all__ = [
     "PasswordResponse",
     "PendingOrganizationInvitationPublic",
     "PendingOrganizationInvitationsPublic",
+    "PlaygroundComparisonCreate",
+    "PlaygroundComparisonSummary",
+    "PlaygroundComparisonsPublic",
+    "PlaygroundConsentPublic",
+    "PlaygroundConsentUpdate",
+    "PlaygroundConversationCreate",
+    "PlaygroundConversationSummary",
+    "PlaygroundConversationsPublic",
+    "PlaygroundFavoriteModelsPublic",
+    "PlaygroundFavoriteModelsUpdate",
+    "PlaygroundMcpServer",
+    "PlaygroundMessageCreate",
+    "PlaygroundMessagePublic",
+    "PlaygroundMessagesPublic",
+    "PlaygroundToolStatus",
+    "PlaygroundToolsResponse",
     "PolicyRequest",
     "PolicyResponse",
     "PoolStatus",
@@ -607,6 +624,7 @@ from otari._client.api.organization_pricing_api import OrganizationPricingApi as
 from otari._client.api.organization_usage_api import OrganizationUsageApi as OrganizationUsageApi
 from otari._client.api.organizations_api import OrganizationsApi as OrganizationsApi
 from otari._client.api.otel_api import OtelApi as OtelApi
+from otari._client.api.playground_api import PlaygroundApi as PlaygroundApi
 from otari._client.api.pricing_api import PricingApi as PricingApi
 from otari._client.api.provider_keys_api import ProviderKeysApi as ProviderKeysApi
 from otari._client.api.providers_api import ProvidersApi as ProvidersApi
@@ -1002,6 +1020,22 @@ from otari._client.models.passkey_session_response import PasskeySessionResponse
 from otari._client.models.password_response import PasswordResponse as PasswordResponse
 from otari._client.models.pending_organization_invitation_public import PendingOrganizationInvitationPublic as PendingOrganizationInvitationPublic
 from otari._client.models.pending_organization_invitations_public import PendingOrganizationInvitationsPublic as PendingOrganizationInvitationsPublic
+from otari._client.models.playground_comparison_create import PlaygroundComparisonCreate as PlaygroundComparisonCreate
+from otari._client.models.playground_comparison_summary import PlaygroundComparisonSummary as PlaygroundComparisonSummary
+from otari._client.models.playground_comparisons_public import PlaygroundComparisonsPublic as PlaygroundComparisonsPublic
+from otari._client.models.playground_consent_public import PlaygroundConsentPublic as PlaygroundConsentPublic
+from otari._client.models.playground_consent_update import PlaygroundConsentUpdate as PlaygroundConsentUpdate
+from otari._client.models.playground_conversation_create import PlaygroundConversationCreate as PlaygroundConversationCreate
+from otari._client.models.playground_conversation_summary import PlaygroundConversationSummary as PlaygroundConversationSummary
+from otari._client.models.playground_conversations_public import PlaygroundConversationsPublic as PlaygroundConversationsPublic
+from otari._client.models.playground_favorite_models_public import PlaygroundFavoriteModelsPublic as PlaygroundFavoriteModelsPublic
+from otari._client.models.playground_favorite_models_update import PlaygroundFavoriteModelsUpdate as PlaygroundFavoriteModelsUpdate
+from otari._client.models.playground_mcp_server import PlaygroundMcpServer as PlaygroundMcpServer
+from otari._client.models.playground_message_create import PlaygroundMessageCreate as PlaygroundMessageCreate
+from otari._client.models.playground_message_public import PlaygroundMessagePublic as PlaygroundMessagePublic
+from otari._client.models.playground_messages_public import PlaygroundMessagesPublic as PlaygroundMessagesPublic
+from otari._client.models.playground_tool_status import PlaygroundToolStatus as PlaygroundToolStatus
+from otari._client.models.playground_tools_response import PlaygroundToolsResponse as PlaygroundToolsResponse
 from otari._client.models.policy_request import PolicyRequest as PolicyRequest
 from otari._client.models.policy_response import PolicyResponse as PolicyResponse
 from otari._client.models.pool_status import PoolStatus as PoolStatus

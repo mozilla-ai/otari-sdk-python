@@ -17,25 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
-from uuid import UUID
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceProviderKeyOverridePublic(BaseModel):
+class PlaygroundToolStatus(BaseModel):
     """
-    The effective view for one workspace+key: raw override flags plus the resolution.
+    Whether one gateway-run tool can be attached right now, and why not.  Three states from two fields, which is what the composer's menu draws: a tool the deployment never configured is not offered, one the deployment configured and this workspace turned off is shown disabled with the reason, and an available one is a plain checkbox. A single boolean would collapse the first two, which is how a checkbox comes to look attachable and then fail at request time (otari-ai#1419).
     """ # noqa: E501
-    allowed_models: List[StrictStr]
-    disabled: StrictBool
-    is_default: StrictBool
-    is_effective_default: StrictBool
-    is_effective_enabled: StrictBool
-    org_provider_key_id: UUID
-    workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "disabled", "is_default", "is_effective_default", "is_effective_enabled", "org_provider_key_id", "workspace_id"]
+    configured: StrictBool = Field(description="Whether this deployment has a backend for the tool at all.")
+    enabled: StrictBool = Field(description="Whether the caller's workspace may attach it.")
+    reason: Optional[StrictStr] = Field(default=None, description="Why it cannot be attached. Null when it can.")
+    __properties: ClassVar[List[str]] = ["configured", "enabled", "reason"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +50,7 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a JSON string"""
+        """Create an instance of PlaygroundToolStatus from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,11 +71,16 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if reason (nullable) is None
+        # and model_fields_set contains the field
+        if self.reason is None and "reason" in self.model_fields_set:
+            _dict['reason'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceProviderKeyOverridePublic from a dict"""
+        """Create an instance of PlaygroundToolStatus from a dict"""
         if obj is None:
             return None
 
@@ -88,13 +88,9 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "allowed_models": obj.get("allowed_models"),
-            "disabled": obj.get("disabled"),
-            "is_default": obj.get("is_default"),
-            "is_effective_default": obj.get("is_effective_default"),
-            "is_effective_enabled": obj.get("is_effective_enabled"),
-            "org_provider_key_id": obj.get("org_provider_key_id"),
-            "workspace_id": obj.get("workspace_id")
+            "configured": obj.get("configured"),
+            "enabled": obj.get("enabled"),
+            "reason": obj.get("reason")
         })
         return _obj
 
