@@ -31,7 +31,8 @@ class ActivationApiKeyPublic(BaseModel):
     key_id: StrictStr
     key_name: Optional[StrictStr]
     key_prefix: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["key", "key_id", "key_name", "key_prefix"]
+    key_suffix: Optional[StrictStr]
+    __properties: ClassVar[List[str]] = ["key", "key_id", "key_name", "key_prefix", "key_suffix"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -82,6 +83,11 @@ class ActivationApiKeyPublic(BaseModel):
         if self.key_prefix is None and "key_prefix" in self.model_fields_set:
             _dict['key_prefix'] = None
 
+        # set to None if key_suffix (nullable) is None
+        # and model_fields_set contains the field
+        if self.key_suffix is None and "key_suffix" in self.model_fields_set:
+            _dict['key_suffix'] = None
+
         return _dict
 
     @classmethod
@@ -97,7 +103,8 @@ class ActivationApiKeyPublic(BaseModel):
             "key": obj.get("key"),
             "key_id": obj.get("key_id"),
             "key_name": obj.get("key_name"),
-            "key_prefix": obj.get("key_prefix")
+            "key_prefix": obj.get("key_prefix"),
+            "key_suffix": obj.get("key_suffix")
         })
         return _obj
 
