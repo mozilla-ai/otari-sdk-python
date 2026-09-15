@@ -17,26 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.model_pricing_info import ModelPricingInfo
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ModelObject(BaseModel):
+class CatalogCapabilities(BaseModel):
     """
-    OpenAI-compatible model object.
+    What a model can do, as models.dev reports it. Any offering's yes is the model's.
     """ # noqa: E501
-    context_window: Optional[StrictInt] = None
-    created: StrictInt
-    deployment_managed: Optional[StrictBool] = False
-    id: StrictStr
-    object: Optional[StrictStr] = 'model'
-    owned_by: StrictStr
-    pricing: Optional[ModelPricingInfo] = None
-    pricing_source: Optional[StrictStr] = 'none'
-    __properties: ClassVar[List[str]] = ["context_window", "created", "deployment_managed", "id", "object", "owned_by", "pricing", "pricing_source"]
+    attachment: Optional[StrictBool] = False
+    reasoning: Optional[StrictBool] = False
+    structured_output: Optional[StrictBool] = False
+    temperature: Optional[StrictBool] = False
+    tool_call: Optional[StrictBool] = False
+    __properties: ClassVar[List[str]] = ["attachment", "reasoning", "structured_output", "temperature", "tool_call"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +52,7 @@ class ModelObject(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ModelObject from a JSON string"""
+        """Create an instance of CatalogCapabilities from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,24 +73,11 @@ class ModelObject(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of pricing
-        if self.pricing:
-            _dict['pricing'] = self.pricing.to_dict()
-        # set to None if context_window (nullable) is None
-        # and model_fields_set contains the field
-        if self.context_window is None and "context_window" in self.model_fields_set:
-            _dict['context_window'] = None
-
-        # set to None if pricing (nullable) is None
-        # and model_fields_set contains the field
-        if self.pricing is None and "pricing" in self.model_fields_set:
-            _dict['pricing'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ModelObject from a dict"""
+        """Create an instance of CatalogCapabilities from a dict"""
         if obj is None:
             return None
 
@@ -102,14 +85,11 @@ class ModelObject(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "context_window": obj.get("context_window"),
-            "created": obj.get("created"),
-            "deployment_managed": obj.get("deployment_managed") if obj.get("deployment_managed") is not None else False,
-            "id": obj.get("id"),
-            "object": obj.get("object") if obj.get("object") is not None else 'model',
-            "owned_by": obj.get("owned_by"),
-            "pricing": ModelPricingInfo.from_dict(obj["pricing"]) if obj.get("pricing") is not None else None,
-            "pricing_source": obj.get("pricing_source") if obj.get("pricing_source") is not None else 'none'
+            "attachment": obj.get("attachment") if obj.get("attachment") is not None else False,
+            "reasoning": obj.get("reasoning") if obj.get("reasoning") is not None else False,
+            "structured_output": obj.get("structured_output") if obj.get("structured_output") is not None else False,
+            "temperature": obj.get("temperature") if obj.get("temperature") is not None else False,
+            "tool_call": obj.get("tool_call") if obj.get("tool_call") is not None else False
         })
         return _obj
 

@@ -9,6 +9,7 @@ from otari._client.api.auth_api import AuthApi
 from otari._client.api.batches_api import BatchesApi
 from otari._client.api.bootstrap_api import BootstrapApi
 from otari._client.api.budgets_api import BudgetsApi
+from otari._client.api.catalog_api import CatalogApi
 from otari._client.api.chat_api import ChatApi
 from otari._client.api.embeddings_api import EmbeddingsApi
 from otari._client.api.files_api import FilesApi
