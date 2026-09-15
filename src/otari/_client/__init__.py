@@ -533,6 +533,7 @@ __all__ = [
     "UpdateKeyRequest",
     "UpdateMaintenanceModeRequest",
     "UpdateOwnKeyRequest",
+    "UpdateProfileRequest",
     "UpdateScopedBudgetRequest",
     "UpdateSearchToolRequest",
     "UpdateSettingsRequest",
@@ -1116,6 +1117,7 @@ from otari._client.models.update_budget_request import UpdateBudgetRequest as Up
 from otari._client.models.update_key_request import UpdateKeyRequest as UpdateKeyRequest
 from otari._client.models.update_maintenance_mode_request import UpdateMaintenanceModeRequest as UpdateMaintenanceModeRequest
 from otari._client.models.update_own_key_request import UpdateOwnKeyRequest as UpdateOwnKeyRequest
+from otari._client.models.update_profile_request import UpdateProfileRequest as UpdateProfileRequest
 from otari._client.models.update_scoped_budget_request import UpdateScopedBudgetRequest as UpdateScopedBudgetRequest
 from otari._client.models.update_search_tool_request import UpdateSearchToolRequest as UpdateSearchToolRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest as UpdateSettingsRequest
