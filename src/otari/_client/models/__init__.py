@@ -15,6 +15,7 @@
 # import models into model package
 from otari._client.models.accept_invitation_request import AcceptInvitationRequest
 from otari._client.models.accept_invitation_result_public import AcceptInvitationResultPublic
+from otari._client.models.accepted_snapshot_response import AcceptedSnapshotResponse
 from otari._client.models.activation_api_key_public import ActivationApiKeyPublic
 from otari._client.models.activation_attempt_public import ActivationAttemptPublic
 from otari._client.models.active_organization_member_create_request import ActiveOrganizationMemberCreateRequest
@@ -88,6 +89,12 @@ from otari._client.models.caller_organization_membership_public import CallerOrg
 from otari._client.models.caller_organization_memberships_public import CallerOrganizationMembershipsPublic
 from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic
 from otari._client.models.candidate_response import CandidateResponse
+from otari._client.models.catalog_capabilities import CatalogCapabilities
+from otari._client.models.catalog_elsewhere import CatalogElsewhere
+from otari._client.models.catalog_model_detail import CatalogModelDetail
+from otari._client.models.catalog_model_summary import CatalogModelSummary
+from otari._client.models.catalog_offering import CatalogOffering
+from otari._client.models.catalog_response import CatalogResponse
 from otari._client.models.chat_completion import ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk
 from otari._client.models.chat_completion_request import ChatCompletionRequest
@@ -343,6 +350,7 @@ from otari._client.models.moderation_response import ModerationResponse
 from otari._client.models.moderation_result import ModerationResult
 from otari._client.models.o_auth_callback_request import OAuthCallbackRequest
 from otari._client.models.o_auth_session_response import OAuthSessionResponse
+from otari._client.models.offering_usage import OfferingUsage
 from otari._client.models.org_provider_key_create_request import OrgProviderKeyCreateRequest
 from otari._client.models.org_provider_key_public import OrgProviderKeyPublic
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest
@@ -394,6 +402,7 @@ from otari._client.models.playground_tools_response import PlaygroundToolsRespon
 from otari._client.models.policy_request import PolicyRequest
 from otari._client.models.policy_response import PolicyResponse
 from otari._client.models.pool_status import PoolStatus
+from otari._client.models.pricing_drift_row import PricingDriftRow
 from otari._client.models.pricing_refresh_change_response import PricingRefreshChangeResponse
 from otari._client.models.pricing_refresh_confirmation_response import PricingRefreshConfirmationResponse
 from otari._client.models.pricing_refresh_preview_response import PricingRefreshPreviewResponse
@@ -435,6 +444,7 @@ from otari._client.models.search_request import SearchRequest
 from otari._client.models.search_response import SearchResponse
 from otari._client.models.search_result_item import SearchResultItem
 from otari._client.models.search_tools_response import SearchToolsResponse
+from otari._client.models.selector_index_response import SelectorIndexResponse
 from otari._client.models.send_test_mail_request import SendTestMailRequest
 from otari._client.models.send_test_mail_response import SendTestMailResponse
 from otari._client.models.session_response import SessionResponse

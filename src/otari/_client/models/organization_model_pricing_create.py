@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from otari._client.models.pricing_tier import PricingTier
@@ -39,7 +39,8 @@ class OrganizationModelPricingCreate(BaseModel):
     model_key: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="Model identifier in 'provider:model' form, matching the key the deployment price list uses. A provider instance name is valid here ('home_lab:llama-3'), because pricing keys on the instance a request resolves to.")
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers"]
+    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint.")
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('model_key')
     def model_key_validate_regular_expression(cls, value):
@@ -49,6 +50,16 @@ class OrganizationModelPricingCreate(BaseModel):
 
         if not re.match(r"^[^\s:\/]+[:\/][^\s]+$", value):
             raise ValueError(r"must validate the regular expression /^[^\s:\/]+[:\/][^\s]+$/")
+        return value
+
+    @field_validator('unit')
+    def unit_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['tokens', 'requests', 'images']):
+            raise ValueError("must be one of enum values ('tokens', 'requests', 'images')")
         return value
 
     model_config = ConfigDict(
@@ -147,7 +158,8 @@ class OrganizationModelPricingCreate(BaseModel):
             "input_price_per_million": obj.get("input_price_per_million"),
             "model_key": obj.get("model_key"),
             "output_price_per_million": obj.get("output_price_per_million"),
-            "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None
+            "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
+            "unit": obj.get("unit") if obj.get("unit") is not None else 'tokens'
         })
         return _obj
 

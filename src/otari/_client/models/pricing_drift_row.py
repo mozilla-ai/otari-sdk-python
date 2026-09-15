@@ -19,28 +19,26 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from otari._client.models.pricing_tier import PricingTier
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PricingResponse(BaseModel):
+class PricingDriftRow(BaseModel):
     """
-    Response model for model pricing.
+    A stored deployment rate beside the default it shadows.
     """ # noqa: E501
-    cache_read_price_per_million: Optional[Union[StrictFloat, StrictInt]]
-    cache_write_1h_price_per_million: Optional[Union[StrictFloat, StrictInt]]
-    cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]]
-    created_at: StrictStr
+    default_input_price_per_million: Optional[Union[StrictFloat, StrictInt]] = Field(description="What genai-prices would meter this key at today. Null when the dataset does not know it.")
+    default_output_price_per_million: Optional[Union[StrictFloat, StrictInt]]
+    default_reference: Optional[StrictStr] = Field(description="The genai-prices entry the default came from.")
     effective_at: StrictStr
+    input_delta_percent: Optional[Union[StrictFloat, StrictInt]] = Field(description="(stored - default) / default, as a percentage.")
     input_price_per_million: Union[StrictFloat, StrictInt]
     model_key: StrictStr
-    origin: Optional[StrictStr] = Field(description="Which writer set this row: config, api, or migration. Null when recorded before origins were.")
+    origin: Optional[StrictStr]
+    output_delta_percent: Optional[Union[StrictFloat, StrictInt]]
     output_price_per_million: Union[StrictFloat, StrictInt]
-    pricing_tiers: List[PricingTier]
-    unit: StrictStr = Field(description="What the rates are per: tokens, requests, or images.")
-    updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "created_at", "effective_at", "input_price_per_million", "model_key", "origin", "output_price_per_million", "pricing_tiers", "unit", "updated_at"]
+    unit: StrictStr
+    __properties: ClassVar[List[str]] = ["default_input_price_per_million", "default_output_price_per_million", "default_reference", "effective_at", "input_delta_percent", "input_price_per_million", "model_key", "origin", "output_delta_percent", "output_price_per_million", "unit"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -60,7 +58,7 @@ class PricingResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PricingResponse from a JSON string"""
+        """Create an instance of PricingDriftRow from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,38 +79,41 @@ class PricingResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in pricing_tiers (list)
-        _items = []
-        if self.pricing_tiers:
-            for _item_pricing_tiers in self.pricing_tiers:
-                if _item_pricing_tiers:
-                    _items.append(_item_pricing_tiers.to_dict())
-            _dict['pricing_tiers'] = _items
-        # set to None if cache_read_price_per_million (nullable) is None
+        # set to None if default_input_price_per_million (nullable) is None
         # and model_fields_set contains the field
-        if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
-            _dict['cache_read_price_per_million'] = None
+        if self.default_input_price_per_million is None and "default_input_price_per_million" in self.model_fields_set:
+            _dict['default_input_price_per_million'] = None
 
-        # set to None if cache_write_1h_price_per_million (nullable) is None
+        # set to None if default_output_price_per_million (nullable) is None
         # and model_fields_set contains the field
-        if self.cache_write_1h_price_per_million is None and "cache_write_1h_price_per_million" in self.model_fields_set:
-            _dict['cache_write_1h_price_per_million'] = None
+        if self.default_output_price_per_million is None and "default_output_price_per_million" in self.model_fields_set:
+            _dict['default_output_price_per_million'] = None
 
-        # set to None if cache_write_price_per_million (nullable) is None
+        # set to None if default_reference (nullable) is None
         # and model_fields_set contains the field
-        if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
-            _dict['cache_write_price_per_million'] = None
+        if self.default_reference is None and "default_reference" in self.model_fields_set:
+            _dict['default_reference'] = None
+
+        # set to None if input_delta_percent (nullable) is None
+        # and model_fields_set contains the field
+        if self.input_delta_percent is None and "input_delta_percent" in self.model_fields_set:
+            _dict['input_delta_percent'] = None
 
         # set to None if origin (nullable) is None
         # and model_fields_set contains the field
         if self.origin is None and "origin" in self.model_fields_set:
             _dict['origin'] = None
 
+        # set to None if output_delta_percent (nullable) is None
+        # and model_fields_set contains the field
+        if self.output_delta_percent is None and "output_delta_percent" in self.model_fields_set:
+            _dict['output_delta_percent'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PricingResponse from a dict"""
+        """Create an instance of PricingDriftRow from a dict"""
         if obj is None:
             return None
 
@@ -120,18 +121,17 @@ class PricingResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
-            "cache_write_1h_price_per_million": obj.get("cache_write_1h_price_per_million"),
-            "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
-            "created_at": obj.get("created_at"),
+            "default_input_price_per_million": obj.get("default_input_price_per_million"),
+            "default_output_price_per_million": obj.get("default_output_price_per_million"),
+            "default_reference": obj.get("default_reference"),
             "effective_at": obj.get("effective_at"),
+            "input_delta_percent": obj.get("input_delta_percent"),
             "input_price_per_million": obj.get("input_price_per_million"),
             "model_key": obj.get("model_key"),
             "origin": obj.get("origin"),
+            "output_delta_percent": obj.get("output_delta_percent"),
             "output_price_per_million": obj.get("output_price_per_million"),
-            "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
-            "unit": obj.get("unit"),
-            "updated_at": obj.get("updated_at")
+            "unit": obj.get("unit")
         })
         return _obj
 

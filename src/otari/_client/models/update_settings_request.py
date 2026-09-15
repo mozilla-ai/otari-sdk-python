@@ -37,13 +37,25 @@ class UpdateSettingsRequest(BaseModel):
     model_discovery_timeout_seconds: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = None
     models_dev_cache_ttl_seconds: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
     models_dev_metadata: Optional[StrictBool] = None
+    pricing_refresh: Optional[StrictStr] = None
+    public_catalog: Optional[StrictBool] = None
     reject_user_mismatch: Optional[StrictBool] = None
     require_pricing: Optional[StrictBool] = None
     stream_missing_usage_policy: Optional[StrictStr] = None
     vision_describe_max_tokens: Optional[Annotated[int, Field(strict=True, gt=0)]] = None
     vision_describe_model: Optional[StrictStr] = None
     vision_strategy: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["budget_estimate_default_output_tokens", "default_pricing", "file_understanding_enabled", "model_cache_ttl_seconds", "model_discovery", "model_discovery_negative_ttl_seconds", "model_discovery_timeout_seconds", "models_dev_cache_ttl_seconds", "models_dev_metadata", "reject_user_mismatch", "require_pricing", "stream_missing_usage_policy", "vision_describe_max_tokens", "vision_describe_model", "vision_strategy"]
+    __properties: ClassVar[List[str]] = ["budget_estimate_default_output_tokens", "default_pricing", "file_understanding_enabled", "model_cache_ttl_seconds", "model_discovery", "model_discovery_negative_ttl_seconds", "model_discovery_timeout_seconds", "models_dev_cache_ttl_seconds", "models_dev_metadata", "pricing_refresh", "public_catalog", "reject_user_mismatch", "require_pricing", "stream_missing_usage_policy", "vision_describe_max_tokens", "vision_describe_model", "vision_strategy"]
+
+    @field_validator('pricing_refresh')
+    def pricing_refresh_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['manual', 'review', 'auto']):
+            raise ValueError("must be one of enum values ('manual', 'review', 'auto')")
+        return value
 
     @field_validator('stream_missing_usage_policy')
     def stream_missing_usage_policy_validate_enum(cls, value):
@@ -149,6 +161,16 @@ class UpdateSettingsRequest(BaseModel):
         if self.models_dev_metadata is None and "models_dev_metadata" in self.model_fields_set:
             _dict['models_dev_metadata'] = None
 
+        # set to None if pricing_refresh (nullable) is None
+        # and model_fields_set contains the field
+        if self.pricing_refresh is None and "pricing_refresh" in self.model_fields_set:
+            _dict['pricing_refresh'] = None
+
+        # set to None if public_catalog (nullable) is None
+        # and model_fields_set contains the field
+        if self.public_catalog is None and "public_catalog" in self.model_fields_set:
+            _dict['public_catalog'] = None
+
         # set to None if reject_user_mismatch (nullable) is None
         # and model_fields_set contains the field
         if self.reject_user_mismatch is None and "reject_user_mismatch" in self.model_fields_set:
@@ -200,6 +222,8 @@ class UpdateSettingsRequest(BaseModel):
             "model_discovery_timeout_seconds": obj.get("model_discovery_timeout_seconds"),
             "models_dev_cache_ttl_seconds": obj.get("models_dev_cache_ttl_seconds"),
             "models_dev_metadata": obj.get("models_dev_metadata"),
+            "pricing_refresh": obj.get("pricing_refresh"),
+            "public_catalog": obj.get("public_catalog"),
             "reject_user_mismatch": obj.get("reject_user_mismatch"),
             "require_pricing": obj.get("require_pricing"),
             "stream_missing_usage_policy": obj.get("stream_missing_usage_policy"),

@@ -17,26 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.model_pricing_info import ModelPricingInfo
+from otari._client.models.catalog_model_summary import CatalogModelSummary
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ModelObject(BaseModel):
+class CatalogResponse(BaseModel):
     """
-    OpenAI-compatible model object.
+    The grouped catalog, and the facts a reader needs to interpret its prices.
     """ # noqa: E501
-    context_window: Optional[StrictInt] = None
-    created: StrictInt
-    deployment_managed: Optional[StrictBool] = False
-    id: StrictStr
-    object: Optional[StrictStr] = 'model'
-    owned_by: StrictStr
-    pricing: Optional[ModelPricingInfo] = None
-    pricing_source: Optional[StrictStr] = 'none'
-    __properties: ClassVar[List[str]] = ["context_window", "created", "deployment_managed", "id", "object", "owned_by", "pricing", "pricing_source"]
+    default_pricing: StrictBool = Field(description="Whether an unpriced model is metered at the genai-prices default.")
+    defaults_as_of: Optional[datetime] = Field(description="When the accepted genai-prices snapshot was taken. Null while the bundled dataset serves.")
+    metadata_available: StrictBool = Field(description="False when models.dev could not be read; descriptions are then absent.")
+    models: List[CatalogModelSummary]
+    __properties: ClassVar[List[str]] = ["default_pricing", "defaults_as_of", "metadata_available", "models"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +53,7 @@ class ModelObject(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ModelObject from a JSON string"""
+        """Create an instance of CatalogResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,24 +74,23 @@ class ModelObject(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of pricing
-        if self.pricing:
-            _dict['pricing'] = self.pricing.to_dict()
-        # set to None if context_window (nullable) is None
+        # override the default output from pydantic by calling `to_dict()` of each item in models (list)
+        _items = []
+        if self.models:
+            for _item_models in self.models:
+                if _item_models:
+                    _items.append(_item_models.to_dict())
+            _dict['models'] = _items
+        # set to None if defaults_as_of (nullable) is None
         # and model_fields_set contains the field
-        if self.context_window is None and "context_window" in self.model_fields_set:
-            _dict['context_window'] = None
-
-        # set to None if pricing (nullable) is None
-        # and model_fields_set contains the field
-        if self.pricing is None and "pricing" in self.model_fields_set:
-            _dict['pricing'] = None
+        if self.defaults_as_of is None and "defaults_as_of" in self.model_fields_set:
+            _dict['defaults_as_of'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ModelObject from a dict"""
+        """Create an instance of CatalogResponse from a dict"""
         if obj is None:
             return None
 
@@ -102,14 +98,10 @@ class ModelObject(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "context_window": obj.get("context_window"),
-            "created": obj.get("created"),
-            "deployment_managed": obj.get("deployment_managed") if obj.get("deployment_managed") is not None else False,
-            "id": obj.get("id"),
-            "object": obj.get("object") if obj.get("object") is not None else 'model',
-            "owned_by": obj.get("owned_by"),
-            "pricing": ModelPricingInfo.from_dict(obj["pricing"]) if obj.get("pricing") is not None else None,
-            "pricing_source": obj.get("pricing_source") if obj.get("pricing_source") is not None else 'none'
+            "default_pricing": obj.get("default_pricing"),
+            "defaults_as_of": obj.get("defaults_as_of"),
+            "metadata_available": obj.get("metadata_available"),
+            "models": [CatalogModelSummary.from_dict(_item) for _item in obj["models"]] if obj.get("models") is not None else None
         })
         return _obj
 

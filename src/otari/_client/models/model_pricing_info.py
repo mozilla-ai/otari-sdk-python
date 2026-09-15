@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from otari._client.models.pricing_tiers_inner import PricingTiersInner
 from typing import Optional, Set
@@ -34,7 +34,8 @@ class ModelPricingInfo(BaseModel):
     input_price_per_million: Union[StrictFloat, StrictInt]
     output_price_per_million: Union[StrictFloat, StrictInt]
     pricing_tiers: Optional[List[PricingTiersInner]] = None
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "input_price_per_million", "output_price_per_million", "pricing_tiers"]
+    unit: Optional[StrictStr] = 'tokens'
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -114,7 +115,8 @@ class ModelPricingInfo(BaseModel):
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "input_price_per_million": obj.get("input_price_per_million"),
             "output_price_per_million": obj.get("output_price_per_million"),
-            "pricing_tiers": [PricingTiersInner.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None
+            "pricing_tiers": [PricingTiersInner.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
+            "unit": obj.get("unit") if obj.get("unit") is not None else 'tokens'
         })
         return _obj
 
