@@ -471,6 +471,7 @@ from otari._client.models.update_budget_request import UpdateBudgetRequest
 from otari._client.models.update_key_request import UpdateKeyRequest
 from otari._client.models.update_maintenance_mode_request import UpdateMaintenanceModeRequest
 from otari._client.models.update_own_key_request import UpdateOwnKeyRequest
+from otari._client.models.update_profile_request import UpdateProfileRequest
 from otari._client.models.update_scoped_budget_request import UpdateScopedBudgetRequest
 from otari._client.models.update_search_tool_request import UpdateSearchToolRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest
