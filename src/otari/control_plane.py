@@ -12,7 +12,7 @@ Each resource accessor (``keys``, ``users``, ``budgets``, ``pricing``,
 ``update``, ``delete``, ...) that delegate to the generator-derived methods.
 The raw generated API object stays reachable via the ``raw`` attribute on each
 resource (for example
-``client.control_plane.keys.raw.create_key_v1_keys_post(...)``), so the full
+``client.control_plane.keys.raw.keys_create_key(...)``), so the full
 generated surface remains available as an escape hatch.
 """
 
@@ -87,23 +87,23 @@ class KeysResource:
 
     @_translate
     def create(self, request: CreateKeyRequest, **kwargs: Any) -> CreateKeyResponse:
-        return self.raw.create_key_v1_keys_post(request, **kwargs)
+        return self.raw.keys_create_key(request, **kwargs)
 
     @_translate
     def get(self, key_id: str, **kwargs: Any) -> KeyInfo:
-        return self.raw.get_key_v1_keys_key_id_get(key_id, **kwargs)
+        return self.raw.keys_get_key(key_id, **kwargs)
 
     @_translate
     def list(self, skip: int | None = None, limit: int | None = None, **kwargs: Any) -> list[KeyInfo]:
-        return self.raw.list_keys_v1_keys_get(skip, limit, **kwargs)
+        return self.raw.keys_list_keys(skip, limit, **kwargs)
 
     @_translate
     def update(self, key_id: str, request: UpdateKeyRequest, **kwargs: Any) -> KeyInfo:
-        return self.raw.update_key_v1_keys_key_id_patch(key_id, request, **kwargs)
+        return self.raw.keys_update_key(key_id, request, **kwargs)
 
     @_translate
     def delete(self, key_id: str, **kwargs: Any) -> None:
-        self.raw.delete_key_v1_keys_key_id_delete(key_id, **kwargs)
+        self.raw.keys_delete_key(key_id, **kwargs)
 
 
 class UsersResource:
@@ -118,29 +118,29 @@ class UsersResource:
 
     @_translate
     def create(self, request: CreateUserRequest, **kwargs: Any) -> UserResponse:
-        return self.raw.create_user_v1_users_post(request, **kwargs)
+        return self.raw.users_create_user(request, **kwargs)
 
     @_translate
     def get(self, user_id: str, **kwargs: Any) -> UserResponse:
-        return self.raw.get_user_v1_users_user_id_get(user_id, **kwargs)
+        return self.raw.users_get_user(user_id, **kwargs)
 
     @_translate
     def update(self, user_id: str, request: UpdateUserRequest, **kwargs: Any) -> UserResponse:
-        return self.raw.update_user_v1_users_user_id_patch(user_id, request, **kwargs)
+        return self.raw.users_update_user(user_id, request, **kwargs)
 
     @_translate
     def delete(self, user_id: str, **kwargs: Any) -> None:
-        self.raw.delete_user_v1_users_user_id_delete(user_id, **kwargs)
+        self.raw.users_delete_user(user_id, **kwargs)
 
     @_translate
     def get_usage(self, user_id: str, **kwargs: Any) -> list[UsageLogResponse]:
-        return self.raw.get_user_usage_v1_users_user_id_usage_get(user_id, **kwargs)
+        return self.raw.users_get_user_usage(user_id, **kwargs)
 
     # Defined last: a method named ``list`` shadows the ``list`` builtin for any
     # ``list[...]`` annotation that follows it in this class body.
     @_translate
     def list(self, skip: int | None = None, limit: int | None = None, **kwargs: Any) -> list[UserResponse]:
-        return self.raw.list_users_v1_users_get(skip, limit, **kwargs)
+        return self.raw.users_list_users(skip, limit, **kwargs)
 
 
 class BudgetsResource:
@@ -155,23 +155,23 @@ class BudgetsResource:
 
     @_translate
     def create(self, request: CreateBudgetRequest, **kwargs: Any) -> BudgetResponse:
-        return self.raw.create_budget_v1_budgets_post(request, **kwargs)
+        return self.raw.budgets_create_budget(request, **kwargs)
 
     @_translate
     def get(self, budget_id: str, **kwargs: Any) -> BudgetResponse:
-        return self.raw.get_budget_v1_budgets_budget_id_get(budget_id, **kwargs)
+        return self.raw.budgets_get_budget(budget_id, **kwargs)
 
     @_translate
     def list(self, skip: int | None = None, limit: int | None = None, **kwargs: Any) -> list[BudgetResponse]:
-        return self.raw.list_budgets_v1_budgets_get(skip, limit, **kwargs)
+        return self.raw.budgets_list_budgets(skip, limit, **kwargs)
 
     @_translate
     def update(self, budget_id: str, request: UpdateBudgetRequest, **kwargs: Any) -> BudgetResponse:
-        return self.raw.update_budget_v1_budgets_budget_id_patch(budget_id, request, **kwargs)
+        return self.raw.budgets_update_budget(budget_id, request, **kwargs)
 
     @_translate
     def delete(self, budget_id: str, **kwargs: Any) -> None:
-        self.raw.delete_budget_v1_budgets_budget_id_delete(budget_id, **kwargs)
+        self.raw.budgets_delete_budget(budget_id, **kwargs)
 
 
 class PricingResource:
@@ -186,25 +186,25 @@ class PricingResource:
 
     @_translate
     def get(self, model_key: str, **kwargs: Any) -> PricingResponse:
-        return self.raw.get_pricing_v1_pricing_model_key_get(model_key, **kwargs)
+        return self.raw.pricing_get_pricing(model_key, **kwargs)
 
     @_translate
     def set(self, request: SetPricingRequest, **kwargs: Any) -> PricingResponse:
-        return self.raw.set_pricing_v1_pricing_post(request, **kwargs)
+        return self.raw.pricing_set_pricing(request, **kwargs)
 
     @_translate
     def delete(self, model_key: str, **kwargs: Any) -> None:
-        self.raw.delete_pricing_v1_pricing_model_key_delete(model_key, **kwargs)
+        self.raw.pricing_delete_pricing(model_key, **kwargs)
 
     @_translate
     def get_history(self, model_key: str, **kwargs: Any) -> list[PricingResponse]:
-        return self.raw.get_pricing_history_v1_pricing_model_key_history_get(model_key, **kwargs)
+        return self.raw.pricing_get_pricing_history(model_key, **kwargs)
 
     # Defined last: a method named ``list`` shadows the ``list`` builtin for any
     # ``list[...]`` annotation that follows it in this class body.
     @_translate
     def list(self, skip: int | None = None, limit: int | None = None, **kwargs: Any) -> list[PricingResponse]:
-        return self.raw.list_pricing_v1_pricing_get(skip, limit, **kwargs)
+        return self.raw.pricing_list_pricing(skip, limit, **kwargs)
 
 
 class UsageResource:
@@ -233,7 +233,7 @@ class UsageResource:
         # user_id is repeatable upstream (user_id=a&user_id=b, max 50). This alias
         # keeps its single-user signature and wraps, so the public API is
         # unchanged; multi-user filtering is reachable via `raw`.
-        return self.raw.list_usage_v1_usage_get(
+        return self.raw.usage_list_usage(
             start_date=start_date,
             end_date=end_date,
             user_id=None if user_id is None else [user_id],
@@ -249,7 +249,7 @@ class ControlPlane:
     Each accessor returns a resource wrapper exposing ergonomic aliases (for
     example ``keys.create(...)``, ``users.list(...)``, ``budgets.get(...)``).
     The generator-derived methods stay reachable via the ``raw`` attribute on
-    each resource (for example ``keys.raw.create_key_v1_keys_post(...)``).
+    each resource (for example ``keys.raw.keys_create_key(...)``).
     """
 
     def __init__(self, base_url: str, bearer_token: str) -> None:
