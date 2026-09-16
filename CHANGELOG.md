@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.0](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.3.0...otari-0.4.0) (2026-09-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* api_base must be the gateway origin with no path prefix, and requests now go to /api/v1 instead of /v1. Upgrade alongside an Otari gateway that serves the /api/v1 prefix.
+
+### Features
+
+* target the /api/v1 prefix + Regenerate SDK client core from Otari OpenAPI spec ([#78](https://github.com/mozilla-ai/otari-sdk-python/issues/78)) ([6119622](https://github.com/mozilla-ai/otari-sdk-python/commit/6119622f5864b9b50bb109f3544f39a7d36f29af))
+
 ## [0.3.0](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.2.0...otari-0.3.0) (2026-08-13)
 
 
