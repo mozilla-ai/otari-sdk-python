@@ -14,6 +14,7 @@ from otari._client.api.chat_api import ChatApi
 from otari._client.api.embeddings_api import EmbeddingsApi
 from otari._client.api.files_api import FilesApi
 from otari._client.api.health_api import HealthApi
+from otari._client.api.hooks_api import HooksApi
 from otari._client.api.images_api import ImagesApi
 from otari._client.api.invitations_api import InvitationsApi
 from otari._client.api.keys_api import KeysApi
