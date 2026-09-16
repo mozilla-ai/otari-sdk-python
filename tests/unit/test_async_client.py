@@ -68,7 +68,7 @@ class TestInference:
         )
         assert isinstance(result, ChatCompletion)
         assert result.choices[0].message.content == "Hi"
-        assert mock.last.url.endswith("/v1/chat/completions")
+        assert mock.last.url.endswith("/api/v1/chat/completions")
         assert mock.last.headers.get("Otari-Key") == "Bearer vk"
 
     async def test_response_with_metadata_exposes_request_id_without_changing_response(
@@ -109,7 +109,7 @@ class TestInference:
             model="anthropic:claude", messages=[{"role": "user", "content": "Hi"}], max_tokens=8
         )
         assert result.id == "msg-1"
-        assert mock.last.url.endswith("/v1/messages")
+        assert mock.last.url.endswith("/api/v1/messages")
 
     async def test_message_with_response_metadata_exposes_request_id(self, mock_rest: Any) -> None:
         mock_rest(
@@ -136,7 +136,7 @@ class TestInference:
             model="anthropic:claude", messages=[{"role": "user", "content": "Hi"}]
         )
         assert result.input_tokens == 42
-        assert mock.last.url.endswith("/v1/messages/count_tokens")
+        assert mock.last.url.endswith("/api/v1/messages/count_tokens")
 
     async def test_list_models_returns_typed(self, mock_rest: Any) -> None:
         mock_rest(status=200, body=MODELS_RESPONSE)
@@ -179,7 +179,7 @@ class TestStreaming:
             '{"id":"c","object":"chat.completion.chunk","created":1,"model":"m",'
             '"choices":[{"index":0,"delta":{"content":"llo"}}]}'
         )
-        route = respx.post("http://localhost:8000/v1/chat/completions").mock(
+        route = respx.post("http://localhost:8000/api/v1/chat/completions").mock(
             return_value=httpx.Response(
                 200,
                 headers={"content-type": "text/event-stream"},
@@ -199,7 +199,7 @@ class TestStreaming:
     @respx.mock
     async def test_response_stream_metadata_exposes_request_id_without_changing_events(self) -> None:
         event = '{"type":"response.completed","response":{"id":"resp-1"}}'
-        respx.post("http://localhost:8000/v1/responses").mock(
+        respx.post("http://localhost:8000/api/v1/responses").mock(
             return_value=httpx.Response(
                 200,
                 headers={
@@ -225,7 +225,7 @@ class TestStreaming:
     @respx.mock
     async def test_message_stream_metadata_exposes_request_id_without_mutating_events(self) -> None:
         event = '{"type":"message_stop"}'
-        respx.post("http://localhost:8000/v1/messages").mock(
+        respx.post("http://localhost:8000/api/v1/messages").mock(
             return_value=httpx.Response(
                 200,
                 headers={
@@ -251,7 +251,7 @@ class TestStreaming:
 
     @respx.mock
     async def test_streaming_error_maps(self) -> None:
-        respx.post("http://localhost:8000/v1/chat/completions").mock(
+        respx.post("http://localhost:8000/api/v1/chat/completions").mock(
             return_value=httpx.Response(429, json={"detail": "rate limited"})
         )
         client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
@@ -269,13 +269,13 @@ class TestImages:
         result = await client.image_generation(model="openai:dall-e-3", prompt="a cat")
         assert result.created == 1
         assert result.data[0].url == "https://example.com/image.png"
-        assert mock.last.url.endswith("/v1/images/generations")
+        assert mock.last.url.endswith("/api/v1/images/generations")
 
 
 class TestAudio:
     @respx.mock
     async def test_speech_returns_bytes(self) -> None:
-        route = respx.post("http://localhost:8000/v1/audio/speech").mock(
+        route = respx.post("http://localhost:8000/api/v1/audio/speech").mock(
             return_value=httpx.Response(
                 200, headers={"content-type": "audio/mpeg"}, content=b"AUDIO"
             )
@@ -287,7 +287,7 @@ class TestAudio:
 
     @respx.mock
     async def test_speech_maps_errors(self) -> None:
-        respx.post("http://localhost:8000/v1/audio/speech").mock(
+        respx.post("http://localhost:8000/api/v1/audio/speech").mock(
             return_value=httpx.Response(429, json={"detail": "slow down"})
         )
         client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
@@ -296,7 +296,7 @@ class TestAudio:
 
     @respx.mock
     async def test_transcription_returns_json(self) -> None:
-        route = respx.post("http://localhost:8000/v1/audio/transcriptions").mock(
+        route = respx.post("http://localhost:8000/api/v1/audio/transcriptions").mock(
             return_value=httpx.Response(200, json=TRANSCRIPTION_RESPONSE)
         )
         client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")

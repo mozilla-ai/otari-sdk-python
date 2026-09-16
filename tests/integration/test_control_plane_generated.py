@@ -182,10 +182,10 @@ def test_usage_is_readable(client: OtariClient) -> None:
 def test_raw_escape_hatch_reaches_generated_methods(client: OtariClient) -> None:
     # The generator-derived methods stay reachable via ``raw`` as an escape hatch.
     keys = client.control_plane.keys
-    created = keys.raw.create_key_v1_keys_post(CreateKeyRequest(key_name="itest-raw-key"))
+    created = keys.raw.keys_create_key(CreateKeyRequest(key_name="itest-raw-key"))
     assert created.id
-    assert any(k.id == created.id for k in keys.raw.list_keys_v1_keys_get())
-    keys.raw.delete_key_v1_keys_key_id_delete(created.id)
+    assert any(k.id == created.id for k in keys.raw.keys_list_keys())
+    keys.raw.keys_delete_key(created.id)
 
 
 def test_control_plane_requires_admin_credential(gateway_url: str) -> None:

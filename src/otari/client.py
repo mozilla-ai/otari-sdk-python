@@ -91,9 +91,10 @@ class OtariClient(_BaseOtariClient):
     :mod:`otari.errors`.
 
     Args:
-        api_base: Base URL of the gateway (e.g. ``"http://localhost:8000"``).
-            Falls back to ``GATEWAY_API_BASE``. In platform mode it defaults to
-            the hosted gateway at ``https://api.otari.ai`` when neither is set.
+        api_base: Origin of the gateway, without a path prefix
+            (e.g. ``"http://localhost:8000"``). Falls back to
+            ``GATEWAY_API_BASE``. In platform mode it defaults to the hosted
+            gateway at ``https://api.otari.ai`` when neither is set.
         api_key: API key for non-platform mode. Falls back to ``GATEWAY_API_KEY``.
         platform_token: Platform token for platform mode. Falls back to the
             canonical ``OTARI_AI_TOKEN`` (or legacy ``GATEWAY_PLATFORM_TOKEN``).
@@ -211,7 +212,7 @@ class OtariClient(_BaseOtariClient):
             body["stream"] = True
             return self._stream("/chat/completions", body, "chat")
         request = build_request(ChatCompletionRequest, body)
-        return self._call(lambda: self._chat.chat_completions_v1_chat_completions_post(request))
+        return self._call(lambda: self._chat.chat_chat_completions(request))
 
     # -- Responses API ------------------------------------------------------
 
@@ -233,7 +234,7 @@ class OtariClient(_BaseOtariClient):
         if stream:
             body["stream"] = True
             return self._stream("/responses", body, "responses")
-        return self._call(lambda: self._responses.create_response_v1_responses_post(body))  # type: ignore[arg-type]
+        return self._call(lambda: self._responses.responses_create_response(body))  # type: ignore[arg-type]
 
     # -- Messages API (Anthropic-shaped /messages) --------------------------
 
@@ -266,7 +267,7 @@ class OtariClient(_BaseOtariClient):
             body["stream"] = True
             return self._stream("/messages", body, "messages")
         request = build_request(MessagesRequest, body)
-        return self._call(lambda: self._messages.create_message_v1_messages_post(request))
+        return self._call(lambda: self._messages.messages_create_message(request))
 
     def count_tokens(
         self,
@@ -277,7 +278,7 @@ class OtariClient(_BaseOtariClient):
     ) -> CountTokensResponse:
         """Count input tokens for an Anthropic-style message request.
 
-        Calls the gateway ``/v1/messages/count_tokens`` endpoint, which counts
+        Calls the gateway ``/api/v1/messages/count_tokens`` endpoint, which counts
         the tokens a ``/messages`` request would consume without generating a
         response. Returns a typed
         :class:`~otari._client.models.count_tokens_response.CountTokensResponse`.
@@ -290,7 +291,7 @@ class OtariClient(_BaseOtariClient):
         """
         request = build_request(CountTokensRequest, {"model": model, "messages": messages, **kwargs})
         result = self._call(
-            lambda: self._messages.count_message_tokens_v1_messages_count_tokens_post(request),
+            lambda: self._messages.messages_count_message_tokens(request),
         )
         return cast("CountTokensResponse", result)
 
@@ -305,7 +306,7 @@ class OtariClient(_BaseOtariClient):
     ) -> CreateEmbeddingResponse:
         """Create embeddings for the given input."""
         request = build_request(EmbeddingRequest, {"model": model, "input": input, **kwargs})
-        result = self._call(lambda: self._embeddings.create_embedding_v1_embeddings_post(request))
+        result = self._call(lambda: self._embeddings.embeddings_create_embedding(request))
         return cast("CreateEmbeddingResponse", result)
 
     # -- Moderations --------------------------------------------------------
@@ -319,7 +320,7 @@ class OtariClient(_BaseOtariClient):
     ) -> ModerationResponse:
         """Classify text against the gateway moderation endpoint."""
         request = build_request(ModerationRequest, {"model": model, "input": input, **kwargs})
-        result = self._call(lambda: self._moderations.create_moderation_v1_moderations_post(request))
+        result = self._call(lambda: self._moderations.moderations_create_moderation(request))
         return cast("ModerationResponse", result)
 
     # -- Rerank -------------------------------------------------------------
@@ -336,7 +337,7 @@ class OtariClient(_BaseOtariClient):
         request = build_request(
             RerankRequest, {"model": model, "query": query, "documents": documents, **kwargs}
         )
-        result = self._call(lambda: self._rerank.create_rerank_v1_rerank_post(request))
+        result = self._call(lambda: self._rerank.rerank_create_rerank(request))
         return cast("RerankResponse", result)
 
     # -- Images -------------------------------------------------------------
@@ -362,7 +363,7 @@ class OtariClient(_BaseOtariClient):
         request = build_request(
             ImageGenerationRequest, {"model": model, "prompt": prompt, **kwargs}
         )
-        result = self._call(lambda: self._images.create_image_v1_images_generations_post(request))
+        result = self._call(lambda: self._images.images_create_image(request))
         return cast("ImagesResponse", result)
 
     # -- Audio --------------------------------------------------------------
@@ -428,7 +429,7 @@ class OtariClient(_BaseOtariClient):
 
     def list_models(self) -> list[ModelObject]:
         """List available models from the gateway."""
-        result = self._call(self._models.list_models_v1_models_get)
+        result = self._call(self._models.models_list_models)
         return list(result.data)
 
     # -- Batch operations ---------------------------------------------------
@@ -436,18 +437,18 @@ class OtariClient(_BaseOtariClient):
     def create_batch(self, params: CreateBatchParams) -> Any:
         """Create a batch job."""
         request = build_request(CreateBatchRequest, dict(params))
-        return self._call(lambda: self._batches.create_batch_v1_batches_post(request))
+        return self._call(lambda: self._batches.batches_create_batch(request))
 
     def retrieve_batch(self, batch_id: str, provider: str) -> Any:
         """Retrieve the status of a batch job."""
         return self._call(
-            lambda: self._batches.retrieve_batch_v1_batches_batch_id_get(batch_id, provider)
+            lambda: self._batches.batches_retrieve_batch(batch_id, provider)
         )
 
     def cancel_batch(self, batch_id: str, provider: str) -> Any:
         """Cancel a batch job."""
         return self._call(
-            lambda: self._batches.cancel_batch_v1_batches_batch_id_cancel_post(batch_id, provider)
+            lambda: self._batches.batches_cancel_batch(batch_id, provider)
         )
 
     def list_batches(
@@ -458,7 +459,7 @@ class OtariClient(_BaseOtariClient):
         """List batch jobs for a provider."""
         options = options or {}
         result = self._call(
-            lambda: self._batches.list_batches_v1_batches_get(
+            lambda: self._batches.batches_list_batches(
                 provider,
                 after=options.get("after"),
                 limit=options.get("limit"),
@@ -477,7 +478,7 @@ class OtariClient(_BaseOtariClient):
         from otari.types import BatchResultItem  # noqa: PLC0415
 
         data = self._call(
-            lambda: self._batches.retrieve_batch_results_v1_batches_batch_id_results_get(
+            lambda: self._batches.batches_retrieve_batch_results(
                 batch_id, provider
             )
         )
@@ -631,7 +632,7 @@ class OtariClientWithResponseMetadata:
             return self._client._stream_with_response_metadata("/chat/completions", body, "chat")
         request = build_request(ChatCompletionRequest, body)
         return self._client._call_with_response_metadata(
-            lambda: self._client._chat.chat_completions_v1_chat_completions_post_with_http_info(
+            lambda: self._client._chat.chat_chat_completions_with_http_info(
                 request
             )
         )
@@ -680,7 +681,7 @@ class OtariClientWithResponseMetadata:
             body["stream"] = True
             return self._client._stream_with_response_metadata("/responses", body, "responses")
         return self._client._call_with_response_metadata(
-            lambda: self._client._responses.create_response_v1_responses_post_with_http_info(
+            lambda: self._client._responses.responses_create_response_with_http_info(
                 body  # type: ignore[arg-type]
             )
         )
@@ -734,7 +735,7 @@ class OtariClientWithResponseMetadata:
             return self._client._stream_with_response_metadata("/messages", body, "messages")
         request = build_request(MessagesRequest, body)
         return self._client._call_with_response_metadata(
-            lambda: self._client._messages.create_message_v1_messages_post_with_http_info(
+            lambda: self._client._messages.messages_create_message_with_http_info(
                 request
             )
         )

@@ -46,6 +46,10 @@ _UNSUPPORTED_MODERATION_RE = re.compile(r"does not support (?:multimodal )?moder
 
 _DEFAULT_PLATFORM_API_BASE = "https://api.otari.ai"
 
+# Single owner of the API path prefix. Every Otari API path hangs off this root;
+# the generated core's operation paths already carry it.
+API_ROOT = "/api/v1"
+
 _ENV_API_BASE = "GATEWAY_API_BASE"
 _ENV_API_KEY = "GATEWAY_API_KEY"
 # Matches the gateway server's own alias chain (OTARI_AI_TOKEN preferred).
@@ -106,15 +110,19 @@ class _BaseOtariClient:
             )
             raise ValueError(msg)
 
-        # Ensure the base URL includes /v1 since the gateway expects
-        # OpenAI-compatible paths like /v1/chat/completions.
+        # api_base is an origin. The API root is appended here for the
+        # hand-written request helpers; the generated core carries it in its
+        # own operation paths and so is configured with the bare origin.
         cleaned = raw_base.rstrip("/")
-        api_base_url = cleaned if cleaned.endswith("/v1") else f"{cleaned}/v1"
+        if cleaned.endswith(API_ROOT):
+            msg = (
+                f"api_base must be the gateway origin, without the {API_ROOT} "
+                f"path prefix. Pass {cleaned.removesuffix(API_ROOT).rstrip('/')!r} instead."
+            )
+            raise ValueError(msg)
 
-        self._base_url = api_base_url
-        # The generated core's operation paths already include the ``/v1``
-        # prefix, so the generated ``Configuration.host`` is the gateway root.
-        self._gateway_root_url = api_base_url.removesuffix("/v1")
+        self._gateway_root_url = cleaned
+        self._base_url = f"{self._gateway_root_url}{API_ROOT}"
 
         headers: dict[str, str] = {**(default_headers or {})}
 

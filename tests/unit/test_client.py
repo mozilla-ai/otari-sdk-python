@@ -113,21 +113,25 @@ class TestConstructor:
 
     def test_uses_api_base_from_options(self) -> None:
         client = OtariClient(api_base="http://localhost:8000")
-        assert client._base_url == "http://localhost:8000/v1"
+        assert client._base_url == "http://localhost:8000/api/v1"
         assert client._gateway_root_url == "http://localhost:8000"
 
-    def test_does_not_double_append_v1(self) -> None:
-        client = OtariClient(api_base="http://localhost:8000/v1")
-        assert client._base_url == "http://localhost:8000/v1"
+    @pytest.mark.parametrize(
+        "api_base",
+        ["http://localhost:8000/api/v1", "http://localhost:8000/api/v1/"],
+    )
+    def test_rejects_api_base_carrying_the_api_root(self, api_base: str) -> None:
+        with pytest.raises(ValueError, match="without the /api/v1 path prefix"):
+            OtariClient(api_base=api_base)
 
     def test_strips_trailing_slash(self) -> None:
         client = OtariClient(api_base="http://localhost:8000/")
-        assert client._base_url == "http://localhost:8000/v1"
+        assert client._base_url == "http://localhost:8000/api/v1"
 
     def test_falls_back_to_env_var(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv("GATEWAY_API_BASE", "http://env-gateway:9000")
         client = OtariClient()
-        assert client._base_url == "http://env-gateway:9000/v1"
+        assert client._base_url == "http://env-gateway:9000/api/v1"
 
 
 class TestAuthModes:
@@ -161,7 +165,7 @@ class TestAuthModes:
         for name in ("GATEWAY_API_BASE", "OTARI_AI_TOKEN", "GATEWAY_PLATFORM_TOKEN"):
             monkeypatch.delenv(name, raising=False)
         client = OtariClient(platform_token="tk_x")  # noqa: S106
-        assert client._base_url == "https://api.otari.ai/v1"
+        assert client._base_url == "https://api.otari.ai/api/v1"
 
 
 # ---------------------------------------------------------------------------
@@ -182,7 +186,7 @@ class TestCompletion:
         assert result.choices[0].message.content == "Hi"
         # Request shaping: correct path + body, with the Otari-Key auth header.
         assert mock.last.method == "POST"
-        assert mock.last.url.endswith("/v1/chat/completions")
+        assert mock.last.url.endswith("/api/v1/chat/completions")
         body = mock.last.json_body
         assert body["model"] == "openai:gpt-4o-mini"
         assert body["temperature"] == 0.5
@@ -212,7 +216,7 @@ class TestResponseMetadata:
     @respx.mock
     def test_streaming_exposes_request_id_without_changing_events(self) -> None:
         event = '{"type":"response.completed","response":{"id":"resp-1"}}'
-        respx.post("http://localhost:8000/v1/responses").mock(
+        respx.post("http://localhost:8000/api/v1/responses").mock(
             return_value=httpx.Response(
                 200,
                 headers={
@@ -240,7 +244,7 @@ class TestEmbedding:
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
         result = client.embedding(model="openai:text-embedding-3-small", input="hello")
         assert result.data[0].embedding == [0.1, 0.2]
-        assert mock.last.url.endswith("/v1/embeddings")
+        assert mock.last.url.endswith("/api/v1/embeddings")
         assert mock.last.json_body["input"] == "hello"
 
 
@@ -250,7 +254,7 @@ class TestRerank:
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
         result = client.rerank(model="m", query="q", documents=["a", "b"])
         assert result.results[0].relevance_score == 0.9
-        assert mock.last.url.endswith("/v1/rerank")
+        assert mock.last.url.endswith("/api/v1/rerank")
         assert mock.last.json_body["documents"] == ["a", "b"]
 
 
@@ -264,7 +268,7 @@ class TestMessage:
             max_tokens=64,
         )
         assert result.id == "msg-1"
-        assert mock.last.url.endswith("/v1/messages")
+        assert mock.last.url.endswith("/api/v1/messages")
         body = mock.last.json_body
         assert body["max_tokens"] == 64
         assert body["model"] == "anthropic:claude-3-5-sonnet"
@@ -312,7 +316,7 @@ class TestMessage:
             messages=[{"role": "user", "content": "Hi"}],
         )
         assert result.input_tokens == 42
-        assert mock.last.url.endswith("/v1/messages/count_tokens")
+        assert mock.last.url.endswith("/api/v1/messages/count_tokens")
         body = mock.last.json_body
         assert body["model"] == "anthropic:claude-3-5-sonnet"
         assert "max_tokens" not in body
@@ -324,7 +328,7 @@ class TestModeration:
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
         result = client.moderation(model="m", input="text")
         assert result.results[0].flagged is False
-        assert mock.last.url.endswith("/v1/moderations")
+        assert mock.last.url.endswith("/api/v1/moderations")
 
 
 class TestListModels:
@@ -333,7 +337,7 @@ class TestListModels:
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
         models = client.list_models()
         assert models[0].id == "openai:gpt-4o"
-        assert mock.last.url.endswith("/v1/models")
+        assert mock.last.url.endswith("/api/v1/models")
 
 
 # ---------------------------------------------------------------------------
@@ -409,7 +413,7 @@ class TestChatStreaming:
             '{"id":"c","object":"chat.completion.chunk","created":1,"model":"m",'
             '"choices":[{"index":0,"delta":{"content":"llo"}}]}'
         )
-        route = respx.post("http://localhost:8000/v1/chat/completions").mock(
+        route = respx.post("http://localhost:8000/api/v1/chat/completions").mock(
             return_value=httpx.Response(
                 200,
                 headers={"content-type": "text/event-stream"},
@@ -430,7 +434,7 @@ class TestChatStreaming:
 
     @respx.mock
     def test_streaming_error_maps_to_typed_error(self) -> None:
-        respx.post("http://localhost:8000/v1/chat/completions").mock(
+        respx.post("http://localhost:8000/api/v1/chat/completions").mock(
             return_value=httpx.Response(429, json={"detail": "rate limited"})
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
@@ -447,7 +451,7 @@ class TestChatStreaming:
             '{"id":"c","object":"chat.completion.chunk","created":1,"model":"m",'
             '"choices":[{"index":0,"delta":{"content":"x"}}]}'
         )
-        route = respx.post("http://localhost:8000/v1/chat/completions").mock(
+        route = respx.post("http://localhost:8000/api/v1/chat/completions").mock(
             return_value=httpx.Response(
                 200, headers={"content-type": "text/event-stream"}, content=_sse(chunk)
             )
@@ -463,7 +467,7 @@ class TestChatStreaming:
     @respx.mock
     def test_message_stream_metadata_exposes_request_id_without_mutating_events(self) -> None:
         event = '{"type":"message_stop"}'
-        respx.post("http://localhost:8000/v1/messages").mock(
+        respx.post("http://localhost:8000/api/v1/messages").mock(
             return_value=httpx.Response(
                 200,
                 headers={
@@ -500,7 +504,7 @@ class TestImages:
         result = client.image_generation(model="openai:dall-e-3", prompt="a cat")
         assert result.created == 1
         assert result.data[0].url == "https://example.com/image.png"
-        assert mock.last.url.endswith("/v1/images/generations")
+        assert mock.last.url.endswith("/api/v1/images/generations")
         body = mock.last.json_body
         assert body["model"] == "openai:dall-e-3"
         assert body["prompt"] == "a cat"
@@ -515,7 +519,7 @@ class TestImages:
 class TestAudio:
     @respx.mock
     def test_speech_returns_bytes(self) -> None:
-        route = respx.post("http://localhost:8000/v1/audio/speech").mock(
+        route = respx.post("http://localhost:8000/api/v1/audio/speech").mock(
             return_value=httpx.Response(
                 200, headers={"content-type": "audio/mpeg"}, content=b"AUDIO"
             )
@@ -529,7 +533,7 @@ class TestAudio:
 
     @respx.mock
     def test_speech_maps_errors(self) -> None:
-        respx.post("http://localhost:8000/v1/audio/speech").mock(
+        respx.post("http://localhost:8000/api/v1/audio/speech").mock(
             return_value=httpx.Response(429, json={"detail": "slow down"})
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
@@ -538,7 +542,7 @@ class TestAudio:
 
     @respx.mock
     def test_transcription_returns_json(self) -> None:
-        route = respx.post("http://localhost:8000/v1/audio/transcriptions").mock(
+        route = respx.post("http://localhost:8000/api/v1/audio/transcriptions").mock(
             return_value=httpx.Response(200, json=TRANSCRIPTION_RESPONSE)
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
@@ -552,7 +556,7 @@ class TestAudio:
 
     @respx.mock
     def test_transcription_returns_text(self) -> None:
-        respx.post("http://localhost:8000/v1/audio/transcriptions").mock(
+        respx.post("http://localhost:8000/api/v1/audio/transcriptions").mock(
             return_value=httpx.Response(
                 200, headers={"content-type": "text/plain"}, content=b"hello"
             )

@@ -98,7 +98,9 @@ Set `OTARI_AI_TOKEN` (or the legacy alias `GATEWAY_PLATFORM_TOKEN`) and `OtariCl
 
 **Self-hosted mode**
 
-Targets a gateway you run yourself. The API key is sent via the custom `Otari-Key` header, and an explicit `api_base` is required. Follow the setup in the [otari repo](https://github.com/mozilla-ai/otari), then point the SDK at your gateway:
+Targets a gateway you run yourself. The API key is sent via the custom `Otari-Key` header, and an explicit `api_base` is required. Follow the setup in the [otari repo](https://github.com/mozilla-ai/otari), then point the SDK at your gateway.
+
+`api_base` is the gateway **origin**, with no path prefix. The SDK appends the API root, `/api/v1`, itself, so `http://localhost:8000` reaches `http://localhost:8000/api/v1/chat/completions`. Passing a value that already ends in `/api/v1` raises `ValueError`.
 
 ```python
 from otari import OtariClient
@@ -117,7 +119,7 @@ Set `GATEWAY_API_BASE` and `GATEWAY_API_KEY` and `OtariClient()` picks them up a
 |----------|------|---------|
 | `OTARI_AI_TOKEN` | Platform | Platform token, sent as `Authorization: Bearer …`. |
 | `GATEWAY_PLATFORM_TOKEN` | Platform | Legacy alias for `OTARI_AI_TOKEN` (lower precedence). |
-| `GATEWAY_API_BASE` | Self-hosted | Base URL of the gateway (required in self-hosted mode). |
+| `GATEWAY_API_BASE` | Self-hosted | Origin of the gateway, with no path prefix (required in self-hosted mode). |
 | `GATEWAY_API_KEY` | Self-hosted | API key, sent via the `Otari-Key` header. |
 | `GATEWAY_ADMIN_KEY` | Either | Admin/master key for the control-plane endpoints. |
 
