@@ -18,22 +18,21 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class BackendType(str, Enum):
+class CatalogCredential(str, Enum):
     """
-    How a guardrail executes.
+    Who may price a catalog offering.
     """
 
     """
     allowed enum values
     """
-    LOCAL_ENCODER = 'local_encoder'
-    LOCAL_DECODER = 'local_decoder'
-    HOSTED_API = 'hosted_api'
-    LIBRARY_WRAPPED = 'library_wrapped'
+    DEPLOYMENT = 'deployment'
+    ORGANIZATION = 'organization'
+    HOSTED = 'hosted'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of BackendType from a JSON string"""
+        """Create an instance of CatalogCredential from a JSON string"""
         return cls(json.loads(json_str))
 
 
