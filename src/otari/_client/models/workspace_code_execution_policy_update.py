@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from otari._client.models.code_executor import CodeExecutor
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,10 +32,11 @@ class WorkspaceCodeExecutionPolicyUpdate(BaseModel):
     default_purpose_hint: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = Field(default=None, description="Hint used when a request declares otari_code_execution without one of its own")
     enabled: StrictBool = Field(description="False refuses code execution for this workspace")
     exec_timeout_s: Optional[Annotated[int, Field(le=60, strict=True, gt=0)]] = Field(default=None, description="Ceiling on one execution's runtime in seconds; only ever lowers the effective limit, so at most 60")
+    executor: Optional[CodeExecutor] = Field(default=None, description="Who runs a provider-native code-execution declaration for this workspace: 'auto' (the provider when it runs the tool natively for the model, else this gateway's sandbox), 'otari' or 'provider'. Pins over the deployment default and over the request's X-Otari-Code-Execution header; null leaves both in charge")
     image: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Sandbox image this workspace's code runs in. Must be one the operator curated into sandbox_allowed_session_images (or the deployment's own sandbox_session_image); null uses the deployment's")
     max_iterations: Optional[Annotated[int, Field(le=25, strict=True, gt=0)]] = Field(default=None, description="Ceiling on tool-loop iterations; only ever lowers the effective limit, so at most 25")
     tools: Optional[List[StrictStr]] = Field(default=None, description="Code-execution tool kinds this workspace may use, from code_execution, bash_code_execution, text_editor_code_execution. Only ever removes one the backend serves; null exposes whatever it serves")
-    __properties: ClassVar[List[str]] = ["default_purpose_hint", "enabled", "exec_timeout_s", "image", "max_iterations", "tools"]
+    __properties: ClassVar[List[str]] = ["default_purpose_hint", "enabled", "exec_timeout_s", "executor", "image", "max_iterations", "tools"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,6 +87,11 @@ class WorkspaceCodeExecutionPolicyUpdate(BaseModel):
         if self.exec_timeout_s is None and "exec_timeout_s" in self.model_fields_set:
             _dict['exec_timeout_s'] = None
 
+        # set to None if executor (nullable) is None
+        # and model_fields_set contains the field
+        if self.executor is None and "executor" in self.model_fields_set:
+            _dict['executor'] = None
+
         # set to None if image (nullable) is None
         # and model_fields_set contains the field
         if self.image is None and "image" in self.model_fields_set:
@@ -115,6 +122,7 @@ class WorkspaceCodeExecutionPolicyUpdate(BaseModel):
             "default_purpose_hint": obj.get("default_purpose_hint"),
             "enabled": obj.get("enabled"),
             "exec_timeout_s": obj.get("exec_timeout_s"),
+            "executor": obj.get("executor"),
             "image": obj.get("image"),
             "max_iterations": obj.get("max_iterations"),
             "tools": obj.get("tools")

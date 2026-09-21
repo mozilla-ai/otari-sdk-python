@@ -27,7 +27,7 @@ class ManagedTool(BaseModel):
     """
     One tool the gateway can run itself.
     """ # noqa: E501
-    accepted_types: List[StrictStr] = Field(description="Every `tools[].type` this deployment currently routes to the tool. Always includes the canonical `otari_*` type; for web search it also includes the provider-named keywords when interception is enabled.")
+    accepted_types: List[StrictStr] = Field(description="Every `tools[].type` this deployment currently routes to the tool. Always includes the canonical `otari_*` type; for web search it also includes the provider-named keywords when interception is enabled, and for code execution the provider-named keywords unless the deployment's executor is `provider`.")
     available: StrictBool = Field(description="Whether this deployment has enabled and configured the tool. A request declaring an unavailable tool is rejected with 400.")
     description: StrictStr = Field(description="What the tool does, as the model is told.")
     example: Dict[str, Any] = Field(description="A ready-to-use `tools[]` entry.")

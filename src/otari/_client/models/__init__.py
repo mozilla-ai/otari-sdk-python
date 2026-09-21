@@ -103,6 +103,7 @@ from otari._client.models.chat_completion_request import ChatCompletionRequest
 from otari._client.models.chat_completion_request_tools_inner import ChatCompletionRequestToolsInner
 from otari._client.models.chat_message_input import ChatMessageInput
 from otari._client.models.check_verdict_request import CheckVerdictRequest
+from otari._client.models.code_executor import CodeExecutor
 from otari._client.models.config_field import ConfigField
 from otari._client.models.config_search_tool_schema import ConfigSearchToolSchema
 from otari._client.models.content import Content

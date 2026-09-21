@@ -168,6 +168,7 @@ __all__ = [
     "ChatCompletionRequestToolsInner",
     "ChatMessageInput",
     "CheckVerdictRequest",
+    "CodeExecutor",
     "ConfigField",
     "ConfigSearchToolSchema",
     "Content",
@@ -778,6 +779,7 @@ from otari._client.models.chat_completion_request import ChatCompletionRequest a
 from otari._client.models.chat_completion_request_tools_inner import ChatCompletionRequestToolsInner as ChatCompletionRequestToolsInner
 from otari._client.models.chat_message_input import ChatMessageInput as ChatMessageInput
 from otari._client.models.check_verdict_request import CheckVerdictRequest as CheckVerdictRequest
+from otari._client.models.code_executor import CodeExecutor as CodeExecutor
 from otari._client.models.config_field import ConfigField as ConfigField
 from otari._client.models.config_search_tool_schema import ConfigSearchToolSchema as ConfigSearchToolSchema
 from otari._client.models.content import Content as Content

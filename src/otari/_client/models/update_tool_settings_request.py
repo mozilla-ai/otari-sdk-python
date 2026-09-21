@@ -28,6 +28,7 @@ class UpdateToolSettingsRequest(BaseModel):
     """
     Change one or more tool settings. Omitted fields are left unchanged; an explicit ``null`` clears a field back to the configured env/YAML default.
     """ # noqa: E501
+    code_execution_executor: Optional[StrictStr] = None
     guardrails_url: Optional[StrictStr] = None
     sandbox_purpose_hint: Optional[StrictStr] = None
     sandbox_session_image: Optional[StrictStr] = None
@@ -38,7 +39,7 @@ class UpdateToolSettingsRequest(BaseModel):
     web_search_max_results: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
     web_search_purpose_hint: Optional[StrictStr] = None
     web_search_url: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["guardrails_url", "sandbox_purpose_hint", "sandbox_session_image", "sandbox_url", "web_search_engines", "web_search_extract", "web_search_intercept", "web_search_max_results", "web_search_purpose_hint", "web_search_url"]
+    __properties: ClassVar[List[str]] = ["code_execution_executor", "guardrails_url", "sandbox_purpose_hint", "sandbox_session_image", "sandbox_url", "web_search_engines", "web_search_extract", "web_search_intercept", "web_search_max_results", "web_search_purpose_hint", "web_search_url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -79,6 +80,11 @@ class UpdateToolSettingsRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if code_execution_executor (nullable) is None
+        # and model_fields_set contains the field
+        if self.code_execution_executor is None and "code_execution_executor" in self.model_fields_set:
+            _dict['code_execution_executor'] = None
+
         # set to None if guardrails_url (nullable) is None
         # and model_fields_set contains the field
         if self.guardrails_url is None and "guardrails_url" in self.model_fields_set:
@@ -141,6 +147,7 @@ class UpdateToolSettingsRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "code_execution_executor": obj.get("code_execution_executor"),
             "guardrails_url": obj.get("guardrails_url"),
             "sandbox_purpose_hint": obj.get("sandbox_purpose_hint"),
             "sandbox_session_image": obj.get("sandbox_session_image"),
