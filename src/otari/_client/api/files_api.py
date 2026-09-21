@@ -15,8 +15,9 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import StrictBytes, StrictStr
+from pydantic import Field, StrictBytes, StrictStr, field_validator
 from typing import Any, Dict, Optional, Tuple, Union
+from typing_extensions import Annotated
 from uuid import UUID
 
 from otari._client.api_client import ApiClient, RequestSerialized
@@ -58,7 +59,7 @@ class FilesApi:
     ) -> Dict[str, object]:
         """Create File
 
-        OpenAI-compatible file upload endpoint.
+        Upload a file. Answers in the OpenAI or Anthropic file shape, following the caller's headers.
 
         :param file: (required)
         :type file: str
@@ -134,7 +135,7 @@ class FilesApi:
     ) -> ApiResponse[Dict[str, object]]:
         """Create File
 
-        OpenAI-compatible file upload endpoint.
+        Upload a file. Answers in the OpenAI or Anthropic file shape, following the caller's headers.
 
         :param file: (required)
         :type file: str
@@ -210,7 +211,7 @@ class FilesApi:
     ) -> RESTResponseType:
         """Create File
 
-        OpenAI-compatible file upload endpoint.
+        Upload a file. Answers in the OpenAI or Anthropic file shape, following the caller's headers.
 
         :param file: (required)
         :type file: str
@@ -1199,6 +1200,10 @@ class FilesApi:
         user: Optional[StrictStr] = None,
         purpose: Optional[StrictStr] = None,
         workspace_id: Optional[UUID] = None,
+        limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        after: Optional[StrictStr] = None,
+        after_id: Optional[StrictStr] = None,
+        order: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1214,7 +1219,7 @@ class FilesApi:
     ) -> Dict[str, object]:
         """List Files
 
-        List the authenticated user's uploaded files in the request's workspace.  ``workspace_id`` narrows a master-key listing to one workspace; a keyed request is already confined to its key's own and cannot widen or move it.
+        List the authenticated user's uploaded files in the request's workspace.  ``workspace_id`` narrows a master-key listing to one workspace; a keyed request is already confined to its key's own and cannot widen or move it.  Pages are cursor-based: ``after`` (OpenAI) or ``after_id`` (Anthropic) names the last file of the previous page, and ``has_more`` says whether to ask again. A cursor that has since been deleted or has expired is still a position; one the caller never owned is a 404.
 
         :param user:
         :type user: str
@@ -1222,6 +1227,14 @@ class FilesApi:
         :type purpose: str
         :param workspace_id:
         :type workspace_id: UUID
+        :param limit:
+        :type limit: int
+        :param after:
+        :type after: str
+        :param after_id:
+        :type after_id: str
+        :param order:
+        :type order: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1248,6 +1261,10 @@ class FilesApi:
             user=user,
             purpose=purpose,
             workspace_id=workspace_id,
+            limit=limit,
+            after=after,
+            after_id=after_id,
+            order=order,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1275,6 +1292,10 @@ class FilesApi:
         user: Optional[StrictStr] = None,
         purpose: Optional[StrictStr] = None,
         workspace_id: Optional[UUID] = None,
+        limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        after: Optional[StrictStr] = None,
+        after_id: Optional[StrictStr] = None,
+        order: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1290,7 +1311,7 @@ class FilesApi:
     ) -> ApiResponse[Dict[str, object]]:
         """List Files
 
-        List the authenticated user's uploaded files in the request's workspace.  ``workspace_id`` narrows a master-key listing to one workspace; a keyed request is already confined to its key's own and cannot widen or move it.
+        List the authenticated user's uploaded files in the request's workspace.  ``workspace_id`` narrows a master-key listing to one workspace; a keyed request is already confined to its key's own and cannot widen or move it.  Pages are cursor-based: ``after`` (OpenAI) or ``after_id`` (Anthropic) names the last file of the previous page, and ``has_more`` says whether to ask again. A cursor that has since been deleted or has expired is still a position; one the caller never owned is a 404.
 
         :param user:
         :type user: str
@@ -1298,6 +1319,14 @@ class FilesApi:
         :type purpose: str
         :param workspace_id:
         :type workspace_id: UUID
+        :param limit:
+        :type limit: int
+        :param after:
+        :type after: str
+        :param after_id:
+        :type after_id: str
+        :param order:
+        :type order: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1324,6 +1353,10 @@ class FilesApi:
             user=user,
             purpose=purpose,
             workspace_id=workspace_id,
+            limit=limit,
+            after=after,
+            after_id=after_id,
+            order=order,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1351,6 +1384,10 @@ class FilesApi:
         user: Optional[StrictStr] = None,
         purpose: Optional[StrictStr] = None,
         workspace_id: Optional[UUID] = None,
+        limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        after: Optional[StrictStr] = None,
+        after_id: Optional[StrictStr] = None,
+        order: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1366,7 +1403,7 @@ class FilesApi:
     ) -> RESTResponseType:
         """List Files
 
-        List the authenticated user's uploaded files in the request's workspace.  ``workspace_id`` narrows a master-key listing to one workspace; a keyed request is already confined to its key's own and cannot widen or move it.
+        List the authenticated user's uploaded files in the request's workspace.  ``workspace_id`` narrows a master-key listing to one workspace; a keyed request is already confined to its key's own and cannot widen or move it.  Pages are cursor-based: ``after`` (OpenAI) or ``after_id`` (Anthropic) names the last file of the previous page, and ``has_more`` says whether to ask again. A cursor that has since been deleted or has expired is still a position; one the caller never owned is a 404.
 
         :param user:
         :type user: str
@@ -1374,6 +1411,14 @@ class FilesApi:
         :type purpose: str
         :param workspace_id:
         :type workspace_id: UUID
+        :param limit:
+        :type limit: int
+        :param after:
+        :type after: str
+        :param after_id:
+        :type after_id: str
+        :param order:
+        :type order: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1400,6 +1445,10 @@ class FilesApi:
             user=user,
             purpose=purpose,
             workspace_id=workspace_id,
+            limit=limit,
+            after=after,
+            after_id=after_id,
+            order=order,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1422,6 +1471,10 @@ class FilesApi:
         user,
         purpose,
         workspace_id,
+        limit,
+        after,
+        after_id,
+        order,
         _request_auth,
         _content_type,
         _headers,
@@ -1455,6 +1508,22 @@ class FilesApi:
         if workspace_id is not None:
             
             _query_params.append(('workspace_id', workspace_id))
+            
+        if limit is not None:
+            
+            _query_params.append(('limit', limit))
+            
+        if after is not None:
+            
+            _query_params.append(('after', after))
+            
+        if after_id is not None:
+            
+            _query_params.append(('after_id', after_id))
+            
+        if order is not None:
+            
+            _query_params.append(('order', order))
             
         # process the header parameters
         # process the form parameters

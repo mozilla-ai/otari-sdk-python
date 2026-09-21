@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
+from otari._client.models.code_executor import CodeExecutor
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -35,13 +36,14 @@ class WorkspaceCodeExecutionPolicyPublic(BaseModel):
     default_purpose_hint: Optional[StrictStr]
     enabled: StrictBool
     exec_timeout_s: Optional[StrictInt]
+    executor: Optional[CodeExecutor]
     image: Optional[StrictStr]
     max_iterations: Optional[StrictInt]
     sandbox_configured: StrictBool
     tools: Optional[List[StrictStr]]
     updated_at: Optional[StrictStr]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_images", "available_tools", "configured", "created_at", "default_purpose_hint", "enabled", "exec_timeout_s", "image", "max_iterations", "sandbox_configured", "tools", "updated_at", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_images", "available_tools", "configured", "created_at", "default_purpose_hint", "enabled", "exec_timeout_s", "executor", "image", "max_iterations", "sandbox_configured", "tools", "updated_at", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -97,6 +99,11 @@ class WorkspaceCodeExecutionPolicyPublic(BaseModel):
         if self.exec_timeout_s is None and "exec_timeout_s" in self.model_fields_set:
             _dict['exec_timeout_s'] = None
 
+        # set to None if executor (nullable) is None
+        # and model_fields_set contains the field
+        if self.executor is None and "executor" in self.model_fields_set:
+            _dict['executor'] = None
+
         # set to None if image (nullable) is None
         # and model_fields_set contains the field
         if self.image is None and "image" in self.model_fields_set:
@@ -136,6 +143,7 @@ class WorkspaceCodeExecutionPolicyPublic(BaseModel):
             "default_purpose_hint": obj.get("default_purpose_hint"),
             "enabled": obj.get("enabled"),
             "exec_timeout_s": obj.get("exec_timeout_s"),
+            "executor": obj.get("executor"),
             "image": obj.get("image"),
             "max_iterations": obj.get("max_iterations"),
             "sandbox_configured": obj.get("sandbox_configured"),

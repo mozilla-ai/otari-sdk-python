@@ -28,12 +28,13 @@ class ToolSettingField(BaseModel):
     """
     One editable tool/guardrail field surfaced to the dashboard.
     """ # noqa: E501
+    choices: Optional[List[StrictStr]] = None
     description: Optional[StrictStr] = None
     key: StrictStr
     service: StrictStr
     type: StrictStr
     value: Optional[Value1]
-    __properties: ClassVar[List[str]] = ["description", "key", "service", "type", "value"]
+    __properties: ClassVar[List[str]] = ["choices", "description", "key", "service", "type", "value"]
 
     @field_validator('service')
     def service_validate_enum(cls, value):
@@ -91,6 +92,11 @@ class ToolSettingField(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of value
         if self.value:
             _dict['value'] = self.value.to_dict()
+        # set to None if choices (nullable) is None
+        # and model_fields_set contains the field
+        if self.choices is None and "choices" in self.model_fields_set:
+            _dict['choices'] = None
+
         # set to None if description (nullable) is None
         # and model_fields_set contains the field
         if self.description is None and "description" in self.model_fields_set:
@@ -113,6 +119,7 @@ class ToolSettingField(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "choices": obj.get("choices"),
             "description": obj.get("description"),
             "key": obj.get("key"),
             "service": obj.get("service"),
