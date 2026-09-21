@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from otari._client.models.check_verdict_request import CheckVerdictRequest
 from otari._client.models.judge_verdict_request import JudgeVerdictRequest
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,11 +31,12 @@ class PolicyCheckRequest(BaseModel):
     A policy body plus the evidence to check it against, both caller-supplied.
     """ # noqa: E501
     changed_paths: Optional[Annotated[List[StrictStr], Field(max_length=10000)]] = Field(default=None, description="Repo-relative paths the caller observed changed (e.g. `git status --porcelain`).")
+    check_results: Optional[Annotated[List[CheckVerdictRequest], Field(max_length=1000)]] = Field(default=None, description="Verifier verdicts the caller collected for this request's check_passed gates.")
     command_scope: Optional[StrictStr] = Field(default='call', description="What `commands` covers: `call` for the single tool call about to run, `session` for every command the session has run so far.")
     commands: Optional[Annotated[List[StrictStr], Field(max_length=10000)]] = Field(default=None, description="Shell commands the caller observed run or is about to run.")
     judge_results: Optional[Annotated[List[JudgeVerdictRequest], Field(max_length=1000)]] = Field(default=None, description="Model verdicts the caller collected for this request's judge gates.")
     policy_yaml: Annotated[str, Field(min_length=1, strict=True, max_length=262144)]
-    __properties: ClassVar[List[str]] = ["changed_paths", "command_scope", "commands", "judge_results", "policy_yaml"]
+    __properties: ClassVar[List[str]] = ["changed_paths", "check_results", "command_scope", "commands", "judge_results", "policy_yaml"]
 
     @field_validator('command_scope')
     def command_scope_validate_enum(cls, value):
@@ -85,6 +87,13 @@ class PolicyCheckRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in check_results (list)
+        _items = []
+        if self.check_results:
+            for _item_check_results in self.check_results:
+                if _item_check_results:
+                    _items.append(_item_check_results.to_dict())
+            _dict['check_results'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in judge_results (list)
         _items = []
         if self.judge_results:
@@ -96,6 +105,11 @@ class PolicyCheckRequest(BaseModel):
         # and model_fields_set contains the field
         if self.changed_paths is None and "changed_paths" in self.model_fields_set:
             _dict['changed_paths'] = None
+
+        # set to None if check_results (nullable) is None
+        # and model_fields_set contains the field
+        if self.check_results is None and "check_results" in self.model_fields_set:
+            _dict['check_results'] = None
 
         # set to None if commands (nullable) is None
         # and model_fields_set contains the field
@@ -120,6 +134,7 @@ class PolicyCheckRequest(BaseModel):
 
         _obj = cls.model_validate({
             "changed_paths": obj.get("changed_paths"),
+            "check_results": [CheckVerdictRequest.from_dict(_item) for _item in obj["check_results"]] if obj.get("check_results") is not None else None,
             "command_scope": obj.get("command_scope") if obj.get("command_scope") is not None else 'call',
             "commands": obj.get("commands"),
             "judge_results": [JudgeVerdictRequest.from_dict(_item) for _item in obj["judge_results"]] if obj.get("judge_results") is not None else None,
