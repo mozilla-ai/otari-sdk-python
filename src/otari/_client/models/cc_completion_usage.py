@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class CCCompletionUsage(BaseModel):
     """
-    Usage statistics for the completion request.
+    CCCompletionUsage
     """ # noqa: E501
     completion_tokens: StrictInt
     prompt_tokens: StrictInt

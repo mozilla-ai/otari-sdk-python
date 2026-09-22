@@ -17,20 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, StrictInt
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SelectorIndexResponse(BaseModel):
+class CCKCacheCreationTokenDetails(BaseModel):
     """
-    What the rebuilt index knows.
+    Cache writes split by time-to-live, as Anthropic reports them.
     """ # noqa: E501
-    models: StrictInt = Field(description="Slugs that resolve to an offering.")
-    offerings: StrictInt = Field(description="Selectors the deployment serves.")
-    pinned_selectors: StrictInt = Field(description="Pinned spellings, one per instance a model is offered on.")
-    __properties: ClassVar[List[str]] = ["models", "offerings", "pinned_selectors"]
+    ephemeral_5m_input_tokens: Optional[StrictInt] = None
+    ephemeral_1h_input_tokens: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["ephemeral_5m_input_tokens", "ephemeral_1h_input_tokens"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -50,7 +49,7 @@ class SelectorIndexResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SelectorIndexResponse from a JSON string"""
+        """Create an instance of CCKCacheCreationTokenDetails from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,11 +70,21 @@ class SelectorIndexResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if ephemeral_5m_input_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.ephemeral_5m_input_tokens is None and "ephemeral_5m_input_tokens" in self.model_fields_set:
+            _dict['ephemeral_5m_input_tokens'] = None
+
+        # set to None if ephemeral_1h_input_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.ephemeral_1h_input_tokens is None and "ephemeral_1h_input_tokens" in self.model_fields_set:
+            _dict['ephemeral_1h_input_tokens'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SelectorIndexResponse from a dict"""
+        """Create an instance of CCKCacheCreationTokenDetails from a dict"""
         if obj is None:
             return None
 
@@ -83,9 +92,8 @@ class SelectorIndexResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "models": obj.get("models"),
-            "offerings": obj.get("offerings"),
-            "pinned_selectors": obj.get("pinned_selectors")
+            "ephemeral_5m_input_tokens": obj.get("ephemeral_5m_input_tokens"),
+            "ephemeral_1h_input_tokens": obj.get("ephemeral_1h_input_tokens")
         })
         return _obj
 

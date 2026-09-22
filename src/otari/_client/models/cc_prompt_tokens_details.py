@@ -19,18 +19,21 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.cc_cache_creation_token_details import CCCacheCreationTokenDetails
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class CCPromptTokensDetails(BaseModel):
     """
-    Breakdown of tokens used in the prompt.
+    OpenAI prompt token breakdown extended with the TTL split of cache writes.  As in OpenAI, ``cached_tokens`` and ``cache_write_tokens`` are subsets of ``prompt_tokens``.
     """ # noqa: E501
     audio_tokens: Optional[StrictInt] = None
     cached_tokens: Optional[StrictInt] = Field(default=None, description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")
+    cache_write_tokens: Optional[StrictInt] = None
+    cache_creation_token_details: Optional[CCCacheCreationTokenDetails] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["audio_tokens", "cached_tokens"]
+    __properties: ClassVar[List[str]] = ["audio_tokens", "cached_tokens", "cache_write_tokens", "cache_creation_token_details"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -73,6 +76,9 @@ class CCPromptTokensDetails(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of cache_creation_token_details
+        if self.cache_creation_token_details:
+            _dict['cache_creation_token_details'] = self.cache_creation_token_details.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -88,6 +94,16 @@ class CCPromptTokensDetails(BaseModel):
         if self.cached_tokens is None and "cached_tokens" in self.model_fields_set:
             _dict['cached_tokens'] = None
 
+        # set to None if cache_write_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_write_tokens is None and "cache_write_tokens" in self.model_fields_set:
+            _dict['cache_write_tokens'] = None
+
+        # set to None if cache_creation_token_details (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_creation_token_details is None and "cache_creation_token_details" in self.model_fields_set:
+            _dict['cache_creation_token_details'] = None
+
         return _dict
 
     @classmethod
@@ -101,7 +117,9 @@ class CCPromptTokensDetails(BaseModel):
 
         _obj = cls.model_validate({
             "audio_tokens": obj.get("audio_tokens"),
-            "cached_tokens": obj.get("cached_tokens")
+            "cached_tokens": obj.get("cached_tokens"),
+            "cache_write_tokens": obj.get("cache_write_tokens"),
+            "cache_creation_token_details": CCCacheCreationTokenDetails.from_dict(obj["cache_creation_token_details"]) if obj.get("cache_creation_token_details") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

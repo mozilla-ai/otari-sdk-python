@@ -49,7 +49,7 @@ class CatalogModelSummary(BaseModel):
     providers: List[StrictStr] = Field(description="The provider instances offering it, sorted.")
     release_date: Optional[StrictStr] = None
     resolves_to: Optional[StrictStr] = Field(default=None, description="The offering `selector` resolves to.")
-    selector: Optional[StrictStr] = Field(default=None, description="The id as a selector: send it as `model` and the model's cheapest offering answers. Null until the gateway has indexed the catalog.")
+    selector: Optional[StrictStr] = Field(default=None, description="The id as a selector: send it as `model` and the model's cheapest offering the caller can reach answers, the vendor's own provider first where it serves the model. Null until the gateway has indexed the catalog.")
     selectors: List[StrictStr] = Field(description="Every offering's selector, so the list can be searched by one.")
     unpriced_count: StrictInt = Field(description="How many offerings carry no price for this caller.")
     vendor: Optional[StrictStr]

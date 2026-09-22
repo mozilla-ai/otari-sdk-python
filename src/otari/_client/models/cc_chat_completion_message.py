@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.cc_chat_completion_audio import CCChatCompletionAudio
 from otari._client.models.cc_chat_completion_message_tool_calls_inner import CCChatCompletionMessageToolCallsInner
 from otari._client.models.cc_function_call import CCFunctionCall
+from otari._client.models.cc_image_content import CCImageContent
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -39,8 +40,9 @@ class CCChatCompletionMessage(BaseModel):
     tool_calls: Optional[List[CCChatCompletionMessageToolCallsInner]] = None
     reasoning: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     extra_content: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    images: Optional[List[CCImageContent]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["content", "refusal", "role", "annotations", "audio", "function_call", "tool_calls", "reasoning", "extra_content"]
+    __properties: ClassVar[List[str]] = ["content", "refusal", "role", "annotations", "audio", "function_call", "tool_calls", "reasoning", "extra_content", "images"]
 
     @field_validator('role')
     def role_validate_enum(cls, value):
@@ -103,6 +105,13 @@ class CCChatCompletionMessage(BaseModel):
                 if _item_tool_calls:
                     _items.append(_item_tool_calls.to_dict())
             _dict['tool_calls'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in images (list)
+        _items = []
+        if self.images:
+            for _item_images in self.images:
+                if _item_images:
+                    _items.append(_item_images.to_dict())
+            _dict['images'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -148,6 +157,11 @@ class CCChatCompletionMessage(BaseModel):
         if self.extra_content is None and "extra_content" in self.model_fields_set:
             _dict['extra_content'] = None
 
+        # set to None if images (nullable) is None
+        # and model_fields_set contains the field
+        if self.images is None and "images" in self.model_fields_set:
+            _dict['images'] = None
+
         return _dict
 
     @classmethod
@@ -168,7 +182,8 @@ class CCChatCompletionMessage(BaseModel):
             "function_call": CCFunctionCall.from_dict(obj["function_call"]) if obj.get("function_call") is not None else None,
             "tool_calls": [CCChatCompletionMessageToolCallsInner.from_dict(_item) for _item in obj["tool_calls"]] if obj.get("tool_calls") is not None else None,
             "reasoning": obj.get("reasoning"),
-            "extra_content": obj.get("extra_content")
+            "extra_content": obj.get("extra_content"),
+            "images": [CCImageContent.from_dict(_item) for _item in obj["images"]] if obj.get("images") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

@@ -120,6 +120,7 @@ __all__ = [
     "BudgetResponse",
     "BuiltInGuardrailCatalog",
     "BuiltInGuardrailSpec",
+    "CCCacheCreationTokenDetails",
     "CCChatCompletionAudio",
     "CCChatCompletionMessage",
     "CCChatCompletionMessageCustomToolCall",
@@ -133,8 +134,12 @@ __all__ = [
     "CCCustom",
     "CCFunction",
     "CCFunctionCall",
+    "CCImageContent",
+    "CCImageURL",
+    "CCKCacheCreationTokenDetails",
     "CCKChatCompletionTokenLogprob",
     "CCKChoiceDelta",
+    "CCKChoiceDeltaAudio",
     "CCKChoiceDeltaFunctionCall",
     "CCKChoiceDeltaToolCall",
     "CCKChoiceDeltaToolCallFunction",
@@ -142,6 +147,8 @@ __all__ = [
     "CCKChunkChoice",
     "CCKCompletionTokensDetails",
     "CCKCompletionUsage",
+    "CCKImageContent",
+    "CCKImageURL",
     "CCKPromptTokensDetails",
     "CCKTopLogprob",
     "CCPromptTokensDetails",
@@ -737,6 +744,7 @@ from otari._client.models.budget_reset_log_response import BudgetResetLogRespons
 from otari._client.models.budget_response import BudgetResponse as BudgetResponse
 from otari._client.models.built_in_guardrail_catalog import BuiltInGuardrailCatalog as BuiltInGuardrailCatalog
 from otari._client.models.built_in_guardrail_spec import BuiltInGuardrailSpec as BuiltInGuardrailSpec
+from otari._client.models.cc_cache_creation_token_details import CCCacheCreationTokenDetails as CCCacheCreationTokenDetails
 from otari._client.models.cc_chat_completion_audio import CCChatCompletionAudio as CCChatCompletionAudio
 from otari._client.models.cc_chat_completion_message import CCChatCompletionMessage as CCChatCompletionMessage
 from otari._client.models.cc_chat_completion_message_custom_tool_call import CCChatCompletionMessageCustomToolCall as CCChatCompletionMessageCustomToolCall
@@ -750,8 +758,12 @@ from otari._client.models.cc_completion_usage import CCCompletionUsage as CCComp
 from otari._client.models.cc_custom import CCCustom as CCCustom
 from otari._client.models.cc_function import CCFunction as CCFunction
 from otari._client.models.cc_function_call import CCFunctionCall as CCFunctionCall
+from otari._client.models.cc_image_content import CCImageContent as CCImageContent
+from otari._client.models.cc_image_url import CCImageURL as CCImageURL
+from otari._client.models.cck_cache_creation_token_details import CCKCacheCreationTokenDetails as CCKCacheCreationTokenDetails
 from otari._client.models.cck_chat_completion_token_logprob import CCKChatCompletionTokenLogprob as CCKChatCompletionTokenLogprob
 from otari._client.models.cck_choice_delta import CCKChoiceDelta as CCKChoiceDelta
+from otari._client.models.cck_choice_delta_audio import CCKChoiceDeltaAudio as CCKChoiceDeltaAudio
 from otari._client.models.cck_choice_delta_function_call import CCKChoiceDeltaFunctionCall as CCKChoiceDeltaFunctionCall
 from otari._client.models.cck_choice_delta_tool_call import CCKChoiceDeltaToolCall as CCKChoiceDeltaToolCall
 from otari._client.models.cck_choice_delta_tool_call_function import CCKChoiceDeltaToolCallFunction as CCKChoiceDeltaToolCallFunction
@@ -759,6 +771,8 @@ from otari._client.models.cck_choice_logprobs import CCKChoiceLogprobs as CCKCho
 from otari._client.models.cck_chunk_choice import CCKChunkChoice as CCKChunkChoice
 from otari._client.models.cck_completion_tokens_details import CCKCompletionTokensDetails as CCKCompletionTokensDetails
 from otari._client.models.cck_completion_usage import CCKCompletionUsage as CCKCompletionUsage
+from otari._client.models.cck_image_content import CCKImageContent as CCKImageContent
+from otari._client.models.cck_image_url import CCKImageURL as CCKImageURL
 from otari._client.models.cck_prompt_tokens_details import CCKPromptTokensDetails as CCKPromptTokensDetails
 from otari._client.models.cck_top_logprob import CCKTopLogprob as CCKTopLogprob
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails as CCPromptTokensDetails
