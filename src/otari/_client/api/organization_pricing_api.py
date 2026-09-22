@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field
+from pydantic import Field, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
 from uuid import UUID
@@ -588,6 +588,7 @@ class OrganizationPricingApi:
     @validate_call
     def organization_pricing_list_organization_pricing(
         self,
+        model_key: Annotated[Optional[StrictStr], Field(description="Return only this model's periods, in the canonical 'provider:model' form.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
         _request_timeout: Union[
@@ -605,8 +606,10 @@ class OrganizationPricingApi:
     ) -> OrganizationModelPricingsPublic:
         """List Organization Pricing
 
-        List the organization's rate overrides.  Readable by any member: these rates decide what the caller's own requests cost, so they are not withheld from the people billed at them. Writing needs an owner or admin.  Paged on the same bounds the rest of the tenancy surface uses, because the table grows a row per model per period. ``count`` is the total, so a client knows whether another page is owed.
+        List the organization's rate overrides.  Readable by any member: these rates decide what the caller's own requests cost, so they are not withheld from the people billed at them. Writing needs an owner or admin.  Paged on the same bounds the rest of the tenancy surface uses, because the table grows a row per model per period. ``count`` is the total, so a client knows whether another page is owed.  ``model_key`` narrows to one model, which is what an editor for that model needs: every period stored for it, so it can open on the one in force and refuse a new one that would overlap. Normalized the same way a write is, so a legacy ``provider/model`` spelling finds the rows a canonical one stored.
 
+        :param model_key: Return only this model's periods, in the canonical 'provider:model' form.
+        :type model_key: str
         :param skip: Number of records to skip
         :type skip: int
         :param limit: Maximum number of records to return
@@ -634,6 +637,7 @@ class OrganizationPricingApi:
         """ # noqa: E501
 
         _param = self._organization_pricing_list_organization_pricing_serialize(
+            model_key=model_key,
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -660,6 +664,7 @@ class OrganizationPricingApi:
     @validate_call
     def organization_pricing_list_organization_pricing_with_http_info(
         self,
+        model_key: Annotated[Optional[StrictStr], Field(description="Return only this model's periods, in the canonical 'provider:model' form.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
         _request_timeout: Union[
@@ -677,8 +682,10 @@ class OrganizationPricingApi:
     ) -> ApiResponse[OrganizationModelPricingsPublic]:
         """List Organization Pricing
 
-        List the organization's rate overrides.  Readable by any member: these rates decide what the caller's own requests cost, so they are not withheld from the people billed at them. Writing needs an owner or admin.  Paged on the same bounds the rest of the tenancy surface uses, because the table grows a row per model per period. ``count`` is the total, so a client knows whether another page is owed.
+        List the organization's rate overrides.  Readable by any member: these rates decide what the caller's own requests cost, so they are not withheld from the people billed at them. Writing needs an owner or admin.  Paged on the same bounds the rest of the tenancy surface uses, because the table grows a row per model per period. ``count`` is the total, so a client knows whether another page is owed.  ``model_key`` narrows to one model, which is what an editor for that model needs: every period stored for it, so it can open on the one in force and refuse a new one that would overlap. Normalized the same way a write is, so a legacy ``provider/model`` spelling finds the rows a canonical one stored.
 
+        :param model_key: Return only this model's periods, in the canonical 'provider:model' form.
+        :type model_key: str
         :param skip: Number of records to skip
         :type skip: int
         :param limit: Maximum number of records to return
@@ -706,6 +713,7 @@ class OrganizationPricingApi:
         """ # noqa: E501
 
         _param = self._organization_pricing_list_organization_pricing_serialize(
+            model_key=model_key,
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -732,6 +740,7 @@ class OrganizationPricingApi:
     @validate_call
     def organization_pricing_list_organization_pricing_without_preload_content(
         self,
+        model_key: Annotated[Optional[StrictStr], Field(description="Return only this model's periods, in the canonical 'provider:model' form.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
         _request_timeout: Union[
@@ -749,8 +758,10 @@ class OrganizationPricingApi:
     ) -> RESTResponseType:
         """List Organization Pricing
 
-        List the organization's rate overrides.  Readable by any member: these rates decide what the caller's own requests cost, so they are not withheld from the people billed at them. Writing needs an owner or admin.  Paged on the same bounds the rest of the tenancy surface uses, because the table grows a row per model per period. ``count`` is the total, so a client knows whether another page is owed.
+        List the organization's rate overrides.  Readable by any member: these rates decide what the caller's own requests cost, so they are not withheld from the people billed at them. Writing needs an owner or admin.  Paged on the same bounds the rest of the tenancy surface uses, because the table grows a row per model per period. ``count`` is the total, so a client knows whether another page is owed.  ``model_key`` narrows to one model, which is what an editor for that model needs: every period stored for it, so it can open on the one in force and refuse a new one that would overlap. Normalized the same way a write is, so a legacy ``provider/model`` spelling finds the rows a canonical one stored.
 
+        :param model_key: Return only this model's periods, in the canonical 'provider:model' form.
+        :type model_key: str
         :param skip: Number of records to skip
         :type skip: int
         :param limit: Maximum number of records to return
@@ -778,6 +789,7 @@ class OrganizationPricingApi:
         """ # noqa: E501
 
         _param = self._organization_pricing_list_organization_pricing_serialize(
+            model_key=model_key,
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -799,6 +811,7 @@ class OrganizationPricingApi:
 
     def _organization_pricing_list_organization_pricing_serialize(
         self,
+        model_key,
         skip,
         limit,
         _request_auth,
@@ -823,6 +836,10 @@ class OrganizationPricingApi:
 
         # process the path parameters
         # process the query parameters
+        if model_key is not None:
+            
+            _query_params.append(('model_key', model_key))
+            
         if skip is not None:
             
             _query_params.append(('skip', skip))
