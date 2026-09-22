@@ -426,10 +426,16 @@ __all__ = [
     "OAuthCallbackRequest",
     "OAuthSessionResponse",
     "OfferingUsage",
+    "OrgProviderAvailableModelsPublic",
     "OrgProviderKeyCreateRequest",
+    "OrgProviderKeyModelCreateRequest",
+    "OrgProviderKeyModelPublic",
+    "OrgProviderKeyModelUpdateRequest",
+    "OrgProviderKeyModelsPublic",
     "OrgProviderKeyPublic",
     "OrgProviderKeyUpdateRequest",
     "OrgProviderKeysPublic",
+    "OrgProviderModelsRefreshPublic",
     "OrganizationBudgetCreate",
     "OrganizationBudgetPublic",
     "OrganizationBudgetUpdate",
@@ -1037,10 +1043,16 @@ from otari._client.models.moderation_result import ModerationResult as Moderatio
 from otari._client.models.o_auth_callback_request import OAuthCallbackRequest as OAuthCallbackRequest
 from otari._client.models.o_auth_session_response import OAuthSessionResponse as OAuthSessionResponse
 from otari._client.models.offering_usage import OfferingUsage as OfferingUsage
+from otari._client.models.org_provider_available_models_public import OrgProviderAvailableModelsPublic as OrgProviderAvailableModelsPublic
 from otari._client.models.org_provider_key_create_request import OrgProviderKeyCreateRequest as OrgProviderKeyCreateRequest
+from otari._client.models.org_provider_key_model_create_request import OrgProviderKeyModelCreateRequest as OrgProviderKeyModelCreateRequest
+from otari._client.models.org_provider_key_model_public import OrgProviderKeyModelPublic as OrgProviderKeyModelPublic
+from otari._client.models.org_provider_key_model_update_request import OrgProviderKeyModelUpdateRequest as OrgProviderKeyModelUpdateRequest
+from otari._client.models.org_provider_key_models_public import OrgProviderKeyModelsPublic as OrgProviderKeyModelsPublic
 from otari._client.models.org_provider_key_public import OrgProviderKeyPublic as OrgProviderKeyPublic
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest as OrgProviderKeyUpdateRequest
 from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic as OrgProviderKeysPublic
+from otari._client.models.org_provider_models_refresh_public import OrgProviderModelsRefreshPublic as OrgProviderModelsRefreshPublic
 from otari._client.models.organization_budget_create import OrganizationBudgetCreate as OrganizationBudgetCreate
 from otari._client.models.organization_budget_public import OrganizationBudgetPublic as OrganizationBudgetPublic
 from otari._client.models.organization_budget_update import OrganizationBudgetUpdate as OrganizationBudgetUpdate
