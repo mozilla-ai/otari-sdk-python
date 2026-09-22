@@ -17,38 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.value1 import Value1
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ToolSettingField(BaseModel):
+class CCKChoiceDeltaAudio(BaseModel):
     """
-    One editable tool/guardrail field surfaced to the dashboard.
+    Partial audio object emitted by a streaming chat completion.  Providers may send the identifier, transcript, data, and expiration timestamp in separate chunks, so every field is optional. The data field contains the base64-encoded bytes for the current chunk.
     """ # noqa: E501
-    description: Optional[StrictStr] = None
-    key: StrictStr
-    options: Optional[List[StrictStr]] = None
-    service: StrictStr
-    type: StrictStr
-    value: Optional[Value1]
-    __properties: ClassVar[List[str]] = ["description", "key", "options", "service", "type", "value"]
-
-    @field_validator('service')
-    def service_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['web_search', 'sandbox', 'guardrails']):
-            raise ValueError("must be one of enum values ('web_search', 'sandbox', 'guardrails')")
-        return value
-
-    @field_validator('type')
-    def type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['url', 'str', 'int', 'bool']):
-            raise ValueError("must be one of enum values ('url', 'str', 'int', 'bool')")
-        return value
+    id: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
+    data: Optional[StrictStr] = None
+    transcript: Optional[StrictStr] = None
+    expires_at: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["id", "data", "transcript", "expires_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -68,7 +51,7 @@ class ToolSettingField(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ToolSettingField from a JSON string"""
+        """Create an instance of CCKChoiceDeltaAudio from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -89,29 +72,31 @@ class ToolSettingField(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of value
-        if self.value:
-            _dict['value'] = self.value.to_dict()
-        # set to None if description (nullable) is None
+        # set to None if id (nullable) is None
         # and model_fields_set contains the field
-        if self.description is None and "description" in self.model_fields_set:
-            _dict['description'] = None
+        if self.id is None and "id" in self.model_fields_set:
+            _dict['id'] = None
 
-        # set to None if options (nullable) is None
+        # set to None if data (nullable) is None
         # and model_fields_set contains the field
-        if self.options is None and "options" in self.model_fields_set:
-            _dict['options'] = None
+        if self.data is None and "data" in self.model_fields_set:
+            _dict['data'] = None
 
-        # set to None if value (nullable) is None
+        # set to None if transcript (nullable) is None
         # and model_fields_set contains the field
-        if self.value is None and "value" in self.model_fields_set:
-            _dict['value'] = None
+        if self.transcript is None and "transcript" in self.model_fields_set:
+            _dict['transcript'] = None
+
+        # set to None if expires_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.expires_at is None and "expires_at" in self.model_fields_set:
+            _dict['expires_at'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ToolSettingField from a dict"""
+        """Create an instance of CCKChoiceDeltaAudio from a dict"""
         if obj is None:
             return None
 
@@ -119,12 +104,10 @@ class ToolSettingField(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "description": obj.get("description"),
-            "key": obj.get("key"),
-            "options": obj.get("options"),
-            "service": obj.get("service"),
-            "type": obj.get("type"),
-            "value": Value1.from_dict(obj["value"]) if obj.get("value") is not None else None
+            "id": obj.get("id"),
+            "data": obj.get("data"),
+            "transcript": obj.get("transcript"),
+            "expires_at": obj.get("expires_at")
         })
         return _obj
 

@@ -43,7 +43,7 @@ class CatalogOffering(BaseModel):
     provider_type: StrictStr = Field(description="The any-llm implementation behind the instance.")
     quantization: Optional[StrictStr] = Field(default=None, description="From the provider's id, when it names one.")
     selector: StrictStr = Field(description="What to send as `model`, in `instance:model` form.")
-    short_selector: Optional[StrictStr] = Field(default=None, description="A shorter spelling the gateway also accepts: the instance with the model's cleaned id (`fireworks:gpt-oss-120b`). Null where two offerings on the instance would share it, or until the gateway has indexed the catalog.")
+    short_selector: Optional[StrictStr] = Field(default=None, description="The pinned spelling the gateway also accepts for this offering: the instance with the model's catalog id (`fireworks:openai/gpt-oss-120b`), which pins the instance and reaches the model's cheapest offering on it. Null for a dearer sibling on the same instance, or until the gateway has indexed the catalog.")
     usage_30d: Optional[OfferingUsage] = None
     __properties: ClassVar[List[str]] = ["context_window", "credential", "discovered", "max_output_tokens", "metadata_input_price_per_million", "metadata_output_price_per_million", "price_reference", "price_source", "pricing", "provider", "provider_type", "quantization", "selector", "short_selector", "usage_30d"]
 

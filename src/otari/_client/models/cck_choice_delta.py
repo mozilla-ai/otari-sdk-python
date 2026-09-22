@@ -19,8 +19,10 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.cck_choice_delta_audio import CCKChoiceDeltaAudio
 from otari._client.models.cck_choice_delta_function_call import CCKChoiceDeltaFunctionCall
 from otari._client.models.cck_choice_delta_tool_call import CCKChoiceDeltaToolCall
+from otari._client.models.cck_image_content import CCKImageContent
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -36,8 +38,10 @@ class CCKChoiceDelta(BaseModel):
     tool_calls: Optional[List[CCKChoiceDeltaToolCall]] = None
     reasoning: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     extra_content: Optional[Dict[str, Any]] = None
+    images: Optional[List[CCKImageContent]] = None
+    audio: Optional[CCKChoiceDeltaAudio] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["content", "function_call", "refusal", "role", "tool_calls", "reasoning", "extra_content"]
+    __properties: ClassVar[List[str]] = ["content", "function_call", "refusal", "role", "tool_calls", "reasoning", "extra_content", "images", "audio"]
 
     @field_validator('role')
     def role_validate_enum(cls, value):
@@ -100,6 +104,16 @@ class CCKChoiceDelta(BaseModel):
                 if _item_tool_calls:
                     _items.append(_item_tool_calls.to_dict())
             _dict['tool_calls'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in images (list)
+        _items = []
+        if self.images:
+            for _item_images in self.images:
+                if _item_images:
+                    _items.append(_item_images.to_dict())
+            _dict['images'] = _items
+        # override the default output from pydantic by calling `to_dict()` of audio
+        if self.audio:
+            _dict['audio'] = self.audio.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -140,6 +154,16 @@ class CCKChoiceDelta(BaseModel):
         if self.extra_content is None and "extra_content" in self.model_fields_set:
             _dict['extra_content'] = None
 
+        # set to None if images (nullable) is None
+        # and model_fields_set contains the field
+        if self.images is None and "images" in self.model_fields_set:
+            _dict['images'] = None
+
+        # set to None if audio (nullable) is None
+        # and model_fields_set contains the field
+        if self.audio is None and "audio" in self.model_fields_set:
+            _dict['audio'] = None
+
         return _dict
 
     @classmethod
@@ -158,7 +182,9 @@ class CCKChoiceDelta(BaseModel):
             "role": obj.get("role"),
             "tool_calls": [CCKChoiceDeltaToolCall.from_dict(_item) for _item in obj["tool_calls"]] if obj.get("tool_calls") is not None else None,
             "reasoning": obj.get("reasoning"),
-            "extra_content": obj.get("extra_content")
+            "extra_content": obj.get("extra_content"),
+            "images": [CCKImageContent.from_dict(_item) for _item in obj["images"]] if obj.get("images") is not None else None,
+            "audio": CCKChoiceDeltaAudio.from_dict(obj["audio"]) if obj.get("audio") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

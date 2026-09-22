@@ -18,36 +18,25 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.value1 import Value1
+from typing import Any, ClassVar, Dict, List
+from otari._client.models.cck_image_url import CCKImageURL
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ToolSettingField(BaseModel):
+class CCKImageContent(BaseModel):
     """
-    One editable tool/guardrail field surfaced to the dashboard.
+    OpenAI-compatible image response content.
     """ # noqa: E501
-    description: Optional[StrictStr] = None
-    key: StrictStr
-    options: Optional[List[StrictStr]] = None
-    service: StrictStr
     type: StrictStr
-    value: Optional[Value1]
-    __properties: ClassVar[List[str]] = ["description", "key", "options", "service", "type", "value"]
-
-    @field_validator('service')
-    def service_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['web_search', 'sandbox', 'guardrails']):
-            raise ValueError("must be one of enum values ('web_search', 'sandbox', 'guardrails')")
-        return value
+    image_url: CCKImageURL
+    __properties: ClassVar[List[str]] = ["type", "image_url"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['url', 'str', 'int', 'bool']):
-            raise ValueError("must be one of enum values ('url', 'str', 'int', 'bool')")
+        if value not in set(['image_url']):
+            raise ValueError("must be one of enum values ('image_url')")
         return value
 
     model_config = ConfigDict(
@@ -68,7 +57,7 @@ class ToolSettingField(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ToolSettingField from a JSON string"""
+        """Create an instance of CCKImageContent from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -89,29 +78,14 @@ class ToolSettingField(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of value
-        if self.value:
-            _dict['value'] = self.value.to_dict()
-        # set to None if description (nullable) is None
-        # and model_fields_set contains the field
-        if self.description is None and "description" in self.model_fields_set:
-            _dict['description'] = None
-
-        # set to None if options (nullable) is None
-        # and model_fields_set contains the field
-        if self.options is None and "options" in self.model_fields_set:
-            _dict['options'] = None
-
-        # set to None if value (nullable) is None
-        # and model_fields_set contains the field
-        if self.value is None and "value" in self.model_fields_set:
-            _dict['value'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of image_url
+        if self.image_url:
+            _dict['image_url'] = self.image_url.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ToolSettingField from a dict"""
+        """Create an instance of CCKImageContent from a dict"""
         if obj is None:
             return None
 
@@ -119,12 +93,8 @@ class ToolSettingField(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "description": obj.get("description"),
-            "key": obj.get("key"),
-            "options": obj.get("options"),
-            "service": obj.get("service"),
             "type": obj.get("type"),
-            "value": Value1.from_dict(obj["value"]) if obj.get("value") is not None else None
+            "image_url": CCKImageURL.from_dict(obj["image_url"]) if obj.get("image_url") is not None else None
         })
         return _obj
 
