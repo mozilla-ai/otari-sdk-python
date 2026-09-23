@@ -116,7 +116,7 @@ class TestInference:
         client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
 
         await client.message(
-            model="anthropic:claude",
+            model="anthropic:claude-5-sonnet",
             messages=[{"role": "user", "content": "Hi"}],
             max_tokens=8,
             container="container_123",

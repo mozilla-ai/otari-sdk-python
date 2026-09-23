@@ -278,7 +278,7 @@ class TestMessage:
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
 
         client.message(
-            model="anthropic:claude-3-5-sonnet",
+            model="anthropic:claude-5-sonnet",
             messages=[{"role": "user", "content": "Hi"}],
             max_tokens=64,
             container="container_123",
