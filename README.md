@@ -324,6 +324,70 @@ for item in results.results:
 client.cancel_batch(batch.id, provider="openai")
 ```
 
+### Caller-controlled MCP
+
+Use `client.mcp.list_tools(mcp_server_id)` to discover a stored server's authorized
+catalog, then `client.mcp.execute(...)` to execute one exact caller-authorized call.
+Both platform tokens and self-hosted API keys work. These methods use
+`GET /api/v1/mcp/servers/{mcp_server_id}/tools` and `POST /api/v1/mcp/execute`.
+
+```python
+from uuid import uuid4
+
+from otari import OtariClient
+
+with OtariClient(platform_token="tk_your_api_token", timeout=60) as client:
+    catalog = client.mcp.list_tools("2c948a61-dc96-4cd8-96bb-8e1434bf424e")
+    # Your application obtains authorization before executing. Persist the
+    # server id, revision, tool name, and final (possibly edited) arguments
+    # together. Rejected or cancelled proposals must not reach execute().
+    result = client.mcp.execute(
+        mcp_server_id=catalog.server_id,
+        server_revision=catalog.server_revision,
+        tool_name="create_issue",
+        arguments={"title": "Caller-authorized title"},
+        client_execution_id=uuid4(),
+    )
+    print(result.is_error, result.structured_content)
+```
+
+With `AsyncOtariClient`, use `await client.mcp.list_tools(...)` and
+`await client.mcp.execute(...)` with the same arguments. `timeout` applies to
+both MCP methods, and closing the client closes their transport.
+
+Discovery returns `McpToolsResponse`, including `McpToolDefinition` entries and
+`McpToolWarning` entries. Execution returns the generated `CallToolResult`, with
+native content, `_meta` (`meta`), `structuredContent` (`structured_content`), and
+`isError` (`is_error`). A result with `is_error=True` is a definitive native MCP
+result, not a transport failure or retry signal. These types, `McpExecuteRequest`,
+`McpErrorBody`, and `ExecutionState` are public imports from `otari` and `otari.types`.
+
+**Execution safety:**
+
+- Otari enforces server access and policy but does not obtain or verify human
+  approval. The application owns approval, rejection, argument editing, and
+  cancellation. Tool descriptions and annotations are untrusted metadata.
+- `server_revision` is required. Persist discovery's revision with the authorized
+  call. A changed stored configuration produces `409 mcp_server_changed` with
+  `execution_state="not_started"`. It does not pin a remote tool's implementation.
+- Execution makes one HTTP attempt after local validation, with no connection,
+  status, or redirect retries. `client_execution_id` is correlation only, **not
+  an idempotency key**. Repeating it may execute the tool again. Disable retries
+  in application policies, proxies, ingress controllers, and service meshes too.
+- MCP failures raise `MCPError` (an `OtariError`) in both auth modes, preserving
+  `code`, `execution_state`, `request_id`, `status_code`, and optional `retry_after`.
+  `not_started` means Otari knows dispatch did not begin; the SDK still never retries.
+- `MCPOutcomeUnknownError` is an `MCPError` with `execution_state="outcome_unknown"`:
+  the remote tool may already have run. This includes typed gateway errors, timeout
+  and network failures, and malformed or untyped execution responses. Without a
+  typed response, `code` is `None` and `request_id` is available only if a response
+  header supplied it. Surface an indeterminate outcome; never automatically retry
+  or fall back to direct MCP. Async task cancellation propagates normally and also
+  leaves the outcome indeterminate once the request has started.
+
+See the [gateway MCP contract](https://github.com/mozilla-ai/otari/blob/main/docs/mcp.md#caller-orchestrated-mcp)
+for policy boundaries and execution states.
+
 ### Error handling
 
 In platform mode, HTTP errors are mapped to typed exceptions:

@@ -54,6 +54,7 @@ from otari._client.models.rerank_request import RerankRequest
 from otari._streaming import aiter_sse
 from otari.control_plane import ControlPlane
 from otari.errors import OtariError
+from otari.mcp import AsyncMCP
 from otari.response_metadata import AsyncOtariStream, OtariResponse
 
 if TYPE_CHECKING:
@@ -97,7 +98,7 @@ class AsyncOtariClient(_BaseOtariClient):
             ``GATEWAY_PLATFORM_TOKEN``).
         admin_key: Master/admin key for the control-plane (``GATEWAY_ADMIN_KEY``).
         default_headers: Additional default headers sent with every request.
-        timeout: Per-request timeout (seconds) for the streaming shim.
+        timeout: Per-request timeout (seconds) for streaming and MCP requests.
     """
 
     def __init__(
@@ -124,6 +125,8 @@ class AsyncOtariClient(_BaseOtariClient):
         api_any = cast("Any", self._api)
         for name, value in self._default_headers.items():
             api_any.set_default_header(name, value)
+        # HTTPX defaults to retries=0, including environment proxy transports.
+        # MCP's lower-level attempt-count tests guard this safety property.
         self._http = httpx.AsyncClient(timeout=timeout)
 
         self._chat = ChatApi(self._api)
@@ -135,6 +138,11 @@ class AsyncOtariClient(_BaseOtariClient):
         self._models = ModelsApi(self._api)
         self._images = ImagesApi(self._api)
         self._batches = BatchesApi(self._api)
+
+    @cached_property
+    def mcp(self) -> AsyncMCP:
+        """Stored-server tool discovery and single-attempt authorized execution."""
+        return AsyncMCP(self)
 
     @cached_property
     def control_plane(self) -> ControlPlane:
