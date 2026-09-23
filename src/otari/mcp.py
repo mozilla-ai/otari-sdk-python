@@ -50,7 +50,7 @@ def _check_response(response: httpx.Response, *, executing: bool) -> None:
     raise error_type(
         body.detail,
         code=body.code,
-        execution_state="outcome_unknown" if body.execution_state == "outcome_unknown" else "not_started",
+        execution_state=body.execution_state.value,
         request_id=body.request_id,
         status_code=response.status_code,
         retry_after=response.headers.get("Retry-After"),

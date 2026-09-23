@@ -48,14 +48,15 @@ class MCPError(OtariError):
     ``code`` is absent without a typed gateway response; ``request_id`` may
     still be available from its response header.
     ``execution_state`` is conservative: ``outcome_unknown`` means the remote
-    tool may already have run. Neither state triggers an SDK retry.
+    tool may already have run; ``completed`` preserves a known completed
+    execution. No state triggers an SDK retry.
     """
 
     def __init__(
         self,
         message: str,
         *,
-        execution_state: Literal["not_started", "outcome_unknown"],
+        execution_state: Literal["not_started", "outcome_unknown", "completed"],
         code: str | None = None,
         request_id: str | None = None,
         status_code: int | None = None,

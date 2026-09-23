@@ -154,6 +154,7 @@ class TestMCP:
         (503, "mcp_capacity_unavailable", "not_started"),
         (504, "mcp_outcome_unknown", "outcome_unknown"),
         (502, "mcp_result_too_large", "outcome_unknown"),
+        (502, "mcp_result_too_large", "completed"),
     ])
     async def test_typed_errors(self, client, status, code, state):
         body = {"detail": "Safe gateway message", "code": code, "execution_state": state, "request_id": "req_body"}
