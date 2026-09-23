@@ -111,6 +111,19 @@ class TestInference:
         assert result.id == "msg-1"
         assert mock.last.url.endswith("/api/v1/messages")
 
+    async def test_message_serializes_container(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=MESSAGE_RESPONSE)
+        client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        await client.message(
+            model="anthropic:claude",
+            messages=[{"role": "user", "content": "Hi"}],
+            max_tokens=8,
+            container="container_123",
+        )
+
+        assert mock.last.json_body["container"] == "container_123"
+
     async def test_message_with_response_metadata_exposes_request_id(self, mock_rest: Any) -> None:
         mock_rest(
             status=200,
