@@ -507,7 +507,7 @@ class OtariClient(_BaseOtariClient):
         response = self._call(fn)
         return OtariResponse(
             data=response.data,
-            request_id=_header_get(response.headers, "X-Otari-Request-ID"),
+            request_id=_header_get(response.headers, "Otari-Request-ID"),
         )
 
     def _post(
@@ -564,7 +564,7 @@ class OtariClient(_BaseOtariClient):
                 raw = response.read()
                 raise self._map_streaming_response(response, raw)
             if stream is not None:
-                stream._set_request_id(_header_get(response.headers, "X-Otari-Request-ID"))
+                stream._set_request_id(_header_get(response.headers, "Otari-Request-ID"))
             yield from iter_sse(response, kind)
 
     # -- Cleanup ------------------------------------------------------------

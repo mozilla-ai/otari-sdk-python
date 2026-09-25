@@ -204,7 +204,7 @@ class TestResponseMetadata:
         mock_rest(
             status=200,
             body=RESPONSES_RESPONSE,
-            headers={"X-Otari-Request-ID": "req-response-123"},
+            headers={"Otari-Request-ID": "req-response-123"},
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
 
@@ -221,7 +221,7 @@ class TestResponseMetadata:
                 200,
                 headers={
                     "content-type": "text/event-stream",
-                    "X-Otari-Request-ID": "req-response-stream-123",
+                    "Otari-Request-ID": "req-response-stream-123",
                 },
                 content=_sse(event),
             )
@@ -277,7 +277,7 @@ class TestMessage:
         mock_rest(
             status=200,
             body=MESSAGE_RESPONSE,
-            headers={"x-otari-request-id": "req-message-123"},
+            headers={"otari-request-id": "req-message-123"},
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
 
@@ -295,7 +295,7 @@ class TestMessage:
         mock_rest(
             status=200,
             body=CHAT_RESPONSE,
-            headers={"X-Otari-Request-ID": "req-chat-123"},
+            headers={"Otari-Request-ID": "req-chat-123"},
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
 
@@ -472,7 +472,7 @@ class TestChatStreaming:
                 200,
                 headers={
                     "content-type": "text/event-stream",
-                    "X-Otari-Request-ID": "req-stream-123",
+                    "Otari-Request-ID": "req-stream-123",
                 },
                 content=_sse(event),
             )

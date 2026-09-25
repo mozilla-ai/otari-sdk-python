@@ -191,7 +191,7 @@ print(message.content)
 
 ### Response metadata
 
-Use `with_response_metadata` to access the gateway's `X-Otari-Request-ID`:
+Use `with_response_metadata` to access the gateway's `Otari-Request-ID`:
 
 ```python
 result = client.with_response_metadata.message(

@@ -486,7 +486,7 @@ class AsyncOtariClient(_BaseOtariClient):
         response = await self._call(fn)
         return OtariResponse(
             data=response.data,
-            request_id=_header_get(response.headers, "X-Otari-Request-ID"),
+            request_id=_header_get(response.headers, "Otari-Request-ID"),
         )
 
     async def _post(
@@ -544,7 +544,7 @@ class AsyncOtariClient(_BaseOtariClient):
                 raw = await response.aread()
                 raise self._map_streaming_response(response, raw)
             if stream is not None:
-                stream._set_request_id(_header_get(response.headers, "X-Otari-Request-ID"))
+                stream._set_request_id(_header_get(response.headers, "Otari-Request-ID"))
             async for chunk in aiter_sse(response, kind):
                 yield chunk
 
