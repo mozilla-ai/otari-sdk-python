@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.4.0...otari-0.4.1) (2026-09-25)
+
+
+### Bug Fixes
+
+* read the renamed Otari-Request-ID and Otari-Attempt-ID response headers ([#100](https://github.com/mozilla-ai/otari-sdk-python/issues/100)) ([be1c262](https://github.com/mozilla-ai/otari-sdk-python/commit/be1c262759bff6d78dbcccc78a01ea2da250570a))
+
 ## [0.4.0](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.3.0...otari-0.4.0) (2026-09-16)
 
 
