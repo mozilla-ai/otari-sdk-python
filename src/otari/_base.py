@@ -263,13 +263,28 @@ def _url_encode(value: str) -> str:
     return urllib.parse.quote(value, safe="")
 
 
+_ENVELOPE_KEYS = frozenset({"type", "message", "param", "code"})
+
+
+def _envelope_message(detail: dict[str, Any]) -> str | None:
+    """Unwrap a recognized error envelope without discarding diagnostic fields."""
+    if detail.keys() <= {"type", "error"}:
+        nested = detail.get("error")
+        if isinstance(nested, dict):
+            detail = nested
+    if detail.keys() <= _ENVELOPE_KEYS:
+        message = detail.get("message")
+        if isinstance(message, str):
+            return message
+    return None
+
+
 def extract_detail(error: ApiException) -> str:
     """Pull the gateway's human-readable detail from an ``ApiException`` body.
 
-    Recognizes the FastAPI/gateway ``{"detail": "..."}`` shape and the
-    OpenAI-style ``{"error": {"message": "..."}}`` / ``{"error": "..."}``
-    shapes, mirroring ``extract_detail`` in the Rust SDK (``core.rs``) and
-    ``detailFromObject`` in the TS SDK (``mapError.ts``).
+    Recognizes string details and OpenAI-style ``error.message`` or
+    Anthropic-style ``detail.error.message`` envelopes. Other structured details,
+    including validation lists, remain JSON with non-ASCII text preserved.
     """
     body = error.body
     if isinstance(body, (bytes, bytearray)):
@@ -284,11 +299,11 @@ def extract_detail(error: ApiException) -> str:
             if isinstance(detail, str):
                 return detail
             if isinstance(detail, dict):
-                nested = detail.get("message")
-                if isinstance(nested, str):
-                    return nested
+                message = _envelope_message(detail)
+                if message is not None:
+                    return message
             if detail is not None:
-                return json.dumps(detail)
+                return json.dumps(detail, ensure_ascii=False)
         return body
     return error.reason or "An error occurred"
 
