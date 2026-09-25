@@ -30,24 +30,14 @@ class PolicyCheckRequest(BaseModel):
     """
     A policy body plus the evidence to check it against, both caller-supplied.
     """ # noqa: E501
-    changed_path_source: Optional[StrictStr] = Field(default=None, description="Which moment `changed_paths` was read at, matching the `runs` values a path gate declares. Only two of the five `runs` values are legal here, because only those two are moments a path can be read at: `pre_tool_use.edit_target` for a tool call's own target before it runs, and `stop.working_tree` for `git status` once the turn is over. Required whenever `changed_paths` is non-empty, and rejected with a 422 if omitted or set to any other value: either would resolve every path gate `not_applicable`, which loses enforcement without reporting anything. An empty `changed_paths` needs no source.")
-    changed_paths: Optional[Annotated[List[StrictStr], Field(max_length=10000)]] = Field(default=None, description="Repo-relative paths the caller observed changed (e.g. `git status --porcelain`).")
     check_results: Optional[Annotated[List[CheckVerdictRequest], Field(max_length=1000)]] = Field(default=None, description="Verifier verdicts the caller collected for this request's verifier gates.")
     command_scope: Optional[StrictStr] = Field(default='call', description="What `commands` covers: `call` for the single tool call about to run, `session` for every command the session has run so far.")
     commands: Optional[Annotated[List[StrictStr], Field(max_length=10000)]] = Field(default=None, description="Shell commands the caller observed run or is about to run.")
     judge_results: Optional[Annotated[List[JudgeVerdictRequest], Field(max_length=1000)]] = Field(default=None, description="Model verdicts the caller collected for this request's judge gates.")
+    path_source: Optional[StrictStr] = Field(default=None, description="Which moment `paths` was read at, matching the `runs` values a path gate declares. Only three of the six `runs` values are legal here, because only those three are moments a path can be read at: `pre_tool_use.edit_target` for a write tool's own target before it runs, `pre_tool_use.read_target` for a read tool's, and `stop.working_tree` for `git status` once the turn is over. Required whenever `paths` is non-empty, and rejected with a 422 if omitted or set to any other value: either would resolve every path gate `not_applicable`, which loses enforcement without reporting anything. An empty `paths` needs no source.")
+    paths: Optional[Annotated[List[StrictStr], Field(max_length=10000)]] = Field(default=None, description="Repo-relative paths this moment of the session puts in scope: what `git status --porcelain` reports, or the single target a tool call is about to write or read. `path_source` says which.")
     policy_yaml: Annotated[str, Field(min_length=1, strict=True, max_length=262144)]
-    __properties: ClassVar[List[str]] = ["changed_path_source", "changed_paths", "check_results", "command_scope", "commands", "judge_results", "policy_yaml"]
-
-    @field_validator('changed_path_source')
-    def changed_path_source_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['pre_tool_use.edit_target', 'pre_tool_use.command', 'stop.working_tree', 'stop.session', 'stop.verifier']):
-            raise ValueError("must be one of enum values ('pre_tool_use.edit_target', 'pre_tool_use.command', 'stop.working_tree', 'stop.session', 'stop.verifier')")
-        return value
+    __properties: ClassVar[List[str]] = ["check_results", "command_scope", "commands", "judge_results", "path_source", "paths", "policy_yaml"]
 
     @field_validator('command_scope')
     def command_scope_validate_enum(cls, value):
@@ -57,6 +47,16 @@ class PolicyCheckRequest(BaseModel):
 
         if value not in set(['call', 'session']):
             raise ValueError("must be one of enum values ('call', 'session')")
+        return value
+
+    @field_validator('path_source')
+    def path_source_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['pre_tool_use.edit_target', 'pre_tool_use.read_target', 'pre_tool_use.command', 'stop.working_tree', 'stop.session', 'stop.verifier']):
+            raise ValueError("must be one of enum values ('pre_tool_use.edit_target', 'pre_tool_use.read_target', 'pre_tool_use.command', 'stop.working_tree', 'stop.session', 'stop.verifier')")
         return value
 
     model_config = ConfigDict(
@@ -112,16 +112,6 @@ class PolicyCheckRequest(BaseModel):
                 if _item_judge_results:
                     _items.append(_item_judge_results.to_dict())
             _dict['judge_results'] = _items
-        # set to None if changed_path_source (nullable) is None
-        # and model_fields_set contains the field
-        if self.changed_path_source is None and "changed_path_source" in self.model_fields_set:
-            _dict['changed_path_source'] = None
-
-        # set to None if changed_paths (nullable) is None
-        # and model_fields_set contains the field
-        if self.changed_paths is None and "changed_paths" in self.model_fields_set:
-            _dict['changed_paths'] = None
-
         # set to None if check_results (nullable) is None
         # and model_fields_set contains the field
         if self.check_results is None and "check_results" in self.model_fields_set:
@@ -137,6 +127,16 @@ class PolicyCheckRequest(BaseModel):
         if self.judge_results is None and "judge_results" in self.model_fields_set:
             _dict['judge_results'] = None
 
+        # set to None if path_source (nullable) is None
+        # and model_fields_set contains the field
+        if self.path_source is None and "path_source" in self.model_fields_set:
+            _dict['path_source'] = None
+
+        # set to None if paths (nullable) is None
+        # and model_fields_set contains the field
+        if self.paths is None and "paths" in self.model_fields_set:
+            _dict['paths'] = None
+
         return _dict
 
     @classmethod
@@ -149,12 +149,12 @@ class PolicyCheckRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "changed_path_source": obj.get("changed_path_source"),
-            "changed_paths": obj.get("changed_paths"),
             "check_results": [CheckVerdictRequest.from_dict(_item) for _item in obj["check_results"]] if obj.get("check_results") is not None else None,
             "command_scope": obj.get("command_scope") if obj.get("command_scope") is not None else 'call',
             "commands": obj.get("commands"),
             "judge_results": [JudgeVerdictRequest.from_dict(_item) for _item in obj["judge_results"]] if obj.get("judge_results") is not None else None,
+            "path_source": obj.get("path_source"),
+            "paths": obj.get("paths"),
             "policy_yaml": obj.get("policy_yaml")
         })
         return _obj
