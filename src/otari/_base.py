@@ -40,6 +40,10 @@ if TYPE_CHECKING:
 PROVIDER_NAME = "gateway"
 GATEWAY_HEADER_NAME = "Otari-Key"
 
+# Otari sets these on inference responses. Lookup is case-insensitive, so the casing is documentary.
+REQUEST_ID_HEADER_NAME = "Otari-Request-ID"
+ATTEMPT_ID_HEADER_NAME = "Otari-Attempt-ID"
+
 # Locked phrasing used by the gateway to signal that the selected
 # provider does not support a moderation request.
 _UNSUPPORTED_MODERATION_RE = re.compile(r"does not support (?:multimodal )?moderation")
@@ -294,7 +298,7 @@ def map_api_exception(error: ApiException) -> OtariError:
     status = error.status if isinstance(error.status, int) else 0
     headers = error.headers or {}
     detail = extract_detail(error)
-    attempt_id = _header_get(headers, "otari-attempt-id")
+    attempt_id = _header_get(headers, ATTEMPT_ID_HEADER_NAME)
     retry_after = _header_get(headers, "retry-after")
 
     full = f"{detail} (attempt_id={attempt_id})" if attempt_id else detail
