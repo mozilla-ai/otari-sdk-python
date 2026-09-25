@@ -379,12 +379,12 @@ class TestErrorDetails:
             client.completion(model="m", messages=[{"role": "user", "content": "Hi"}])
         assert exc_info.value.retry_after == "30"
 
-    def test_correlation_id_in_message(self, mock_rest: Any) -> None:
-        mock_rest(status=402, body={"detail": "no funds"}, headers={"x-correlation-id": "abc-123"})
+    def test_attempt_id_in_message(self, mock_rest: Any) -> None:
+        mock_rest(status=402, body={"detail": "no funds"}, headers={"Otari-Attempt-ID": "abc-123"})
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
         with pytest.raises(InsufficientFundsError) as exc_info:
             client.completion(model="m", messages=[{"role": "user", "content": "Hi"}])
-        assert "abc-123" in str(exc_info.value)
+        assert "attempt_id=abc-123" in str(exc_info.value)
 
     def test_unsupported_moderation_maps_in_any_mode(self, mock_rest: Any) -> None:
         mock_rest(

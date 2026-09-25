@@ -294,10 +294,10 @@ def map_api_exception(error: ApiException) -> OtariError:
     status = error.status if isinstance(error.status, int) else 0
     headers = error.headers or {}
     detail = extract_detail(error)
-    correlation_id = _header_get(headers, "x-correlation-id")
+    attempt_id = _header_get(headers, "otari-attempt-id")
     retry_after = _header_get(headers, "retry-after")
 
-    full = f"{detail} (correlation_id={correlation_id})" if correlation_id else detail
+    full = f"{detail} (attempt_id={attempt_id})" if attempt_id else detail
 
     # Unsupported-capability is surfaced regardless of mode.
     if status == 400 and _UNSUPPORTED_MODERATION_RE.search(detail):
