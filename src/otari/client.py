@@ -31,7 +31,7 @@ from typing import TYPE_CHECKING, Any, Literal, cast, overload
 
 import httpx
 
-from otari._base import _BaseOtariClient, _header_get, build_request
+from otari._base import REQUEST_ID_HEADER_NAME, _BaseOtariClient, _header_get, build_request
 from otari._client import ApiClient, Configuration
 from otari._client.api.batches_api import BatchesApi
 from otari._client.api.chat_api import ChatApi
@@ -507,7 +507,7 @@ class OtariClient(_BaseOtariClient):
         response = self._call(fn)
         return OtariResponse(
             data=response.data,
-            request_id=_header_get(response.headers, "X-Otari-Request-ID"),
+            request_id=_header_get(response.headers, REQUEST_ID_HEADER_NAME),
         )
 
     def _post(
@@ -564,7 +564,7 @@ class OtariClient(_BaseOtariClient):
                 raw = response.read()
                 raise self._map_streaming_response(response, raw)
             if stream is not None:
-                stream._set_request_id(_header_get(response.headers, "X-Otari-Request-ID"))
+                stream._set_request_id(_header_get(response.headers, REQUEST_ID_HEADER_NAME))
             yield from iter_sse(response, kind)
 
     # -- Cleanup ------------------------------------------------------------

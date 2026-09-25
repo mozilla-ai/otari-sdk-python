@@ -78,7 +78,7 @@ class TestInference:
         mock_rest(
             status=200,
             body=RESPONSES_RESPONSE,
-            headers={"X-Otari-Request-ID": "req-async-response-123"},
+            headers={"Otari-Request-ID": "req-async-response-123"},
         )
         client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
 
@@ -128,7 +128,7 @@ class TestInference:
         mock_rest(
             status=200,
             body=MESSAGE_RESPONSE,
-            headers={"x-otari-request-id": "req-async-message-123"},
+            headers={"otari-request-id": "req-async-message-123"},
         )
         client = AsyncOtariClient(api_base="http://localhost:8000", api_key="vk")
 
@@ -217,7 +217,7 @@ class TestStreaming:
                 200,
                 headers={
                     "content-type": "text/event-stream",
-                    "X-Otari-Request-ID": "req-async-response-stream-123",
+                    "Otari-Request-ID": "req-async-response-stream-123",
                 },
                 content=_sse(event),
             )
@@ -243,7 +243,7 @@ class TestStreaming:
                 200,
                 headers={
                     "content-type": "text/event-stream",
-                    "X-Otari-Request-ID": "req-async-stream-123",
+                    "Otari-Request-ID": "req-async-stream-123",
                 },
                 content=_sse(event),
             )

@@ -204,7 +204,7 @@ class TestResponseMetadata:
         mock_rest(
             status=200,
             body=RESPONSES_RESPONSE,
-            headers={"X-Otari-Request-ID": "req-response-123"},
+            headers={"Otari-Request-ID": "req-response-123"},
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
 
@@ -221,7 +221,7 @@ class TestResponseMetadata:
                 200,
                 headers={
                     "content-type": "text/event-stream",
-                    "X-Otari-Request-ID": "req-response-stream-123",
+                    "Otari-Request-ID": "req-response-stream-123",
                 },
                 content=_sse(event),
             )
@@ -290,7 +290,7 @@ class TestMessage:
         mock_rest(
             status=200,
             body=MESSAGE_RESPONSE,
-            headers={"x-otari-request-id": "req-message-123"},
+            headers={"otari-request-id": "req-message-123"},
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
 
@@ -308,7 +308,7 @@ class TestMessage:
         mock_rest(
             status=200,
             body=CHAT_RESPONSE,
-            headers={"X-Otari-Request-ID": "req-chat-123"},
+            headers={"Otari-Request-ID": "req-chat-123"},
         )
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
 
@@ -392,12 +392,12 @@ class TestErrorDetails:
             client.completion(model="m", messages=[{"role": "user", "content": "Hi"}])
         assert exc_info.value.retry_after == "30"
 
-    def test_correlation_id_in_message(self, mock_rest: Any) -> None:
-        mock_rest(status=402, body={"detail": "no funds"}, headers={"x-correlation-id": "abc-123"})
+    def test_attempt_id_in_message(self, mock_rest: Any) -> None:
+        mock_rest(status=402, body={"detail": "no funds"}, headers={"Otari-Attempt-ID": "abc-123"})
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
         with pytest.raises(InsufficientFundsError) as exc_info:
             client.completion(model="m", messages=[{"role": "user", "content": "Hi"}])
-        assert "abc-123" in str(exc_info.value)
+        assert "attempt_id=abc-123" in str(exc_info.value)
 
     def test_unsupported_moderation_maps_in_any_mode(self, mock_rest: Any) -> None:
         mock_rest(
@@ -485,7 +485,7 @@ class TestChatStreaming:
                 200,
                 headers={
                     "content-type": "text/event-stream",
-                    "X-Otari-Request-ID": "req-stream-123",
+                    "Otari-Request-ID": "req-stream-123",
                 },
                 content=_sse(event),
             )
