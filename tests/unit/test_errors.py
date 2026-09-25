@@ -1,10 +1,14 @@
-"""Tests for the otari error hierarchy.
-
-Mirrors the TypeScript SDK's ``errors.test.ts``.
-"""
+"""Tests for the otari error hierarchy and gateway error details."""
 
 from __future__ import annotations
 
+import json
+from typing import Any
+
+import pytest
+
+from otari._base import extract_detail
+from otari._client.exceptions import ApiException
 from otari.errors import (
     AuthenticationError,
     BatchNotCompleteError,
@@ -175,3 +179,91 @@ class TestUnsupportedCapabilityError:
             provider="anthropic",
         )
         assert str(err) == "[gateway] not supported"
+
+
+class TestExtractDetail:
+    """Unwrap recognized error envelopes without dropping diagnostic fields."""
+
+    def test_nested_openai_error_object_unwraps_to_message(self) -> None:
+        body = json.dumps(
+            {
+                "error": {
+                    "type": "invalid_request_error",
+                    "message": "context length exceeded",
+                    "param": None,
+                    "code": 400,
+                }
+            }
+        )
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        assert extract_detail(err) == "context length exceeded"
+
+    def test_fastapi_detail_shape_unchanged(self) -> None:
+        body = json.dumps({"detail": "boom"})
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        assert extract_detail(err) == "boom"
+
+    def test_flat_error_string_unchanged(self) -> None:
+        body = json.dumps({"error": "flat string"})
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        assert extract_detail(err) == "flat string"
+
+    def test_top_level_message_unchanged(self) -> None:
+        body = json.dumps({"message": "top level message"})
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        assert extract_detail(err) == "top level message"
+
+    def test_nested_error_object_without_message_falls_back_to_json(self) -> None:
+        detail = {"code": "provider's_error"}
+        body = json.dumps({"error": detail})
+        err = ApiException(status=400, body=body, reason="Bad Request")
+        assert json.loads(extract_detail(err)) == detail
+
+    def test_non_json_body_returned_verbatim(self) -> None:
+        err = ApiException(status=500, body="plain text failure", reason="Server Error")
+        assert extract_detail(err) == "plain text failure"
+
+    def test_nested_anthropic_error_unwraps_to_message(self) -> None:
+        body = json.dumps(
+            {"detail": {"type": "error", "error": {"type": "rate_limit_error", "message": "Rate limit exceeded"}}}
+        )
+        err = ApiException(status=429, body=body)
+        assert extract_detail(err) == "Rate limit exceeded"
+
+    def test_guardrail_detail_preserves_diagnostics(self) -> None:
+        detail = {
+            "message": "Request blocked by guardrail policy.",
+            "code": "guardrail_violation",
+            "guardrails": [{"profile": "safety", "explanation": "Request violates policy", "score": 0.95}],
+        }
+        err = ApiException(status=403, body=json.dumps({"detail": detail}))
+        assert json.loads(extract_detail(err)) == detail
+
+    @pytest.mark.parametrize(
+        "detail",
+        [
+            {"type": "error", "error": {"message": "blocked"}, "request_id": "req-1"},
+            {"type": "error", "error": {"message": "blocked", "request_id": "req-1"}},
+            {"message": "blocked", "error": {"message": "nested"}},
+        ],
+        ids=["outer-diagnostics", "inner-diagnostics", "mixed-message-and-error"],
+    )
+    def test_nested_error_preserves_other_fields(self, detail: dict[str, Any]) -> None:
+        err = ApiException(status=400, body=json.dumps({"detail": detail}))
+        assert json.loads(extract_detail(err)) == detail
+
+    @pytest.mark.parametrize("message", [None, 400])
+    def test_non_string_nested_message_preserves_envelope(self, message: Any) -> None:
+        detail = {"type": "error", "error": {"message": message}}
+        err = ApiException(status=400, body=json.dumps({"detail": detail}))
+        assert json.loads(extract_detail(err)) == detail
+
+    def test_validation_list_preserves_unicode_in_json(self) -> None:
+        detail = [
+            {"loc": ["body", "messages"], "msg": "Entrée invalide: l'utilisateur dit 日本語", "type": "value_error"}
+        ]
+        err = ApiException(status=422, body=json.dumps({"detail": detail}))
+        result = extract_detail(err)
+        assert "Entrée invalide" in result
+        assert "日本語" in result
+        assert json.loads(result) == detail
