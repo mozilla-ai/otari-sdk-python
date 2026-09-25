@@ -14,11 +14,18 @@ from typing import Any, TypedDict
 # Re-export the generated models that callers interact with directly.
 # Explicit ``as`` aliases make these public re-exports per PEP 484.
 # ---------------------------------------------------------------------------
+from otari._client.models.call_tool_result import CallToolResult as CallToolResult  # noqa: PLC0414
 from otari._client.models.chat_completion import ChatCompletion as ChatCompletion  # noqa: PLC0414
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk as ChatCompletionChunk  # noqa: PLC0414
 from otari._client.models.create_embedding_response import (
     CreateEmbeddingResponse as CreateEmbeddingResponse,  # noqa: PLC0414
 )
+from otari._client.models.execution_state import ExecutionState as ExecutionState  # noqa: PLC0414
+from otari._client.models.mcp_error_body import McpErrorBody as McpErrorBody  # noqa: PLC0414
+from otari._client.models.mcp_execute_request import McpExecuteRequest as McpExecuteRequest  # noqa: PLC0414
+from otari._client.models.mcp_tool_definition import McpToolDefinition as McpToolDefinition  # noqa: PLC0414
+from otari._client.models.mcp_tool_warning import McpToolWarning as McpToolWarning  # noqa: PLC0414
+from otari._client.models.mcp_tools_response import McpToolsResponse as McpToolsResponse  # noqa: PLC0414
 from otari._client.models.message_response import MessageResponse as MessageResponse  # noqa: PLC0414
 from otari._client.models.model_object import ModelObject as ModelObject  # noqa: PLC0414
 from otari._client.models.moderation_response import ModerationResponse as ModerationResponse  # noqa: PLC0414
