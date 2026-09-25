@@ -273,6 +273,19 @@ class TestMessage:
         assert body["max_tokens"] == 64
         assert body["model"] == "anthropic:claude-3-5-sonnet"
 
+    def test_serializes_container(self, mock_rest: Any) -> None:
+        mock = mock_rest(status=200, body=MESSAGE_RESPONSE)
+        client = OtariClient(api_base="http://localhost:8000", api_key="vk")
+
+        client.message(
+            model="anthropic:claude-5-sonnet",
+            messages=[{"role": "user", "content": "Hi"}],
+            max_tokens=64,
+            container="container_123",
+        )
+
+        assert mock.last.json_body["container"] == "container_123"
+
     def test_with_response_metadata_exposes_request_id(self, mock_rest: Any) -> None:
         mock_rest(
             status=200,
