@@ -31,7 +31,7 @@ class CatalogOffering(BaseModel):
     One way this deployment can call a model: a selector on a provider.
     """ # noqa: E501
     context_window: Optional[StrictInt] = None
-    credential: CatalogCredential = Field(description="Who may price it: `deployment` for a `providers:` instance the operator configured, `hosted` for a provider the deployment pays for in any workspace of the viewer's organization, `organization` for one the viewer's organization may set its own rate for. A workspace can still call a `hosted` provider with the organization's own key.")
+    credential: CatalogCredential = Field(description="Whose key serves it: `deployment` for a `providers:` instance the operator configured, `hosted` for a provider the deployment pays for in any workspace of the viewer's organization, `organization` for one on the organization's own key, which it may set its own rate for. A workspace can still call a `hosted` provider with the organization's own key.")
     discovered: StrictBool = Field(description="Whether the provider itself reported this model.")
     max_output_tokens: Optional[StrictInt] = None
     metadata_input_price_per_million: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="What models.dev lists this provider charging, for a cross-check. Not billed from: two independent datasets disagreeing is the cheapest stale-price detector there is.")
