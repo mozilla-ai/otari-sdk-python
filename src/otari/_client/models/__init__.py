@@ -115,12 +115,15 @@ from otari._client.models.caller_organization_memberships_public import CallerOr
 from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic
 from otari._client.models.candidate_response import CandidateResponse
 from otari._client.models.catalog_capabilities import CatalogCapabilities
+from otari._client.models.catalog_capability import CatalogCapability
 from otari._client.models.catalog_credential import CatalogCredential
 from otari._client.models.catalog_elsewhere import CatalogElsewhere
+from otari._client.models.catalog_facets import CatalogFacets
 from otari._client.models.catalog_model_detail import CatalogModelDetail
 from otari._client.models.catalog_model_summary import CatalogModelSummary
 from otari._client.models.catalog_offering import CatalogOffering
 from otari._client.models.catalog_response import CatalogResponse
+from otari._client.models.catalog_vendor_facet import CatalogVendorFacet
 from otari._client.models.chat_completion import ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk
 from otari._client.models.chat_completion_request import ChatCompletionRequest

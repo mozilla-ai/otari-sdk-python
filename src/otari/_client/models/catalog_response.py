@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.catalog_facets import CatalogFacets
 from otari._client.models.catalog_model_summary import CatalogModelSummary
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,12 +30,13 @@ class CatalogResponse(BaseModel):
     """
     The grouped catalog, and the facts a reader needs to interpret its prices.
     """ # noqa: E501
-    count: StrictInt = Field(description="Models matching the search, before the window, so a caller can page without reading them all.")
+    count: StrictInt = Field(description="Models matching all filters before paging.")
     default_pricing: StrictBool = Field(description="Whether an unpriced model is metered at the genai-prices default.")
     defaults_as_of: Optional[datetime] = Field(description="When the accepted genai-prices snapshot was taken. Null while the bundled dataset serves.")
+    facets: Optional[CatalogFacets] = Field(default=None, description="Present when include_facets is requested.")
     metadata_available: StrictBool = Field(description="False when models.dev could not be read; descriptions are then absent.")
     models: List[CatalogModelSummary]
-    __properties: ClassVar[List[str]] = ["count", "default_pricing", "defaults_as_of", "metadata_available", "models"]
+    __properties: ClassVar[List[str]] = ["count", "default_pricing", "defaults_as_of", "facets", "metadata_available", "models"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -75,6 +77,9 @@ class CatalogResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of facets
+        if self.facets:
+            _dict['facets'] = self.facets.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in models (list)
         _items = []
         if self.models:
@@ -86,6 +91,11 @@ class CatalogResponse(BaseModel):
         # and model_fields_set contains the field
         if self.defaults_as_of is None and "defaults_as_of" in self.model_fields_set:
             _dict['defaults_as_of'] = None
+
+        # set to None if facets (nullable) is None
+        # and model_fields_set contains the field
+        if self.facets is None and "facets" in self.model_fields_set:
+            _dict['facets'] = None
 
         return _dict
 
@@ -102,6 +112,7 @@ class CatalogResponse(BaseModel):
             "count": obj.get("count"),
             "default_pricing": obj.get("default_pricing"),
             "defaults_as_of": obj.get("defaults_as_of"),
+            "facets": CatalogFacets.from_dict(obj["facets"]) if obj.get("facets") is not None else None,
             "metadata_available": obj.get("metadata_available"),
             "models": [CatalogModelSummary.from_dict(_item) for _item in obj["models"]] if obj.get("models") is not None else None
         })

@@ -30,13 +30,15 @@ class UpdateKeyRequest(BaseModel):
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = None
     capture_agent_telemetry: Optional[StrictBool] = None
+    end_user_budget_id: Optional[StrictStr] = None
     exclude_from_budget: Optional[StrictBool] = None
     expires_at: Optional[datetime] = None
     is_active: Optional[StrictBool] = None
+    is_service_key: Optional[StrictBool] = None
     key_name: Optional[StrictStr] = None
     metadata: Optional[Dict[str, Any]] = None
     reject_user_mismatch: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "exclude_from_budget", "expires_at", "is_active", "key_name", "metadata", "reject_user_mismatch"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "end_user_budget_id", "exclude_from_budget", "expires_at", "is_active", "is_service_key", "key_name", "metadata", "reject_user_mismatch"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,6 +89,11 @@ class UpdateKeyRequest(BaseModel):
         if self.capture_agent_telemetry is None and "capture_agent_telemetry" in self.model_fields_set:
             _dict['capture_agent_telemetry'] = None
 
+        # set to None if end_user_budget_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.end_user_budget_id is None and "end_user_budget_id" in self.model_fields_set:
+            _dict['end_user_budget_id'] = None
+
         # set to None if exclude_from_budget (nullable) is None
         # and model_fields_set contains the field
         if self.exclude_from_budget is None and "exclude_from_budget" in self.model_fields_set:
@@ -101,6 +108,11 @@ class UpdateKeyRequest(BaseModel):
         # and model_fields_set contains the field
         if self.is_active is None and "is_active" in self.model_fields_set:
             _dict['is_active'] = None
+
+        # set to None if is_service_key (nullable) is None
+        # and model_fields_set contains the field
+        if self.is_service_key is None and "is_service_key" in self.model_fields_set:
+            _dict['is_service_key'] = None
 
         # set to None if key_name (nullable) is None
         # and model_fields_set contains the field
@@ -131,9 +143,11 @@ class UpdateKeyRequest(BaseModel):
         _obj = cls.model_validate({
             "allowed_models": obj.get("allowed_models"),
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
+            "end_user_budget_id": obj.get("end_user_budget_id"),
             "exclude_from_budget": obj.get("exclude_from_budget"),
             "expires_at": obj.get("expires_at"),
             "is_active": obj.get("is_active"),
+            "is_service_key": obj.get("is_service_key"),
             "key_name": obj.get("key_name"),
             "metadata": obj.get("metadata"),
             "reject_user_mismatch": obj.get("reject_user_mismatch")
