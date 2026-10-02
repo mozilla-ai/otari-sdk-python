@@ -35,15 +35,17 @@ class UserResponse(BaseModel):
     created_at: StrictStr
     current_requests: StrictInt
     current_tokens: StrictInt
+    external_id: Optional[StrictStr] = None
     metadata: Dict[str, Any]
     next_budget_reset_at: Optional[StrictStr]
+    parent_user_id: Optional[StrictStr] = None
     reserved: Union[StrictFloat, StrictInt]
     reserved_requests: StrictInt
     reserved_tokens: StrictInt
     spend: Union[StrictFloat, StrictInt]
     updated_at: StrictStr
     user_id: StrictStr
-    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "blocked", "budget_id", "budget_started_at", "created_at", "current_requests", "current_tokens", "metadata", "next_budget_reset_at", "reserved", "reserved_requests", "reserved_tokens", "spend", "updated_at", "user_id"]
+    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "blocked", "budget_id", "budget_started_at", "created_at", "current_requests", "current_tokens", "external_id", "metadata", "next_budget_reset_at", "parent_user_id", "reserved", "reserved_requests", "reserved_tokens", "spend", "updated_at", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -104,10 +106,20 @@ class UserResponse(BaseModel):
         if self.budget_started_at is None and "budget_started_at" in self.model_fields_set:
             _dict['budget_started_at'] = None
 
+        # set to None if external_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.external_id is None and "external_id" in self.model_fields_set:
+            _dict['external_id'] = None
+
         # set to None if next_budget_reset_at (nullable) is None
         # and model_fields_set contains the field
         if self.next_budget_reset_at is None and "next_budget_reset_at" in self.model_fields_set:
             _dict['next_budget_reset_at'] = None
+
+        # set to None if parent_user_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.parent_user_id is None and "parent_user_id" in self.model_fields_set:
+            _dict['parent_user_id'] = None
 
         return _dict
 
@@ -129,8 +141,10 @@ class UserResponse(BaseModel):
             "created_at": obj.get("created_at"),
             "current_requests": obj.get("current_requests"),
             "current_tokens": obj.get("current_tokens"),
+            "external_id": obj.get("external_id"),
             "metadata": obj.get("metadata"),
             "next_budget_reset_at": obj.get("next_budget_reset_at"),
+            "parent_user_id": obj.get("parent_user_id"),
             "reserved": obj.get("reserved"),
             "reserved_requests": obj.get("reserved_requests"),
             "reserved_tokens": obj.get("reserved_tokens"),

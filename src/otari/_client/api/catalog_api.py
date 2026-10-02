@@ -15,9 +15,10 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, StrictBool, StrictStr, field_validator
+from typing import List, Optional, Union
 from typing_extensions import Annotated
+from otari._client.models.catalog_capability import CatalogCapability
 from otari._client.models.catalog_model_detail import CatalogModelDetail
 from otari._client.models.catalog_response import CatalogResponse
 from otari._client.models.selector_index_response import SelectorIndexResponse
@@ -309,9 +310,22 @@ class CatalogApi:
     def catalog_list_catalog(
         self,
         at_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.")] = None,
-        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Narrow to models whose name, catalog id or any selector contains this text, case-insensitively.")] = None,
-        skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of models to skip")] = None,
-        limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of models to return")] = None,
+        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.")] = None,
+        skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of matching models to skip.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of models to return.")] = None,
+        provider: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Match any named provider instance.")] = None,
+        vendor: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Match any vendor; an empty value names unknown vendors.")] = None,
+        input_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every input modality.")] = None,
+        output_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every output modality.")] = None,
+        capability: Annotated[Optional[Annotated[List[CatalogCapability], Field(max_length=100)]], Field(description="Require every capability.")] = None,
+        min_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Minimum context window; unknown windows do not match.")] = None,
+        max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
+        pricing: Optional[StrictStr] = None,
+        source: Optional[StrictStr] = None,
+        released_within_days: Annotated[Optional[Annotated[int, Field(le=36500, strict=True, ge=0)]], Field(description="Release window ending today (UTC); zero disables it. Unknown and future releases do not match.")] = None,
+        sort: Optional[StrictStr] = None,
+        direction: Optional[StrictStr] = None,
+        include_facets: Annotated[Optional[StrictBool], Field(description="Include the filter choices drawn from the whole authorized catalog.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -331,12 +345,38 @@ class CatalogApi:
 
         :param at_context: Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.
         :type at_context: int
-        :param search: Narrow to models whose name, catalog id or any selector contains this text, case-insensitively.
+        :param search: Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.
         :type search: str
-        :param skip: Number of models to skip
+        :param skip: Number of matching models to skip.
         :type skip: int
-        :param limit: Maximum number of models to return
+        :param limit: Maximum number of models to return.
         :type limit: int
+        :param provider: Match any named provider instance.
+        :type provider: List[Optional[str]]
+        :param vendor: Match any vendor; an empty value names unknown vendors.
+        :type vendor: List[Optional[str]]
+        :param input_modality: Require every input modality.
+        :type input_modality: List[Optional[str]]
+        :param output_modality: Require every output modality.
+        :type output_modality: List[Optional[str]]
+        :param capability: Require every capability.
+        :type capability: List[CatalogCapability]
+        :param min_context: Minimum context window; unknown windows do not match.
+        :type min_context: int
+        :param max_input: Maximum cheapest input price per million tokens; unpriced models do not match.
+        :type max_input: float
+        :param pricing:
+        :type pricing: str
+        :param source:
+        :type source: str
+        :param released_within_days: Release window ending today (UTC); zero disables it. Unknown and future releases do not match.
+        :type released_within_days: int
+        :param sort:
+        :type sort: str
+        :param direction:
+        :type direction: str
+        :param include_facets: Include the filter choices drawn from the whole authorized catalog.
+        :type include_facets: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -364,6 +404,19 @@ class CatalogApi:
             search=search,
             skip=skip,
             limit=limit,
+            provider=provider,
+            vendor=vendor,
+            input_modality=input_modality,
+            output_modality=output_modality,
+            capability=capability,
+            min_context=min_context,
+            max_input=max_input,
+            pricing=pricing,
+            source=source,
+            released_within_days=released_within_days,
+            sort=sort,
+            direction=direction,
+            include_facets=include_facets,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -389,9 +442,22 @@ class CatalogApi:
     def catalog_list_catalog_with_http_info(
         self,
         at_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.")] = None,
-        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Narrow to models whose name, catalog id or any selector contains this text, case-insensitively.")] = None,
-        skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of models to skip")] = None,
-        limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of models to return")] = None,
+        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.")] = None,
+        skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of matching models to skip.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of models to return.")] = None,
+        provider: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Match any named provider instance.")] = None,
+        vendor: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Match any vendor; an empty value names unknown vendors.")] = None,
+        input_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every input modality.")] = None,
+        output_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every output modality.")] = None,
+        capability: Annotated[Optional[Annotated[List[CatalogCapability], Field(max_length=100)]], Field(description="Require every capability.")] = None,
+        min_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Minimum context window; unknown windows do not match.")] = None,
+        max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
+        pricing: Optional[StrictStr] = None,
+        source: Optional[StrictStr] = None,
+        released_within_days: Annotated[Optional[Annotated[int, Field(le=36500, strict=True, ge=0)]], Field(description="Release window ending today (UTC); zero disables it. Unknown and future releases do not match.")] = None,
+        sort: Optional[StrictStr] = None,
+        direction: Optional[StrictStr] = None,
+        include_facets: Annotated[Optional[StrictBool], Field(description="Include the filter choices drawn from the whole authorized catalog.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -411,12 +477,38 @@ class CatalogApi:
 
         :param at_context: Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.
         :type at_context: int
-        :param search: Narrow to models whose name, catalog id or any selector contains this text, case-insensitively.
+        :param search: Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.
         :type search: str
-        :param skip: Number of models to skip
+        :param skip: Number of matching models to skip.
         :type skip: int
-        :param limit: Maximum number of models to return
+        :param limit: Maximum number of models to return.
         :type limit: int
+        :param provider: Match any named provider instance.
+        :type provider: List[Optional[str]]
+        :param vendor: Match any vendor; an empty value names unknown vendors.
+        :type vendor: List[Optional[str]]
+        :param input_modality: Require every input modality.
+        :type input_modality: List[Optional[str]]
+        :param output_modality: Require every output modality.
+        :type output_modality: List[Optional[str]]
+        :param capability: Require every capability.
+        :type capability: List[CatalogCapability]
+        :param min_context: Minimum context window; unknown windows do not match.
+        :type min_context: int
+        :param max_input: Maximum cheapest input price per million tokens; unpriced models do not match.
+        :type max_input: float
+        :param pricing:
+        :type pricing: str
+        :param source:
+        :type source: str
+        :param released_within_days: Release window ending today (UTC); zero disables it. Unknown and future releases do not match.
+        :type released_within_days: int
+        :param sort:
+        :type sort: str
+        :param direction:
+        :type direction: str
+        :param include_facets: Include the filter choices drawn from the whole authorized catalog.
+        :type include_facets: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -444,6 +536,19 @@ class CatalogApi:
             search=search,
             skip=skip,
             limit=limit,
+            provider=provider,
+            vendor=vendor,
+            input_modality=input_modality,
+            output_modality=output_modality,
+            capability=capability,
+            min_context=min_context,
+            max_input=max_input,
+            pricing=pricing,
+            source=source,
+            released_within_days=released_within_days,
+            sort=sort,
+            direction=direction,
+            include_facets=include_facets,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -469,9 +574,22 @@ class CatalogApi:
     def catalog_list_catalog_without_preload_content(
         self,
         at_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.")] = None,
-        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Narrow to models whose name, catalog id or any selector contains this text, case-insensitively.")] = None,
-        skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of models to skip")] = None,
-        limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of models to return")] = None,
+        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.")] = None,
+        skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of matching models to skip.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of models to return.")] = None,
+        provider: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Match any named provider instance.")] = None,
+        vendor: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Match any vendor; an empty value names unknown vendors.")] = None,
+        input_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every input modality.")] = None,
+        output_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every output modality.")] = None,
+        capability: Annotated[Optional[Annotated[List[CatalogCapability], Field(max_length=100)]], Field(description="Require every capability.")] = None,
+        min_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Minimum context window; unknown windows do not match.")] = None,
+        max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
+        pricing: Optional[StrictStr] = None,
+        source: Optional[StrictStr] = None,
+        released_within_days: Annotated[Optional[Annotated[int, Field(le=36500, strict=True, ge=0)]], Field(description="Release window ending today (UTC); zero disables it. Unknown and future releases do not match.")] = None,
+        sort: Optional[StrictStr] = None,
+        direction: Optional[StrictStr] = None,
+        include_facets: Annotated[Optional[StrictBool], Field(description="Include the filter choices drawn from the whole authorized catalog.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -491,12 +609,38 @@ class CatalogApi:
 
         :param at_context: Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.
         :type at_context: int
-        :param search: Narrow to models whose name, catalog id or any selector contains this text, case-insensitively.
+        :param search: Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.
         :type search: str
-        :param skip: Number of models to skip
+        :param skip: Number of matching models to skip.
         :type skip: int
-        :param limit: Maximum number of models to return
+        :param limit: Maximum number of models to return.
         :type limit: int
+        :param provider: Match any named provider instance.
+        :type provider: List[Optional[str]]
+        :param vendor: Match any vendor; an empty value names unknown vendors.
+        :type vendor: List[Optional[str]]
+        :param input_modality: Require every input modality.
+        :type input_modality: List[Optional[str]]
+        :param output_modality: Require every output modality.
+        :type output_modality: List[Optional[str]]
+        :param capability: Require every capability.
+        :type capability: List[CatalogCapability]
+        :param min_context: Minimum context window; unknown windows do not match.
+        :type min_context: int
+        :param max_input: Maximum cheapest input price per million tokens; unpriced models do not match.
+        :type max_input: float
+        :param pricing:
+        :type pricing: str
+        :param source:
+        :type source: str
+        :param released_within_days: Release window ending today (UTC); zero disables it. Unknown and future releases do not match.
+        :type released_within_days: int
+        :param sort:
+        :type sort: str
+        :param direction:
+        :type direction: str
+        :param include_facets: Include the filter choices drawn from the whole authorized catalog.
+        :type include_facets: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -524,6 +668,19 @@ class CatalogApi:
             search=search,
             skip=skip,
             limit=limit,
+            provider=provider,
+            vendor=vendor,
+            input_modality=input_modality,
+            output_modality=output_modality,
+            capability=capability,
+            min_context=min_context,
+            max_input=max_input,
+            pricing=pricing,
+            source=source,
+            released_within_days=released_within_days,
+            sort=sort,
+            direction=direction,
+            include_facets=include_facets,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -547,6 +704,19 @@ class CatalogApi:
         search,
         skip,
         limit,
+        provider,
+        vendor,
+        input_modality,
+        output_modality,
+        capability,
+        min_context,
+        max_input,
+        pricing,
+        source,
+        released_within_days,
+        sort,
+        direction,
+        include_facets,
         _request_auth,
         _content_type,
         _headers,
@@ -556,6 +726,11 @@ class CatalogApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'provider': 'multi',
+            'vendor': 'multi',
+            'input_modality': 'multi',
+            'output_modality': 'multi',
+            'capability': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -584,6 +759,58 @@ class CatalogApi:
         if limit is not None:
             
             _query_params.append(('limit', limit))
+            
+        if provider is not None:
+            
+            _query_params.append(('provider', provider))
+            
+        if vendor is not None:
+            
+            _query_params.append(('vendor', vendor))
+            
+        if input_modality is not None:
+            
+            _query_params.append(('input_modality', input_modality))
+            
+        if output_modality is not None:
+            
+            _query_params.append(('output_modality', output_modality))
+            
+        if capability is not None:
+            
+            _query_params.append(('capability', capability))
+            
+        if min_context is not None:
+            
+            _query_params.append(('min_context', min_context))
+            
+        if max_input is not None:
+            
+            _query_params.append(('max_input', max_input))
+            
+        if pricing is not None:
+            
+            _query_params.append(('pricing', pricing))
+            
+        if source is not None:
+            
+            _query_params.append(('source', source))
+            
+        if released_within_days is not None:
+            
+            _query_params.append(('released_within_days', released_within_days))
+            
+        if sort is not None:
+            
+            _query_params.append(('sort', sort))
+            
+        if direction is not None:
+            
+            _query_params.append(('direction', direction))
+            
+        if include_facets is not None:
+            
+            _query_params.append(('include_facets', include_facets))
             
         # process the header parameters
         # process the form parameters

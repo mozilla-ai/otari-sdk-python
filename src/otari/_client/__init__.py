@@ -182,12 +182,15 @@ __all__ = [
     "CallerWorkspaceMembershipPublic",
     "CandidateResponse",
     "CatalogCapabilities",
+    "CatalogCapability",
     "CatalogCredential",
     "CatalogElsewhere",
+    "CatalogFacets",
     "CatalogModelDetail",
     "CatalogModelSummary",
     "CatalogOffering",
     "CatalogResponse",
+    "CatalogVendorFacet",
     "ChatCompletion",
     "ChatCompletionChunk",
     "ChatCompletionRequest",
@@ -842,12 +845,15 @@ from otari._client.models.caller_organization_memberships_public import CallerOr
 from otari._client.models.caller_workspace_membership_public import CallerWorkspaceMembershipPublic as CallerWorkspaceMembershipPublic
 from otari._client.models.candidate_response import CandidateResponse as CandidateResponse
 from otari._client.models.catalog_capabilities import CatalogCapabilities as CatalogCapabilities
+from otari._client.models.catalog_capability import CatalogCapability as CatalogCapability
 from otari._client.models.catalog_credential import CatalogCredential as CatalogCredential
 from otari._client.models.catalog_elsewhere import CatalogElsewhere as CatalogElsewhere
+from otari._client.models.catalog_facets import CatalogFacets as CatalogFacets
 from otari._client.models.catalog_model_detail import CatalogModelDetail as CatalogModelDetail
 from otari._client.models.catalog_model_summary import CatalogModelSummary as CatalogModelSummary
 from otari._client.models.catalog_offering import CatalogOffering as CatalogOffering
 from otari._client.models.catalog_response import CatalogResponse as CatalogResponse
+from otari._client.models.catalog_vendor_facet import CatalogVendorFacet as CatalogVendorFacet
 from otari._client.models.chat_completion import ChatCompletion as ChatCompletion
 from otari._client.models.chat_completion_chunk import ChatCompletionChunk as ChatCompletionChunk
 from otari._client.models.chat_completion_request import ChatCompletionRequest as ChatCompletionRequest
