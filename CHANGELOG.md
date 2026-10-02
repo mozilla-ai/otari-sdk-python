@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.4.1...otari-0.5.0) (2026-10-02)
+
+
+### Features
+
+* regenerate SDK client core from Otari OpenAPI spec ([#106](https://github.com/mozilla-ai/otari-sdk-python/issues/106)) ([2117262](https://github.com/mozilla-ai/otari-sdk-python/commit/2117262c2a97ee0e0e06eedbaef8fa70754aea81))
+* regenerate SDK client core from Otari OpenAPI spec ([#108](https://github.com/mozilla-ai/otari-sdk-python/issues/108)) ([4c77747](https://github.com/mozilla-ai/otari-sdk-python/commit/4c77747b1e08049a005bf8f5231e5370d1fc0c13))
+* regenerate SDK client core from Otari OpenAPI spec ([#109](https://github.com/mozilla-ai/otari-sdk-python/issues/109)) ([340d725](https://github.com/mozilla-ai/otari-sdk-python/commit/340d725a8d8238bd32473e8c3bedfda586d932b3))
+* regenerate SDK client core from Otari OpenAPI spec ([#110](https://github.com/mozilla-ai/otari-sdk-python/issues/110)) ([2bd8da6](https://github.com/mozilla-ai/otari-sdk-python/commit/2bd8da6179cc2be3524e2fb4ac0753980d2eae9e))
+* regenerate SDK client core from Otari OpenAPI spec ([#111](https://github.com/mozilla-ai/otari-sdk-python/issues/111)) ([965a5cf](https://github.com/mozilla-ai/otari-sdk-python/commit/965a5cfd2f7805056337c84550816dc6f57a0536))
+
 ## [0.4.1](https://github.com/mozilla-ai/otari-sdk-python/compare/otari-0.4.0...otari-0.4.1) (2026-09-25)
 
 
