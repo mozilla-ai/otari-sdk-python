@@ -9,6 +9,7 @@ streaming shim. Non-streaming calls are mocked at the generated transport
 
 from __future__ import annotations
 
+import json
 from typing import Any
 
 import httpx
@@ -385,6 +386,36 @@ class TestErrorMapping:
 
 
 class TestErrorDetails:
+    @pytest.mark.parametrize(
+        "credentials", [{"platform_token": "tk_test"}, {"api_key": "vk"}], ids=["platform", "self-hosted"]
+    )
+    def test_message_error_unwraps_nested_envelope(self, mock_rest: Any, credentials: dict[str, str]) -> None:
+        mock_rest(
+            status=429,
+            body={"detail": {"type": "error", "error": {"type": "rate_limit_error", "message": "Rate limit exceeded"}}},
+            headers={"retry-after": "30"},
+        )
+        client = OtariClient(api_base="http://localhost:8000", **credentials)
+        with pytest.raises(RateLimitError) as exc_info:
+            client.message(model="m", messages=[{"role": "user", "content": "Hi"}], max_tokens=10)
+        assert exc_info.value.message == "Rate limit exceeded"
+        assert exc_info.value.retry_after == "30"
+
+    @pytest.mark.parametrize(
+        "credentials", [{"platform_token": "tk_test"}, {"api_key": "vk"}], ids=["platform", "self-hosted"]
+    )
+    def test_guardrail_error_preserves_diagnostics(self, mock_rest: Any, credentials: dict[str, str]) -> None:
+        detail = {
+            "message": "Request blocked by guardrail policy.",
+            "code": "guardrail_violation",
+            "guardrails": [{"profile": "safety", "explanation": "Request violates policy", "score": 0.95}],
+        }
+        mock_rest(status=403, body={"detail": detail})
+        client = OtariClient(api_base="http://localhost:8000", **credentials)
+        with pytest.raises(AuthenticationError) as exc_info:
+            client.completion(model="m", messages=[{"role": "user", "content": "Hi"}])
+        assert json.loads(exc_info.value.message) == detail
+
     def test_rate_limit_carries_retry_after(self, mock_rest: Any) -> None:
         mock_rest(status=429, body={"detail": "slow down"}, headers={"retry-after": "30"})
         client = OtariClient(api_base="http://localhost:8000", api_key="vk")
