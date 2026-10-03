@@ -28,6 +28,7 @@ __all__ = [
     "BudgetsApi",
     "CatalogApi",
     "ChatApi",
+    "DecisionsApi",
     "EmbeddingsApi",
     "FeedbackApi",
     "FilesApi",
@@ -197,6 +198,7 @@ __all__ = [
     "ChatCompletionRequestToolsInner",
     "ChatMessageInput",
     "CheckVerdictRequest",
+    "ChoiceQuestion",
     "CodeExecutor",
     "ConfigField",
     "ConfigSearchToolSchema",
@@ -236,7 +238,13 @@ __all__ = [
     "CreateSessionRequest",
     "CreateStoredProviderRequest",
     "CreateUserRequest",
+    "CriteriaInner",
+    "CriteriaValue",
     "CurrentPricingPage",
+    "DecisionAnswer",
+    "DecisionRequest",
+    "DecisionResponse",
+    "DecisionUsage",
     "DeploymentAdminAccessPublic",
     "DeploymentBootstrap",
     "DeploymentUserOrganizationPublic",
@@ -280,6 +288,8 @@ __all__ = [
     "InFlightResponse",
     "Input",
     "Input1",
+    "Instructions",
+    "Instructions1",
     "InvitationPreviewPublic",
     "InviteOrganizationMemberRequest",
     "InviteOrganizationMemberResultPublic",
@@ -446,14 +456,18 @@ __all__ = [
     "MessagesRequest",
     "Model",
     "Model1",
+    "ModelFalse",
     "ModelListResponse",
     "ModelMetadata",
     "ModelMetadataResponse",
     "ModelObject",
     "ModelPricingInfo",
+    "ModelTrue",
     "ModerationRequest",
     "ModerationResponse",
     "ModerationResult",
+    "NoulCriteria",
+    "NoulQuestion",
     "OAuthCallbackRequest",
     "OAuthSessionResponse",
     "OfferingUsage",
@@ -541,6 +555,7 @@ __all__ = [
     "ProviderHealthSchema",
     "ProviderInfoSchema",
     "ProvidersResponse",
+    "QuestionsValue",
     "RRRerankMeta",
     "RRRerankResult",
     "RRRerankUsage",
@@ -552,6 +567,7 @@ __all__ = [
     "RegisterPasskeyRequest",
     "RequestPasswordResetRequest",
     "RequestPasswordResetResponse",
+    "RequestSettlement",
     "RequirementGroup",
     "RerankRequest",
     "RerankResponse",
@@ -568,6 +584,7 @@ __all__ = [
     "RotateMasterKeyResponse",
     "RouterStatus",
     "ScopedBudgetResponse",
+    "ScoreQuestion",
     "ScoredExample",
     "SearchProviderSchema",
     "SearchRequest",
@@ -584,6 +601,7 @@ __all__ = [
     "SignupResponse",
     "Source",
     "Source1",
+    "State",
     "Stop",
     "StoredProviderResponse",
     "StoredSearchToolSchema",
@@ -687,6 +705,7 @@ from otari._client.api.bootstrap_api import BootstrapApi as BootstrapApi
 from otari._client.api.budgets_api import BudgetsApi as BudgetsApi
 from otari._client.api.catalog_api import CatalogApi as CatalogApi
 from otari._client.api.chat_api import ChatApi as ChatApi
+from otari._client.api.decisions_api import DecisionsApi as DecisionsApi
 from otari._client.api.embeddings_api import EmbeddingsApi as EmbeddingsApi
 from otari._client.api.feedback_api import FeedbackApi as FeedbackApi
 from otari._client.api.files_api import FilesApi as FilesApi
@@ -860,6 +879,7 @@ from otari._client.models.chat_completion_request import ChatCompletionRequest a
 from otari._client.models.chat_completion_request_tools_inner import ChatCompletionRequestToolsInner as ChatCompletionRequestToolsInner
 from otari._client.models.chat_message_input import ChatMessageInput as ChatMessageInput
 from otari._client.models.check_verdict_request import CheckVerdictRequest as CheckVerdictRequest
+from otari._client.models.choice_question import ChoiceQuestion as ChoiceQuestion
 from otari._client.models.code_executor import CodeExecutor as CodeExecutor
 from otari._client.models.config_field import ConfigField as ConfigField
 from otari._client.models.config_search_tool_schema import ConfigSearchToolSchema as ConfigSearchToolSchema
@@ -899,7 +919,13 @@ from otari._client.models.create_search_tool_request import CreateSearchToolRequ
 from otari._client.models.create_session_request import CreateSessionRequest as CreateSessionRequest
 from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest as CreateStoredProviderRequest
 from otari._client.models.create_user_request import CreateUserRequest as CreateUserRequest
+from otari._client.models.criteria_inner import CriteriaInner as CriteriaInner
+from otari._client.models.criteria_value import CriteriaValue as CriteriaValue
 from otari._client.models.current_pricing_page import CurrentPricingPage as CurrentPricingPage
+from otari._client.models.decision_answer import DecisionAnswer as DecisionAnswer
+from otari._client.models.decision_request import DecisionRequest as DecisionRequest
+from otari._client.models.decision_response import DecisionResponse as DecisionResponse
+from otari._client.models.decision_usage import DecisionUsage as DecisionUsage
 from otari._client.models.deployment_admin_access_public import DeploymentAdminAccessPublic as DeploymentAdminAccessPublic
 from otari._client.models.deployment_bootstrap import DeploymentBootstrap as DeploymentBootstrap
 from otari._client.models.deployment_user_organization_public import DeploymentUserOrganizationPublic as DeploymentUserOrganizationPublic
@@ -943,6 +969,8 @@ from otari._client.models.in_flight_entry import InFlightEntry as InFlightEntry
 from otari._client.models.in_flight_response import InFlightResponse as InFlightResponse
 from otari._client.models.input import Input as Input
 from otari._client.models.input1 import Input1 as Input1
+from otari._client.models.instructions import Instructions as Instructions
+from otari._client.models.instructions1 import Instructions1 as Instructions1
 from otari._client.models.invitation_preview_public import InvitationPreviewPublic as InvitationPreviewPublic
 from otari._client.models.invite_organization_member_request import InviteOrganizationMemberRequest as InviteOrganizationMemberRequest
 from otari._client.models.invite_organization_member_result_public import InviteOrganizationMemberResultPublic as InviteOrganizationMemberResultPublic
@@ -1109,14 +1137,18 @@ from otari._client.models.message_response import MessageResponse as MessageResp
 from otari._client.models.messages_request import MessagesRequest as MessagesRequest
 from otari._client.models.model import Model as Model
 from otari._client.models.model1 import Model1 as Model1
+from otari._client.models.model_false import ModelFalse as ModelFalse
 from otari._client.models.model_list_response import ModelListResponse as ModelListResponse
 from otari._client.models.model_metadata import ModelMetadata as ModelMetadata
 from otari._client.models.model_metadata_response import ModelMetadataResponse as ModelMetadataResponse
 from otari._client.models.model_object import ModelObject as ModelObject
 from otari._client.models.model_pricing_info import ModelPricingInfo as ModelPricingInfo
+from otari._client.models.model_true import ModelTrue as ModelTrue
 from otari._client.models.moderation_request import ModerationRequest as ModerationRequest
 from otari._client.models.moderation_response import ModerationResponse as ModerationResponse
 from otari._client.models.moderation_result import ModerationResult as ModerationResult
+from otari._client.models.noul_criteria import NoulCriteria as NoulCriteria
+from otari._client.models.noul_question import NoulQuestion as NoulQuestion
 from otari._client.models.o_auth_callback_request import OAuthCallbackRequest as OAuthCallbackRequest
 from otari._client.models.o_auth_session_response import OAuthSessionResponse as OAuthSessionResponse
 from otari._client.models.offering_usage import OfferingUsage as OfferingUsage
@@ -1204,6 +1236,7 @@ from otari._client.models.provider_health_response import ProviderHealthResponse
 from otari._client.models.provider_health_schema import ProviderHealthSchema as ProviderHealthSchema
 from otari._client.models.provider_info_schema import ProviderInfoSchema as ProviderInfoSchema
 from otari._client.models.providers_response import ProvidersResponse as ProvidersResponse
+from otari._client.models.questions_value import QuestionsValue as QuestionsValue
 from otari._client.models.rr_rerank_meta import RRRerankMeta as RRRerankMeta
 from otari._client.models.rr_rerank_result import RRRerankResult as RRRerankResult
 from otari._client.models.rr_rerank_usage import RRRerankUsage as RRRerankUsage
@@ -1215,6 +1248,7 @@ from otari._client.models.reencrypt_search_tools_response import ReencryptSearch
 from otari._client.models.register_passkey_request import RegisterPasskeyRequest as RegisterPasskeyRequest
 from otari._client.models.request_password_reset_request import RequestPasswordResetRequest as RequestPasswordResetRequest
 from otari._client.models.request_password_reset_response import RequestPasswordResetResponse as RequestPasswordResetResponse
+from otari._client.models.request_settlement import RequestSettlement as RequestSettlement
 from otari._client.models.requirement_group import RequirementGroup as RequirementGroup
 from otari._client.models.rerank_request import RerankRequest as RerankRequest
 from otari._client.models.rerank_response import RerankResponse as RerankResponse
@@ -1231,6 +1265,7 @@ from otari._client.models.responses_request import ResponsesRequest as Responses
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse as RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus as RouterStatus
 from otari._client.models.scoped_budget_response import ScopedBudgetResponse as ScopedBudgetResponse
+from otari._client.models.score_question import ScoreQuestion as ScoreQuestion
 from otari._client.models.scored_example import ScoredExample as ScoredExample
 from otari._client.models.search_provider_schema import SearchProviderSchema as SearchProviderSchema
 from otari._client.models.search_request import SearchRequest as SearchRequest
@@ -1247,6 +1282,7 @@ from otari._client.models.signup_request import SignupRequest as SignupRequest
 from otari._client.models.signup_response import SignupResponse as SignupResponse
 from otari._client.models.source import Source as Source
 from otari._client.models.source1 import Source1 as Source1
+from otari._client.models.state import State as State
 from otari._client.models.stop import Stop as Stop
 from otari._client.models.stored_provider_response import StoredProviderResponse as StoredProviderResponse
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema as StoredSearchToolSchema
