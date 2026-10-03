@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,8 +28,9 @@ class ReencryptProviderCredentialsResponse(BaseModel):
     Result of re-encrypting stored provider keys with the primary secret key.
     """ # noqa: E501
     reencrypted: StrictInt = Field(description="Number of stored provider keys re-encrypted.")
+    skipped: Optional[StrictInt] = Field(default=0, description="Number of rows whose stored key changed between the read and the write, so the re-encryption was not applied. They already hold whoever wrote them last.")
     unreadable: StrictInt = Field(description="Number of encrypted keys left untouched because they could not be decrypted.")
-    __properties: ClassVar[List[str]] = ["reencrypted", "unreadable"]
+    __properties: ClassVar[List[str]] = ["reencrypted", "skipped", "unreadable"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,6 +84,7 @@ class ReencryptProviderCredentialsResponse(BaseModel):
 
         _obj = cls.model_validate({
             "reencrypted": obj.get("reencrypted"),
+            "skipped": obj.get("skipped") if obj.get("skipped") is not None else 0,
             "unreadable": obj.get("unreadable")
         })
         return _obj

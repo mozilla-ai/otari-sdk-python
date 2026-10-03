@@ -17,20 +17,31 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ReencryptSearchToolsResponse(BaseModel):
+class RequestSettlement(BaseModel):
     """
-    Result of re-encrypting stored search-tool keys with the primary secret key.
+    What one request settled at, summed over every usage row it wrote.  A routed request writes a row per attempt and a vision-normalized one a row for the describe call, all sharing the ``Otari-Request-ID`` the caller was sent as their ``request_group_id``, so this is the request's whole bill rather than one attempt's. ``cost_usd`` uses the inline ``usage.cost_usd`` format and is null when no row was priced.
     """ # noqa: E501
-    reencrypted: StrictInt = Field(description="Number of stored search-tool keys re-encrypted.")
-    skipped: Optional[StrictInt] = Field(default=0, description="Number of rows whose stored key changed between the read and the write, so the re-encryption was not applied. They already hold whoever wrote them last.")
-    unreadable: StrictInt = Field(description="Number of encrypted keys left untouched because they could not be decrypted.")
-    __properties: ClassVar[List[str]] = ["reencrypted", "skipped", "unreadable"]
+    completion_tokens: StrictInt
+    cost_usd: Optional[StrictStr]
+    prompt_tokens: StrictInt
+    request_id: StrictStr
+    row_count: StrictInt
+    status: StrictStr
+    total_tokens: StrictInt
+    __properties: ClassVar[List[str]] = ["completion_tokens", "cost_usd", "prompt_tokens", "request_id", "row_count", "status", "total_tokens"]
+
+    @field_validator('status')
+    def status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['success', 'error']):
+            raise ValueError("must be one of enum values ('success', 'error')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -50,7 +61,7 @@ class ReencryptSearchToolsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ReencryptSearchToolsResponse from a JSON string"""
+        """Create an instance of RequestSettlement from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,11 +82,16 @@ class ReencryptSearchToolsResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if cost_usd (nullable) is None
+        # and model_fields_set contains the field
+        if self.cost_usd is None and "cost_usd" in self.model_fields_set:
+            _dict['cost_usd'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ReencryptSearchToolsResponse from a dict"""
+        """Create an instance of RequestSettlement from a dict"""
         if obj is None:
             return None
 
@@ -83,9 +99,13 @@ class ReencryptSearchToolsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "reencrypted": obj.get("reencrypted"),
-            "skipped": obj.get("skipped") if obj.get("skipped") is not None else 0,
-            "unreadable": obj.get("unreadable")
+            "completion_tokens": obj.get("completion_tokens"),
+            "cost_usd": obj.get("cost_usd"),
+            "prompt_tokens": obj.get("prompt_tokens"),
+            "request_id": obj.get("request_id"),
+            "row_count": obj.get("row_count"),
+            "status": obj.get("status"),
+            "total_tokens": obj.get("total_tokens")
         })
         return _obj
 
