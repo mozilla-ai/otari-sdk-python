@@ -11,6 +11,7 @@ from otari._client.api.bootstrap_api import BootstrapApi
 from otari._client.api.budgets_api import BudgetsApi
 from otari._client.api.catalog_api import CatalogApi
 from otari._client.api.chat_api import ChatApi
+from otari._client.api.decisions_api import DecisionsApi
 from otari._client.api.embeddings_api import EmbeddingsApi
 from otari._client.api.feedback_api import FeedbackApi
 from otari._client.api.files_api import FilesApi
@@ -37,6 +38,7 @@ from otari._client.api.playground_api import PlaygroundApi
 from otari._client.api.pricing_api import PricingApi
 from otari._client.api.provider_keys_api import ProviderKeysApi
 from otari._client.api.providers_api import ProvidersApi
+from otari._client.api.rate_limits_api import RateLimitsApi
 from otari._client.api.rerank_api import RerankApi
 from otari._client.api.responses_api import ResponsesApi
 from otari._client.api.routing_api import RoutingApi

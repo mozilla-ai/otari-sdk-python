@@ -18,19 +18,21 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ReencryptSearchToolsResponse(BaseModel):
+class DecisionUsage(BaseModel):
     """
-    Result of re-encrypting stored search-tool keys with the primary secret key.
+    Token counts the provider reported, plus its own cost where it reports one.
     """ # noqa: E501
-    reencrypted: StrictInt = Field(description="Number of stored search-tool keys re-encrypted.")
-    skipped: Optional[StrictInt] = Field(default=0, description="Number of rows whose stored key changed between the read and the write, so the re-encryption was not applied. They already hold whoever wrote them last.")
-    unreadable: StrictInt = Field(description="Number of encrypted keys left untouched because they could not be decrypted.")
-    __properties: ClassVar[List[str]] = ["reencrypted", "skipped", "unreadable"]
+    cost: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="The provider's own charge in USD, when it reports one")
+    input_tokens: Optional[StrictInt] = 0
+    output_tokens: Optional[StrictInt] = 0
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["cost", "input_tokens", "output_tokens"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -50,7 +52,7 @@ class ReencryptSearchToolsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ReencryptSearchToolsResponse from a JSON string"""
+        """Create an instance of DecisionUsage from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -62,8 +64,10 @@ class ReencryptSearchToolsResponse(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -71,11 +75,21 @@ class ReencryptSearchToolsResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if cost (nullable) is None
+        # and model_fields_set contains the field
+        if self.cost is None and "cost" in self.model_fields_set:
+            _dict['cost'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ReencryptSearchToolsResponse from a dict"""
+        """Create an instance of DecisionUsage from a dict"""
         if obj is None:
             return None
 
@@ -83,10 +97,15 @@ class ReencryptSearchToolsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "reencrypted": obj.get("reencrypted"),
-            "skipped": obj.get("skipped") if obj.get("skipped") is not None else 0,
-            "unreadable": obj.get("unreadable")
+            "cost": obj.get("cost"),
+            "input_tokens": obj.get("input_tokens") if obj.get("input_tokens") is not None else 0,
+            "output_tokens": obj.get("output_tokens") if obj.get("output_tokens") is not None else 0
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

@@ -30,7 +30,7 @@ class OrganizationScopedBudgetCreate(BaseModel):
     """ # noqa: E501
     budget_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="The budget this ceiling enforces, which must be one this organization owns")
     name: Optional[Annotated[str, Field(strict=True, max_length=200)]] = Field(default=None, description="Admin-facing label for this ceiling")
-    provider_key_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = Field(default=None, description="Narrow the cap to one provider instance; omit or null to cap spend across every provider. Must name a real instance: a blank value would store a ceiling that never binds")
+    provider_key_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = Field(default=None, description="Narrow the cap to one provider instance; omit or null to cap spend across every provider. A blank value would store a ceiling that never binds, so it is refused; this does not check that the value names a configured provider instance")
     scope_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="Id of the capped identity: this organization, one of its workspaces, a membership in either, or an API key in one")
     scope_type: StrictStr = Field(description="Which kind of identity this ceiling caps")
     __properties: ClassVar[List[str]] = ["budget_id", "name", "provider_key_id", "scope_id", "scope_type"]

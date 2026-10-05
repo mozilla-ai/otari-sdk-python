@@ -50,6 +50,7 @@ class UsageEntry(BaseModel):
     pricing_breakdown: Optional[List[UsageEntryPricingBreakdownInner]]
     prompt_tokens: Optional[StrictInt]
     provider: Optional[StrictStr]
+    provider_latency_ms: Optional[StrictInt]
     reasoning_tokens: Optional[StrictInt] = None
     request_group_id: Optional[StrictStr] = None
     selection_reason: Optional[StrictStr] = None
@@ -61,7 +62,7 @@ class UsageEntry(BaseModel):
     total_tokens: Optional[StrictInt]
     user_alias: Optional[StrictStr] = None
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "reasoning_tokens", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "timestamp", "total_tokens", "user_alias", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "provider_latency_ms", "reasoning_tokens", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "timestamp", "total_tokens", "user_alias", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -192,6 +193,11 @@ class UsageEntry(BaseModel):
         if self.provider is None and "provider" in self.model_fields_set:
             _dict['provider'] = None
 
+        # set to None if provider_latency_ms (nullable) is None
+        # and model_fields_set contains the field
+        if self.provider_latency_ms is None and "provider_latency_ms" in self.model_fields_set:
+            _dict['provider_latency_ms'] = None
+
         # set to None if reasoning_tokens (nullable) is None
         # and model_fields_set contains the field
         if self.reasoning_tokens is None and "reasoning_tokens" in self.model_fields_set:
@@ -265,6 +271,7 @@ class UsageEntry(BaseModel):
             "pricing_breakdown": [UsageEntryPricingBreakdownInner.from_dict(_item) for _item in obj["pricing_breakdown"]] if obj.get("pricing_breakdown") is not None else None,
             "prompt_tokens": obj.get("prompt_tokens"),
             "provider": obj.get("provider"),
+            "provider_latency_ms": obj.get("provider_latency_ms"),
             "reasoning_tokens": obj.get("reasoning_tokens"),
             "request_group_id": obj.get("request_group_id"),
             "selection_reason": obj.get("selection_reason"),
