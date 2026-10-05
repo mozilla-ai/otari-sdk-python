@@ -25,7 +25,7 @@ from pydantic_core import to_jsonable_python
 
 class McpToolWarning(BaseModel):
     """
-    One tool that was omitted, and the code that omitted it (R-SCHEMA-3).
+    One tool that was omitted, and the code that omitted it.
     """ # noqa: E501
     code: StrictStr
     tool_name: StrictStr

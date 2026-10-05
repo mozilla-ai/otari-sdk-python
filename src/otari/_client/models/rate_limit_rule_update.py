@@ -30,10 +30,11 @@ class RateLimitRuleUpdate(BaseModel):
     """ # noqa: E501
     lease_sec: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = Field(default=None, description="How long a max_concurrent slot is held at most.")
     max_concurrent: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests in flight at once.")
+    models: Optional[List[StrictStr]] = Field(default=None, description="The instance:model names a per: model rule limits; null for any other rule.")
     per: Optional[StrictStr] = Field(default=None, description="What one count is shared by.")
     rpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests per minute.")
     tpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Tokens per minute.")
-    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "per", "rpm", "tpm"]
+    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "per", "rpm", "tpm"]
 
     @field_validator('per')
     def per_validate_enum(cls, value):
@@ -41,8 +42,8 @@ class RateLimitRuleUpdate(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['deployment', 'key', 'user']):
-            raise ValueError("must be one of enum values ('deployment', 'key', 'user')")
+        if value not in set(['deployment', 'key', 'user', 'model']):
+            raise ValueError("must be one of enum values ('deployment', 'key', 'user', 'model')")
         return value
 
     model_config = ConfigDict(
@@ -94,6 +95,11 @@ class RateLimitRuleUpdate(BaseModel):
         if self.max_concurrent is None and "max_concurrent" in self.model_fields_set:
             _dict['max_concurrent'] = None
 
+        # set to None if models (nullable) is None
+        # and model_fields_set contains the field
+        if self.models is None and "models" in self.model_fields_set:
+            _dict['models'] = None
+
         # set to None if per (nullable) is None
         # and model_fields_set contains the field
         if self.per is None and "per" in self.model_fields_set:
@@ -123,6 +129,7 @@ class RateLimitRuleUpdate(BaseModel):
         _obj = cls.model_validate({
             "lease_sec": obj.get("lease_sec"),
             "max_concurrent": obj.get("max_concurrent"),
+            "models": obj.get("models"),
             "per": obj.get("per"),
             "rpm": obj.get("rpm"),
             "tpm": obj.get("tpm")

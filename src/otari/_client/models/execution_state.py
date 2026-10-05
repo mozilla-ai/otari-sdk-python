@@ -20,7 +20,7 @@ from typing_extensions import Self
 
 class ExecutionState(str, Enum):
     """
-    Whether the remote tool may have run (R-ERR-2).  A retry-safety classification, not a description of how the HTTP request went. ``NOT_STARTED`` is Otari saying it knows the tool did not run; ``OUTCOME_UNKNOWN`` is Otari saying it cannot know, which is the only honest answer once the transport has begun writing ``tools/call``.
+    Whether the remote tool may have run.  A retry-safety classification, not a description of how the HTTP request went. ``NOT_STARTED`` is Otari saying it knows the tool did not run; ``OUTCOME_UNKNOWN`` is Otari saying it cannot know, which is the only honest answer once the transport has begun writing ``tools/call``.
     """
 
     """
