@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class McpErrorBody(BaseModel):
     """
-    The one error shape both stored-server endpoints return (R-ERR-1).
+    The one error shape both stored-server endpoints return.
     """ # noqa: E501
     code: StrictStr
     detail: StrictStr

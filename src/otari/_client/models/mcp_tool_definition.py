@@ -25,7 +25,7 @@ from pydantic_core import to_jsonable_python
 
 class McpToolDefinition(BaseModel):
     """
-    One live tool a caller-orchestrated application may expose to its model.  ``annotations`` is the remote server's own metadata, passed through as untrusted data. Otari never turns ``readOnlyHint`` into an authorization decision (R-RISK-1); each application owns its risk policy, and a server cannot waive an application's approval gate by labeling itself read-only.
+    One live tool a caller-orchestrated application may expose to its model.  ``annotations`` is the remote server's own metadata, passed through as untrusted data. Otari never turns ``readOnlyHint`` into an authorization decision; each application owns its risk policy, and a server cannot waive an application's approval gate by labeling itself read-only.
     """ # noqa: E501
     annotations: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
     description: Optional[StrictStr] = Field(default=None, description="The server's own description, untrusted.")
