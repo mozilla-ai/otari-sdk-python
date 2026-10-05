@@ -17,33 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
+from otari._client.models.model_false import ModelFalse
+from otari._client.models.model_true import ModelTrue
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class WorkspaceMemberBudgetPolicyCreate(BaseModel):
+class NoulCriteria(BaseModel):
     """
-    Request body for creating a default.
+    What a yes and a no each mean, for a ``noul`` question.
     """ # noqa: E501
-    budget_id: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="The budget this workspace hands to every member")
-    provider_key_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = Field(default=None, description="Narrow the default to one provider instance; omit or null to apply to every provider. A blank value would materialize ceilings that never bind, so it is refused; this does not check that the value names a configured provider instance")
-    __properties: ClassVar[List[str]] = ["budget_id", "provider_key_id"]
-
-    @field_validator('provider_key_id')
-    def provider_key_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^\S+$", value):
-            raise ValueError(r"must validate the regular expression /^\S+$/")
-        return value
+    var_false: Optional[ModelFalse] = Field(default=None, alias="false")
+    var_true: Optional[ModelTrue] = Field(default=None, alias="true")
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["false", "true"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -63,7 +52,7 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyCreate from a JSON string"""
+        """Create an instance of NoulCriteria from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,8 +64,10 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -84,16 +75,32 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if provider_key_id (nullable) is None
+        # override the default output from pydantic by calling `to_dict()` of var_false
+        if self.var_false:
+            _dict['false'] = self.var_false.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of var_true
+        if self.var_true:
+            _dict['true'] = self.var_true.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if var_false (nullable) is None
         # and model_fields_set contains the field
-        if self.provider_key_id is None and "provider_key_id" in self.model_fields_set:
-            _dict['provider_key_id'] = None
+        if self.var_false is None and "var_false" in self.model_fields_set:
+            _dict['false'] = None
+
+        # set to None if var_true (nullable) is None
+        # and model_fields_set contains the field
+        if self.var_true is None and "var_true" in self.model_fields_set:
+            _dict['true'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of WorkspaceMemberBudgetPolicyCreate from a dict"""
+        """Create an instance of NoulCriteria from a dict"""
         if obj is None:
             return None
 
@@ -101,9 +108,14 @@ class WorkspaceMemberBudgetPolicyCreate(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "budget_id": obj.get("budget_id"),
-            "provider_key_id": obj.get("provider_key_id")
+            "false": ModelFalse.from_dict(obj["false"]) if obj.get("false") is not None else None,
+            "true": ModelTrue.from_dict(obj["true"]) if obj.get("true") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

@@ -17,20 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict
+from typing import Any, ClassVar, Dict, List
+from otari._client.models.rate_limit_rule_public import RateLimitRulePublic
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ReencryptSearchToolsResponse(BaseModel):
+class RateLimitRulesPublic(BaseModel):
     """
-    Result of re-encrypting stored search-tool keys with the primary secret key.
+    Every rule in effect: config-file rules first, then stored ones, each in name order.
     """ # noqa: E501
-    reencrypted: StrictInt = Field(description="Number of stored search-tool keys re-encrypted.")
-    skipped: Optional[StrictInt] = Field(default=0, description="Number of rows whose stored key changed between the read and the write, so the re-encryption was not applied. They already hold whoever wrote them last.")
-    unreadable: StrictInt = Field(description="Number of encrypted keys left untouched because they could not be decrypted.")
-    __properties: ClassVar[List[str]] = ["reencrypted", "skipped", "unreadable"]
+    rules: List[RateLimitRulePublic]
+    __properties: ClassVar[List[str]] = ["rules"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -50,7 +49,7 @@ class ReencryptSearchToolsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ReencryptSearchToolsResponse from a JSON string"""
+        """Create an instance of RateLimitRulesPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,11 +70,18 @@ class ReencryptSearchToolsResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in rules (list)
+        _items = []
+        if self.rules:
+            for _item_rules in self.rules:
+                if _item_rules:
+                    _items.append(_item_rules.to_dict())
+            _dict['rules'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ReencryptSearchToolsResponse from a dict"""
+        """Create an instance of RateLimitRulesPublic from a dict"""
         if obj is None:
             return None
 
@@ -83,9 +89,7 @@ class ReencryptSearchToolsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "reencrypted": obj.get("reencrypted"),
-            "skipped": obj.get("skipped") if obj.get("skipped") is not None else 0,
-            "unreadable": obj.get("unreadable")
+            "rules": [RateLimitRulePublic.from_dict(_item) for _item in obj["rules"]] if obj.get("rules") is not None else None
         })
         return _obj
 
