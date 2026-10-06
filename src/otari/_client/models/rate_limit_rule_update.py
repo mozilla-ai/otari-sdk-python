@@ -34,7 +34,8 @@ class RateLimitRuleUpdate(BaseModel):
     per: Optional[StrictStr] = Field(default=None, description="What one count is shared by.")
     rpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests per minute.")
     tpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Tokens per minute.")
-    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "per", "rpm", "tpm"]
+    tpm_admission: Optional[StrictStr] = Field(default=None, description="'estimate' holds a request's estimate; 'used' counts only what it used.")
+    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "per", "rpm", "tpm", "tpm_admission"]
 
     @field_validator('per')
     def per_validate_enum(cls, value):
@@ -44,6 +45,16 @@ class RateLimitRuleUpdate(BaseModel):
 
         if value not in set(['deployment', 'key', 'user', 'model']):
             raise ValueError("must be one of enum values ('deployment', 'key', 'user', 'model')")
+        return value
+
+    @field_validator('tpm_admission')
+    def tpm_admission_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['estimate', 'used']):
+            raise ValueError("must be one of enum values ('estimate', 'used')")
         return value
 
     model_config = ConfigDict(
@@ -115,6 +126,11 @@ class RateLimitRuleUpdate(BaseModel):
         if self.tpm is None and "tpm" in self.model_fields_set:
             _dict['tpm'] = None
 
+        # set to None if tpm_admission (nullable) is None
+        # and model_fields_set contains the field
+        if self.tpm_admission is None and "tpm_admission" in self.model_fields_set:
+            _dict['tpm_admission'] = None
+
         return _dict
 
     @classmethod
@@ -132,7 +148,8 @@ class RateLimitRuleUpdate(BaseModel):
             "models": obj.get("models"),
             "per": obj.get("per"),
             "rpm": obj.get("rpm"),
-            "tpm": obj.get("tpm")
+            "tpm": obj.get("tpm"),
+            "tpm_admission": obj.get("tpm_admission")
         })
         return _obj
 
