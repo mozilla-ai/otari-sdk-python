@@ -484,6 +484,10 @@ from otari._client.models.pricing_tier import PricingTier
 from otari._client.models.pricing_tiers_inner import PricingTiersInner
 from otari._client.models.pricing_tiers_inner_any_of_value import PricingTiersInnerAnyOfValue
 from otari._client.models.provider_capabilities_schema import ProviderCapabilitiesSchema
+from otari._client.models.provider_endpoint_create_request import ProviderEndpointCreateRequest
+from otari._client.models.provider_endpoint_public import ProviderEndpointPublic
+from otari._client.models.provider_endpoint_update_request import ProviderEndpointUpdateRequest
+from otari._client.models.provider_endpoints_public import ProviderEndpointsPublic
 from otari._client.models.provider_health_response import ProviderHealthResponse
 from otari._client.models.provider_health_schema import ProviderHealthSchema
 from otari._client.models.provider_info_schema import ProviderInfoSchema

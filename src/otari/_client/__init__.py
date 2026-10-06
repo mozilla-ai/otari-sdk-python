@@ -53,6 +53,7 @@ __all__ = [
     "OverviewApi",
     "PlaygroundApi",
     "PricingApi",
+    "ProviderEndpointsApi",
     "ProviderKeysApi",
     "ProvidersApi",
     "RateLimitsApi",
@@ -553,6 +554,10 @@ __all__ = [
     "PricingTiersInner",
     "PricingTiersInnerAnyOfValue",
     "ProviderCapabilitiesSchema",
+    "ProviderEndpointCreateRequest",
+    "ProviderEndpointPublic",
+    "ProviderEndpointUpdateRequest",
+    "ProviderEndpointsPublic",
     "ProviderHealthResponse",
     "ProviderHealthSchema",
     "ProviderInfoSchema",
@@ -736,6 +741,7 @@ from otari._client.api.otel_api import OtelApi as OtelApi
 from otari._client.api.overview_api import OverviewApi as OverviewApi
 from otari._client.api.playground_api import PlaygroundApi as PlaygroundApi
 from otari._client.api.pricing_api import PricingApi as PricingApi
+from otari._client.api.provider_endpoints_api import ProviderEndpointsApi as ProviderEndpointsApi
 from otari._client.api.provider_keys_api import ProviderKeysApi as ProviderKeysApi
 from otari._client.api.providers_api import ProvidersApi as ProvidersApi
 from otari._client.api.rate_limits_api import RateLimitsApi as RateLimitsApi
@@ -1240,6 +1246,10 @@ from otari._client.models.pricing_tier import PricingTier as PricingTier
 from otari._client.models.pricing_tiers_inner import PricingTiersInner as PricingTiersInner
 from otari._client.models.pricing_tiers_inner_any_of_value import PricingTiersInnerAnyOfValue as PricingTiersInnerAnyOfValue
 from otari._client.models.provider_capabilities_schema import ProviderCapabilitiesSchema as ProviderCapabilitiesSchema
+from otari._client.models.provider_endpoint_create_request import ProviderEndpointCreateRequest as ProviderEndpointCreateRequest
+from otari._client.models.provider_endpoint_public import ProviderEndpointPublic as ProviderEndpointPublic
+from otari._client.models.provider_endpoint_update_request import ProviderEndpointUpdateRequest as ProviderEndpointUpdateRequest
+from otari._client.models.provider_endpoints_public import ProviderEndpointsPublic as ProviderEndpointsPublic
 from otari._client.models.provider_health_response import ProviderHealthResponse as ProviderHealthResponse
 from otari._client.models.provider_health_schema import ProviderHealthSchema as ProviderHealthSchema
 from otari._client.models.provider_info_schema import ProviderInfoSchema as ProviderInfoSchema
