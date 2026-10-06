@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictBool, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
 from otari._client.models.create_user_request import CreateUserRequest
@@ -1153,6 +1153,10 @@ class UsersApi:
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        parent_user_id: Annotated[Optional[StrictStr], Field(description="Only the end users of this owner: the user a service key belongs to.")] = None,
+        external_id: Annotated[Optional[StrictStr], Field(description="Only the end user a service key names with this `user` value.")] = None,
+        blocked: Annotated[Optional[StrictBool], Field(description="Only blocked users (true) or only unblocked ones (false).")] = None,
+        include_total: Annotated[Optional[StrictBool], Field(description="Also count every matching user, in the Otari-Total-Count response header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1168,12 +1172,20 @@ class UsersApi:
     ) -> List[UserResponse]:
         """List Users
 
-        List the users the caller's organization can name, with pagination.  ``users`` is deployment-global and has no organization column, so which of them this organization can name is derived: a key, usage, or a roster row puts one in reach, and one reached from nowhere at all (the shared ``default`` owner, or a user just created) is shared rather than hidden. See ``repositories.users_repository.in_organization``.
+        List the users the caller's organization can name, with pagination.  ``users`` is deployment-global and has no organization column, so which of them this organization can name is derived: a key, usage, or a roster row puts one in reach, and one reached from nowhere at all (the shared ``default`` owner, or a user just created) is shared rather than hidden. See ``repositories.users_repository.in_organization``.  ``parent_user_id`` with ``external_id`` finds the end user a service key created for a ``user`` value, which is how a caller maps its own ids to Otari's. ``include_total`` adds an ``Otari-Total-Count`` header counting every match, so ``limit=1`` with it counts a service key's end users.
 
         :param skip:
         :type skip: int
         :param limit:
         :type limit: int
+        :param parent_user_id: Only the end users of this owner: the user a service key belongs to.
+        :type parent_user_id: str
+        :param external_id: Only the end user a service key names with this `user` value.
+        :type external_id: str
+        :param blocked: Only blocked users (true) or only unblocked ones (false).
+        :type blocked: bool
+        :param include_total: Also count every matching user, in the Otari-Total-Count response header.
+        :type include_total: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1199,6 +1211,10 @@ class UsersApi:
         _param = self._users_list_users_serialize(
             skip=skip,
             limit=limit,
+            parent_user_id=parent_user_id,
+            external_id=external_id,
+            blocked=blocked,
+            include_total=include_total,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1225,6 +1241,10 @@ class UsersApi:
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        parent_user_id: Annotated[Optional[StrictStr], Field(description="Only the end users of this owner: the user a service key belongs to.")] = None,
+        external_id: Annotated[Optional[StrictStr], Field(description="Only the end user a service key names with this `user` value.")] = None,
+        blocked: Annotated[Optional[StrictBool], Field(description="Only blocked users (true) or only unblocked ones (false).")] = None,
+        include_total: Annotated[Optional[StrictBool], Field(description="Also count every matching user, in the Otari-Total-Count response header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1240,12 +1260,20 @@ class UsersApi:
     ) -> ApiResponse[List[UserResponse]]:
         """List Users
 
-        List the users the caller's organization can name, with pagination.  ``users`` is deployment-global and has no organization column, so which of them this organization can name is derived: a key, usage, or a roster row puts one in reach, and one reached from nowhere at all (the shared ``default`` owner, or a user just created) is shared rather than hidden. See ``repositories.users_repository.in_organization``.
+        List the users the caller's organization can name, with pagination.  ``users`` is deployment-global and has no organization column, so which of them this organization can name is derived: a key, usage, or a roster row puts one in reach, and one reached from nowhere at all (the shared ``default`` owner, or a user just created) is shared rather than hidden. See ``repositories.users_repository.in_organization``.  ``parent_user_id`` with ``external_id`` finds the end user a service key created for a ``user`` value, which is how a caller maps its own ids to Otari's. ``include_total`` adds an ``Otari-Total-Count`` header counting every match, so ``limit=1`` with it counts a service key's end users.
 
         :param skip:
         :type skip: int
         :param limit:
         :type limit: int
+        :param parent_user_id: Only the end users of this owner: the user a service key belongs to.
+        :type parent_user_id: str
+        :param external_id: Only the end user a service key names with this `user` value.
+        :type external_id: str
+        :param blocked: Only blocked users (true) or only unblocked ones (false).
+        :type blocked: bool
+        :param include_total: Also count every matching user, in the Otari-Total-Count response header.
+        :type include_total: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1271,6 +1299,10 @@ class UsersApi:
         _param = self._users_list_users_serialize(
             skip=skip,
             limit=limit,
+            parent_user_id=parent_user_id,
+            external_id=external_id,
+            blocked=blocked,
+            include_total=include_total,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1297,6 +1329,10 @@ class UsersApi:
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        parent_user_id: Annotated[Optional[StrictStr], Field(description="Only the end users of this owner: the user a service key belongs to.")] = None,
+        external_id: Annotated[Optional[StrictStr], Field(description="Only the end user a service key names with this `user` value.")] = None,
+        blocked: Annotated[Optional[StrictBool], Field(description="Only blocked users (true) or only unblocked ones (false).")] = None,
+        include_total: Annotated[Optional[StrictBool], Field(description="Also count every matching user, in the Otari-Total-Count response header.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1312,12 +1348,20 @@ class UsersApi:
     ) -> RESTResponseType:
         """List Users
 
-        List the users the caller's organization can name, with pagination.  ``users`` is deployment-global and has no organization column, so which of them this organization can name is derived: a key, usage, or a roster row puts one in reach, and one reached from nowhere at all (the shared ``default`` owner, or a user just created) is shared rather than hidden. See ``repositories.users_repository.in_organization``.
+        List the users the caller's organization can name, with pagination.  ``users`` is deployment-global and has no organization column, so which of them this organization can name is derived: a key, usage, or a roster row puts one in reach, and one reached from nowhere at all (the shared ``default`` owner, or a user just created) is shared rather than hidden. See ``repositories.users_repository.in_organization``.  ``parent_user_id`` with ``external_id`` finds the end user a service key created for a ``user`` value, which is how a caller maps its own ids to Otari's. ``include_total`` adds an ``Otari-Total-Count`` header counting every match, so ``limit=1`` with it counts a service key's end users.
 
         :param skip:
         :type skip: int
         :param limit:
         :type limit: int
+        :param parent_user_id: Only the end users of this owner: the user a service key belongs to.
+        :type parent_user_id: str
+        :param external_id: Only the end user a service key names with this `user` value.
+        :type external_id: str
+        :param blocked: Only blocked users (true) or only unblocked ones (false).
+        :type blocked: bool
+        :param include_total: Also count every matching user, in the Otari-Total-Count response header.
+        :type include_total: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1343,6 +1387,10 @@ class UsersApi:
         _param = self._users_list_users_serialize(
             skip=skip,
             limit=limit,
+            parent_user_id=parent_user_id,
+            external_id=external_id,
+            blocked=blocked,
+            include_total=include_total,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1364,6 +1412,10 @@ class UsersApi:
         self,
         skip,
         limit,
+        parent_user_id,
+        external_id,
+        blocked,
+        include_total,
         _request_auth,
         _content_type,
         _headers,
@@ -1393,6 +1445,22 @@ class UsersApi:
         if limit is not None:
             
             _query_params.append(('limit', limit))
+            
+        if parent_user_id is not None:
+            
+            _query_params.append(('parent_user_id', parent_user_id))
+            
+        if external_id is not None:
+            
+            _query_params.append(('external_id', external_id))
+            
+        if blocked is not None:
+            
+            _query_params.append(('blocked', blocked))
+            
+        if include_total is not None:
+            
+            _query_params.append(('include_total', include_total))
             
         # process the header parameters
         # process the form parameters
