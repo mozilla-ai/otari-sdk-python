@@ -36,8 +36,8 @@ class RateLimitRulePublic(BaseModel):
     per: StrictStr = Field(description="What one count is shared by.")
     rpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests per minute.")
     source: StrictStr = Field(description="'config' for a rule from config.yml, which is read-only here; 'dashboard' for a stored one.")
-    tpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Tokens per minute. A request is admitted on its estimate (prompt plus max output, or budget_estimate_default_output_tokens) and charged what it used once it completes.")
-    tpm_admission: Optional[StrictStr] = Field(default='estimate', description="How a tpm limit admits a request. 'estimate' holds the request's estimate and refuses it when that does not fit. 'used' admits a request while the minute's tokens are under the limit, holding none, and counts what it used once it completes, as LiteLLM does: a client that always sends a large max_tokens is limited by its usage, not its ceiling.")
+    tpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Tokens per minute, counted on what each request used; see tpm_admission for how a request is admitted.")
+    tpm_admission: Optional[StrictStr] = Field(default='used', description="How a tpm limit admits a request. 'used' (the default) admits a request while the minute's tokens are under the limit and counts what it used once it completes, as LiteLLM does. 'estimate' holds the request's estimate (prompt plus max output, or budget_estimate_default_output_tokens) while it runs and refuses it when that does not fit, which is how providers count their own quotas: use it for a limit meant to stay under one.")
     updated_at: Optional[datetime] = Field(default=None, description="When a stored rule last changed.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "name", "per", "rpm", "source", "tpm", "tpm_admission", "updated_at"]
@@ -72,8 +72,8 @@ class RateLimitRulePublic(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['estimate', 'used']):
-            raise ValueError("must be one of enum values ('estimate', 'used')")
+        if value not in set(['used', 'estimate']):
+            raise ValueError("must be one of enum values ('used', 'estimate')")
         return value
 
     model_config = ConfigDict(
@@ -167,7 +167,7 @@ class RateLimitRulePublic(BaseModel):
             "rpm": obj.get("rpm"),
             "source": obj.get("source"),
             "tpm": obj.get("tpm"),
-            "tpm_admission": obj.get("tpm_admission") if obj.get("tpm_admission") is not None else 'estimate',
+            "tpm_admission": obj.get("tpm_admission") if obj.get("tpm_admission") is not None else 'used',
             "updated_at": obj.get("updated_at")
         })
         # store additional fields in additional_properties
