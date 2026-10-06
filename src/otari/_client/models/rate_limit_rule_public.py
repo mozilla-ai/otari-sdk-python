@@ -37,9 +37,10 @@ class RateLimitRulePublic(BaseModel):
     rpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests per minute.")
     source: StrictStr = Field(description="'config' for a rule from config.yml, which is read-only here; 'dashboard' for a stored one.")
     tpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Tokens per minute. A request is admitted on its estimate (prompt plus max output, or budget_estimate_default_output_tokens) and charged what it used once it completes.")
+    tpm_admission: Optional[StrictStr] = Field(default='estimate', description="How a tpm limit admits a request. 'estimate' holds the request's estimate and refuses it when that does not fit. 'used' admits a request while the minute's tokens are under the limit, holding none, and counts what it used once it completes, as LiteLLM does: a client that always sends a large max_tokens is limited by its usage, not its ceiling.")
     updated_at: Optional[datetime] = Field(default=None, description="When a stored rule last changed.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "name", "per", "rpm", "source", "tpm", "updated_at"]
+    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "name", "per", "rpm", "source", "tpm", "tpm_admission", "updated_at"]
 
     @field_validator('name')
     def name_validate_regular_expression(cls, value):
@@ -63,6 +64,16 @@ class RateLimitRulePublic(BaseModel):
         """Validates the enum"""
         if value not in set(['config', 'dashboard']):
             raise ValueError("must be one of enum values ('config', 'dashboard')")
+        return value
+
+    @field_validator('tpm_admission')
+    def tpm_admission_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['estimate', 'used']):
+            raise ValueError("must be one of enum values ('estimate', 'used')")
         return value
 
     model_config = ConfigDict(
@@ -156,6 +167,7 @@ class RateLimitRulePublic(BaseModel):
             "rpm": obj.get("rpm"),
             "source": obj.get("source"),
             "tpm": obj.get("tpm"),
+            "tpm_admission": obj.get("tpm_admission") if obj.get("tpm_admission") is not None else 'estimate',
             "updated_at": obj.get("updated_at")
         })
         # store additional fields in additional_properties

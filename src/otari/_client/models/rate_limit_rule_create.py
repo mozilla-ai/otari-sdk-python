@@ -35,7 +35,8 @@ class RateLimitRuleCreate(BaseModel):
     per: StrictStr = Field(description="What one count is shared by.")
     rpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests per minute.")
     tpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Tokens per minute. A request is admitted on its estimate (prompt plus max output, or budget_estimate_default_output_tokens) and charged what it used once it completes.")
-    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "name", "per", "rpm", "tpm"]
+    tpm_admission: Optional[StrictStr] = Field(default='estimate', description="How a tpm limit admits a request. 'estimate' holds the request's estimate and refuses it when that does not fit. 'used' admits a request while the minute's tokens are under the limit, holding none, and counts what it used once it completes, as LiteLLM does: a client that always sends a large max_tokens is limited by its usage, not its ceiling.")
+    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "name", "per", "rpm", "tpm", "tpm_admission"]
 
     @field_validator('name')
     def name_validate_regular_expression(cls, value):
@@ -52,6 +53,16 @@ class RateLimitRuleCreate(BaseModel):
         """Validates the enum"""
         if value not in set(['deployment', 'key', 'user', 'model']):
             raise ValueError("must be one of enum values ('deployment', 'key', 'user', 'model')")
+        return value
+
+    @field_validator('tpm_admission')
+    def tpm_admission_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['estimate', 'used']):
+            raise ValueError("must be one of enum values ('estimate', 'used')")
         return value
 
     model_config = ConfigDict(
@@ -131,7 +142,8 @@ class RateLimitRuleCreate(BaseModel):
             "name": obj.get("name"),
             "per": obj.get("per"),
             "rpm": obj.get("rpm"),
-            "tpm": obj.get("tpm")
+            "tpm": obj.get("tpm"),
+            "tpm_admission": obj.get("tpm_admission") if obj.get("tpm_admission") is not None else 'estimate'
         })
         return _obj
 
