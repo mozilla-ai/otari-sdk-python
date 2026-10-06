@@ -36,6 +36,7 @@ from otari._client.api.otel_api import OtelApi
 from otari._client.api.overview_api import OverviewApi
 from otari._client.api.playground_api import PlaygroundApi
 from otari._client.api.pricing_api import PricingApi
+from otari._client.api.provider_endpoints_api import ProviderEndpointsApi
 from otari._client.api.provider_keys_api import ProviderKeysApi
 from otari._client.api.providers_api import ProvidersApi
 from otari._client.api.rate_limits_api import RateLimitsApi
