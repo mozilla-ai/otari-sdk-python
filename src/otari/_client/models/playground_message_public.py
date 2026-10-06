@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.playground_attachment import PlaygroundAttachment
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,10 +28,11 @@ class PlaygroundMessagePublic(BaseModel):
     """
     One stored turn, in the order it was saved.  No usage figures, matching what the save accepts: tokens, cost and timing describe the request that ran rather than the conversation, and a resumed transcript reporting an old request's latency as this session's would be lying. The billing record for that request is its ``usage_logs`` row.
     """ # noqa: E501
+    attachments: Optional[List[PlaygroundAttachment]] = None
     content: StrictStr
     reasoning: Optional[StrictStr] = None
     role: StrictStr
-    __properties: ClassVar[List[str]] = ["content", "reasoning", "role"]
+    __properties: ClassVar[List[str]] = ["attachments", "content", "reasoning", "role"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -71,6 +73,13 @@ class PlaygroundMessagePublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in attachments (list)
+        _items = []
+        if self.attachments:
+            for _item_attachments in self.attachments:
+                if _item_attachments:
+                    _items.append(_item_attachments.to_dict())
+            _dict['attachments'] = _items
         # set to None if reasoning (nullable) is None
         # and model_fields_set contains the field
         if self.reasoning is None and "reasoning" in self.model_fields_set:
@@ -88,6 +97,7 @@ class PlaygroundMessagePublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "attachments": [PlaygroundAttachment.from_dict(_item) for _item in obj["attachments"]] if obj.get("attachments") is not None else None,
             "content": obj.get("content"),
             "reasoning": obj.get("reasoning"),
             "role": obj.get("role")

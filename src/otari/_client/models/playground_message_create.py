@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from otari._client.models.playground_attachment import PlaygroundAttachment
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,10 +29,11 @@ class PlaygroundMessageCreate(BaseModel):
     """
     One turn in a transcript being saved.
     """ # noqa: E501
+    attachments: Optional[Annotated[List[PlaygroundAttachment], Field(max_length=10)]] = None
     content: Annotated[str, Field(strict=True, max_length=200000)]
     reasoning: Optional[Annotated[str, Field(strict=True, max_length=200000)]] = None
     role: StrictStr
-    __properties: ClassVar[List[str]] = ["content", "reasoning", "role"]
+    __properties: ClassVar[List[str]] = ["attachments", "content", "reasoning", "role"]
 
     @field_validator('role')
     def role_validate_enum(cls, value):
@@ -79,6 +81,13 @@ class PlaygroundMessageCreate(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in attachments (list)
+        _items = []
+        if self.attachments:
+            for _item_attachments in self.attachments:
+                if _item_attachments:
+                    _items.append(_item_attachments.to_dict())
+            _dict['attachments'] = _items
         # set to None if reasoning (nullable) is None
         # and model_fields_set contains the field
         if self.reasoning is None and "reasoning" in self.model_fields_set:
@@ -96,6 +105,7 @@ class PlaygroundMessageCreate(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "attachments": [PlaygroundAttachment.from_dict(_item) for _item in obj["attachments"]] if obj.get("attachments") is not None else None,
             "content": obj.get("content"),
             "reasoning": obj.get("reasoning"),
             "role": obj.get("role")

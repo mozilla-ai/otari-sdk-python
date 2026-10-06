@@ -19,21 +19,19 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
-from otari._client.models.playground_mcp_server import PlaygroundMcpServer
-from otari._client.models.playground_tool_status import PlaygroundToolStatus
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PlaygroundToolsResponse(BaseModel):
+class PlaygroundAttachment(BaseModel):
     """
-    What the caller's workspace may attach to a Playground message.
+    A file one turn sent, as the page draws its chip and sends it again.  A record of the attachment rather than a reference the gateway keeps alive: the file can be deleted after the save, and a resumed turn that sends it then does not send its contents.
     """ # noqa: E501
-    code_execution: PlaygroundToolStatus
-    files: PlaygroundToolStatus = Field(description="Whether a message may attach a file uploaded here.")
-    mcp_servers: List[PlaygroundMcpServer]
-    web_search: PlaygroundToolStatus
-    __properties: ClassVar[List[str]] = ["code_execution", "files", "mcp_servers", "web_search"]
+    bytes: Annotated[int, Field(strict=True, ge=0)]
+    file_id: Annotated[str, Field(strict=True, max_length=64)]
+    filename: Annotated[str, Field(strict=True, max_length=255)]
+    __properties: ClassVar[List[str]] = ["bytes", "file_id", "filename"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +51,7 @@ class PlaygroundToolsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PlaygroundToolsResponse from a JSON string"""
+        """Create an instance of PlaygroundAttachment from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,27 +72,11 @@ class PlaygroundToolsResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of code_execution
-        if self.code_execution:
-            _dict['code_execution'] = self.code_execution.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of files
-        if self.files:
-            _dict['files'] = self.files.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in mcp_servers (list)
-        _items = []
-        if self.mcp_servers:
-            for _item_mcp_servers in self.mcp_servers:
-                if _item_mcp_servers:
-                    _items.append(_item_mcp_servers.to_dict())
-            _dict['mcp_servers'] = _items
-        # override the default output from pydantic by calling `to_dict()` of web_search
-        if self.web_search:
-            _dict['web_search'] = self.web_search.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PlaygroundToolsResponse from a dict"""
+        """Create an instance of PlaygroundAttachment from a dict"""
         if obj is None:
             return None
 
@@ -102,10 +84,9 @@ class PlaygroundToolsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "code_execution": PlaygroundToolStatus.from_dict(obj["code_execution"]) if obj.get("code_execution") is not None else None,
-            "files": PlaygroundToolStatus.from_dict(obj["files"]) if obj.get("files") is not None else None,
-            "mcp_servers": [PlaygroundMcpServer.from_dict(_item) for _item in obj["mcp_servers"]] if obj.get("mcp_servers") is not None else None,
-            "web_search": PlaygroundToolStatus.from_dict(obj["web_search"]) if obj.get("web_search") is not None else None
+            "bytes": obj.get("bytes"),
+            "file_id": obj.get("file_id"),
+            "filename": obj.get("filename")
         })
         return _obj
 
