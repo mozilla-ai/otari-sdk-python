@@ -34,7 +34,7 @@ class RateLimitRuleUpdate(BaseModel):
     per: Optional[StrictStr] = Field(default=None, description="What one count is shared by.")
     rpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests per minute.")
     tpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Tokens per minute.")
-    tpm_admission: Optional[StrictStr] = Field(default=None, description="'estimate' holds a request's estimate; 'used' counts only what it used.")
+    tpm_admission: Optional[StrictStr] = Field(default=None, description="'used' counts only what a request used; 'estimate' holds its estimate.")
     __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "per", "rpm", "tpm", "tpm_admission"]
 
     @field_validator('per')
@@ -53,8 +53,8 @@ class RateLimitRuleUpdate(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['estimate', 'used']):
-            raise ValueError("must be one of enum values ('estimate', 'used')")
+        if value not in set(['used', 'estimate']):
+            raise ValueError("must be one of enum values ('used', 'estimate')")
         return value
 
     model_config = ConfigDict(
