@@ -522,6 +522,7 @@ __all__ = [
     "PasswordResponse",
     "PendingOrganizationInvitationPublic",
     "PendingOrganizationInvitationsPublic",
+    "PlaygroundAttachment",
     "PlaygroundComparisonCreate",
     "PlaygroundComparisonSummary",
     "PlaygroundComparisonsPublic",
@@ -1208,6 +1209,7 @@ from otari._client.models.passkey_session_response import PasskeySessionResponse
 from otari._client.models.password_response import PasswordResponse as PasswordResponse
 from otari._client.models.pending_organization_invitation_public import PendingOrganizationInvitationPublic as PendingOrganizationInvitationPublic
 from otari._client.models.pending_organization_invitations_public import PendingOrganizationInvitationsPublic as PendingOrganizationInvitationsPublic
+from otari._client.models.playground_attachment import PlaygroundAttachment as PlaygroundAttachment
 from otari._client.models.playground_comparison_create import PlaygroundComparisonCreate as PlaygroundComparisonCreate
 from otari._client.models.playground_comparison_summary import PlaygroundComparisonSummary as PlaygroundComparisonSummary
 from otari._client.models.playground_comparisons_public import PlaygroundComparisonsPublic as PlaygroundComparisonsPublic
