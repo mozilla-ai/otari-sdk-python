@@ -46,14 +46,14 @@ class ResponsesRequest(BaseModel):
     max_tool_iterations: Optional[Annotated[int, Field(le=25, strict=True, ge=1)]] = None
     mcp_server_ids: Optional[Annotated[List[UUID], Field(max_length=50)]] = None
     mcp_servers: Optional[List[McpServerConfig]] = None
-    metadata: Optional[Dict[str, StrictStr]] = None
+    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     model: StrictStr
     parallel_tool_calls: Optional[StrictBool] = None
     presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     previous_response_id: Optional[StrictStr] = None
     prompt_cache_key: Optional[StrictStr] = None
     prompt_cache_retention: Optional[StrictStr] = None
-    reasoning: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    reasoning: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     response_format: Optional[Dict[str, Any]] = None
     safety_identifier: Optional[StrictStr] = None
     service_tier: Optional[StrictStr] = None

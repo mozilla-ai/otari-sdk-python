@@ -39,6 +39,7 @@ class UsageSummary(BaseModel):
     by_provider: List[UsageGroupRow]
     by_source: List[UsageGroupRow]
     by_source_label: List[UsageGroupRow]
+    by_tag: Optional[List[UsageGroupRow]] = None
     by_tool: Optional[List[UsageToolRow]] = None
     by_user: List[UsageGroupRow]
     end_date: StrictStr
@@ -46,7 +47,7 @@ class UsageSummary(BaseModel):
     series: List[UsageSeriesPoint]
     start_date: StrictStr
     totals: UsageTotals
-    __properties: ClassVar[List[str]] = ["bucket", "by_api_key", "by_endpoint", "by_model", "by_provider", "by_source", "by_source_label", "by_tool", "by_user", "end_date", "errors_by_status_code", "series", "start_date", "totals"]
+    __properties: ClassVar[List[str]] = ["bucket", "by_api_key", "by_endpoint", "by_model", "by_provider", "by_source", "by_source_label", "by_tag", "by_tool", "by_user", "end_date", "errors_by_status_code", "series", "start_date", "totals"]
 
     @field_validator('bucket')
     def bucket_validate_enum(cls, value):
@@ -136,6 +137,13 @@ class UsageSummary(BaseModel):
                 if _item_by_source_label:
                     _items.append(_item_by_source_label.to_dict())
             _dict['by_source_label'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in by_tag (list)
+        _items = []
+        if self.by_tag:
+            for _item_by_tag in self.by_tag:
+                if _item_by_tag:
+                    _items.append(_item_by_tag.to_dict())
+            _dict['by_tag'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in by_tool (list)
         _items = []
         if self.by_tool:
@@ -186,6 +194,7 @@ class UsageSummary(BaseModel):
             "by_provider": [UsageGroupRow.from_dict(_item) for _item in obj["by_provider"]] if obj.get("by_provider") is not None else None,
             "by_source": [UsageGroupRow.from_dict(_item) for _item in obj["by_source"]] if obj.get("by_source") is not None else None,
             "by_source_label": [UsageGroupRow.from_dict(_item) for _item in obj["by_source_label"]] if obj.get("by_source_label") is not None else None,
+            "by_tag": [UsageGroupRow.from_dict(_item) for _item in obj["by_tag"]] if obj.get("by_tag") is not None else None,
             "by_tool": [UsageToolRow.from_dict(_item) for _item in obj["by_tool"]] if obj.get("by_tool") is not None else None,
             "by_user": [UsageGroupRow.from_dict(_item) for _item in obj["by_user"]] if obj.get("by_user") is not None else None,
             "end_date": obj.get("end_date"),

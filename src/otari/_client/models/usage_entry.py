@@ -58,11 +58,12 @@ class UsageEntry(BaseModel):
     source_label: Optional[StrictStr]
     status: StrictStr
     status_code: Optional[StrictInt]
+    tags: Optional[Dict[str, StrictStr]] = None
     timestamp: StrictStr
     total_tokens: Optional[StrictInt]
     user_alias: Optional[StrictStr] = None
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "provider_latency_ms", "reasoning_tokens", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "timestamp", "total_tokens", "user_alias", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "provider_latency_ms", "reasoning_tokens", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "tags", "timestamp", "total_tokens", "user_alias", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -223,6 +224,11 @@ class UsageEntry(BaseModel):
         if self.status_code is None and "status_code" in self.model_fields_set:
             _dict['status_code'] = None
 
+        # set to None if tags (nullable) is None
+        # and model_fields_set contains the field
+        if self.tags is None and "tags" in self.model_fields_set:
+            _dict['tags'] = None
+
         # set to None if total_tokens (nullable) is None
         # and model_fields_set contains the field
         if self.total_tokens is None and "total_tokens" in self.model_fields_set:
@@ -279,6 +285,7 @@ class UsageEntry(BaseModel):
             "source_label": obj.get("source_label"),
             "status": obj.get("status"),
             "status_code": obj.get("status_code"),
+            "tags": obj.get("tags"),
             "timestamp": obj.get("timestamp"),
             "total_tokens": obj.get("total_tokens"),
             "user_alias": obj.get("user_alias"),

@@ -37,7 +37,7 @@ class OrganizationGuardrailCreate(BaseModel):
     on_unavailable: Optional[StrictStr] = Field(default='block', description="What a block-mode entry does when the guardrails service cannot be reached at all")
     profile: Annotated[str, Field(min_length=1, strict=True, max_length=128)] = Field(description="Profile name configured on the guardrails service, unique within the organization")
     url: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = Field(default=None, description="Guardrails endpoint for this entry; null uses the deployment's guardrails_url")
-    validate_kwargs: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    validate_kwargs: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     workspace_ids: Optional[Annotated[List[UUID], Field(max_length=500)]] = Field(default=None, description="Workspaces this guardrail runs in. Must be empty when applies_to_all_workspaces is true")
     __properties: ClassVar[List[str]] = ["applies_to_all_workspaces", "credential", "definition_id", "enabled", "mode", "on_unavailable", "profile", "url", "validate_kwargs", "workspace_ids"]
 

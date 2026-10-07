@@ -24,6 +24,8 @@ from otari._client.models.active_organization_member_public import ActiveOrganiz
 from otari._client.models.active_organization_member_update_request import ActiveOrganizationMemberUpdateRequest
 from otari._client.models.active_organization_members_public import ActiveOrganizationMembersPublic
 from otari._client.models.active_organization_update_request import ActiveOrganizationUpdateRequest
+from otari._client.models.agent_model_recommendation import AgentModelRecommendation
+from otari._client.models.agent_model_recommendation_request import AgentModelRecommendationRequest
 from otari._client.models.agent_telemetry_behavior import AgentTelemetryBehavior
 from otari._client.models.agent_telemetry_count import AgentTelemetryCount
 from otari._client.models.agent_telemetry_delete_request import AgentTelemetryDeleteRequest
@@ -191,6 +193,9 @@ from otari._client.models.emb_embedding import EMBEmbedding
 from otari._client.models.emb_usage import EMBUsage
 from otari._client.models.embedded_resource import EmbeddedResource
 from otari._client.models.embedding_request import EmbeddingRequest
+from otari._client.models.end_user_public import EndUserPublic
+from otari._client.models.end_user_put import EndUserPut
+from otari._client.models.end_user_update import EndUserUpdate
 from otari._client.models.execution_state import ExecutionState
 from otari._client.models.explain_request import ExplainRequest
 from otari._client.models.explain_response import ExplainResponse
@@ -416,6 +421,10 @@ from otari._client.models.org_provider_key_public import OrgProviderKeyPublic
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest
 from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic
 from otari._client.models.org_provider_models_refresh_public import OrgProviderModelsRefreshPublic
+from otari._client.models.org_web_search_key_create_request import OrgWebSearchKeyCreateRequest
+from otari._client.models.org_web_search_key_public import OrgWebSearchKeyPublic
+from otari._client.models.org_web_search_key_update_request import OrgWebSearchKeyUpdateRequest
+from otari._client.models.org_web_search_keys_public import OrgWebSearchKeysPublic
 from otari._client.models.organization_budget_create import OrganizationBudgetCreate
 from otari._client.models.organization_budget_public import OrganizationBudgetPublic
 from otari._client.models.organization_budget_update import OrganizationBudgetUpdate
@@ -524,6 +533,7 @@ from otari._client.models.response_files_list_files import ResponseFilesListFile
 from otari._client.models.responses_request import ResponsesRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus
+from otari._client.models.sandbox_provider import SandboxProvider
 from otari._client.models.scoped_budget_response import ScopedBudgetResponse
 from otari._client.models.score_question import ScoreQuestion
 from otari._client.models.scored_example import ScoredExample
@@ -631,6 +641,9 @@ from otari._client.models.workspace_public import WorkspacePublic
 from otari._client.models.workspace_update import WorkspaceUpdate
 from otari._client.models.workspace_web_search_config_public import WorkspaceWebSearchConfigPublic
 from otari._client.models.workspace_web_search_config_update import WorkspaceWebSearchConfigUpdate
+from otari._client.models.workspace_web_search_key_override_request import WorkspaceWebSearchKeyOverrideRequest
+from otari._client.models.workspace_web_search_key_public import WorkspaceWebSearchKeyPublic
+from otari._client.models.workspace_web_search_keys_public import WorkspaceWebSearchKeysPublic
 from otari._client.models.workspaces_public import WorkspacesPublic
 from otari._client.models.worst_allocation_response import WorstAllocationResponse
 

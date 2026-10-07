@@ -17,21 +17,29 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class McpToolDefinition(BaseModel):
+class OrgWebSearchKeyPublic(BaseModel):
     """
-    One live tool a caller-orchestrated application may expose to its model.  ``annotations`` is the remote server's own metadata, passed through as untrusted data. Otari never turns ``readOnlyHint`` into an authorization decision; each application owns its risk policy, and a server cannot waive an application's approval gate by labeling itself read-only.
+    One key as the API shows it: never the key itself, only ``last4``.
     """ # noqa: E501
-    annotations: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    description: Optional[StrictStr] = Field(default=None, description="The server's own description, untrusted.")
-    input_schema: Dict[str, Any] = Field(description="The tool's MCP inputSchema, unmodified.")
-    name: StrictStr = Field(description="The remote MCP tool name to send back to /api/v1/mcp/execute.")
-    __properties: ClassVar[List[str]] = ["annotations", "description", "input_schema", "name"]
+    archived_at: Optional[datetime] = None
+    created_at: datetime
+    id: UUID
+    is_org_default: StrictBool
+    last4: Optional[StrictStr] = None
+    name: StrictStr
+    organization_id: UUID
+    provider: StrictStr
+    updated_at: Optional[datetime] = None
+    usable: StrictBool = Field(description="False when this deployment cannot decrypt the stored key, so no search uses it. It is still listed, because replacing or deleting it is what fixes it.")
+    __properties: ClassVar[List[str]] = ["archived_at", "created_at", "id", "is_org_default", "last4", "name", "organization_id", "provider", "updated_at", "usable"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +59,7 @@ class McpToolDefinition(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a JSON string"""
+        """Create an instance of OrgWebSearchKeyPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,21 +80,26 @@ class McpToolDefinition(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if annotations (nullable) is None
+        # set to None if archived_at (nullable) is None
         # and model_fields_set contains the field
-        if self.annotations is None and "annotations" in self.model_fields_set:
-            _dict['annotations'] = None
+        if self.archived_at is None and "archived_at" in self.model_fields_set:
+            _dict['archived_at'] = None
 
-        # set to None if description (nullable) is None
+        # set to None if last4 (nullable) is None
         # and model_fields_set contains the field
-        if self.description is None and "description" in self.model_fields_set:
-            _dict['description'] = None
+        if self.last4 is None and "last4" in self.model_fields_set:
+            _dict['last4'] = None
+
+        # set to None if updated_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.updated_at is None and "updated_at" in self.model_fields_set:
+            _dict['updated_at'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a dict"""
+        """Create an instance of OrgWebSearchKeyPublic from a dict"""
         if obj is None:
             return None
 
@@ -94,10 +107,16 @@ class McpToolDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "annotations": obj.get("annotations"),
-            "description": obj.get("description"),
-            "input_schema": obj.get("input_schema"),
-            "name": obj.get("name")
+            "archived_at": obj.get("archived_at"),
+            "created_at": obj.get("created_at"),
+            "id": obj.get("id"),
+            "is_org_default": obj.get("is_org_default"),
+            "last4": obj.get("last4"),
+            "name": obj.get("name"),
+            "organization_id": obj.get("organization_id"),
+            "provider": obj.get("provider"),
+            "updated_at": obj.get("updated_at"),
+            "usable": obj.get("usable")
         })
         return _obj
 

@@ -17,21 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class McpToolDefinition(BaseModel):
+class OrgWebSearchKeyUpdateRequest(BaseModel):
     """
-    One live tool a caller-orchestrated application may expose to its model.  ``annotations`` is the remote server's own metadata, passed through as untrusted data. Otari never turns ``readOnlyHint`` into an authorization decision; each application owns its risk policy, and a server cannot waive an application's approval gate by labeling itself read-only.
+    A partial update: only what is set is applied.
     """ # noqa: E501
-    annotations: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    description: Optional[StrictStr] = Field(default=None, description="The server's own description, untrusted.")
-    input_schema: Dict[str, Any] = Field(description="The tool's MCP inputSchema, unmodified.")
-    name: StrictStr = Field(description="The remote MCP tool name to send back to /api/v1/mcp/execute.")
-    __properties: ClassVar[List[str]] = ["annotations", "description", "input_schema", "name"]
+    api_key: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    name: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
+    __properties: ClassVar[List[str]] = ["api_key", "name"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +50,7 @@ class McpToolDefinition(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a JSON string"""
+        """Create an instance of OrgWebSearchKeyUpdateRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,21 +71,21 @@ class McpToolDefinition(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if annotations (nullable) is None
+        # set to None if api_key (nullable) is None
         # and model_fields_set contains the field
-        if self.annotations is None and "annotations" in self.model_fields_set:
-            _dict['annotations'] = None
+        if self.api_key is None and "api_key" in self.model_fields_set:
+            _dict['api_key'] = None
 
-        # set to None if description (nullable) is None
+        # set to None if name (nullable) is None
         # and model_fields_set contains the field
-        if self.description is None and "description" in self.model_fields_set:
-            _dict['description'] = None
+        if self.name is None and "name" in self.model_fields_set:
+            _dict['name'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a dict"""
+        """Create an instance of OrgWebSearchKeyUpdateRequest from a dict"""
         if obj is None:
             return None
 
@@ -94,9 +93,7 @@ class McpToolDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "annotations": obj.get("annotations"),
-            "description": obj.get("description"),
-            "input_schema": obj.get("input_schema"),
+            "api_key": obj.get("api_key"),
             "name": obj.get("name")
         })
         return _obj

@@ -17,21 +17,27 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class McpToolDefinition(BaseModel):
+class WorkspaceWebSearchKeyPublic(BaseModel):
     """
-    One live tool a caller-orchestrated application may expose to its model.  ``annotations`` is the remote server's own metadata, passed through as untrusted data. Otari never turns ``readOnlyHint`` into an authorization decision; each application owns its risk policy, and a server cannot waive an application's approval gate by labeling itself read-only.
+    One of the organization's keys, as one workspace sees it.
     """ # noqa: E501
-    annotations: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    description: Optional[StrictStr] = Field(default=None, description="The server's own description, untrusted.")
-    input_schema: Dict[str, Any] = Field(description="The tool's MCP inputSchema, unmodified.")
-    name: StrictStr = Field(description="The remote MCP tool name to send back to /api/v1/mcp/execute.")
-    __properties: ClassVar[List[str]] = ["annotations", "description", "input_schema", "name"]
+    disabled: StrictBool = Field(description="The workspace turned this key off.")
+    is_default: StrictBool = Field(description="The workspace pinned this key as its own.")
+    is_effective: StrictBool = Field(description="This is the key the workspace's searches use.")
+    last4: Optional[StrictStr] = None
+    name: StrictStr
+    org_web_search_key_id: UUID
+    provider: StrictStr
+    usable: StrictBool
+    workspace_id: UUID
+    __properties: ClassVar[List[str]] = ["disabled", "is_default", "is_effective", "last4", "name", "org_web_search_key_id", "provider", "usable", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +57,7 @@ class McpToolDefinition(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a JSON string"""
+        """Create an instance of WorkspaceWebSearchKeyPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,21 +78,16 @@ class McpToolDefinition(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if annotations (nullable) is None
+        # set to None if last4 (nullable) is None
         # and model_fields_set contains the field
-        if self.annotations is None and "annotations" in self.model_fields_set:
-            _dict['annotations'] = None
-
-        # set to None if description (nullable) is None
-        # and model_fields_set contains the field
-        if self.description is None and "description" in self.model_fields_set:
-            _dict['description'] = None
+        if self.last4 is None and "last4" in self.model_fields_set:
+            _dict['last4'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a dict"""
+        """Create an instance of WorkspaceWebSearchKeyPublic from a dict"""
         if obj is None:
             return None
 
@@ -94,10 +95,15 @@ class McpToolDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "annotations": obj.get("annotations"),
-            "description": obj.get("description"),
-            "input_schema": obj.get("input_schema"),
-            "name": obj.get("name")
+            "disabled": obj.get("disabled"),
+            "is_default": obj.get("is_default"),
+            "is_effective": obj.get("is_effective"),
+            "last4": obj.get("last4"),
+            "name": obj.get("name"),
+            "org_web_search_key_id": obj.get("org_web_search_key_id"),
+            "provider": obj.get("provider"),
+            "usable": obj.get("usable"),
+            "workspace_id": obj.get("workspace_id")
         })
         return _obj
 

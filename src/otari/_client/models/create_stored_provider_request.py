@@ -30,7 +30,7 @@ class CreateStoredProviderRequest(BaseModel):
     """ # noqa: E501
     api_base: Optional[StrictStr] = None
     api_key: Optional[StrictStr] = Field(default=None, description="Provider API key. Stored encrypted; never returned.")
-    client_args: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    client_args: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     instance: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Routing key, e.g. 'openai' or a named instance like 'home_lab'.")
     provider_type: Optional[StrictStr] = Field(default=None, description="any-llm implementation when the instance name is not itself one.")
     __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "instance", "provider_type"]

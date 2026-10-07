@@ -36,12 +36,14 @@ class BudgetResponse(BaseModel):
     organization_id: Optional[UUID]
     request_limit: Optional[StrictInt]
     reset_alignment: Optional[StrictStr]
+    rpm_limit: Optional[StrictInt] = None
     token_limit: Optional[StrictInt]
     total_reserved: Optional[Union[StrictFloat, StrictInt]] = 0.0
     total_spend: Optional[Union[StrictFloat, StrictInt]] = 0.0
+    tpm_limit: Optional[StrictInt] = None
     updated_at: StrictStr
     user_count: Optional[StrictInt] = 0
-    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "name", "organization_id", "request_limit", "reset_alignment", "token_limit", "total_reserved", "total_spend", "updated_at", "user_count"]
+    __properties: ClassVar[List[str]] = ["budget_duration_sec", "budget_id", "created_at", "max_budget", "name", "organization_id", "request_limit", "reset_alignment", "rpm_limit", "token_limit", "total_reserved", "total_spend", "tpm_limit", "updated_at", "user_count"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -112,10 +114,20 @@ class BudgetResponse(BaseModel):
         if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
             _dict['reset_alignment'] = None
 
+        # set to None if rpm_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.rpm_limit is None and "rpm_limit" in self.model_fields_set:
+            _dict['rpm_limit'] = None
+
         # set to None if token_limit (nullable) is None
         # and model_fields_set contains the field
         if self.token_limit is None and "token_limit" in self.model_fields_set:
             _dict['token_limit'] = None
+
+        # set to None if tpm_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.tpm_limit is None and "tpm_limit" in self.model_fields_set:
+            _dict['tpm_limit'] = None
 
         return _dict
 
@@ -137,9 +149,11 @@ class BudgetResponse(BaseModel):
             "organization_id": obj.get("organization_id"),
             "request_limit": obj.get("request_limit"),
             "reset_alignment": obj.get("reset_alignment"),
+            "rpm_limit": obj.get("rpm_limit"),
             "token_limit": obj.get("token_limit"),
             "total_reserved": obj.get("total_reserved") if obj.get("total_reserved") is not None else 0.0,
             "total_spend": obj.get("total_spend") if obj.get("total_spend") is not None else 0.0,
+            "tpm_limit": obj.get("tpm_limit"),
             "updated_at": obj.get("updated_at"),
             "user_count": obj.get("user_count") if obj.get("user_count") is not None else 0
         })

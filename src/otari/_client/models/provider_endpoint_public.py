@@ -31,7 +31,7 @@ class ProviderEndpointPublic(BaseModel):
     """ # noqa: E501
     api_base: StrictStr
     created_at: datetime
-    default_params: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    default_params: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     id: UUID
     last4: Optional[StrictStr] = None
     name: StrictStr

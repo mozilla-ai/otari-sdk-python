@@ -17,22 +17,29 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ModerationResult(BaseModel):
+class EndUserPublic(BaseModel):
     """
-    A single moderation decision, typically one per input item.
+    An end user of a service key, addressed by the id the service named it by.
     """ # noqa: E501
-    categories: Optional[Dict[str, StrictBool]] = None
-    category_applied_input_types: Optional[Dict[str, List[StrictStr]]] = None
-    category_scores: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = None
-    flagged: StrictBool
-    provider_raw: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    __properties: ClassVar[List[str]] = ["categories", "category_applied_input_types", "category_scores", "flagged", "provider_raw"]
+    blocked: StrictBool
+    budget_id: Optional[StrictStr]
+    budget_started_at: Optional[StrictStr]
+    created_at: StrictStr
+    current_requests: StrictInt
+    current_tokens: StrictInt
+    external_id: StrictStr
+    next_budget_reset_at: Optional[StrictStr]
+    owner_user_id: StrictStr
+    reserved: Union[StrictFloat, StrictInt]
+    spend: Union[StrictFloat, StrictInt]
+    user_id: StrictStr
+    __properties: ClassVar[List[str]] = ["blocked", "budget_id", "budget_started_at", "created_at", "current_requests", "current_tokens", "external_id", "next_budget_reset_at", "owner_user_id", "reserved", "spend", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +59,7 @@ class ModerationResult(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ModerationResult from a JSON string"""
+        """Create an instance of EndUserPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,21 +80,26 @@ class ModerationResult(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if category_applied_input_types (nullable) is None
+        # set to None if budget_id (nullable) is None
         # and model_fields_set contains the field
-        if self.category_applied_input_types is None and "category_applied_input_types" in self.model_fields_set:
-            _dict['category_applied_input_types'] = None
+        if self.budget_id is None and "budget_id" in self.model_fields_set:
+            _dict['budget_id'] = None
 
-        # set to None if provider_raw (nullable) is None
+        # set to None if budget_started_at (nullable) is None
         # and model_fields_set contains the field
-        if self.provider_raw is None and "provider_raw" in self.model_fields_set:
-            _dict['provider_raw'] = None
+        if self.budget_started_at is None and "budget_started_at" in self.model_fields_set:
+            _dict['budget_started_at'] = None
+
+        # set to None if next_budget_reset_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.next_budget_reset_at is None and "next_budget_reset_at" in self.model_fields_set:
+            _dict['next_budget_reset_at'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ModerationResult from a dict"""
+        """Create an instance of EndUserPublic from a dict"""
         if obj is None:
             return None
 
@@ -95,11 +107,18 @@ class ModerationResult(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "categories": obj.get("categories"),
-            "category_applied_input_types": obj.get("category_applied_input_types"),
-            "category_scores": obj.get("category_scores"),
-            "flagged": obj.get("flagged"),
-            "provider_raw": obj.get("provider_raw")
+            "blocked": obj.get("blocked"),
+            "budget_id": obj.get("budget_id"),
+            "budget_started_at": obj.get("budget_started_at"),
+            "created_at": obj.get("created_at"),
+            "current_requests": obj.get("current_requests"),
+            "current_tokens": obj.get("current_tokens"),
+            "external_id": obj.get("external_id"),
+            "next_budget_reset_at": obj.get("next_budget_reset_at"),
+            "owner_user_id": obj.get("owner_user_id"),
+            "reserved": obj.get("reserved"),
+            "spend": obj.get("spend"),
+            "user_id": obj.get("user_id")
         })
         return _obj
 

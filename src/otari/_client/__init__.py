@@ -69,6 +69,7 @@ __all__ = [
     "UsageApi",
     "UsersApi",
     "WebSearchApi",
+    "WebSearchKeysApi",
     "WorkspaceActivationApi",
     "WorkspaceCodeExecutionPolicyApi",
     "WorkspaceMemberBudgetPoliciesApi",
@@ -94,6 +95,8 @@ __all__ = [
     "ActiveOrganizationMemberUpdateRequest",
     "ActiveOrganizationMembersPublic",
     "ActiveOrganizationUpdateRequest",
+    "AgentModelRecommendation",
+    "AgentModelRecommendationRequest",
     "AgentTelemetryBehavior",
     "AgentTelemetryCount",
     "AgentTelemetryDeleteRequest",
@@ -261,6 +264,9 @@ __all__ = [
     "EMBUsage",
     "EmbeddedResource",
     "EmbeddingRequest",
+    "EndUserPublic",
+    "EndUserPut",
+    "EndUserUpdate",
     "ExecutionState",
     "ExplainRequest",
     "ExplainResponse",
@@ -486,6 +492,10 @@ __all__ = [
     "OrgProviderKeyUpdateRequest",
     "OrgProviderKeysPublic",
     "OrgProviderModelsRefreshPublic",
+    "OrgWebSearchKeyCreateRequest",
+    "OrgWebSearchKeyPublic",
+    "OrgWebSearchKeyUpdateRequest",
+    "OrgWebSearchKeysPublic",
     "OrganizationBudgetCreate",
     "OrganizationBudgetPublic",
     "OrganizationBudgetUpdate",
@@ -594,6 +604,7 @@ __all__ = [
     "ResponsesRequest",
     "RotateMasterKeyResponse",
     "RouterStatus",
+    "SandboxProvider",
     "ScopedBudgetResponse",
     "ScoreQuestion",
     "ScoredExample",
@@ -701,6 +712,9 @@ __all__ = [
     "WorkspaceUpdate",
     "WorkspaceWebSearchConfigPublic",
     "WorkspaceWebSearchConfigUpdate",
+    "WorkspaceWebSearchKeyOverrideRequest",
+    "WorkspaceWebSearchKeyPublic",
+    "WorkspaceWebSearchKeysPublic",
     "WorkspacesPublic",
     "WorstAllocationResponse",
 ]
@@ -757,6 +771,7 @@ from otari._client.api.tools_api import ToolsApi as ToolsApi
 from otari._client.api.usage_api import UsageApi as UsageApi
 from otari._client.api.users_api import UsersApi as UsersApi
 from otari._client.api.web_search_api import WebSearchApi as WebSearchApi
+from otari._client.api.web_search_keys_api import WebSearchKeysApi as WebSearchKeysApi
 from otari._client.api.workspace_activation_api import WorkspaceActivationApi as WorkspaceActivationApi
 from otari._client.api.workspace_code_execution_policy_api import WorkspaceCodeExecutionPolicyApi as WorkspaceCodeExecutionPolicyApi
 from otari._client.api.workspace_member_budget_policies_api import WorkspaceMemberBudgetPoliciesApi as WorkspaceMemberBudgetPoliciesApi
@@ -786,6 +801,8 @@ from otari._client.models.active_organization_member_public import ActiveOrganiz
 from otari._client.models.active_organization_member_update_request import ActiveOrganizationMemberUpdateRequest as ActiveOrganizationMemberUpdateRequest
 from otari._client.models.active_organization_members_public import ActiveOrganizationMembersPublic as ActiveOrganizationMembersPublic
 from otari._client.models.active_organization_update_request import ActiveOrganizationUpdateRequest as ActiveOrganizationUpdateRequest
+from otari._client.models.agent_model_recommendation import AgentModelRecommendation as AgentModelRecommendation
+from otari._client.models.agent_model_recommendation_request import AgentModelRecommendationRequest as AgentModelRecommendationRequest
 from otari._client.models.agent_telemetry_behavior import AgentTelemetryBehavior as AgentTelemetryBehavior
 from otari._client.models.agent_telemetry_count import AgentTelemetryCount as AgentTelemetryCount
 from otari._client.models.agent_telemetry_delete_request import AgentTelemetryDeleteRequest as AgentTelemetryDeleteRequest
@@ -953,6 +970,9 @@ from otari._client.models.emb_embedding import EMBEmbedding as EMBEmbedding
 from otari._client.models.emb_usage import EMBUsage as EMBUsage
 from otari._client.models.embedded_resource import EmbeddedResource as EmbeddedResource
 from otari._client.models.embedding_request import EmbeddingRequest as EmbeddingRequest
+from otari._client.models.end_user_public import EndUserPublic as EndUserPublic
+from otari._client.models.end_user_put import EndUserPut as EndUserPut
+from otari._client.models.end_user_update import EndUserUpdate as EndUserUpdate
 from otari._client.models.execution_state import ExecutionState as ExecutionState
 from otari._client.models.explain_request import ExplainRequest as ExplainRequest
 from otari._client.models.explain_response import ExplainResponse as ExplainResponse
@@ -1178,6 +1198,10 @@ from otari._client.models.org_provider_key_public import OrgProviderKeyPublic as
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest as OrgProviderKeyUpdateRequest
 from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic as OrgProviderKeysPublic
 from otari._client.models.org_provider_models_refresh_public import OrgProviderModelsRefreshPublic as OrgProviderModelsRefreshPublic
+from otari._client.models.org_web_search_key_create_request import OrgWebSearchKeyCreateRequest as OrgWebSearchKeyCreateRequest
+from otari._client.models.org_web_search_key_public import OrgWebSearchKeyPublic as OrgWebSearchKeyPublic
+from otari._client.models.org_web_search_key_update_request import OrgWebSearchKeyUpdateRequest as OrgWebSearchKeyUpdateRequest
+from otari._client.models.org_web_search_keys_public import OrgWebSearchKeysPublic as OrgWebSearchKeysPublic
 from otari._client.models.organization_budget_create import OrganizationBudgetCreate as OrganizationBudgetCreate
 from otari._client.models.organization_budget_public import OrganizationBudgetPublic as OrganizationBudgetPublic
 from otari._client.models.organization_budget_update import OrganizationBudgetUpdate as OrganizationBudgetUpdate
@@ -1286,6 +1310,7 @@ from otari._client.models.response_files_list_files import ResponseFilesListFile
 from otari._client.models.responses_request import ResponsesRequest as ResponsesRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse as RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus as RouterStatus
+from otari._client.models.sandbox_provider import SandboxProvider as SandboxProvider
 from otari._client.models.scoped_budget_response import ScopedBudgetResponse as ScopedBudgetResponse
 from otari._client.models.score_question import ScoreQuestion as ScoreQuestion
 from otari._client.models.scored_example import ScoredExample as ScoredExample
@@ -1393,6 +1418,9 @@ from otari._client.models.workspace_public import WorkspacePublic as WorkspacePu
 from otari._client.models.workspace_update import WorkspaceUpdate as WorkspaceUpdate
 from otari._client.models.workspace_web_search_config_public import WorkspaceWebSearchConfigPublic as WorkspaceWebSearchConfigPublic
 from otari._client.models.workspace_web_search_config_update import WorkspaceWebSearchConfigUpdate as WorkspaceWebSearchConfigUpdate
+from otari._client.models.workspace_web_search_key_override_request import WorkspaceWebSearchKeyOverrideRequest as WorkspaceWebSearchKeyOverrideRequest
+from otari._client.models.workspace_web_search_key_public import WorkspaceWebSearchKeyPublic as WorkspaceWebSearchKeyPublic
+from otari._client.models.workspace_web_search_keys_public import WorkspaceWebSearchKeysPublic as WorkspaceWebSearchKeysPublic
 from otari._client.models.workspaces_public import WorkspacesPublic as WorkspacesPublic
 from otari._client.models.worst_allocation_response import WorstAllocationResponse as WorstAllocationResponse
 
