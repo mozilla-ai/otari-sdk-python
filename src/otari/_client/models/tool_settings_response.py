@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.sandbox_provider import SandboxProvider
 from otari._client.models.tool_setting_field import ToolSettingField
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,7 +30,8 @@ class ToolSettingsResponse(BaseModel):
     The effective value of every editable tool/guardrail field.
     """ # noqa: E501
     fields: List[ToolSettingField]
-    __properties: ClassVar[List[str]] = ["fields"]
+    sandbox_provider: Optional[SandboxProvider] = Field(default=None, description="What runs generated code: 'protocol' (a sandbox at sandbox_url) or 'e2b'. Set at startup, not editable here. Null for a reader who does not operate the deployment.")
+    __properties: ClassVar[List[str]] = ["fields", "sandbox_provider"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -77,6 +79,11 @@ class ToolSettingsResponse(BaseModel):
                 if _item_fields:
                     _items.append(_item_fields.to_dict())
             _dict['fields'] = _items
+        # set to None if sandbox_provider (nullable) is None
+        # and model_fields_set contains the field
+        if self.sandbox_provider is None and "sandbox_provider" in self.model_fields_set:
+            _dict['sandbox_provider'] = None
+
         return _dict
 
     @classmethod
@@ -89,7 +96,8 @@ class ToolSettingsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "fields": [ToolSettingField.from_dict(_item) for _item in obj["fields"]] if obj.get("fields") is not None else None
+            "fields": [ToolSettingField.from_dict(_item) for _item in obj["fields"]] if obj.get("fields") is not None else None,
+            "sandbox_provider": obj.get("sandbox_provider")
         })
         return _obj
 

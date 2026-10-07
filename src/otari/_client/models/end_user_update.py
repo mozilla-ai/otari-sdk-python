@@ -17,21 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class McpToolDefinition(BaseModel):
+class EndUserUpdate(BaseModel):
     """
-    One live tool a caller-orchestrated application may expose to its model.  ``annotations`` is the remote server's own metadata, passed through as untrusted data. Otari never turns ``readOnlyHint`` into an authorization decision; each application owns its risk policy, and a server cannot waive an application's approval gate by labeling itself read-only.
+    Block, unblock or move an end user. An omitted field is left as it is.
     """ # noqa: E501
-    annotations: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    description: Optional[StrictStr] = Field(default=None, description="The server's own description, untrusted.")
-    input_schema: Dict[str, Any] = Field(description="The tool's MCP inputSchema, unmodified.")
-    name: StrictStr = Field(description="The remote MCP tool name to send back to /api/v1/mcp/execute.")
-    __properties: ClassVar[List[str]] = ["annotations", "description", "input_schema", "name"]
+    blocked: Optional[StrictBool] = Field(default=None, description="Whether the end user is refused")
+    budget_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="A budget on the key's end_user_budget_ids to move the end user to")
+    __properties: ClassVar[List[str]] = ["blocked", "budget_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +50,7 @@ class McpToolDefinition(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a JSON string"""
+        """Create an instance of EndUserUpdate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,21 +71,21 @@ class McpToolDefinition(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if annotations (nullable) is None
+        # set to None if blocked (nullable) is None
         # and model_fields_set contains the field
-        if self.annotations is None and "annotations" in self.model_fields_set:
-            _dict['annotations'] = None
+        if self.blocked is None and "blocked" in self.model_fields_set:
+            _dict['blocked'] = None
 
-        # set to None if description (nullable) is None
+        # set to None if budget_id (nullable) is None
         # and model_fields_set contains the field
-        if self.description is None and "description" in self.model_fields_set:
-            _dict['description'] = None
+        if self.budget_id is None and "budget_id" in self.model_fields_set:
+            _dict['budget_id'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a dict"""
+        """Create an instance of EndUserUpdate from a dict"""
         if obj is None:
             return None
 
@@ -94,10 +93,8 @@ class McpToolDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "annotations": obj.get("annotations"),
-            "description": obj.get("description"),
-            "input_schema": obj.get("input_schema"),
-            "name": obj.get("name")
+            "blocked": obj.get("blocked"),
+            "budget_id": obj.get("budget_id")
         })
         return _obj
 

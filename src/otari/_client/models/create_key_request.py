@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,7 +32,8 @@ class CreateKeyRequest(BaseModel):
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = Field(default=None, description="Model allow-list: null = any model, [] = deny all, or canonical instance:model entries (with instance:* / instance:prefix* wildcards).")
     capture_agent_telemetry: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide capture_agent_telemetry setting: null (default) inherits it, true always stores this key's coding-agent telemetry, false always discards it. Covers both behavioral events (tool_result, tool_decision, user_prompt, api_error) from POST /otlp/v1/logs and outcome-metric data points (lines of code, commits, pull requests, active time) from POST /otlp/v1/metrics. Usage capture and billing are unaffected either way.")
-    end_user_budget_id: Optional[StrictStr] = Field(default=None, description="Budget each end user this key creates is capped at. Null leaves end users capped only by this key's own ceiling.")
+    end_user_budget_id: Optional[StrictStr] = Field(default=None, description="Budget each end user this key creates is capped at, unless the request names another with Otari-End-User-Budget. Null leaves end users capped only by this key's own ceiling.")
+    end_user_budget_ids: Optional[Annotated[List[StrictStr], Field(max_length=100)]] = Field(default=None, description="Budgets a request may start a new end user on by naming one in Otari-End-User-Budget. Null allows end_user_budget_id alone. When both are set, end_user_budget_id must be on the list.")
     exclude_from_budget: Optional[StrictBool] = Field(default=False, description="When true, requests on this key are logged with cost but never reserved, reconciled into the user's spend, or gated by budget.")
     expires_at: Optional[datetime] = Field(default=None, description="Optional expiration timestamp")
     is_service_key: Optional[StrictBool] = Field(default=False, description="When true, a request may name an end user in its 'user' field. Each end user is created on first use, owned by this key's user, and billed to its own budget, while this key's own ceiling caps all of them together.")
@@ -40,7 +42,7 @@ class CreateKeyRequest(BaseModel):
     reject_user_mismatch: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide reject_user_mismatch setting: null (default) inherits it, true always rejects a request naming a different 'user', false always accepts it. Spend binds to this key's own user either way.")
     user_id: Optional[StrictStr] = Field(default=None, description="Optional user ID to associate with this key")
     workspace_id: Optional[UUID] = Field(default=None, description="Workspace this key belongs to, which must be one in the caller's organization. Omitted means that organization's default workspace. A key belongs to exactly one workspace: requests on it are scoped and billed there, so the workspace is read off the key rather than off a request header.")
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "end_user_budget_id", "exclude_from_budget", "expires_at", "is_service_key", "key_name", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "is_service_key", "key_name", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -96,6 +98,11 @@ class CreateKeyRequest(BaseModel):
         if self.end_user_budget_id is None and "end_user_budget_id" in self.model_fields_set:
             _dict['end_user_budget_id'] = None
 
+        # set to None if end_user_budget_ids (nullable) is None
+        # and model_fields_set contains the field
+        if self.end_user_budget_ids is None and "end_user_budget_ids" in self.model_fields_set:
+            _dict['end_user_budget_ids'] = None
+
         # set to None if expires_at (nullable) is None
         # and model_fields_set contains the field
         if self.expires_at is None and "expires_at" in self.model_fields_set:
@@ -136,6 +143,7 @@ class CreateKeyRequest(BaseModel):
             "allowed_models": obj.get("allowed_models"),
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "end_user_budget_id": obj.get("end_user_budget_id"),
+            "end_user_budget_ids": obj.get("end_user_budget_ids"),
             "exclude_from_budget": obj.get("exclude_from_budget") if obj.get("exclude_from_budget") is not None else False,
             "expires_at": obj.get("expires_at"),
             "is_service_key": obj.get("is_service_key") if obj.get("is_service_key") is not None else False,

@@ -17,21 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class McpToolDefinition(BaseModel):
+class AgentModelRecommendation(BaseModel):
     """
-    One live tool a caller-orchestrated application may expose to its model.  ``annotations`` is the remote server's own metadata, passed through as untrusted data. Otari never turns ``readOnlyHint`` into an authorization decision; each application owns its risk policy, and a server cannot waive an application's approval gate by labeling itself read-only.
+    The model recommended for the subagent.
     """ # noqa: E501
-    annotations: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    description: Optional[StrictStr] = Field(default=None, description="The server's own description, untrusted.")
-    input_schema: Dict[str, Any] = Field(description="The tool's MCP inputSchema, unmodified.")
-    name: StrictStr = Field(description="The remote MCP tool name to send back to /api/v1/mcp/execute.")
-    __properties: ClassVar[List[str]] = ["annotations", "description", "input_schema", "name"]
+    model: StrictStr = Field(description="A model alias or id the harness can start the subagent on.")
+    probabilities: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = Field(default=None, description="The decision model's probability for each candidate, when it reports them.")
+    reason: Optional[StrictStr] = Field(default=None, description="Why, in one short sentence the harness may show.")
+    __properties: ClassVar[List[str]] = ["model", "probabilities", "reason"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +50,7 @@ class McpToolDefinition(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a JSON string"""
+        """Create an instance of AgentModelRecommendation from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,21 +71,21 @@ class McpToolDefinition(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if annotations (nullable) is None
+        # set to None if probabilities (nullable) is None
         # and model_fields_set contains the field
-        if self.annotations is None and "annotations" in self.model_fields_set:
-            _dict['annotations'] = None
+        if self.probabilities is None and "probabilities" in self.model_fields_set:
+            _dict['probabilities'] = None
 
-        # set to None if description (nullable) is None
+        # set to None if reason (nullable) is None
         # and model_fields_set contains the field
-        if self.description is None and "description" in self.model_fields_set:
-            _dict['description'] = None
+        if self.reason is None and "reason" in self.model_fields_set:
+            _dict['reason'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a dict"""
+        """Create an instance of AgentModelRecommendation from a dict"""
         if obj is None:
             return None
 
@@ -94,10 +93,9 @@ class McpToolDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "annotations": obj.get("annotations"),
-            "description": obj.get("description"),
-            "input_schema": obj.get("input_schema"),
-            "name": obj.get("name")
+            "model": obj.get("model"),
+            "probabilities": obj.get("probabilities"),
+            "reason": obj.get("reason")
         })
         return _obj
 

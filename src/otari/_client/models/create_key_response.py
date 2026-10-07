@@ -31,6 +31,7 @@ class CreateKeyResponse(BaseModel):
     capture_agent_telemetry: Optional[StrictBool]
     created_at: StrictStr
     end_user_budget_id: Optional[StrictStr]
+    end_user_budget_ids: List[StrictStr]
     exclude_from_budget: StrictBool
     expires_at: Optional[StrictStr]
     id: StrictStr
@@ -43,7 +44,7 @@ class CreateKeyResponse(BaseModel):
     metadata: Dict[str, Any]
     reject_user_mismatch: Optional[StrictBool]
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "created_at", "end_user_budget_id", "exclude_from_budget", "expires_at", "id", "is_active", "is_service_key", "key", "key_name", "key_prefix", "key_suffix", "metadata", "reject_user_mismatch", "user_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_service_key", "key", "key_name", "key_prefix", "key_suffix", "metadata", "reject_user_mismatch", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -145,6 +146,7 @@ class CreateKeyResponse(BaseModel):
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "created_at": obj.get("created_at"),
             "end_user_budget_id": obj.get("end_user_budget_id"),
+            "end_user_budget_ids": obj.get("end_user_budget_ids"),
             "exclude_from_budget": obj.get("exclude_from_budget"),
             "expires_at": obj.get("expires_at"),
             "id": obj.get("id"),

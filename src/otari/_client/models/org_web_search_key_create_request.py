@@ -17,22 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ModerationResult(BaseModel):
+class OrgWebSearchKeyCreateRequest(BaseModel):
     """
-    A single moderation decision, typically one per input item.
+    What a caller sends to add a key. The service keeps only its ciphertext and ``last4``.
     """ # noqa: E501
-    categories: Optional[Dict[str, StrictBool]] = None
-    category_applied_input_types: Optional[Dict[str, List[StrictStr]]] = None
-    category_scores: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = None
-    flagged: StrictBool
-    provider_raw: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    __properties: ClassVar[List[str]] = ["categories", "category_applied_input_types", "category_scores", "flagged", "provider_raw"]
+    api_key: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True, max_length=255)] = Field(description="How the organization tells this key apart from its others.")
+    provider: Annotated[str, Field(strict=True, max_length=255)] = Field(description="The search provider the key is for: tavily or brave.")
+    __properties: ClassVar[List[str]] = ["api_key", "name", "provider"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +51,7 @@ class ModerationResult(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ModerationResult from a JSON string"""
+        """Create an instance of OrgWebSearchKeyCreateRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,21 +72,11 @@ class ModerationResult(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if category_applied_input_types (nullable) is None
-        # and model_fields_set contains the field
-        if self.category_applied_input_types is None and "category_applied_input_types" in self.model_fields_set:
-            _dict['category_applied_input_types'] = None
-
-        # set to None if provider_raw (nullable) is None
-        # and model_fields_set contains the field
-        if self.provider_raw is None and "provider_raw" in self.model_fields_set:
-            _dict['provider_raw'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ModerationResult from a dict"""
+        """Create an instance of OrgWebSearchKeyCreateRequest from a dict"""
         if obj is None:
             return None
 
@@ -95,11 +84,9 @@ class ModerationResult(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "categories": obj.get("categories"),
-            "category_applied_input_types": obj.get("category_applied_input_types"),
-            "category_scores": obj.get("category_scores"),
-            "flagged": obj.get("flagged"),
-            "provider_raw": obj.get("provider_raw")
+            "api_key": obj.get("api_key"),
+            "name": obj.get("name"),
+            "provider": obj.get("provider")
         })
         return _obj
 

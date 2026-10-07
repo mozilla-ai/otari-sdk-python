@@ -37,7 +37,7 @@ class OrganizationGuardrailUpdate(BaseModel):
     on_unavailable: Optional[StrictStr] = None
     profile: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None
     url: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = None
-    validate_kwargs: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    validate_kwargs: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     workspace_ids: Optional[Annotated[List[UUID], Field(max_length=500)]] = None
     __properties: ClassVar[List[str]] = ["applies_to_all_workspaces", "credential", "definition_id", "enabled", "mode", "on_unavailable", "profile", "url", "validate_kwargs", "workspace_ids"]
 

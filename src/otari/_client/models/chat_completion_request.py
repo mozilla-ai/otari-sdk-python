@@ -45,19 +45,20 @@ class ChatCompletionRequest(BaseModel):
     mcp_server_ids: Optional[Annotated[List[UUID], Field(max_length=50)]] = None
     mcp_servers: Optional[List[McpServerConfig]] = None
     messages: Annotated[List[ChatMessageInput], Field(min_length=1)]
+    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     model: StrictStr
     n: Optional[StrictInt] = None
     parallel_tool_calls: Optional[StrictBool] = None
     presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     prompt_cache_key: Optional[StrictStr] = None
     reasoning_effort: Optional[StrictStr] = None
-    response_format: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    response_format: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     seed: Optional[StrictInt] = None
     service_tier: Optional[StrictStr] = None
     session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
     stop: Optional[Stop] = None
     stream: Optional[StrictBool] = False
-    stream_options: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    stream_options: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     tool_choice: Optional[ToolChoice] = None
     tools: Optional[List[ChatCompletionRequestToolsInner]] = None
@@ -65,7 +66,7 @@ class ChatCompletionRequest(BaseModel):
     top_logprobs: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     user: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "model", "n", "parallel_tool_calls", "presence_penalty", "prompt_cache_key", "reasoning_effort", "response_format", "seed", "service_tier", "session_label", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
+    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "n", "parallel_tool_calls", "presence_penalty", "prompt_cache_key", "reasoning_effort", "response_format", "seed", "service_tier", "session_label", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
 
     @field_validator('reasoning_effort')
     def reasoning_effort_validate_enum(cls, value):
@@ -195,6 +196,11 @@ class ChatCompletionRequest(BaseModel):
         if self.mcp_servers is None and "mcp_servers" in self.model_fields_set:
             _dict['mcp_servers'] = None
 
+        # set to None if metadata (nullable) is None
+        # and model_fields_set contains the field
+        if self.metadata is None and "metadata" in self.model_fields_set:
+            _dict['metadata'] = None
+
         # set to None if n (nullable) is None
         # and model_fields_set contains the field
         if self.n is None and "n" in self.model_fields_set:
@@ -307,6 +313,7 @@ class ChatCompletionRequest(BaseModel):
             "mcp_server_ids": obj.get("mcp_server_ids"),
             "mcp_servers": [McpServerConfig.from_dict(_item) for _item in obj["mcp_servers"]] if obj.get("mcp_servers") is not None else None,
             "messages": [ChatMessageInput.from_dict(_item) for _item in obj["messages"]] if obj.get("messages") is not None else None,
+            "metadata": obj.get("metadata"),
             "model": obj.get("model"),
             "n": obj.get("n"),
             "parallel_tool_calls": obj.get("parallel_tool_calls"),

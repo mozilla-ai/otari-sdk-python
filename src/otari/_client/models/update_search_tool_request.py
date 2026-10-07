@@ -31,7 +31,7 @@ class UpdateSearchToolRequest(BaseModel):
     api_base: Optional[StrictStr] = None
     api_key: Optional[StrictStr] = Field(default=None, description="New API key. Omit to keep the existing one. Never returned.")
     expected_updated_at: Optional[StrictStr] = Field(default=None, description="Optimistic concurrency: if set, the update 412s unless it matches the stored updated_at.")
-    options: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    options: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     provider: Optional[StrictStr] = None
     timeout: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = None
     __properties: ClassVar[List[str]] = ["api_base", "api_key", "expected_updated_at", "options", "provider", "timeout"]

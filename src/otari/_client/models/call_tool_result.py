@@ -31,7 +31,7 @@ class CallToolResult(BaseModel):
     meta: Optional[Dict[str, Any]] = Field(default=None, alias="_meta")
     content: List[ContentInner]
     is_error: Optional[StrictBool] = Field(default=False, alias="isError")
-    structured_content: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').", alias="structuredContent")
+    structured_content: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.", alias="structuredContent")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["_meta", "content", "isError", "structuredContent"]
 

@@ -32,7 +32,7 @@ class WorkspaceWebSearchConfigUpdate(BaseModel):
     blocked_domains: Optional[List[StrictStr]] = Field(default=None, description="Filters Search results and blocks initial and redirected Fetch destinations; added to any list the request sends")
     enabled: StrictBool = Field(description="False refuses web access for this workspace through otari_web_search, otari_web_fetch, and POST /api/v1/search.")
     max_results: Optional[Annotated[int, Field(le=20, strict=True, gt=0)]] = Field(default=None, description="Search only: ceiling on results one search returns; only ever lowers the effective limit, so at most 20")
-    provider_options: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    provider_options: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     purpose_hint: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = Field(default=None, description="Search only: hint used when a request declares otari_web_search without one of its own")
     __properties: ClassVar[List[str]] = ["allowed_domains", "blocked_domains", "enabled", "max_results", "provider_options", "purpose_hint"]
 

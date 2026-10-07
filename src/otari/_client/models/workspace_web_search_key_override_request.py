@@ -17,21 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class McpToolDefinition(BaseModel):
+class WorkspaceWebSearchKeyOverrideRequest(BaseModel):
     """
-    One live tool a caller-orchestrated application may expose to its model.  ``annotations`` is the remote server's own metadata, passed through as untrusted data. Otari never turns ``readOnlyHint`` into an authorization decision; each application owns its risk policy, and a server cannot waive an application's approval gate by labeling itself read-only.
+    Tri-state: an omitted flag keeps its value.  Pinning a key re-enables it and unpins any other key of the workspace, and turning a key off unpins it. Sending both flags true is refused. Both false deletes the override.
     """ # noqa: E501
-    annotations: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    description: Optional[StrictStr] = Field(default=None, description="The server's own description, untrusted.")
-    input_schema: Dict[str, Any] = Field(description="The tool's MCP inputSchema, unmodified.")
-    name: StrictStr = Field(description="The remote MCP tool name to send back to /api/v1/mcp/execute.")
-    __properties: ClassVar[List[str]] = ["annotations", "description", "input_schema", "name"]
+    disabled: Optional[StrictBool] = None
+    is_default: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["disabled", "is_default"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +49,7 @@ class McpToolDefinition(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a JSON string"""
+        """Create an instance of WorkspaceWebSearchKeyOverrideRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,21 +70,21 @@ class McpToolDefinition(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if annotations (nullable) is None
+        # set to None if disabled (nullable) is None
         # and model_fields_set contains the field
-        if self.annotations is None and "annotations" in self.model_fields_set:
-            _dict['annotations'] = None
+        if self.disabled is None and "disabled" in self.model_fields_set:
+            _dict['disabled'] = None
 
-        # set to None if description (nullable) is None
+        # set to None if is_default (nullable) is None
         # and model_fields_set contains the field
-        if self.description is None and "description" in self.model_fields_set:
-            _dict['description'] = None
+        if self.is_default is None and "is_default" in self.model_fields_set:
+            _dict['is_default'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of McpToolDefinition from a dict"""
+        """Create an instance of WorkspaceWebSearchKeyOverrideRequest from a dict"""
         if obj is None:
             return None
 
@@ -94,10 +92,8 @@ class McpToolDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "annotations": obj.get("annotations"),
-            "description": obj.get("description"),
-            "input_schema": obj.get("input_schema"),
-            "name": obj.get("name")
+            "disabled": obj.get("disabled"),
+            "is_default": obj.get("is_default")
         })
         return _obj
 

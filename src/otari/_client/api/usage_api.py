@@ -64,6 +64,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -107,6 +108,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -152,6 +155,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -192,6 +196,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -235,6 +240,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -280,6 +287,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -320,6 +328,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -363,6 +372,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -408,6 +419,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -443,6 +455,7 @@ class UsageApi:
         provider,
         source,
         source_label,
+        tag,
         api_key_id,
         priced,
         tool,
@@ -460,6 +473,7 @@ class UsageApi:
         _collection_formats: Dict[str, str] = {
             'user_id': 'multi',
             'model': 'multi',
+            'tag': 'multi',
             'api_key_id': 'multi',
             'request_group_id': 'multi',
         }
@@ -532,6 +546,10 @@ class UsageApi:
         if source_label is not None:
             
             _query_params.append(('source_label', source_label))
+            
+        if tag is not None:
+            
+            _query_params.append(('tag', tag))
             
         if api_key_id is not None:
             
@@ -1676,6 +1694,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -1721,6 +1740,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -1770,6 +1791,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -1812,6 +1834,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -1857,6 +1880,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -1906,6 +1931,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -1948,6 +1974,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -1993,6 +2020,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -2042,6 +2071,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -2079,6 +2109,7 @@ class UsageApi:
         provider,
         source,
         source_label,
+        tag,
         api_key_id,
         priced,
         tool,
@@ -2098,6 +2129,7 @@ class UsageApi:
         _collection_formats: Dict[str, str] = {
             'user_id': 'multi',
             'model': 'multi',
+            'tag': 'multi',
             'api_key_id': 'multi',
             'request_group_id': 'multi',
         }
@@ -2170,6 +2202,10 @@ class UsageApi:
         if source_label is not None:
             
             _query_params.append(('source_label', source_label))
+            
+        if tag is not None:
+            
+            _query_params.append(('tag', tag))
             
         if api_key_id is not None:
             
@@ -2533,6 +2569,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -2578,6 +2615,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -2624,6 +2663,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -2665,6 +2705,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -2710,6 +2751,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -2756,6 +2799,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -2797,6 +2841,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -2842,6 +2887,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -2888,6 +2935,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -2924,6 +2972,7 @@ class UsageApi:
         provider,
         source,
         source_label,
+        tag,
         api_key_id,
         priced,
         tool,
@@ -2941,6 +2990,7 @@ class UsageApi:
         _collection_formats: Dict[str, str] = {
             'user_id': 'multi',
             'model': 'multi',
+            'tag': 'multi',
             'api_key_id': 'multi',
         }
 
@@ -3017,6 +3067,10 @@ class UsageApi:
             
             _query_params.append(('source_label', source_label))
             
+        if tag is not None:
+            
+            _query_params.append(('tag', tag))
+            
         if api_key_id is not None:
             
             _query_params.append(('api_key_id', api_key_id))
@@ -3092,6 +3146,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -3099,6 +3154,7 @@ class UsageApi:
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         dimensions: Annotated[Optional[List[StrictStr]], Field(description="Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.")] = None,
+        group_by_tag: Annotated[Optional[Annotated[str, Field(min_length=1, strict=True, max_length=64)]], Field(description="A tag key to break spend down by, returned as `by_tag`. Rows that do not carry the tag group under a null key.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3136,6 +3192,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -3150,6 +3208,8 @@ class UsageApi:
         :type bucket: str
         :param dimensions: Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.
         :type dimensions: List[str]
+        :param group_by_tag: A tag key to break spend down by, returned as `by_tag`. Rows that do not carry the tag group under a null key.
+        :type group_by_tag: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3183,6 +3243,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -3190,6 +3251,7 @@ class UsageApi:
             workspace_id=workspace_id,
             bucket=bucket,
             dimensions=dimensions,
+            group_by_tag=group_by_tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3224,6 +3286,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -3231,6 +3294,7 @@ class UsageApi:
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         dimensions: Annotated[Optional[List[StrictStr]], Field(description="Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.")] = None,
+        group_by_tag: Annotated[Optional[Annotated[str, Field(min_length=1, strict=True, max_length=64)]], Field(description="A tag key to break spend down by, returned as `by_tag`. Rows that do not carry the tag group under a null key.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3268,6 +3332,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -3282,6 +3348,8 @@ class UsageApi:
         :type bucket: str
         :param dimensions: Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.
         :type dimensions: List[str]
+        :param group_by_tag: A tag key to break spend down by, returned as `by_tag`. Rows that do not carry the tag group under a null key.
+        :type group_by_tag: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3315,6 +3383,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -3322,6 +3391,7 @@ class UsageApi:
             workspace_id=workspace_id,
             bucket=bucket,
             dimensions=dimensions,
+            group_by_tag=group_by_tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3356,6 +3426,7 @@ class UsageApi:
         provider: Annotated[Optional[StrictStr], Field(description="Filter to a single provider (e.g. 'openai')")] = None,
         source: Annotated[Optional[StrictStr], Field(description="Filter to a single provenance source (e.g. 'gateway' or 'claude_code')")] = None,
         source_label: Annotated[Optional[StrictStr], Field(description="Filter to a single session/project label (the source_label carried by imported usage)")] = None,
+        tag: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.")] = None,
         priced: Annotated[Optional[StrictBool], Field(description="Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.")] = None,
         tool: Annotated[Optional[StrictStr], Field(description="Filter to requests that ran a gateway-run tool. 'any' matches any tool; a tool name (web_search, web_fetch, code_execution) matches that tool specifically.")] = None,
@@ -3363,6 +3434,7 @@ class UsageApi:
         workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
         bucket: Annotated[Optional[StrictStr], Field(description="Time-series granularity: 'hour' or 'day'")] = None,
         dimensions: Annotated[Optional[List[StrictStr]], Field(description="Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.")] = None,
+        group_by_tag: Annotated[Optional[Annotated[str, Field(min_length=1, strict=True, max_length=64)]], Field(description="A tag key to break spend down by, returned as `by_tag`. Rows that do not carry the tag group under a null key.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3400,6 +3472,8 @@ class UsageApi:
         :type source: str
         :param source_label: Filter to a single session/project label (the source_label carried by imported usage)
         :type source_label: str
+        :param tag: Filter by a request tag (what a request sent in its `metadata`), as `key:value`. Repeatable: values for the same key match any of them, and different keys must all match. At most 50 per call.
+        :type tag: List[str]
         :param api_key_id: Filter to one or more API key ids; repeatable (api_key_id=a&api_key_id=b). Several values match any of them. At most 50 per call.
         :type api_key_id: List[str]
         :param priced: Filter by token-pricing state: true = only rows whose model tokens were priced, false = only rows that still need pricing (no cost at all, or tokens that were never metered because the model had no rate). A row charged only for gateway-run tool calls still counts as needing pricing.
@@ -3414,6 +3488,8 @@ class UsageApi:
         :type bucket: str
         :param dimensions: Which breakdowns to compute; repeatable (dimensions=model&dimensions=user). Each value names the 'by_<value>' response field it fills, except 'status_code', which fills the failure taxonomy in 'errors_by_status_code'. Omit for every breakdown (the default); pass 'none' for a totals-and-series-only response. Each dimension left out skips one GROUP BY scan, so a caller that reads only the tiles or the time series should say so. Fields that were not requested come back empty.
         :type dimensions: List[str]
+        :param group_by_tag: A tag key to break spend down by, returned as `by_tag`. Rows that do not carry the tag group under a null key.
+        :type group_by_tag: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3447,6 +3523,7 @@ class UsageApi:
             provider=provider,
             source=source,
             source_label=source_label,
+            tag=tag,
             api_key_id=api_key_id,
             priced=priced,
             tool=tool,
@@ -3454,6 +3531,7 @@ class UsageApi:
             workspace_id=workspace_id,
             bucket=bucket,
             dimensions=dimensions,
+            group_by_tag=group_by_tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3483,6 +3561,7 @@ class UsageApi:
         provider,
         source,
         source_label,
+        tag,
         api_key_id,
         priced,
         tool,
@@ -3490,6 +3569,7 @@ class UsageApi:
         workspace_id,
         bucket,
         dimensions,
+        group_by_tag,
         _request_auth,
         _content_type,
         _headers,
@@ -3501,6 +3581,7 @@ class UsageApi:
         _collection_formats: Dict[str, str] = {
             'user_id': 'multi',
             'model': 'multi',
+            'tag': 'multi',
             'api_key_id': 'multi',
             'dimensions': 'multi',
         }
@@ -3574,6 +3655,10 @@ class UsageApi:
             
             _query_params.append(('source_label', source_label))
             
+        if tag is not None:
+            
+            _query_params.append(('tag', tag))
+            
         if api_key_id is not None:
             
             _query_params.append(('api_key_id', api_key_id))
@@ -3601,6 +3686,10 @@ class UsageApi:
         if dimensions is not None:
             
             _query_params.append(('dimensions', dimensions))
+            
+        if group_by_tag is not None:
+            
+            _query_params.append(('group_by_tag', group_by_tag))
             
         # process the header parameters
         # process the form parameters

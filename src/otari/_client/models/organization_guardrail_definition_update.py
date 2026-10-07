@@ -28,7 +28,7 @@ class OrganizationGuardrailDefinitionUpdate(BaseModel):
     """
     Partial update. Only the fields the caller sets are applied.  ``create_kwargs`` replaces the arguments whole when sent, and an argument the catalog marks secret keeps its stored value where the caller echoes back the ``***`` a read gave them. Omitting it leaves both columns untouched *and reads neither*, which is what lets an admin on a deployment whose ``OTARI_SECRET_KEY`` has moved still flip ``enabled`` and repair the row by typing the credential again.  Changing ``guardrail_name`` without sending ``create_kwargs`` re-splits the stored arguments under the new class, because the plain/secret split is the old class's answer and would otherwise go stale.
     """ # noqa: E501
-    create_kwargs: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    create_kwargs: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     enabled: Optional[StrictBool] = None
     guardrail_name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None
     name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None

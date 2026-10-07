@@ -33,7 +33,7 @@ class ExplainRequest(BaseModel):
     budget_used_pct: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Simulated budget usage percentage.")
     key_id: Optional[StrictStr] = Field(default=None, description="Evaluate conditions as this API key id.")
     name: Optional[StrictStr] = Field(default=None, description="An existing policy to explain.")
-    spec: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    spec: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     user_id: Optional[StrictStr] = Field(default=None, description="Evaluate conditions as this user.")
     workspace_id: Optional[UUID] = Field(default=None, description="Resolve `name` and the policy's candidate selectors in this workspace. Omit for the deployment's default workspace.")
     __properties: ClassVar[List[str]] = ["allowed_models", "budget_remaining_usd", "budget_used_pct", "key_id", "name", "spec", "user_id", "workspace_id"]

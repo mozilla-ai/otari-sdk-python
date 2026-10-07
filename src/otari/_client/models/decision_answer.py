@@ -29,7 +29,7 @@ class DecisionAnswer(BaseModel):
     """ # noqa: E501
     choice: Optional[StrictStr] = Field(default=None, description="The chosen option, for a choice question")
     confidence: Optional[Union[StrictFloat, StrictInt]] = None
-    legend: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    legend: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     noul: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Probability of yes, for a noul question")
     probabilities: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = None
     score: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The level, for a score question")
