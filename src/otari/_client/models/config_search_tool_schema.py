@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -25,14 +25,26 @@ from pydantic_core import to_jsonable_python
 
 class ConfigSearchToolSchema(BaseModel):
     """
-    A search tool declared in the config file. Read-only: it cannot be edited here.
+    A search or fetch instance declared in the config file, or ``builtin_fetch``. Read-only here.
     """ # noqa: E501
     api_base: Optional[StrictStr] = None
+    fetch_tool: Optional[StrictStr] = Field(default=None, description="A search instance's enrichment fetch instance. Null means the fetch default enriches it.")
     has_api_key: StrictBool = Field(description="Whether the config entry carries an API key. The key itself is not shown.")
+    kind: Optional[StrictStr] = Field(default='search', description="Whether this is a search or a fetch instance.")
     name: StrictStr
     provider: StrictStr
-    shadowed: Optional[StrictBool] = Field(default=False, description="True when a stored search tool of the same name overrides this entry.")
-    __properties: ClassVar[List[str]] = ["api_base", "has_api_key", "name", "provider", "shadowed"]
+    shadowed: Optional[StrictBool] = Field(default=False, description="True when a stored instance of the same name and kind overrides this entry.")
+    __properties: ClassVar[List[str]] = ["api_base", "fetch_tool", "has_api_key", "kind", "name", "provider", "shadowed"]
+
+    @field_validator('kind')
+    def kind_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['search', 'fetch']):
+            raise ValueError("must be one of enum values ('search', 'fetch')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -78,6 +90,11 @@ class ConfigSearchToolSchema(BaseModel):
         if self.api_base is None and "api_base" in self.model_fields_set:
             _dict['api_base'] = None
 
+        # set to None if fetch_tool (nullable) is None
+        # and model_fields_set contains the field
+        if self.fetch_tool is None and "fetch_tool" in self.model_fields_set:
+            _dict['fetch_tool'] = None
+
         return _dict
 
     @classmethod
@@ -91,7 +108,9 @@ class ConfigSearchToolSchema(BaseModel):
 
         _obj = cls.model_validate({
             "api_base": obj.get("api_base"),
+            "fetch_tool": obj.get("fetch_tool"),
             "has_api_key": obj.get("has_api_key"),
+            "kind": obj.get("kind") if obj.get("kind") is not None else 'search',
             "name": obj.get("name"),
             "provider": obj.get("provider"),
             "shadowed": obj.get("shadowed") if obj.get("shadowed") is not None else False

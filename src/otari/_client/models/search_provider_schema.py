@@ -17,21 +17,40 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.search_provider_option_schema import SearchProviderOptionSchema
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class SearchProviderSchema(BaseModel):
     """
-    One search provider this build can dispatch to, for the add-tool picker.
+    One provider a search or fetch instance may name, for the add-tool form.  One schema for both capabilities: the fields they share, then each one's own, which are null on the other's entries.
     """ # noqa: E501
-    default_api_base: Optional[StrictStr] = Field(default=None, description="The endpoint a tool on this provider uses when it declares no api_base. Null means nothing supplies one, so an api_base is required.")
+    default_api_base: Optional[StrictStr] = Field(default=None, description="The endpoint a tool on this provider uses when it declares no api_base. Null means nothing supplies one, so an api_base is required. One that comes from the deployment's own settings, such as the web_search_url a searxng tool inherits, is shown only to a caller who operates the deployment: nothing else inherits it, an organization's key included.")
+    doc_url: Optional[StrictStr] = Field(default=None, description="The provider's API documentation.")
+    formats: Optional[List[StrictStr]] = Field(default=None, description="Fetch: the formats the page text comes back in.")
     id: StrictStr = Field(description="Value to send as 'provider'.")
+    instances: Optional[List[StrictStr]] = Field(default=None, description="The names of this deployment's configured and stored tools on this provider, shown only to a caller who operates the deployment.")
+    key_in_url: Optional[StrictBool] = Field(default=None, description="Search: true when the API key travels in the request URL.")
+    kind: StrictStr = Field(description="Whether this is a search provider or a fetch provider.")
+    max_results: Optional[StrictInt] = Field(default=None, description="Search: the most results one call can ask for.")
+    max_urls_per_call: Optional[StrictInt] = Field(default=None, description="Fetch: the most pages one call can fetch.")
+    options: Optional[List[SearchProviderOptionSchema]] = Field(default=None, description="The native options a tool may set, under the provider's own names. Null when there is no schema for the provider yet, so a tool's options are passed unchecked.")
+    query_in_url: Optional[StrictBool] = Field(default=None, description="Search: true when the query travels in the request URL.")
+    renders_javascript: Optional[StrictBool] = Field(default=None, description="Fetch: true when the provider runs a page's JavaScript before reading it.")
     requires_api_base: StrictBool = Field(description="True when this provider has no endpoint of its own, so the tool must say where the backend is.")
     requires_api_key: StrictBool = Field(description="True when a tool on this provider must carry an API key.")
-    __properties: ClassVar[List[str]] = ["default_api_base", "id", "requires_api_base", "requires_api_key"]
+    tier: Optional[StrictStr] = Field(default=None, description="The library's tier for the provider.")
+    __properties: ClassVar[List[str]] = ["default_api_base", "doc_url", "formats", "id", "instances", "key_in_url", "kind", "max_results", "max_urls_per_call", "options", "query_in_url", "renders_javascript", "requires_api_base", "requires_api_key", "tier"]
+
+    @field_validator('kind')
+    def kind_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['search', 'fetch']):
+            raise ValueError("must be one of enum values ('search', 'fetch')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -72,10 +91,62 @@ class SearchProviderSchema(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in options (list)
+        _items = []
+        if self.options:
+            for _item_options in self.options:
+                if _item_options:
+                    _items.append(_item_options.to_dict())
+            _dict['options'] = _items
         # set to None if default_api_base (nullable) is None
         # and model_fields_set contains the field
         if self.default_api_base is None and "default_api_base" in self.model_fields_set:
             _dict['default_api_base'] = None
+
+        # set to None if doc_url (nullable) is None
+        # and model_fields_set contains the field
+        if self.doc_url is None and "doc_url" in self.model_fields_set:
+            _dict['doc_url'] = None
+
+        # set to None if formats (nullable) is None
+        # and model_fields_set contains the field
+        if self.formats is None and "formats" in self.model_fields_set:
+            _dict['formats'] = None
+
+        # set to None if key_in_url (nullable) is None
+        # and model_fields_set contains the field
+        if self.key_in_url is None and "key_in_url" in self.model_fields_set:
+            _dict['key_in_url'] = None
+
+        # set to None if max_results (nullable) is None
+        # and model_fields_set contains the field
+        if self.max_results is None and "max_results" in self.model_fields_set:
+            _dict['max_results'] = None
+
+        # set to None if max_urls_per_call (nullable) is None
+        # and model_fields_set contains the field
+        if self.max_urls_per_call is None and "max_urls_per_call" in self.model_fields_set:
+            _dict['max_urls_per_call'] = None
+
+        # set to None if options (nullable) is None
+        # and model_fields_set contains the field
+        if self.options is None and "options" in self.model_fields_set:
+            _dict['options'] = None
+
+        # set to None if query_in_url (nullable) is None
+        # and model_fields_set contains the field
+        if self.query_in_url is None and "query_in_url" in self.model_fields_set:
+            _dict['query_in_url'] = None
+
+        # set to None if renders_javascript (nullable) is None
+        # and model_fields_set contains the field
+        if self.renders_javascript is None and "renders_javascript" in self.model_fields_set:
+            _dict['renders_javascript'] = None
+
+        # set to None if tier (nullable) is None
+        # and model_fields_set contains the field
+        if self.tier is None and "tier" in self.model_fields_set:
+            _dict['tier'] = None
 
         return _dict
 
@@ -90,9 +161,20 @@ class SearchProviderSchema(BaseModel):
 
         _obj = cls.model_validate({
             "default_api_base": obj.get("default_api_base"),
+            "doc_url": obj.get("doc_url"),
+            "formats": obj.get("formats"),
             "id": obj.get("id"),
+            "instances": obj.get("instances"),
+            "key_in_url": obj.get("key_in_url"),
+            "kind": obj.get("kind"),
+            "max_results": obj.get("max_results"),
+            "max_urls_per_call": obj.get("max_urls_per_call"),
+            "options": [SearchProviderOptionSchema.from_dict(_item) for _item in obj["options"]] if obj.get("options") is not None else None,
+            "query_in_url": obj.get("query_in_url"),
+            "renders_javascript": obj.get("renders_javascript"),
             "requires_api_base": obj.get("requires_api_base"),
-            "requires_api_key": obj.get("requires_api_key")
+            "requires_api_key": obj.get("requires_api_key"),
+            "tier": obj.get("tier")
         })
         return _obj
 

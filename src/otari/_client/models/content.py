@@ -18,13 +18,12 @@ import json
 import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
-from typing import List, Optional
-from otari._client.models.content_any_of_inner import ContentAnyOfInner
+from typing import Any, Dict, List, Optional
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-CONTENT_ANY_OF_SCHEMAS = ["List[ContentAnyOfInner]", "str"]
+CONTENT_ANY_OF_SCHEMAS = ["List[Dict[str, object]]", "str"]
 
 class Content(BaseModel):
     """
@@ -33,13 +32,13 @@ class Content(BaseModel):
 
     # data type: str
     anyof_schema_1_validator: Optional[StrictStr] = None
-    # data type: List[ContentAnyOfInner]
-    anyof_schema_2_validator: Optional[List[ContentAnyOfInner]] = None
+    # data type: List[Dict[str, object]]
+    anyof_schema_2_validator: Optional[List[Dict[str, Any]]] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[List[ContentAnyOfInner], str]] = None
+        actual_instance: Optional[Union[List[Dict[str, object]], str]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "List[ContentAnyOfInner]", "str" }
+    any_of_schemas: Set[str] = { "List[Dict[str, object]]", "str" }
 
     model_config = {
         "validate_assignment": True,
@@ -69,7 +68,7 @@ class Content(BaseModel):
             return v
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # validate data type: List[ContentAnyOfInner]
+        # validate data type: List[Dict[str, object]]
         try:
             instance.anyof_schema_2_validator = v
             return v
@@ -77,7 +76,7 @@ class Content(BaseModel):
             error_messages.append(str(e))
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Content with anyOf schemas: List[ContentAnyOfInner], str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Content with anyOf schemas: List[Dict[str, object]], str. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -102,7 +101,7 @@ class Content(BaseModel):
             return instance
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into List[ContentAnyOfInner]
+        # deserialize data into List[Dict[str, object]]
         try:
             # validation
             instance.anyof_schema_2_validator = json.loads(json_str)
@@ -114,7 +113,7 @@ class Content(BaseModel):
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Content with anyOf schemas: List[ContentAnyOfInner], str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Content with anyOf schemas: List[Dict[str, object]], str. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -128,7 +127,7 @@ class Content(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], List[ContentAnyOfInner], str]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], List[Dict[str, object]], str]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None
