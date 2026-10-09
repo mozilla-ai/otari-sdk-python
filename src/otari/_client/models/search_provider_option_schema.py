@@ -17,21 +17,30 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
-from otari._client.models.config_search_tool_schema import ConfigSearchToolSchema
-from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SearchToolsResponse(BaseModel):
+class SearchProviderOptionSchema(BaseModel):
     """
-    Every search instance ``POST /api/v1/search`` can name, or every fetch instance, by where it came from.
+    One native option a provider accepts, under the provider's own name.
     """ # noqa: E501
-    config: List[ConfigSearchToolSchema]
-    stored: List[StoredSearchToolSchema]
-    __properties: ClassVar[List[str]] = ["config", "stored"]
+    default: Optional[Any] = None
+    description: Optional[StrictStr] = ''
+    enum: Optional[List[StrictStr]] = Field(default=None, description="The only values it takes, when it is limited to a list.")
+    name: StrictStr
+    operator_only: Optional[StrictBool] = Field(default=False, description="True when only an instance or a credential may set it, never a workspace or a request.")
+    type: StrictStr
+    __properties: ClassVar[List[str]] = ["default", "description", "enum", "name", "operator_only", "type"]
+
+    @field_validator('type')
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['string', 'integer', 'number', 'boolean', 'array', 'object']):
+            raise ValueError("must be one of enum values ('string', 'integer', 'number', 'boolean', 'array', 'object')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +60,7 @@ class SearchToolsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SearchToolsResponse from a JSON string"""
+        """Create an instance of SearchProviderOptionSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,25 +81,21 @@ class SearchToolsResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in config (list)
-        _items = []
-        if self.config:
-            for _item_config in self.config:
-                if _item_config:
-                    _items.append(_item_config.to_dict())
-            _dict['config'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in stored (list)
-        _items = []
-        if self.stored:
-            for _item_stored in self.stored:
-                if _item_stored:
-                    _items.append(_item_stored.to_dict())
-            _dict['stored'] = _items
+        # set to None if default (nullable) is None
+        # and model_fields_set contains the field
+        if self.default is None and "default" in self.model_fields_set:
+            _dict['default'] = None
+
+        # set to None if enum (nullable) is None
+        # and model_fields_set contains the field
+        if self.enum is None and "enum" in self.model_fields_set:
+            _dict['enum'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SearchToolsResponse from a dict"""
+        """Create an instance of SearchProviderOptionSchema from a dict"""
         if obj is None:
             return None
 
@@ -98,8 +103,12 @@ class SearchToolsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "config": [ConfigSearchToolSchema.from_dict(_item) for _item in obj["config"]] if obj.get("config") is not None else None,
-            "stored": [StoredSearchToolSchema.from_dict(_item) for _item in obj["stored"]] if obj.get("stored") is not None else None
+            "default": obj.get("default"),
+            "description": obj.get("description") if obj.get("description") is not None else '',
+            "enum": obj.get("enum"),
+            "name": obj.get("name"),
+            "operator_only": obj.get("operator_only") if obj.get("operator_only") is not None else False,
+            "type": obj.get("type")
         })
         return _obj
 

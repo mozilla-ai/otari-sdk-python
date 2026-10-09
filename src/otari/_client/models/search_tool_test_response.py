@@ -17,21 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
-from otari._client.models.config_search_tool_schema import ConfigSearchToolSchema
-from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SearchToolsResponse(BaseModel):
+class SearchToolTestResponse(BaseModel):
     """
-    Every search instance ``POST /api/v1/search`` can name, or every fetch instance, by where it came from.
+    How one search or one fetch went. Never the results or the page.
     """ # noqa: E501
-    config: List[ConfigSearchToolSchema]
-    stored: List[StoredSearchToolSchema]
-    __properties: ClassVar[List[str]] = ["config", "stored"]
+    characters: Optional[StrictInt] = Field(default=None, description="For a fetch that worked: how many characters of page text came back.")
+    error: Optional[StrictStr] = Field(default=None, description="When not ok, the error's tag: timeout, network, http_error, invalid_response, or the provider's own.")
+    hits: Optional[StrictInt] = Field(default=None, description="For a search that worked: how many hits came back.")
+    ok: StrictBool = Field(description="Whether the provider answered the call without an error.")
+    __properties: ClassVar[List[str]] = ["characters", "error", "hits", "ok"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +51,7 @@ class SearchToolsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SearchToolsResponse from a JSON string"""
+        """Create an instance of SearchToolTestResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,25 +72,26 @@ class SearchToolsResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in config (list)
-        _items = []
-        if self.config:
-            for _item_config in self.config:
-                if _item_config:
-                    _items.append(_item_config.to_dict())
-            _dict['config'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in stored (list)
-        _items = []
-        if self.stored:
-            for _item_stored in self.stored:
-                if _item_stored:
-                    _items.append(_item_stored.to_dict())
-            _dict['stored'] = _items
+        # set to None if characters (nullable) is None
+        # and model_fields_set contains the field
+        if self.characters is None and "characters" in self.model_fields_set:
+            _dict['characters'] = None
+
+        # set to None if error (nullable) is None
+        # and model_fields_set contains the field
+        if self.error is None and "error" in self.model_fields_set:
+            _dict['error'] = None
+
+        # set to None if hits (nullable) is None
+        # and model_fields_set contains the field
+        if self.hits is None and "hits" in self.model_fields_set:
+            _dict['hits'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SearchToolsResponse from a dict"""
+        """Create an instance of SearchToolTestResponse from a dict"""
         if obj is None:
             return None
 
@@ -98,8 +99,10 @@ class SearchToolsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "config": [ConfigSearchToolSchema.from_dict(_item) for _item in obj["config"]] if obj.get("config") is not None else None,
-            "stored": [StoredSearchToolSchema.from_dict(_item) for _item in obj["stored"]] if obj.get("stored") is not None else None
+            "characters": obj.get("characters"),
+            "error": obj.get("error"),
+            "hits": obj.get("hits"),
+            "ok": obj.get("ok")
         })
         return _obj
 

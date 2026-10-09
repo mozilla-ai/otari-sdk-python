@@ -17,21 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
-from otari._client.models.config_search_tool_schema import ConfigSearchToolSchema
-from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SearchToolsResponse(BaseModel):
+class StoredSearchToolTestRequest(BaseModel):
     """
-    Every search instance ``POST /api/v1/search`` can name, or every fetch instance, by where it came from.
+    What to test a configured or stored instance with.
     """ # noqa: E501
-    config: List[ConfigSearchToolSchema]
-    stored: List[StoredSearchToolSchema]
-    __properties: ClassVar[List[str]] = ["config", "stored"]
+    query: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="For a search instance: the query to run.")
+    url: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="For a fetch instance: the page to fetch.")
+    __properties: ClassVar[List[str]] = ["query", "url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +50,7 @@ class SearchToolsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SearchToolsResponse from a JSON string"""
+        """Create an instance of StoredSearchToolTestRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,25 +71,21 @@ class SearchToolsResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in config (list)
-        _items = []
-        if self.config:
-            for _item_config in self.config:
-                if _item_config:
-                    _items.append(_item_config.to_dict())
-            _dict['config'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in stored (list)
-        _items = []
-        if self.stored:
-            for _item_stored in self.stored:
-                if _item_stored:
-                    _items.append(_item_stored.to_dict())
-            _dict['stored'] = _items
+        # set to None if query (nullable) is None
+        # and model_fields_set contains the field
+        if self.query is None and "query" in self.model_fields_set:
+            _dict['query'] = None
+
+        # set to None if url (nullable) is None
+        # and model_fields_set contains the field
+        if self.url is None and "url" in self.model_fields_set:
+            _dict['url'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SearchToolsResponse from a dict"""
+        """Create an instance of StoredSearchToolTestRequest from a dict"""
         if obj is None:
             return None
 
@@ -98,8 +93,8 @@ class SearchToolsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "config": [ConfigSearchToolSchema.from_dict(_item) for _item in obj["config"]] if obj.get("config") is not None else None,
-            "stored": [StoredSearchToolSchema.from_dict(_item) for _item in obj["stored"]] if obj.get("stored") is not None else None
+            "query": obj.get("query"),
+            "url": obj.get("url")
         })
         return _obj
 

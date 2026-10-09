@@ -219,7 +219,6 @@ __all__ = [
     "Content16",
     "Content17Inner",
     "Content2",
-    "Content2AnyOfInner",
     "Content3",
     "Content4",
     "Content5",
@@ -227,7 +226,6 @@ __all__ = [
     "Content7",
     "Content8",
     "Content9",
-    "ContentAnyOfInner",
     "ContentInner",
     "Conversation",
     "CountTokensRequest",
@@ -243,6 +241,7 @@ __all__ = [
     "CreateSessionRequest",
     "CreateStoredProviderRequest",
     "CreateUserRequest",
+    "CreatedSearchToolSchema",
     "CriteriaInner",
     "CriteriaValue",
     "CurrentPricingPage",
@@ -608,10 +607,13 @@ __all__ = [
     "ScopedBudgetResponse",
     "ScoreQuestion",
     "ScoredExample",
+    "SearchProviderOptionSchema",
     "SearchProviderSchema",
     "SearchRequest",
     "SearchResponse",
     "SearchResultItem",
+    "SearchToolTestRequest",
+    "SearchToolTestResponse",
     "SearchToolsResponse",
     "SelectorIndexResponse",
     "SendTestMailRequest",
@@ -627,6 +629,7 @@ __all__ = [
     "Stop",
     "StoredProviderResponse",
     "StoredSearchToolSchema",
+    "StoredSearchToolTestRequest",
     "SwitchActiveOrganizationRequest",
     "System",
     "TaskPool",
@@ -925,7 +928,6 @@ from otari._client.models.content15 import Content15 as Content15
 from otari._client.models.content16 import Content16 as Content16
 from otari._client.models.content17_inner import Content17Inner as Content17Inner
 from otari._client.models.content2 import Content2 as Content2
-from otari._client.models.content2_any_of_inner import Content2AnyOfInner as Content2AnyOfInner
 from otari._client.models.content3 import Content3 as Content3
 from otari._client.models.content4 import Content4 as Content4
 from otari._client.models.content5 import Content5 as Content5
@@ -933,7 +935,6 @@ from otari._client.models.content6 import Content6 as Content6
 from otari._client.models.content7 import Content7 as Content7
 from otari._client.models.content8 import Content8 as Content8
 from otari._client.models.content9 import Content9 as Content9
-from otari._client.models.content_any_of_inner import ContentAnyOfInner as ContentAnyOfInner
 from otari._client.models.content_inner import ContentInner as ContentInner
 from otari._client.models.conversation import Conversation as Conversation
 from otari._client.models.count_tokens_request import CountTokensRequest as CountTokensRequest
@@ -949,6 +950,7 @@ from otari._client.models.create_search_tool_request import CreateSearchToolRequ
 from otari._client.models.create_session_request import CreateSessionRequest as CreateSessionRequest
 from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest as CreateStoredProviderRequest
 from otari._client.models.create_user_request import CreateUserRequest as CreateUserRequest
+from otari._client.models.created_search_tool_schema import CreatedSearchToolSchema as CreatedSearchToolSchema
 from otari._client.models.criteria_inner import CriteriaInner as CriteriaInner
 from otari._client.models.criteria_value import CriteriaValue as CriteriaValue
 from otari._client.models.current_pricing_page import CurrentPricingPage as CurrentPricingPage
@@ -1314,10 +1316,13 @@ from otari._client.models.sandbox_provider import SandboxProvider as SandboxProv
 from otari._client.models.scoped_budget_response import ScopedBudgetResponse as ScopedBudgetResponse
 from otari._client.models.score_question import ScoreQuestion as ScoreQuestion
 from otari._client.models.scored_example import ScoredExample as ScoredExample
+from otari._client.models.search_provider_option_schema import SearchProviderOptionSchema as SearchProviderOptionSchema
 from otari._client.models.search_provider_schema import SearchProviderSchema as SearchProviderSchema
 from otari._client.models.search_request import SearchRequest as SearchRequest
 from otari._client.models.search_response import SearchResponse as SearchResponse
 from otari._client.models.search_result_item import SearchResultItem as SearchResultItem
+from otari._client.models.search_tool_test_request import SearchToolTestRequest as SearchToolTestRequest
+from otari._client.models.search_tool_test_response import SearchToolTestResponse as SearchToolTestResponse
 from otari._client.models.search_tools_response import SearchToolsResponse as SearchToolsResponse
 from otari._client.models.selector_index_response import SelectorIndexResponse as SelectorIndexResponse
 from otari._client.models.send_test_mail_request import SendTestMailRequest as SendTestMailRequest
@@ -1333,6 +1338,7 @@ from otari._client.models.state import State as State
 from otari._client.models.stop import Stop as Stop
 from otari._client.models.stored_provider_response import StoredProviderResponse as StoredProviderResponse
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema as StoredSearchToolSchema
+from otari._client.models.stored_search_tool_test_request import StoredSearchToolTestRequest as StoredSearchToolTestRequest
 from otari._client.models.switch_active_organization_request import SwitchActiveOrganizationRequest as SwitchActiveOrganizationRequest
 from otari._client.models.system import System as System
 from otari._client.models.task_pool import TaskPool as TaskPool

@@ -1754,7 +1754,7 @@ class RoutingApi:
     ) -> AgentModelRecommendation:
         """Recommend Model For Agent
 
-        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The gateway asks the decision model named by `agent_recommender_model` to pick one of the `agent_recommender_candidates`, and answers with that candidate, the model's probability for each candidate, and a one-line reason.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
+        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. A standalone deployment asks the decision model `agent_recommender_model` names to choose among `agent_recommender_candidates`; a hosted build may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
 
         :param agent_model_recommendation_request: (required)
         :type agent_model_recommendation_request: AgentModelRecommendationRequest
@@ -1822,7 +1822,7 @@ class RoutingApi:
     ) -> ApiResponse[AgentModelRecommendation]:
         """Recommend Model For Agent
 
-        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The gateway asks the decision model named by `agent_recommender_model` to pick one of the `agent_recommender_candidates`, and answers with that candidate, the model's probability for each candidate, and a one-line reason.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
+        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. A standalone deployment asks the decision model `agent_recommender_model` names to choose among `agent_recommender_candidates`; a hosted build may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
 
         :param agent_model_recommendation_request: (required)
         :type agent_model_recommendation_request: AgentModelRecommendationRequest
@@ -1890,7 +1890,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Recommend Model For Agent
 
-        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The gateway asks the decision model named by `agent_recommender_model` to pick one of the `agent_recommender_candidates`, and answers with that candidate, the model's probability for each candidate, and a one-line reason.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
+        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. A standalone deployment asks the decision model `agent_recommender_model` names to choose among `agent_recommender_candidates`; a hosted build may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
 
         :param agent_model_recommendation_request: (required)
         :type agent_model_recommendation_request: AgentModelRecommendationRequest

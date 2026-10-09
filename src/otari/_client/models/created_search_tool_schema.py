@@ -17,26 +17,31 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateSearchToolRequest(BaseModel):
+class CreatedSearchToolSchema(BaseModel):
     """
-    Update a stored search or fetch instance. Omitted fields are unchanged; ``api_key`` rotates in place.
+    A stored instance as created, with the default setting the create also stored, if any.
     """ # noqa: E501
     api_base: Optional[StrictStr] = None
-    api_key: Optional[StrictStr] = Field(default=None, description="New API key. Omit to keep the existing one. Never returned.")
-    expected_updated_at: Optional[StrictStr] = Field(default=None, description="Optimistic concurrency: if set, the update 412s unless it matches the stored updated_at.")
-    fetch_tool: Optional[StrictStr] = Field(default=None, description="For a search instance: the fetch instance that enriches its results. Null clears it.")
-    kind: Optional[StrictStr] = Field(default=None, description="Accepted only when it matches the stored kind, which cannot change.")
-    options: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    provider: Optional[StrictStr] = None
-    timeout: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "expected_updated_at", "fetch_tool", "kind", "options", "provider", "timeout"]
+    created_at: Optional[StrictStr] = None
+    decryptable: Optional[StrictBool] = True
+    fetch_tool: Optional[StrictStr] = Field(default=None, description="A search instance's enrichment fetch instance. Null means the fetch default enriches it.")
+    kind: Optional[StrictStr] = Field(default='search', description="Whether this is a search or a fetch instance.")
+    last4: Optional[StrictStr] = None
+    name: StrictStr
+    notice: Optional[StrictStr] = Field(default=None, description="What else the create changed, for the operator to read.")
+    options: Optional[Dict[str, Any]] = None
+    pinned_web_search_default_tool: Optional[StrictStr] = Field(default=None, description="Set when this create also stored web_search_default_tool, naming the search instance that was the in-loop default because it was the only one, so that adding a second does not turn in-loop search off. This runtime value wins over the configuration file until it is cleared.")
+    provider: StrictStr
+    shadows_config: Optional[StrictBool] = Field(default=False, description="True when a config-file search tool of the same name exists; the stored one is in effect.")
+    timeout: Optional[Union[StrictFloat, StrictInt]] = None
+    updated_at: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["api_base", "created_at", "decryptable", "fetch_tool", "kind", "last4", "name", "notice", "options", "pinned_web_search_default_tool", "provider", "shadows_config", "timeout", "updated_at"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -66,7 +71,7 @@ class UpdateSearchToolRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateSearchToolRequest from a JSON string"""
+        """Create an instance of CreatedSearchToolSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -92,46 +97,46 @@ class UpdateSearchToolRequest(BaseModel):
         if self.api_base is None and "api_base" in self.model_fields_set:
             _dict['api_base'] = None
 
-        # set to None if api_key (nullable) is None
+        # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
-        if self.api_key is None and "api_key" in self.model_fields_set:
-            _dict['api_key'] = None
-
-        # set to None if expected_updated_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.expected_updated_at is None and "expected_updated_at" in self.model_fields_set:
-            _dict['expected_updated_at'] = None
+        if self.created_at is None and "created_at" in self.model_fields_set:
+            _dict['created_at'] = None
 
         # set to None if fetch_tool (nullable) is None
         # and model_fields_set contains the field
         if self.fetch_tool is None and "fetch_tool" in self.model_fields_set:
             _dict['fetch_tool'] = None
 
-        # set to None if kind (nullable) is None
+        # set to None if last4 (nullable) is None
         # and model_fields_set contains the field
-        if self.kind is None and "kind" in self.model_fields_set:
-            _dict['kind'] = None
+        if self.last4 is None and "last4" in self.model_fields_set:
+            _dict['last4'] = None
 
-        # set to None if options (nullable) is None
+        # set to None if notice (nullable) is None
         # and model_fields_set contains the field
-        if self.options is None and "options" in self.model_fields_set:
-            _dict['options'] = None
+        if self.notice is None and "notice" in self.model_fields_set:
+            _dict['notice'] = None
 
-        # set to None if provider (nullable) is None
+        # set to None if pinned_web_search_default_tool (nullable) is None
         # and model_fields_set contains the field
-        if self.provider is None and "provider" in self.model_fields_set:
-            _dict['provider'] = None
+        if self.pinned_web_search_default_tool is None and "pinned_web_search_default_tool" in self.model_fields_set:
+            _dict['pinned_web_search_default_tool'] = None
 
         # set to None if timeout (nullable) is None
         # and model_fields_set contains the field
         if self.timeout is None and "timeout" in self.model_fields_set:
             _dict['timeout'] = None
 
+        # set to None if updated_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.updated_at is None and "updated_at" in self.model_fields_set:
+            _dict['updated_at'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateSearchToolRequest from a dict"""
+        """Create an instance of CreatedSearchToolSchema from a dict"""
         if obj is None:
             return None
 
@@ -140,13 +145,19 @@ class UpdateSearchToolRequest(BaseModel):
 
         _obj = cls.model_validate({
             "api_base": obj.get("api_base"),
-            "api_key": obj.get("api_key"),
-            "expected_updated_at": obj.get("expected_updated_at"),
+            "created_at": obj.get("created_at"),
+            "decryptable": obj.get("decryptable") if obj.get("decryptable") is not None else True,
             "fetch_tool": obj.get("fetch_tool"),
-            "kind": obj.get("kind"),
+            "kind": obj.get("kind") if obj.get("kind") is not None else 'search',
+            "last4": obj.get("last4"),
+            "name": obj.get("name"),
+            "notice": obj.get("notice"),
             "options": obj.get("options"),
+            "pinned_web_search_default_tool": obj.get("pinned_web_search_default_tool"),
             "provider": obj.get("provider"),
-            "timeout": obj.get("timeout")
+            "shadows_config": obj.get("shadows_config") if obj.get("shadows_config") is not None else False,
+            "timeout": obj.get("timeout"),
+            "updated_at": obj.get("updated_at")
         })
         return _obj
 

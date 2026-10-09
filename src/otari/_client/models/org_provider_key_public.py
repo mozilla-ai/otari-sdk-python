@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
@@ -37,11 +37,13 @@ class OrgProviderKeyPublic(BaseModel):
     is_org_default: StrictBool
     last4: Optional[StrictStr] = None
     name: StrictStr
+    offered_count: StrictInt = Field(description="How many models the organization offers on this key. Zero means the key has never been refreshed, so it is unnarrowed and reaches whatever its provider serves.")
     organization_id: UUID
     provider: StrictStr
+    serving_count: StrictInt = Field(description="How many of the offered models have their serving switch on. A key offering models and serving none refuses every request through it until one is switched on.")
     updated_at: Optional[datetime] = None
     usable: StrictBool = Field(description="False when the stored credential cannot be decrypted on this deployment, so the key supplies nothing at dispatch and the catalog withholds its provider. A row this deployment cannot read is still listed, because deleting or replacing it is what fixes it.")
-    __properties: ClassVar[List[str]] = ["api_base", "archived_at", "client_args", "created_at", "id", "is_org_default", "last4", "name", "organization_id", "provider", "updated_at", "usable"]
+    __properties: ClassVar[List[str]] = ["api_base", "archived_at", "client_args", "created_at", "id", "is_org_default", "last4", "name", "offered_count", "organization_id", "provider", "serving_count", "updated_at", "usable"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -127,8 +129,10 @@ class OrgProviderKeyPublic(BaseModel):
             "is_org_default": obj.get("is_org_default"),
             "last4": obj.get("last4"),
             "name": obj.get("name"),
+            "offered_count": obj.get("offered_count"),
             "organization_id": obj.get("organization_id"),
             "provider": obj.get("provider"),
+            "serving_count": obj.get("serving_count"),
             "updated_at": obj.get("updated_at"),
             "usable": obj.get("usable")
         })

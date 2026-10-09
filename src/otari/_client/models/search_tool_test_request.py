@@ -24,19 +24,21 @@ from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateSearchToolRequest(BaseModel):
+class SearchToolTestRequest(BaseModel):
     """
-    Update a stored search or fetch instance. Omitted fields are unchanged; ``api_key`` rotates in place.
+    An unsaved search or fetch instance to test, and what to test it with.
     """ # noqa: E501
-    api_base: Optional[StrictStr] = None
-    api_key: Optional[StrictStr] = Field(default=None, description="New API key. Omit to keep the existing one. Never returned.")
-    expected_updated_at: Optional[StrictStr] = Field(default=None, description="Optimistic concurrency: if set, the update 412s unless it matches the stored updated_at.")
-    fetch_tool: Optional[StrictStr] = Field(default=None, description="For a search instance: the fetch instance that enriches its results. Null clears it.")
-    kind: Optional[StrictStr] = Field(default=None, description="Accepted only when it matches the stored kind, which cannot change.")
-    options: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    provider: Optional[StrictStr] = None
-    timeout: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "expected_updated_at", "fetch_tool", "kind", "options", "provider", "timeout"]
+    api_base: Optional[StrictStr] = Field(default=None, description="Backend endpoint. Omit to inherit the provider's default (searxng inherits web_search_url).")
+    api_key: Optional[StrictStr] = Field(default=None, description="Provider API key. Stored encrypted; never returned.")
+    fetch_tool: Optional[StrictStr] = Field(default=None, description="For a search instance: the fetch instance that enriches its results, a configured or stored one or builtin_fetch. Omit it for the fetch default.")
+    kind: Optional[StrictStr] = Field(default='search', description="'search' or 'fetch'. It cannot change once created.")
+    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Name callers pass as 'search_tool_name' or in /api/v1/search/{tool}, or that names a fetch instance. It contains no '/' or ':', is not builtin_fetch or none in any case, and is unique across search and fetch instances.")
+    options: Optional[Dict[str, Any]] = Field(default=None, description="Provider-native request fields used as defaults (e.g. exa's 'type', searxng's 'engines').")
+    provider: StrictStr = Field(description="Provider id. GET /api/v1/search-tools/providers lists the search providers, and with ?kind=fetch the fetch providers.")
+    query: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="For a search instance: the query to run.")
+    timeout: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = Field(default=None, description="Per-request timeout in seconds.")
+    url: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="For a fetch instance: the page to fetch.")
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "fetch_tool", "kind", "name", "options", "provider", "query", "timeout", "url"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -46,6 +48,16 @@ class UpdateSearchToolRequest(BaseModel):
 
         if value not in set(['search', 'fetch']):
             raise ValueError("must be one of enum values ('search', 'fetch')")
+        return value
+
+    @field_validator('name')
+    def name_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[^\/:]+$", value):
+            raise ValueError(r"must validate the regular expression /^[^\/:]+$/")
         return value
 
     model_config = ConfigDict(
@@ -66,7 +78,7 @@ class UpdateSearchToolRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateSearchToolRequest from a JSON string"""
+        """Create an instance of SearchToolTestRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -97,41 +109,36 @@ class UpdateSearchToolRequest(BaseModel):
         if self.api_key is None and "api_key" in self.model_fields_set:
             _dict['api_key'] = None
 
-        # set to None if expected_updated_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.expected_updated_at is None and "expected_updated_at" in self.model_fields_set:
-            _dict['expected_updated_at'] = None
-
         # set to None if fetch_tool (nullable) is None
         # and model_fields_set contains the field
         if self.fetch_tool is None and "fetch_tool" in self.model_fields_set:
             _dict['fetch_tool'] = None
-
-        # set to None if kind (nullable) is None
-        # and model_fields_set contains the field
-        if self.kind is None and "kind" in self.model_fields_set:
-            _dict['kind'] = None
 
         # set to None if options (nullable) is None
         # and model_fields_set contains the field
         if self.options is None and "options" in self.model_fields_set:
             _dict['options'] = None
 
-        # set to None if provider (nullable) is None
+        # set to None if query (nullable) is None
         # and model_fields_set contains the field
-        if self.provider is None and "provider" in self.model_fields_set:
-            _dict['provider'] = None
+        if self.query is None and "query" in self.model_fields_set:
+            _dict['query'] = None
 
         # set to None if timeout (nullable) is None
         # and model_fields_set contains the field
         if self.timeout is None and "timeout" in self.model_fields_set:
             _dict['timeout'] = None
 
+        # set to None if url (nullable) is None
+        # and model_fields_set contains the field
+        if self.url is None and "url" in self.model_fields_set:
+            _dict['url'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateSearchToolRequest from a dict"""
+        """Create an instance of SearchToolTestRequest from a dict"""
         if obj is None:
             return None
 
@@ -141,12 +148,14 @@ class UpdateSearchToolRequest(BaseModel):
         _obj = cls.model_validate({
             "api_base": obj.get("api_base"),
             "api_key": obj.get("api_key"),
-            "expected_updated_at": obj.get("expected_updated_at"),
             "fetch_tool": obj.get("fetch_tool"),
-            "kind": obj.get("kind"),
+            "kind": obj.get("kind") if obj.get("kind") is not None else 'search',
+            "name": obj.get("name"),
             "options": obj.get("options"),
             "provider": obj.get("provider"),
-            "timeout": obj.get("timeout")
+            "query": obj.get("query"),
+            "timeout": obj.get("timeout"),
+            "url": obj.get("url")
         })
         return _obj
 
