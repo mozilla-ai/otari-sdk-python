@@ -29,12 +29,12 @@ class InviteOrganizationMemberResultPublic(BaseModel):
     """
     What issuing an invitation produces, and whether the email actually went out.
     """ # noqa: E501
-    accept_link: StrictStr
+    accept_link: Optional[StrictStr] = Field(default=None, description="The link to share with the invitee yourself, set only when mail_sent is false. A delivered link goes to the invitee's mailbox alone, so the inviter cannot open it as them.")
     created_at: datetime
     email: StrictStr
     expires_at: datetime
     invitation_id: UUID
-    mail_sent: StrictBool = Field(description="Whether the invitation email was actually dispatched. False when mail is not configured, or the send itself failed; accept_link is set either way, so the operator can share it themselves rather than the invitation being a dead end.")
+    mail_sent: StrictBool = Field(description="Whether the invitation email was actually dispatched. False when mail is not configured, or the send itself failed.")
     organization_member_id: UUID
     role: StrictStr
     status: Optional[StrictStr] = 'invited'
@@ -89,6 +89,11 @@ class InviteOrganizationMemberResultPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if accept_link (nullable) is None
+        # and model_fields_set contains the field
+        if self.accept_link is None and "accept_link" in self.model_fields_set:
+            _dict['accept_link'] = None
+
         return _dict
 
     @classmethod

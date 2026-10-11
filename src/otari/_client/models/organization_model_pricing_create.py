@@ -39,7 +39,7 @@ class OrganizationModelPricingCreate(BaseModel):
     model_key: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="Model identifier in 'provider:model' form, matching the key the deployment price list uses. A provider instance name is valid here ('home_lab:llama-3'), because pricing keys on the instance a request resolves to.")
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
-    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint.")
+    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint. A completion model priced per requests is charged one request per successful call.")
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('model_key')

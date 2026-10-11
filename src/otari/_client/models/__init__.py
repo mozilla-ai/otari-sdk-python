@@ -148,7 +148,6 @@ from otari._client.models.content15 import Content15
 from otari._client.models.content16 import Content16
 from otari._client.models.content17_inner import Content17Inner
 from otari._client.models.content2 import Content2
-from otari._client.models.content2_any_of_inner import Content2AnyOfInner
 from otari._client.models.content3 import Content3
 from otari._client.models.content4 import Content4
 from otari._client.models.content5 import Content5
@@ -156,7 +155,6 @@ from otari._client.models.content6 import Content6
 from otari._client.models.content7 import Content7
 from otari._client.models.content8 import Content8
 from otari._client.models.content9 import Content9
-from otari._client.models.content_any_of_inner import ContentAnyOfInner
 from otari._client.models.content_inner import ContentInner
 from otari._client.models.conversation import Conversation
 from otari._client.models.count_tokens_request import CountTokensRequest
@@ -172,6 +170,7 @@ from otari._client.models.create_search_tool_request import CreateSearchToolRequ
 from otari._client.models.create_session_request import CreateSessionRequest
 from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest
 from otari._client.models.create_user_request import CreateUserRequest
+from otari._client.models.created_search_tool_schema import CreatedSearchToolSchema
 from otari._client.models.criteria_inner import CriteriaInner
 from otari._client.models.criteria_value import CriteriaValue
 from otari._client.models.current_pricing_page import CurrentPricingPage
@@ -192,7 +191,11 @@ from otari._client.models.dropped_response import DroppedResponse
 from otari._client.models.emb_embedding import EMBEmbedding
 from otari._client.models.emb_usage import EMBUsage
 from otari._client.models.embedded_resource import EmbeddedResource
+from otari._client.models.embedding import Embedding
+from otari._client.models.embedding_data import EmbeddingData
 from otari._client.models.embedding_request import EmbeddingRequest
+from otari._client.models.embedding_response import EmbeddingResponse
+from otari._client.models.embedding_usage import EmbeddingUsage
 from otari._client.models.end_user_public import EndUserPublic
 from otari._client.models.end_user_put import EndUserPut
 from otari._client.models.end_user_update import EndUserUpdate
@@ -519,8 +522,11 @@ from otari._client.models.request_password_reset_request import RequestPasswordR
 from otari._client.models.request_password_reset_response import RequestPasswordResetResponse
 from otari._client.models.request_settlement import RequestSettlement
 from otari._client.models.requirement_group import RequirementGroup
+from otari._client.models.rerank_meta import RerankMeta
 from otari._client.models.rerank_request import RerankRequest
 from otari._client.models.rerank_response import RerankResponse
+from otari._client.models.rerank_result import RerankResult
+from otari._client.models.rerank_usage import RerankUsage
 from otari._client.models.resend_verification_request import ResendVerificationRequest
 from otari._client.models.resend_verification_response import ResendVerificationResponse
 from otari._client.models.reset_password_request import ResetPasswordRequest
@@ -537,10 +543,13 @@ from otari._client.models.sandbox_provider import SandboxProvider
 from otari._client.models.scoped_budget_response import ScopedBudgetResponse
 from otari._client.models.score_question import ScoreQuestion
 from otari._client.models.scored_example import ScoredExample
+from otari._client.models.search_provider_option_schema import SearchProviderOptionSchema
 from otari._client.models.search_provider_schema import SearchProviderSchema
 from otari._client.models.search_request import SearchRequest
 from otari._client.models.search_response import SearchResponse
 from otari._client.models.search_result_item import SearchResultItem
+from otari._client.models.search_tool_test_request import SearchToolTestRequest
+from otari._client.models.search_tool_test_response import SearchToolTestResponse
 from otari._client.models.search_tools_response import SearchToolsResponse
 from otari._client.models.selector_index_response import SelectorIndexResponse
 from otari._client.models.send_test_mail_request import SendTestMailRequest
@@ -556,6 +565,7 @@ from otari._client.models.state import State
 from otari._client.models.stop import Stop
 from otari._client.models.stored_provider_response import StoredProviderResponse
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
+from otari._client.models.stored_search_tool_test_request import StoredSearchToolTestRequest
 from otari._client.models.switch_active_organization_request import SwitchActiveOrganizationRequest
 from otari._client.models.system import System
 from otari._client.models.task_pool import TaskPool

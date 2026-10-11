@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -26,15 +26,37 @@ from pydantic_core import to_jsonable_python
 
 class CreateSearchToolRequest(BaseModel):
     """
-    Create a stored search tool. ``api_key`` is write-only and requires OTARI_SECRET_KEY.
+    Create a stored search or fetch instance. ``api_key`` is write-only and requires OTARI_SECRET_KEY.
     """ # noqa: E501
     api_base: Optional[StrictStr] = Field(default=None, description="Backend endpoint. Omit to inherit the provider's default (searxng inherits web_search_url).")
     api_key: Optional[StrictStr] = Field(default=None, description="Provider API key. Stored encrypted; never returned.")
-    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Name callers pass as 'search_tool_name' or in /api/v1/search/{tool}.")
+    fetch_tool: Optional[StrictStr] = Field(default=None, description="For a search instance: the fetch instance that enriches its results, a configured or stored one or builtin_fetch. Omit it for the fetch default.")
+    kind: Optional[StrictStr] = Field(default='search', description="'search' or 'fetch'. It cannot change once created.")
+    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Name callers pass as 'search_tool_name' or in /api/v1/search/{tool}, or that names a fetch instance. It contains no '/' or ':', is not builtin_fetch or none in any case, and is unique across search and fetch instances.")
     options: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
-    provider: StrictStr = Field(description="Search provider, one of: exa, searxng.")
+    provider: StrictStr = Field(description="Provider id. GET /api/v1/search-tools/providers lists the search providers, and with ?kind=fetch the fetch providers.")
     timeout: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = Field(default=None, description="Per-request timeout in seconds.")
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "name", "options", "provider", "timeout"]
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "fetch_tool", "kind", "name", "options", "provider", "timeout"]
+
+    @field_validator('kind')
+    def kind_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['search', 'fetch']):
+            raise ValueError("must be one of enum values ('search', 'fetch')")
+        return value
+
+    @field_validator('name')
+    def name_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[^\/:]+$", value):
+            raise ValueError(r"must validate the regular expression /^[^\/:]+$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,6 +107,11 @@ class CreateSearchToolRequest(BaseModel):
         if self.api_key is None and "api_key" in self.model_fields_set:
             _dict['api_key'] = None
 
+        # set to None if fetch_tool (nullable) is None
+        # and model_fields_set contains the field
+        if self.fetch_tool is None and "fetch_tool" in self.model_fields_set:
+            _dict['fetch_tool'] = None
+
         # set to None if options (nullable) is None
         # and model_fields_set contains the field
         if self.options is None and "options" in self.model_fields_set:
@@ -109,6 +136,8 @@ class CreateSearchToolRequest(BaseModel):
         _obj = cls.model_validate({
             "api_base": obj.get("api_base"),
             "api_key": obj.get("api_key"),
+            "fetch_tool": obj.get("fetch_tool"),
+            "kind": obj.get("kind") if obj.get("kind") is not None else 'search',
             "name": obj.get("name"),
             "options": obj.get("options"),
             "provider": obj.get("provider"),
