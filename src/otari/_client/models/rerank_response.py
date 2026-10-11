@@ -31,10 +31,11 @@ class RerankResponse(BaseModel):
     Normalized rerank response, provider-agnostic.
     """ # noqa: E501
     id: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
+    model: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     results: List[RRRerankResult] = Field(description="Results sorted by relevance_score descending")
     meta: Optional[RRRerankMeta] = None
     usage: Optional[RRRerankUsage] = None
-    __properties: ClassVar[List[str]] = ["id", "results", "meta", "usage"]
+    __properties: ClassVar[List[str]] = ["id", "model", "results", "meta", "usage"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -93,6 +94,11 @@ class RerankResponse(BaseModel):
         if self.id is None and "id" in self.model_fields_set:
             _dict['id'] = None
 
+        # set to None if model (nullable) is None
+        # and model_fields_set contains the field
+        if self.model is None and "model" in self.model_fields_set:
+            _dict['model'] = None
+
         # set to None if meta (nullable) is None
         # and model_fields_set contains the field
         if self.meta is None and "meta" in self.model_fields_set:
@@ -116,6 +122,7 @@ class RerankResponse(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "model": obj.get("model"),
             "results": [RRRerankResult.from_dict(_item) for _item in obj["results"]] if obj.get("results") is not None else None,
             "meta": RRRerankMeta.from_dict(obj["meta"]) if obj.get("meta") is not None else None,
             "usage": RRRerankUsage.from_dict(obj["usage"]) if obj.get("usage") is not None else None

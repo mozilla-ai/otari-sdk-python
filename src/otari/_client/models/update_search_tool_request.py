@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -26,15 +26,27 @@ from pydantic_core import to_jsonable_python
 
 class UpdateSearchToolRequest(BaseModel):
     """
-    Update a stored search tool. Omitted fields are unchanged; ``api_key`` rotates in place.
+    Update a stored search or fetch instance. Omitted fields are unchanged; ``api_key`` rotates in place.
     """ # noqa: E501
     api_base: Optional[StrictStr] = None
     api_key: Optional[StrictStr] = Field(default=None, description="New API key. Omit to keep the existing one. Never returned.")
     expected_updated_at: Optional[StrictStr] = Field(default=None, description="Optimistic concurrency: if set, the update 412s unless it matches the stored updated_at.")
+    fetch_tool: Optional[StrictStr] = Field(default=None, description="For a search instance: the fetch instance that enriches its results. Null clears it.")
+    kind: Optional[StrictStr] = Field(default=None, description="Accepted only when it matches the stored kind, which cannot change.")
     options: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     provider: Optional[StrictStr] = None
     timeout: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "expected_updated_at", "options", "provider", "timeout"]
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "expected_updated_at", "fetch_tool", "kind", "options", "provider", "timeout"]
+
+    @field_validator('kind')
+    def kind_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['search', 'fetch']):
+            raise ValueError("must be one of enum values ('search', 'fetch')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -90,6 +102,16 @@ class UpdateSearchToolRequest(BaseModel):
         if self.expected_updated_at is None and "expected_updated_at" in self.model_fields_set:
             _dict['expected_updated_at'] = None
 
+        # set to None if fetch_tool (nullable) is None
+        # and model_fields_set contains the field
+        if self.fetch_tool is None and "fetch_tool" in self.model_fields_set:
+            _dict['fetch_tool'] = None
+
+        # set to None if kind (nullable) is None
+        # and model_fields_set contains the field
+        if self.kind is None and "kind" in self.model_fields_set:
+            _dict['kind'] = None
+
         # set to None if options (nullable) is None
         # and model_fields_set contains the field
         if self.options is None and "options" in self.model_fields_set:
@@ -120,6 +142,8 @@ class UpdateSearchToolRequest(BaseModel):
             "api_base": obj.get("api_base"),
             "api_key": obj.get("api_key"),
             "expected_updated_at": obj.get("expected_updated_at"),
+            "fetch_tool": obj.get("fetch_tool"),
+            "kind": obj.get("kind"),
             "options": obj.get("options"),
             "provider": obj.get("provider"),
             "timeout": obj.get("timeout")

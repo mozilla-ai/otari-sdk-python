@@ -17,30 +17,28 @@ from inspect import getfullargspec
 import json
 import pprint
 import re  # noqa: F401
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
-from typing import Optional
-from otari._client.models.msg_chat_completion_content_part_refusal_param import MSGChatCompletionContentPartRefusalParam
-from otari._client.models.msg_chat_completion_content_part_text_param import MSGChatCompletionContentPartTextParam
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, ValidationError, field_validator
+from typing import List, Optional, Union
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-CONTENTANYOFINNER_ANY_OF_SCHEMAS = ["MSGChatCompletionContentPartRefusalParam", "MSGChatCompletionContentPartTextParam"]
+EMBEDDING_ANY_OF_SCHEMAS = ["List[float]", "str"]
 
-class ContentAnyOfInner(BaseModel):
+class Embedding(BaseModel):
     """
-    ContentAnyOfInner
+    The vector, or its base64 encoding when the request asked for `encoding_format: base64`
     """
 
-    # data type: MSGChatCompletionContentPartTextParam
-    anyof_schema_1_validator: Optional[MSGChatCompletionContentPartTextParam] = None
-    # data type: MSGChatCompletionContentPartRefusalParam
-    anyof_schema_2_validator: Optional[MSGChatCompletionContentPartRefusalParam] = None
+    # data type: List[float]
+    anyof_schema_1_validator: Optional[List[Union[StrictFloat, StrictInt]]] = None
+    # data type: str
+    anyof_schema_2_validator: Optional[StrictStr] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[MSGChatCompletionContentPartRefusalParam, MSGChatCompletionContentPartTextParam]] = None
+        actual_instance: Optional[Union[List[float], str]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "MSGChatCompletionContentPartRefusalParam", "MSGChatCompletionContentPartTextParam" }
+    any_of_schemas: Set[str] = { "List[float]", "str" }
 
     model_config = {
         "validate_assignment": True,
@@ -59,23 +57,23 @@ class ContentAnyOfInner(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_anyof(cls, v):
-        instance = ContentAnyOfInner.model_construct()
+        instance = Embedding.model_construct()
         error_messages = []
-        # validate data type: MSGChatCompletionContentPartTextParam
-        if not isinstance(v, MSGChatCompletionContentPartTextParam):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MSGChatCompletionContentPartTextParam`")
-        else:
+        # validate data type: List[float]
+        try:
+            instance.anyof_schema_1_validator = v
             return v
-
-        # validate data type: MSGChatCompletionContentPartRefusalParam
-        if not isinstance(v, MSGChatCompletionContentPartRefusalParam):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `MSGChatCompletionContentPartRefusalParam`")
-        else:
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # validate data type: str
+        try:
+            instance.anyof_schema_2_validator = v
             return v
-
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in ContentAnyOfInner with anyOf schemas: MSGChatCompletionContentPartRefusalParam, MSGChatCompletionContentPartTextParam. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Embedding with anyOf schemas: List[float], str. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -88,22 +86,28 @@ class ContentAnyOfInner(BaseModel):
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
         error_messages = []
-        # anyof_schema_1_validator: Optional[MSGChatCompletionContentPartTextParam] = None
+        # deserialize data into List[float]
         try:
-            instance.actual_instance = MSGChatCompletionContentPartTextParam.from_json(json_str)
+            # validation
+            instance.anyof_schema_1_validator = json.loads(json_str)
+            # assign value to actual_instance
+            instance.actual_instance = instance.anyof_schema_1_validator
             return instance
         except (ValidationError, ValueError) as e:
-             error_messages.append(str(e))
-        # anyof_schema_2_validator: Optional[MSGChatCompletionContentPartRefusalParam] = None
+            error_messages.append(str(e))
+        # deserialize data into str
         try:
-            instance.actual_instance = MSGChatCompletionContentPartRefusalParam.from_json(json_str)
+            # validation
+            instance.anyof_schema_2_validator = json.loads(json_str)
+            # assign value to actual_instance
+            instance.actual_instance = instance.anyof_schema_2_validator
             return instance
         except (ValidationError, ValueError) as e:
-             error_messages.append(str(e))
+            error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into ContentAnyOfInner with anyOf schemas: MSGChatCompletionContentPartRefusalParam, MSGChatCompletionContentPartTextParam. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Embedding with anyOf schemas: List[float], str. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -117,7 +121,7 @@ class ContentAnyOfInner(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], MSGChatCompletionContentPartRefusalParam, MSGChatCompletionContentPartTextParam]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], List[float], str]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

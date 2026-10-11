@@ -55,7 +55,7 @@ class RerankApi:
     ) -> RerankResponse:
         """Create Rerank
 
-        Rerank documents by relevance to a query.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
+        Rerank documents by relevance to a query.  Billing: a model priced per request (``unit: requests``) is charged per search unit the provider reports, or for one unit when it reports none. A model priced per token is charged on the input tokens the provider reports.  ``usage`` carries what the gateway metered: the provider's tokens, the search units billed when the model is priced per request, and, when the request was priced, ``cost_usd`` and ``pricing_source`` as a completion's usage does. ``meta`` is the provider's own billing report, unchanged.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param rerank_request: (required)
         :type rerank_request: RerankRequest
@@ -123,7 +123,7 @@ class RerankApi:
     ) -> ApiResponse[RerankResponse]:
         """Create Rerank
 
-        Rerank documents by relevance to a query.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
+        Rerank documents by relevance to a query.  Billing: a model priced per request (``unit: requests``) is charged per search unit the provider reports, or for one unit when it reports none. A model priced per token is charged on the input tokens the provider reports.  ``usage`` carries what the gateway metered: the provider's tokens, the search units billed when the model is priced per request, and, when the request was priced, ``cost_usd`` and ``pricing_source`` as a completion's usage does. ``meta`` is the provider's own billing report, unchanged.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param rerank_request: (required)
         :type rerank_request: RerankRequest
@@ -191,7 +191,7 @@ class RerankApi:
     ) -> RESTResponseType:
         """Create Rerank
 
-        Rerank documents by relevance to a query.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
+        Rerank documents by relevance to a query.  Billing: a model priced per request (``unit: requests``) is charged per search unit the provider reports, or for one unit when it reports none. A model priced per token is charged on the input tokens the provider reports.  ``usage`` carries what the gateway metered: the provider's tokens, the search units billed when the model is priced per request, and, when the request was priced, ``cost_usd`` and ``pricing_source`` as a completion's usage does. ``meta`` is the provider's own billing report, unchanged.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param rerank_request: (required)
         :type rerank_request: RerankRequest

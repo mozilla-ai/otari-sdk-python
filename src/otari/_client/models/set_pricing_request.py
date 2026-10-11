@@ -38,7 +38,7 @@ class SetPricingRequest(BaseModel):
     model_key: StrictStr = Field(description="Model identifier in format 'provider:model'")
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
-    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: 'tokens' for a model, 'requests' for a gateway-run tool or a moderation call (USD per million requests), 'images' for image generation.")
+    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: 'tokens' for a model, 'requests' for a gateway-run tool, a moderation call, or a completion model billed per call (USD per million requests), 'images' for image generation.")
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "effective_at", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('unit')

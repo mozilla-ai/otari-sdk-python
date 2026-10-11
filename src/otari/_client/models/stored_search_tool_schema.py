@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -25,11 +25,13 @@ from pydantic_core import to_jsonable_python
 
 class StoredSearchToolSchema(BaseModel):
     """
-    A runtime-stored search tool. The API key is never returned, only ``last4``.
+    A runtime-stored search or fetch instance. The API key is never returned, only ``last4``.
     """ # noqa: E501
     api_base: Optional[StrictStr] = None
     created_at: Optional[StrictStr] = None
     decryptable: Optional[StrictBool] = True
+    fetch_tool: Optional[StrictStr] = Field(default=None, description="A search instance's enrichment fetch instance. Null means the fetch default enriches it.")
+    kind: Optional[StrictStr] = Field(default='search', description="Whether this is a search or a fetch instance.")
     last4: Optional[StrictStr] = None
     name: StrictStr
     options: Optional[Dict[str, Any]] = None
@@ -37,7 +39,17 @@ class StoredSearchToolSchema(BaseModel):
     shadows_config: Optional[StrictBool] = Field(default=False, description="True when a config-file search tool of the same name exists; the stored one is in effect.")
     timeout: Optional[Union[StrictFloat, StrictInt]] = None
     updated_at: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["api_base", "created_at", "decryptable", "last4", "name", "options", "provider", "shadows_config", "timeout", "updated_at"]
+    __properties: ClassVar[List[str]] = ["api_base", "created_at", "decryptable", "fetch_tool", "kind", "last4", "name", "options", "provider", "shadows_config", "timeout", "updated_at"]
+
+    @field_validator('kind')
+    def kind_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['search', 'fetch']):
+            raise ValueError("must be one of enum values ('search', 'fetch')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -88,6 +100,11 @@ class StoredSearchToolSchema(BaseModel):
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict['created_at'] = None
 
+        # set to None if fetch_tool (nullable) is None
+        # and model_fields_set contains the field
+        if self.fetch_tool is None and "fetch_tool" in self.model_fields_set:
+            _dict['fetch_tool'] = None
+
         # set to None if last4 (nullable) is None
         # and model_fields_set contains the field
         if self.last4 is None and "last4" in self.model_fields_set:
@@ -118,6 +135,8 @@ class StoredSearchToolSchema(BaseModel):
             "api_base": obj.get("api_base"),
             "created_at": obj.get("created_at"),
             "decryptable": obj.get("decryptable") if obj.get("decryptable") is not None else True,
+            "fetch_tool": obj.get("fetch_tool"),
+            "kind": obj.get("kind") if obj.get("kind") is not None else 'search',
             "last4": obj.get("last4"),
             "name": obj.get("name"),
             "options": obj.get("options"),

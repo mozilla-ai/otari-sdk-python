@@ -15,13 +15,18 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import StrictStr
-from typing import List
+from pydantic import Field, StrictStr, field_validator
+from typing import List, Optional
+from typing_extensions import Annotated
 from otari._client.models.create_search_tool_request import CreateSearchToolRequest
+from otari._client.models.created_search_tool_schema import CreatedSearchToolSchema
 from otari._client.models.reencrypt_search_tools_response import ReencryptSearchToolsResponse
 from otari._client.models.search_provider_schema import SearchProviderSchema
+from otari._client.models.search_tool_test_request import SearchToolTestRequest
+from otari._client.models.search_tool_test_response import SearchToolTestResponse
 from otari._client.models.search_tools_response import SearchToolsResponse
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
+from otari._client.models.stored_search_tool_test_request import StoredSearchToolTestRequest
 from otari._client.models.update_search_tool_request import UpdateSearchToolRequest
 
 from otari._client.api_client import ApiClient, RequestSerialized
@@ -58,10 +63,10 @@ class SearchToolsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> StoredSearchToolSchema:
+    ) -> CreatedSearchToolSchema:
         """Create Search Tool
 
-        Add a search tool at runtime. Storing an API key requires OTARI_SECRET_KEY.
+        Add a search or fetch instance at runtime. Storing an API key requires OTARI_SECRET_KEY.  Creating a second search instance, while the first is the in-loop default only because it is the only one, first sets ``web_search_default_tool`` to the first in the same commit, and says so in the response, so that adding an instance never turns in-loop search off. That runtime value wins over the configuration file until it is cleared.
 
         :param create_search_tool_request: (required)
         :type create_search_tool_request: CreateSearchToolRequest
@@ -96,7 +101,7 @@ class SearchToolsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '201': "StoredSearchToolSchema",
+            '201': "CreatedSearchToolSchema",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -126,10 +131,10 @@ class SearchToolsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[StoredSearchToolSchema]:
+    ) -> ApiResponse[CreatedSearchToolSchema]:
         """Create Search Tool
 
-        Add a search tool at runtime. Storing an API key requires OTARI_SECRET_KEY.
+        Add a search or fetch instance at runtime. Storing an API key requires OTARI_SECRET_KEY.  Creating a second search instance, while the first is the in-loop default only because it is the only one, first sets ``web_search_default_tool`` to the first in the same commit, and says so in the response, so that adding an instance never turns in-loop search off. That runtime value wins over the configuration file until it is cleared.
 
         :param create_search_tool_request: (required)
         :type create_search_tool_request: CreateSearchToolRequest
@@ -164,7 +169,7 @@ class SearchToolsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '201': "StoredSearchToolSchema",
+            '201': "CreatedSearchToolSchema",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -197,7 +202,7 @@ class SearchToolsApi:
     ) -> RESTResponseType:
         """Create Search Tool
 
-        Add a search tool at runtime. Storing an API key requires OTARI_SECRET_KEY.
+        Add a search or fetch instance at runtime. Storing an API key requires OTARI_SECRET_KEY.  Creating a second search instance, while the first is the in-loop default only because it is the only one, first sets ``web_search_default_tool`` to the first in the same commit, and says so in the response, so that adding an instance never turns in-loop search off. That runtime value wins over the configuration file until it is cleared.
 
         :param create_search_tool_request: (required)
         :type create_search_tool_request: CreateSearchToolRequest
@@ -232,7 +237,7 @@ class SearchToolsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '201': "StoredSearchToolSchema",
+            '201': "CreatedSearchToolSchema",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -339,7 +344,7 @@ class SearchToolsApi:
     ) -> None:
         """Delete Stored Search Tool
 
-        Delete a stored search tool. A config-file search tool cannot be deleted here.
+        Delete a stored search or fetch instance. A config-file one, or ``builtin_fetch``, cannot be deleted here.
 
         :param name: (required)
         :type name: str
@@ -407,7 +412,7 @@ class SearchToolsApi:
     ) -> ApiResponse[None]:
         """Delete Stored Search Tool
 
-        Delete a stored search tool. A config-file search tool cannot be deleted here.
+        Delete a stored search or fetch instance. A config-file one, or ``builtin_fetch``, cannot be deleted here.
 
         :param name: (required)
         :type name: str
@@ -475,7 +480,7 @@ class SearchToolsApi:
     ) -> RESTResponseType:
         """Delete Stored Search Tool
 
-        Delete a stored search tool. A config-file search tool cannot be deleted here.
+        Delete a stored search or fetch instance. A config-file one, or ``builtin_fetch``, cannot be deleted here.
 
         :param name: (required)
         :type name: str
@@ -588,6 +593,7 @@ class SearchToolsApi:
     @validate_call
     def search_tools_list_all_search_tools(
         self,
+        kind: Annotated[Optional[StrictStr], Field(description="Which instances to list: 'search' (the default) or 'fetch'.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -603,8 +609,10 @@ class SearchToolsApi:
     ) -> SearchToolsResponse:
         """List All Search Tools
 
-        List every search tool ``POST /api/v1/search`` can name.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set. Keys are never returned, only ``last4``.
+        List every search instance ``POST /api/v1/search`` can name, or with ``?kind=fetch`` every fetch instance.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set, ``builtin_fetch`` first among the fetch instances. Keys are never returned, only ``last4``.
 
+        :param kind: Which instances to list: 'search' (the default) or 'fetch'.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -628,6 +636,7 @@ class SearchToolsApi:
         """ # noqa: E501
 
         _param = self._search_tools_list_all_search_tools_serialize(
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -636,6 +645,7 @@ class SearchToolsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SearchToolsResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -651,6 +661,7 @@ class SearchToolsApi:
     @validate_call
     def search_tools_list_all_search_tools_with_http_info(
         self,
+        kind: Annotated[Optional[StrictStr], Field(description="Which instances to list: 'search' (the default) or 'fetch'.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -666,8 +677,10 @@ class SearchToolsApi:
     ) -> ApiResponse[SearchToolsResponse]:
         """List All Search Tools
 
-        List every search tool ``POST /api/v1/search`` can name.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set. Keys are never returned, only ``last4``.
+        List every search instance ``POST /api/v1/search`` can name, or with ``?kind=fetch`` every fetch instance.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set, ``builtin_fetch`` first among the fetch instances. Keys are never returned, only ``last4``.
 
+        :param kind: Which instances to list: 'search' (the default) or 'fetch'.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -691,6 +704,7 @@ class SearchToolsApi:
         """ # noqa: E501
 
         _param = self._search_tools_list_all_search_tools_serialize(
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -699,6 +713,7 @@ class SearchToolsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SearchToolsResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -714,6 +729,7 @@ class SearchToolsApi:
     @validate_call
     def search_tools_list_all_search_tools_without_preload_content(
         self,
+        kind: Annotated[Optional[StrictStr], Field(description="Which instances to list: 'search' (the default) or 'fetch'.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -729,8 +745,10 @@ class SearchToolsApi:
     ) -> RESTResponseType:
         """List All Search Tools
 
-        List every search tool ``POST /api/v1/search`` can name.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set. Keys are never returned, only ``last4``.
+        List every search instance ``POST /api/v1/search`` can name, or with ``?kind=fetch`` every fetch instance.  ``stored`` are the editable rows written through this API; ``config`` are the config-file entries, which are still honored and are reported so the operator can see the whole set, ``builtin_fetch`` first among the fetch instances. Keys are never returned, only ``last4``.
 
+        :param kind: Which instances to list: 'search' (the default) or 'fetch'.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -754,6 +772,7 @@ class SearchToolsApi:
         """ # noqa: E501
 
         _param = self._search_tools_list_all_search_tools_serialize(
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -762,6 +781,7 @@ class SearchToolsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SearchToolsResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -772,6 +792,7 @@ class SearchToolsApi:
 
     def _search_tools_list_all_search_tools_serialize(
         self,
+        kind,
         _request_auth,
         _content_type,
         _headers,
@@ -794,6 +815,10 @@ class SearchToolsApi:
 
         # process the path parameters
         # process the query parameters
+        if kind is not None:
+            
+            _query_params.append(('kind', kind))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -835,6 +860,7 @@ class SearchToolsApi:
     @validate_call
     def search_tools_list_search_providers(
         self,
+        kind: Annotated[Optional[StrictStr], Field(description="Which providers to list: search providers (the default) or fetch providers.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -850,8 +876,10 @@ class SearchToolsApi:
     ) -> List[SearchProviderSchema]:
         """List Search Providers
 
-        List the search providers this build can dispatch to, for the add-tool form.  Reports per provider whether an API key is required and what endpoint a tool inherits when it declares none, so the form can ask for exactly what the chosen provider needs instead of taking a free-text provider name.
+        List the providers a search or fetch tool may name, for the add-tool form.  The list comes from the metadata any-search and any-fetch publish, so a provider either library adds appears with no change to the gateway. Reports per provider whether an API key is required, what endpoint a tool inherits when it declares none, and the native options a tool may set. Providers that exist only for tests are left out, and so is the fetch provider ``builtin``, which only the implicit ``builtin_fetch`` tool uses.  What belongs to this deployment rather than to the libraries, its own tools on each provider and an endpoint a tool inherits from its settings, is shown only to a caller who operates the deployment: the tool settings reader withholds the same from anyone else.
 
+        :param kind: Which providers to list: search providers (the default) or fetch providers.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -875,6 +903,7 @@ class SearchToolsApi:
         """ # noqa: E501
 
         _param = self._search_tools_list_search_providers_serialize(
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -883,6 +912,7 @@ class SearchToolsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[SearchProviderSchema]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -898,6 +928,7 @@ class SearchToolsApi:
     @validate_call
     def search_tools_list_search_providers_with_http_info(
         self,
+        kind: Annotated[Optional[StrictStr], Field(description="Which providers to list: search providers (the default) or fetch providers.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -913,8 +944,10 @@ class SearchToolsApi:
     ) -> ApiResponse[List[SearchProviderSchema]]:
         """List Search Providers
 
-        List the search providers this build can dispatch to, for the add-tool form.  Reports per provider whether an API key is required and what endpoint a tool inherits when it declares none, so the form can ask for exactly what the chosen provider needs instead of taking a free-text provider name.
+        List the providers a search or fetch tool may name, for the add-tool form.  The list comes from the metadata any-search and any-fetch publish, so a provider either library adds appears with no change to the gateway. Reports per provider whether an API key is required, what endpoint a tool inherits when it declares none, and the native options a tool may set. Providers that exist only for tests are left out, and so is the fetch provider ``builtin``, which only the implicit ``builtin_fetch`` tool uses.  What belongs to this deployment rather than to the libraries, its own tools on each provider and an endpoint a tool inherits from its settings, is shown only to a caller who operates the deployment: the tool settings reader withholds the same from anyone else.
 
+        :param kind: Which providers to list: search providers (the default) or fetch providers.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -938,6 +971,7 @@ class SearchToolsApi:
         """ # noqa: E501
 
         _param = self._search_tools_list_search_providers_serialize(
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -946,6 +980,7 @@ class SearchToolsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[SearchProviderSchema]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -961,6 +996,7 @@ class SearchToolsApi:
     @validate_call
     def search_tools_list_search_providers_without_preload_content(
         self,
+        kind: Annotated[Optional[StrictStr], Field(description="Which providers to list: search providers (the default) or fetch providers.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -976,8 +1012,10 @@ class SearchToolsApi:
     ) -> RESTResponseType:
         """List Search Providers
 
-        List the search providers this build can dispatch to, for the add-tool form.  Reports per provider whether an API key is required and what endpoint a tool inherits when it declares none, so the form can ask for exactly what the chosen provider needs instead of taking a free-text provider name.
+        List the providers a search or fetch tool may name, for the add-tool form.  The list comes from the metadata any-search and any-fetch publish, so a provider either library adds appears with no change to the gateway. Reports per provider whether an API key is required, what endpoint a tool inherits when it declares none, and the native options a tool may set. Providers that exist only for tests are left out, and so is the fetch provider ``builtin``, which only the implicit ``builtin_fetch`` tool uses.  What belongs to this deployment rather than to the libraries, its own tools on each provider and an endpoint a tool inherits from its settings, is shown only to a caller who operates the deployment: the tool settings reader withholds the same from anyone else.
 
+        :param kind: Which providers to list: search providers (the default) or fetch providers.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1001,6 +1039,7 @@ class SearchToolsApi:
         """ # noqa: E501
 
         _param = self._search_tools_list_search_providers_serialize(
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1009,6 +1048,7 @@ class SearchToolsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[SearchProviderSchema]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1019,6 +1059,7 @@ class SearchToolsApi:
 
     def _search_tools_list_search_providers_serialize(
         self,
+        kind,
         _request_auth,
         _content_type,
         _headers,
@@ -1041,6 +1082,10 @@ class SearchToolsApi:
 
         # process the path parameters
         # process the query parameters
+        if kind is not None:
+            
+            _query_params.append(('kind', kind))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1327,6 +1372,577 @@ class SearchToolsApi:
 
 
     @validate_call
+    def search_tools_test_search_tool(
+        self,
+        name: StrictStr,
+        stored_search_tool_test_request: StoredSearchToolTestRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> SearchToolTestResponse:
+        """Test Search Tool
+
+        Test a configured or stored instance with one search or one fetch.  Takes ``query`` for a search instance or ``url`` for a fetch instance, and answers as ``POST /search-tools/test`` does. ``builtin_fetch`` has no test yet, and answers a 400.
+
+        :param name: (required)
+        :type name: str
+        :param stored_search_tool_test_request: (required)
+        :type stored_search_tool_test_request: StoredSearchToolTestRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._search_tools_test_search_tool_serialize(
+            name=name,
+            stored_search_tool_test_request=stored_search_tool_test_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SearchToolTestResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def search_tools_test_search_tool_with_http_info(
+        self,
+        name: StrictStr,
+        stored_search_tool_test_request: StoredSearchToolTestRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[SearchToolTestResponse]:
+        """Test Search Tool
+
+        Test a configured or stored instance with one search or one fetch.  Takes ``query`` for a search instance or ``url`` for a fetch instance, and answers as ``POST /search-tools/test`` does. ``builtin_fetch`` has no test yet, and answers a 400.
+
+        :param name: (required)
+        :type name: str
+        :param stored_search_tool_test_request: (required)
+        :type stored_search_tool_test_request: StoredSearchToolTestRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._search_tools_test_search_tool_serialize(
+            name=name,
+            stored_search_tool_test_request=stored_search_tool_test_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SearchToolTestResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def search_tools_test_search_tool_without_preload_content(
+        self,
+        name: StrictStr,
+        stored_search_tool_test_request: StoredSearchToolTestRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Test Search Tool
+
+        Test a configured or stored instance with one search or one fetch.  Takes ``query`` for a search instance or ``url`` for a fetch instance, and answers as ``POST /search-tools/test`` does. ``builtin_fetch`` has no test yet, and answers a 400.
+
+        :param name: (required)
+        :type name: str
+        :param stored_search_tool_test_request: (required)
+        :type stored_search_tool_test_request: StoredSearchToolTestRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._search_tools_test_search_tool_serialize(
+            name=name,
+            stored_search_tool_test_request=stored_search_tool_test_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SearchToolTestResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _search_tools_test_search_tool_serialize(
+        self,
+        name,
+        stored_search_tool_test_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if name is not None:
+            _path_params['name'] = name
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if stored_search_tool_test_request is not None:
+            _body_params = stored_search_tool_test_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/search-tools/{name}/test',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def search_tools_test_unsaved_search_tool(
+        self,
+        search_tool_test_request: SearchToolTestRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> SearchToolTestResponse:
+        """Test Unsaved Search Tool
+
+        Test an instance before saving it, with one search or one fetch.  Takes the create request's fields, held to the create's checks against the instances this worker has loaded, plus ``query`` for a search instance or ``url`` for a fetch instance. Answers whether the provider answered without an error, the error's tag when it did not, and how many hits or characters came back, never the results or the page.
+
+        :param search_tool_test_request: (required)
+        :type search_tool_test_request: SearchToolTestRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._search_tools_test_unsaved_search_tool_serialize(
+            search_tool_test_request=search_tool_test_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SearchToolTestResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def search_tools_test_unsaved_search_tool_with_http_info(
+        self,
+        search_tool_test_request: SearchToolTestRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[SearchToolTestResponse]:
+        """Test Unsaved Search Tool
+
+        Test an instance before saving it, with one search or one fetch.  Takes the create request's fields, held to the create's checks against the instances this worker has loaded, plus ``query`` for a search instance or ``url`` for a fetch instance. Answers whether the provider answered without an error, the error's tag when it did not, and how many hits or characters came back, never the results or the page.
+
+        :param search_tool_test_request: (required)
+        :type search_tool_test_request: SearchToolTestRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._search_tools_test_unsaved_search_tool_serialize(
+            search_tool_test_request=search_tool_test_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SearchToolTestResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def search_tools_test_unsaved_search_tool_without_preload_content(
+        self,
+        search_tool_test_request: SearchToolTestRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Test Unsaved Search Tool
+
+        Test an instance before saving it, with one search or one fetch.  Takes the create request's fields, held to the create's checks against the instances this worker has loaded, plus ``query`` for a search instance or ``url`` for a fetch instance. Answers whether the provider answered without an error, the error's tag when it did not, and how many hits or characters came back, never the results or the page.
+
+        :param search_tool_test_request: (required)
+        :type search_tool_test_request: SearchToolTestRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._search_tools_test_unsaved_search_tool_serialize(
+            search_tool_test_request=search_tool_test_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SearchToolTestResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _search_tools_test_unsaved_search_tool_serialize(
+        self,
+        search_tool_test_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if search_tool_test_request is not None:
+            _body_params = search_tool_test_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/search-tools/test',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def search_tools_update_search_tool(
         self,
         name: StrictStr,
@@ -1346,7 +1962,7 @@ class SearchToolsApi:
     ) -> StoredSearchToolSchema:
         """Update Search Tool
 
-        Update a stored search tool. Omitted fields are left as-is; an explicit ``null`` clears them.  ``api_key`` follows the same rule: omit it to keep the stored key, send a new one to rotate, or send ``null`` to clear it (a keyless SearXNG backend). The row is locked ``FOR UPDATE`` so the ``expected_updated_at`` check and the write it guards are atomic. The tool as it will be after the update is validated, so a change that would leave it unusable (clearing the key of a provider that needs one) is refused rather than stored.
+        Update a stored search or fetch instance. Omitted fields are left as-is; an explicit ``null`` clears them.  ``api_key`` follows the same rule: omit it to keep the stored key, send a new one to rotate, or send ``null`` to clear it (a keyless SearXNG backend). The row is locked ``FOR UPDATE`` so the ``expected_updated_at`` check and the write it guards are atomic. The tool as it will be after the update is validated, so a change that would leave it unusable (clearing the key of a provider that needs one) is refused rather than stored. Its options are checked against the provider's when the update sets them or changes the provider, and ``fetch_tool`` when the update sets it, so rotating the key of an instance stored before those rules never trips on them. ``kind`` cannot change, so an instance never moves between the search and fetch maps.
 
         :param name: (required)
         :type name: str
@@ -1418,7 +2034,7 @@ class SearchToolsApi:
     ) -> ApiResponse[StoredSearchToolSchema]:
         """Update Search Tool
 
-        Update a stored search tool. Omitted fields are left as-is; an explicit ``null`` clears them.  ``api_key`` follows the same rule: omit it to keep the stored key, send a new one to rotate, or send ``null`` to clear it (a keyless SearXNG backend). The row is locked ``FOR UPDATE`` so the ``expected_updated_at`` check and the write it guards are atomic. The tool as it will be after the update is validated, so a change that would leave it unusable (clearing the key of a provider that needs one) is refused rather than stored.
+        Update a stored search or fetch instance. Omitted fields are left as-is; an explicit ``null`` clears them.  ``api_key`` follows the same rule: omit it to keep the stored key, send a new one to rotate, or send ``null`` to clear it (a keyless SearXNG backend). The row is locked ``FOR UPDATE`` so the ``expected_updated_at`` check and the write it guards are atomic. The tool as it will be after the update is validated, so a change that would leave it unusable (clearing the key of a provider that needs one) is refused rather than stored. Its options are checked against the provider's when the update sets them or changes the provider, and ``fetch_tool`` when the update sets it, so rotating the key of an instance stored before those rules never trips on them. ``kind`` cannot change, so an instance never moves between the search and fetch maps.
 
         :param name: (required)
         :type name: str
@@ -1490,7 +2106,7 @@ class SearchToolsApi:
     ) -> RESTResponseType:
         """Update Search Tool
 
-        Update a stored search tool. Omitted fields are left as-is; an explicit ``null`` clears them.  ``api_key`` follows the same rule: omit it to keep the stored key, send a new one to rotate, or send ``null`` to clear it (a keyless SearXNG backend). The row is locked ``FOR UPDATE`` so the ``expected_updated_at`` check and the write it guards are atomic. The tool as it will be after the update is validated, so a change that would leave it unusable (clearing the key of a provider that needs one) is refused rather than stored.
+        Update a stored search or fetch instance. Omitted fields are left as-is; an explicit ``null`` clears them.  ``api_key`` follows the same rule: omit it to keep the stored key, send a new one to rotate, or send ``null`` to clear it (a keyless SearXNG backend). The row is locked ``FOR UPDATE`` so the ``expected_updated_at`` check and the write it guards are atomic. The tool as it will be after the update is validated, so a change that would leave it unusable (clearing the key of a provider that needs one) is refused rather than stored. Its options are checked against the provider's when the update sets them or changes the provider, and ``fetch_tool`` when the update sets it, so rotating the key of an instance stored before those rules never trips on them. ``kind`` cannot change, so an instance never moves between the search and fetch maps.
 
         :param name: (required)
         :type name: str

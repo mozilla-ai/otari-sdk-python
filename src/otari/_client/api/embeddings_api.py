@@ -55,7 +55,7 @@ class EmbeddingsApi:
     ) -> CreateEmbeddingResponse:
         """Create Embedding
 
-        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
+        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user  A priced response carries its cost on `usage` as `cost_usd` (a six-decimal USD string) and `pricing_source`, as a chat completion does; an unpriced one carries neither.
 
         :param embedding_request: (required)
         :type embedding_request: EmbeddingRequest
@@ -123,7 +123,7 @@ class EmbeddingsApi:
     ) -> ApiResponse[CreateEmbeddingResponse]:
         """Create Embedding
 
-        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
+        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user  A priced response carries its cost on `usage` as `cost_usd` (a six-decimal USD string) and `pricing_source`, as a chat completion does; an unpriced one carries neither.
 
         :param embedding_request: (required)
         :type embedding_request: EmbeddingRequest
@@ -191,7 +191,7 @@ class EmbeddingsApi:
     ) -> RESTResponseType:
         """Create Embedding
 
-        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
+        OpenAI-compatible embeddings endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user  A priced response carries its cost on `usage` as `cost_usd` (a six-decimal USD string) and `pricing_source`, as a chat completion does; an unpriced one carries neither.
 
         :param embedding_request: (required)
         :type embedding_request: EmbeddingRequest

@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.validation_error import ValidationError
 from typing import Optional, Set
@@ -28,8 +28,19 @@ class HTTPValidationError(BaseModel):
     """
     HTTPValidationError
     """ # noqa: E501
+    code: Optional[StrictStr] = Field(default=None, description="Stable error code, also sent as the Otari-Error-Code header.")
     detail: Optional[List[ValidationError]] = None
-    __properties: ClassVar[List[str]] = ["detail"]
+    __properties: ClassVar[List[str]] = ["code", "detail"]
+
+    @field_validator('code')
+    def code_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['invalid_request']):
+            raise ValueError("must be one of enum values ('invalid_request')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,6 +100,7 @@ class HTTPValidationError(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "code": obj.get("code"),
             "detail": [ValidationError.from_dict(_item) for _item in obj["detail"]] if obj.get("detail") is not None else None
         })
         return _obj
