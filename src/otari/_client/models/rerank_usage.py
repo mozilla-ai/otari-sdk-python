@@ -29,7 +29,7 @@ class RerankUsage(BaseModel):
     What a rerank request was metered at, and what it cost.
     """ # noqa: E501
     cost_usd: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="What the request cost, as a six-decimal USD string; absent when it was not priced")
-    pricing_source: Optional[StrictStr] = Field(default=None, description="Which rate priced the request; absent when it was not priced")
+    pricing_source: Optional[StrictStr] = Field(default=None, description="Which rate priced the request: `organization`, `deployment` or `defaults` on a standalone gateway, and the control plane's own name for it on a hybrid one; absent when it was not priced")
     search_units: Optional[StrictInt] = Field(default=None, description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")
     total_tokens: Optional[StrictInt] = Field(default=None, description="Filter to a single failure status code (e.g. 429 for provider rate limits, 402 for missing-pricing rejections). Only error rows carry one, so this filter also restricts to status='error' unless 'status' is given explicitly")
     __properties: ClassVar[List[str]] = ["cost_usd", "pricing_source", "search_units", "total_tokens"]
@@ -45,16 +45,6 @@ class RerankUsage(BaseModel):
 
         if not re.match(r"^-?\d+\.\d{6}$", value):
             raise ValueError(r"must validate the regular expression /^-?\d+\.\d{6}$/")
-        return value
-
-    @field_validator('pricing_source')
-    def pricing_source_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['organization', 'deployment', 'defaults']):
-            raise ValueError("must be one of enum values ('organization', 'deployment', 'defaults')")
         return value
 
     model_config = ConfigDict(
