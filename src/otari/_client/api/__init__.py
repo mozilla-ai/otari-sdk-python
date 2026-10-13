@@ -30,6 +30,7 @@ from otari._client.api.organization_guardrail_definitions_api import Organizatio
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi
 from otari._client.api.organization_keys_api import OrganizationKeysApi
 from otari._client.api.organization_pricing_api import OrganizationPricingApi
+from otari._client.api.organization_traces_api import OrganizationTracesApi
 from otari._client.api.organization_usage_api import OrganizationUsageApi
 from otari._client.api.organizations_api import OrganizationsApi
 from otari._client.api.otel_api import OtelApi
@@ -49,6 +50,7 @@ from otari._client.api.search_tools_api import SearchToolsApi
 from otari._client.api.settings_api import SettingsApi
 from otari._client.api.tool_settings_api import ToolSettingsApi
 from otari._client.api.tools_api import ToolsApi
+from otari._client.api.traces_api import TracesApi
 from otari._client.api.usage_api import UsageApi
 from otari._client.api.users_api import UsersApi
 from otari._client.api.web_search_api import WebSearchApi
