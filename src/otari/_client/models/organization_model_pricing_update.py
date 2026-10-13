@@ -35,10 +35,10 @@ class OrganizationModelPricingUpdate(BaseModel):
     cache_write_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cache-write (creation) tokens")
     effective_from: datetime = Field(description="ISO 8601 datetime from which this rate applies, inclusive. Required on a replacement, so an omitted value cannot silently move a stored period to the present.")
     effective_to: Optional[datetime] = Field(default=None, description="ISO 8601 datetime at which this rate stops applying, exclusive. Null leaves it open ended. Because the end is exclusive, the next period may begin at exactly this instant without overlapping.")
-    input_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M input tokens")
-    output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens")
+    input_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M of the rate's unit: input tokens, requests or images")
+    output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens; unused by a rate in requests or images")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
-    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint. A completion model priced per requests is charged one request per successful call.")
+    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint, each priced per million. A completion model priced per requests is charged one request per successful call.")
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('unit')

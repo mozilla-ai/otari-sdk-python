@@ -34,11 +34,11 @@ class SetPricingRequest(BaseModel):
     cache_write_1h_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M Anthropic 1-hour cache-write tokens")
     cache_write_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cache-write (creation) tokens")
     effective_at: Optional[datetime] = Field(default=None, description="ISO 8601 datetime from which this price applies. Defaults to now if omitted.")
-    input_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M input tokens")
+    input_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M of the rate's unit: input tokens, requests or images")
     model_key: StrictStr = Field(description="Model identifier in format 'provider:model'")
-    output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens")
+    output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens; unused by a rate in requests or images")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
-    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: 'tokens' for a model, 'requests' for a gateway-run tool, a moderation call, or a completion model billed per call (USD per million requests), 'images' for image generation.")
+    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: 'tokens' for a model, 'requests' for a gateway-run tool, a moderation call, or a completion model billed per call (USD per million requests), 'images' for image generation (USD per million images).")
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "effective_at", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('unit')
