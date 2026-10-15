@@ -18,8 +18,8 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.pricing_refresh_change_response import PricingRefreshChangeResponse
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,16 +27,19 @@ from pydantic_core import to_jsonable_python
 
 class PricingRefreshPreviewResponse(BaseModel):
     """
-    Reviewable summary of a pending genai-prices refresh.
+    Reviewable summary of a pending models.dev refresh.
     """ # noqa: E501
     added_count: StrictInt
     changed_count: StrictInt
     changes: List[PricingRefreshChangeResponse]
     changes_truncated: StrictBool
+    digest: Optional[StrictStr] = Field(default='', description="Identity of the pending snapshot; send it to confirm or reject to act on exactly this one.")
     fetched_at: datetime
+    needs_review: Optional[StrictBool] = Field(default=False, description="True when the update is implausibly large; the scheduled `auto` policy leaves it pending.")
     protected_model_count: StrictInt
     removed_count: StrictInt
-    __properties: ClassVar[List[str]] = ["added_count", "changed_count", "changes", "changes_truncated", "fetched_at", "protected_model_count", "removed_count"]
+    review_reason: Optional[StrictStr] = Field(default=None, description="Why the update needs review.")
+    __properties: ClassVar[List[str]] = ["added_count", "changed_count", "changes", "changes_truncated", "digest", "fetched_at", "needs_review", "protected_model_count", "removed_count", "review_reason"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -84,6 +87,11 @@ class PricingRefreshPreviewResponse(BaseModel):
                 if _item_changes:
                     _items.append(_item_changes.to_dict())
             _dict['changes'] = _items
+        # set to None if review_reason (nullable) is None
+        # and model_fields_set contains the field
+        if self.review_reason is None and "review_reason" in self.model_fields_set:
+            _dict['review_reason'] = None
+
         return _dict
 
     @classmethod
@@ -100,9 +108,12 @@ class PricingRefreshPreviewResponse(BaseModel):
             "changed_count": obj.get("changed_count"),
             "changes": [PricingRefreshChangeResponse.from_dict(_item) for _item in obj["changes"]] if obj.get("changes") is not None else None,
             "changes_truncated": obj.get("changes_truncated"),
+            "digest": obj.get("digest") if obj.get("digest") is not None else '',
             "fetched_at": obj.get("fetched_at"),
+            "needs_review": obj.get("needs_review") if obj.get("needs_review") is not None else False,
             "protected_model_count": obj.get("protected_model_count"),
-            "removed_count": obj.get("removed_count")
+            "removed_count": obj.get("removed_count"),
+            "review_reason": obj.get("review_reason")
         })
         return _obj
 

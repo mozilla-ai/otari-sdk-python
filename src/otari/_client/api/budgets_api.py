@@ -1168,7 +1168,7 @@ class BudgetsApi:
     ) -> List[BudgetResponse]:
         """List Budgets
 
-        List all budgets with pagination.
+        List the deployment's budgets and the caller's organization's, with pagination.
 
         :param skip:
         :type skip: int
@@ -1240,7 +1240,7 @@ class BudgetsApi:
     ) -> ApiResponse[List[BudgetResponse]]:
         """List Budgets
 
-        List all budgets with pagination.
+        List the deployment's budgets and the caller's organization's, with pagination.
 
         :param skip:
         :type skip: int
@@ -1312,7 +1312,7 @@ class BudgetsApi:
     ) -> RESTResponseType:
         """List Budgets
 
-        List all budgets with pagination.
+        List the deployment's budgets and the caller's organization's, with pagination.
 
         :param skip:
         :type skip: int

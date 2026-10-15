@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,8 +29,9 @@ class ResetPasswordRequest(BaseModel):
     ResetPasswordRequest
     """ # noqa: E501
     new_password: Annotated[str, Field(min_length=8, strict=True, max_length=1024)] = Field(description="The password to sign in with from now on. At least 8 characters, at most 72 bytes.")
+    terms_accepted: Optional[StrictBool] = Field(default=False, description="Whether the caller accepted this deployment's terms. Required where the bootstrap reports a terms_url and the account has not accepted them yet.")
     token: Annotated[str, Field(strict=True, max_length=512)] = Field(description="The token from the reset link.")
-    __properties: ClassVar[List[str]] = ["new_password", "token"]
+    __properties: ClassVar[List[str]] = ["new_password", "terms_accepted", "token"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -84,6 +85,7 @@ class ResetPasswordRequest(BaseModel):
 
         _obj = cls.model_validate({
             "new_password": obj.get("new_password"),
+            "terms_accepted": obj.get("terms_accepted") if obj.get("terms_accepted") is not None else False,
             "token": obj.get("token")
         })
         return _obj

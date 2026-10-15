@@ -607,7 +607,7 @@ class ProvidersApi:
     ) -> ProvidersResponse:
         """List Providers
 
-        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and genai-prices datasets. No provider is contacted, so this is cheap and always available.
+        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and models.dev datasets. No provider is contacted, so this is cheap and always available.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -670,7 +670,7 @@ class ProvidersApi:
     ) -> ApiResponse[ProvidersResponse]:
         """List Providers
 
-        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and genai-prices datasets. No provider is contacted, so this is cheap and always available.
+        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and models.dev datasets. No provider is contacted, so this is cheap and always available.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -733,7 +733,7 @@ class ProvidersApi:
     ) -> RESTResponseType:
         """List Providers
 
-        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and genai-prices datasets. No provider is contacted, so this is cheap and always available.
+        List static metadata for every configured provider.  Operator-facing: reports each provider's capabilities, documentation and pricing links, and display name from the bundled any-llm and models.dev datasets. No provider is contacted, so this is cheap and always available.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1101,7 +1101,7 @@ class ProvidersApi:
     ) -> List[KnownProviderSummarySchema]:
         """Provider Catalog
 
-        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /api/v1/providers/catalog/{provider_id}, which imports only that one SDK.
+        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the models.dev catalog, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /api/v1/providers/catalog/{provider_id}, which imports only that one SDK.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1164,7 +1164,7 @@ class ProvidersApi:
     ) -> ApiResponse[List[KnownProviderSummarySchema]]:
         """Provider Catalog
 
-        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /api/v1/providers/catalog/{provider_id}, which imports only that one SDK.
+        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the models.dev catalog, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /api/v1/providers/catalog/{provider_id}, which imports only that one SDK.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1227,7 +1227,7 @@ class ProvidersApi:
     ) -> RESTResponseType:
         """Provider Catalog
 
-        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the bundled genai-prices dataset, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /api/v1/providers/catalog/{provider_id}, which imports only that one SDK.
+        List every known provider for the add-provider picker: id and name only.  Lightweight by design so the picker never lags: provider ids come from the any-llm registry and names from the models.dev catalog, so no provider SDK is imported. The autofill hints for a chosen provider come from GET /api/v1/providers/catalog/{provider_id}, which imports only that one SDK.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

@@ -25,7 +25,7 @@ from pydantic_core import to_jsonable_python
 
 class PricingRefreshConfirmationResponse(BaseModel):
     """
-    Result of activating a reviewed genai-prices refresh.
+    Result of activating a reviewed models.dev refresh.
     """ # noqa: E501
     applied: Optional[StrictBool] = True
     __properties: ClassVar[List[str]] = ["applied"]

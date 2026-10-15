@@ -28,7 +28,7 @@ class SearchToolTestResponse(BaseModel):
     How one search or one fetch went. Never the results or the page.
     """ # noqa: E501
     characters: Optional[StrictInt] = Field(default=None, description="For a fetch that worked: how many characters of page text came back.")
-    error: Optional[StrictStr] = Field(default=None, description="When not ok, the error's tag: timeout, network, http_error, invalid_response, or the provider's own.")
+    error: Optional[StrictStr] = Field(default=None, description="When not ok, the error's tag: timeout, network, http_error, invalid_response, unexpected_response (an answer whose shape the provider changed), or the provider's own.")
     hits: Optional[StrictInt] = Field(default=None, description="For a search that worked: how many hits came back.")
     ok: StrictBool = Field(description="Whether the provider answered the call without an error.")
     __properties: ClassVar[List[str]] = ["characters", "error", "hits", "ok"]

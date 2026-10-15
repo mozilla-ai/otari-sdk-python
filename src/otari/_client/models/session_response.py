@@ -19,7 +19,7 @@ import json
 
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,7 +29,7 @@ class SessionResponse(BaseModel):
     """
     A freshly minted dashboard session (the token travels only in the cookie).
     """ # noqa: E501
-    active_organization_id: UUID = Field(description="The organization that identity is acting in, which scopes every tenancy surface.")
+    active_organization_id: Optional[UUID] = Field(description="The organization that identity is acting in, which scopes every tenancy surface. Null when it is an active member of none, as an invitee who has not accepted yet is not.")
     expires_at: datetime = Field(description="When the session cookie stops being accepted.")
     user_id: UUID = Field(description="The identity this session speaks for.")
     __properties: ClassVar[List[str]] = ["active_organization_id", "expires_at", "user_id"]
@@ -73,6 +73,11 @@ class SessionResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if active_organization_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.active_organization_id is None and "active_organization_id" in self.model_fields_set:
+            _dict['active_organization_id'] = None
+
         return _dict
 
     @classmethod

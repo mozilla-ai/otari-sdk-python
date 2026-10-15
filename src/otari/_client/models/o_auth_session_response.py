@@ -18,8 +18,8 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,10 +29,11 @@ class OAuthSessionResponse(BaseModel):
     """
     A dashboard session minted by an OAuth sign-in (the token travels only in the cookie).  The same three fields ``POST /api/v1/auth/session`` answers, deliberately: the dashboard's sign-in path does not care which credential got it here.
     """ # noqa: E501
-    active_organization_id: UUID = Field(description="The organization that identity is acting in, which scopes every tenancy surface.")
+    active_organization_id: Optional[UUID] = Field(description="The organization that identity is acting in, which scopes every tenancy surface. Null when it is an active member of none, as an invitee who has not accepted yet is not.")
     expires_at: datetime = Field(description="When the session cookie stops being accepted.")
+    password_removed: Optional[StrictBool] = Field(default=False, description="Whether this sign-in removed a password the account held: the first provider sign-in on an address nobody had proven removes the password set before then. The person can set a new one from Account settings.")
     user_id: UUID = Field(description="The identity this session speaks for.")
-    __properties: ClassVar[List[str]] = ["active_organization_id", "expires_at", "user_id"]
+    __properties: ClassVar[List[str]] = ["active_organization_id", "expires_at", "password_removed", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -73,6 +74,11 @@ class OAuthSessionResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if active_organization_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.active_organization_id is None and "active_organization_id" in self.model_fields_set:
+            _dict['active_organization_id'] = None
+
         return _dict
 
     @classmethod
@@ -87,6 +93,7 @@ class OAuthSessionResponse(BaseModel):
         _obj = cls.model_validate({
             "active_organization_id": obj.get("active_organization_id"),
             "expires_at": obj.get("expires_at"),
+            "password_removed": obj.get("password_removed") if obj.get("password_removed") is not None else False,
             "user_id": obj.get("user_id")
         })
         return _obj

@@ -33,7 +33,7 @@ class CatalogModelDetail(BaseModel):
     also_available_from: List[CatalogElsewhere]
     capabilities: CatalogCapabilities
     context_window: Optional[StrictInt] = Field(default=None, description="The largest any offering serves.")
-    default_pricing: StrictBool = Field(description="Whether an unpriced model is metered at the genai-prices default.")
+    default_pricing: StrictBool = Field(description="Whether an unpriced model is metered at the models.dev default.")
     deprecated: Optional[StrictBool] = Field(default=False, description="True only when every offering with metadata says so.")
     description: Optional[StrictStr] = Field(default=None, description="models.dev's, from the offering that named the model.")
     discovered: StrictBool = Field(description="Whether any offering was discovered from its provider.")

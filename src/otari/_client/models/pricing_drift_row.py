@@ -27,9 +27,9 @@ class PricingDriftRow(BaseModel):
     """
     A stored deployment rate beside the default it shadows.
     """ # noqa: E501
-    default_input_price_per_million: Optional[Union[StrictFloat, StrictInt]] = Field(description="What genai-prices would meter this key at today. Null when the dataset does not know it.")
+    default_input_price_per_million: Optional[Union[StrictFloat, StrictInt]] = Field(description="What models.dev would meter this key at today. Null when the dataset does not know it.")
     default_output_price_per_million: Optional[Union[StrictFloat, StrictInt]]
-    default_reference: Optional[StrictStr] = Field(description="The genai-prices entry the default came from.")
+    default_reference: Optional[StrictStr] = Field(description="The models.dev entry the default came from.")
     effective_at: StrictStr
     input_delta_percent: Optional[Union[StrictFloat, StrictInt]] = Field(description="(stored - default) / default, as a percentage.")
     input_price_per_million: Union[StrictFloat, StrictInt]

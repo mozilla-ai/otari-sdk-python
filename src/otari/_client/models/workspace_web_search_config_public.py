@@ -32,6 +32,7 @@ class WorkspaceWebSearchConfigPublic(BaseModel):
     blocked_domains: Optional[List[StrictStr]]
     configured: StrictBool
     created_at: Optional[StrictStr]
+    default_enabled: StrictBool
     enabled: StrictBool
     max_results: Optional[StrictInt]
     provider_options: Optional[Dict[str, Any]] = Field(description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
@@ -39,7 +40,7 @@ class WorkspaceWebSearchConfigPublic(BaseModel):
     updated_at: Optional[StrictStr]
     web_search_configured: StrictBool
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_domains", "blocked_domains", "configured", "created_at", "enabled", "max_results", "provider_options", "purpose_hint", "updated_at", "web_search_configured", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_domains", "blocked_domains", "configured", "created_at", "default_enabled", "enabled", "max_results", "provider_options", "purpose_hint", "updated_at", "web_search_configured", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -131,6 +132,7 @@ class WorkspaceWebSearchConfigPublic(BaseModel):
             "blocked_domains": obj.get("blocked_domains"),
             "configured": obj.get("configured"),
             "created_at": obj.get("created_at"),
+            "default_enabled": obj.get("default_enabled"),
             "enabled": obj.get("enabled"),
             "max_results": obj.get("max_results"),
             "provider_options": obj.get("provider_options"),

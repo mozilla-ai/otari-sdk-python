@@ -25,13 +25,14 @@ from pydantic_core import to_jsonable_python
 
 class SearchResultItem(BaseModel):
     """
-    One search result.
+    One search result, shaped as LiteLLM's ``SearchResult``.
     """ # noqa: E501
-    var_date: Optional[StrictStr] = Field(default=None, alias="date")
-    snippet: Optional[StrictStr] = None
-    title: Optional[StrictStr] = None
+    var_date: Optional[StrictStr] = Field(default=None, description="The page's date, as the provider gave it.", alias="date")
+    last_updated: Optional[StrictStr] = Field(default=None, description="Always null: no provider reports it.")
+    snippet: StrictStr = Field(description="The page text the provider returned, else its excerpt, cut to the page budget.")
+    title: StrictStr = Field(description="The page's title; empty when the provider gave none.")
     url: StrictStr
-    __properties: ClassVar[List[str]] = ["date", "snippet", "title", "url"]
+    __properties: ClassVar[List[str]] = ["date", "last_updated", "snippet", "title", "url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -77,15 +78,10 @@ class SearchResultItem(BaseModel):
         if self.var_date is None and "var_date" in self.model_fields_set:
             _dict['date'] = None
 
-        # set to None if snippet (nullable) is None
+        # set to None if last_updated (nullable) is None
         # and model_fields_set contains the field
-        if self.snippet is None and "snippet" in self.model_fields_set:
-            _dict['snippet'] = None
-
-        # set to None if title (nullable) is None
-        # and model_fields_set contains the field
-        if self.title is None and "title" in self.model_fields_set:
-            _dict['title'] = None
+        if self.last_updated is None and "last_updated" in self.model_fields_set:
+            _dict['last_updated'] = None
 
         return _dict
 
@@ -100,6 +96,7 @@ class SearchResultItem(BaseModel):
 
         _obj = cls.model_validate({
             "date": obj.get("date"),
+            "last_updated": obj.get("last_updated"),
             "snippet": obj.get("snippet"),
             "title": obj.get("title"),
             "url": obj.get("url")

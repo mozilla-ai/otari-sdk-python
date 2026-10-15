@@ -78,7 +78,7 @@ class OrganizationUsageApi:
     ) -> UsageCount:
         """Count Organization Usage
 
-        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /api/v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
+        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the operator's ``GET /api/v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -210,7 +210,7 @@ class OrganizationUsageApi:
     ) -> ApiResponse[UsageCount]:
         """Count Organization Usage
 
-        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /api/v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
+        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the operator's ``GET /api/v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -342,7 +342,7 @@ class OrganizationUsageApi:
     ) -> RESTResponseType:
         """Count Organization Usage
 
-        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the deployment-wide ``GET /api/v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
+        Total rows matching these filters, within the caller's scope.  Serves the paginator's \"N of M\" beside the list above, and is scoped the same way, so the total can never describe more rows than the list will show.  Unlike the operator's ``GET /api/v1/usage/count``, ``counts_toward_budget=false`` is not narrowed to imported rows here: that narrowing sizes the bulk mutations, and this surface has none. So this total keeps matching the list beside it.
 
         :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime

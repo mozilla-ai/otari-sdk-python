@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class AcceptedSnapshotResponse(BaseModel):
     """
-    One accepted genai-prices snapshot in the history.
+    One accepted models.dev snapshot in the history.
     """ # noqa: E501
     accepted_at: datetime
     accepted_by: StrictStr = Field(description="`operator` for a dashboard confirm, `schedule` for the auto policy.")

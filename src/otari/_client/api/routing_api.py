@@ -909,7 +909,7 @@ class RoutingApi:
     @validate_call
     def routing_list_policies(
         self,
-        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace in your organization.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -925,9 +925,9 @@ class RoutingApi:
     ) -> List[PolicyResponse]:
         """List Policies
 
-        List every routing policy in force, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
+        List every routing policy in force in your organization, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
-        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.
+        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace in your organization.
         :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -977,7 +977,7 @@ class RoutingApi:
     @validate_call
     def routing_list_policies_with_http_info(
         self,
-        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace in your organization.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -993,9 +993,9 @@ class RoutingApi:
     ) -> ApiResponse[List[PolicyResponse]]:
         """List Policies
 
-        List every routing policy in force, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
+        List every routing policy in force in your organization, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
-        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.
+        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace in your organization.
         :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1045,7 +1045,7 @@ class RoutingApi:
     @validate_call
     def routing_list_policies_without_preload_content(
         self,
-        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace in your organization.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1061,9 +1061,9 @@ class RoutingApi:
     ) -> RESTResponseType:
         """List Policies
 
-        List every routing policy in force, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
+        List every routing policy in force in your organization, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
-        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace.
+        :param workspace_id: Only stored policies in this workspace. Config-file policies are always included, being deployment-wide. Omit to list the stored policies of every workspace in your organization.
         :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

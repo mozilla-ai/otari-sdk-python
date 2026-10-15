@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from otari._client.models.member_attribution_public import MemberAttributionPublic
@@ -29,13 +29,14 @@ from pydantic_core import to_jsonable_python
 
 class ActiveOrganizationMemberPublic(BaseModel):
     """
-    A member row joined to the identity behind it, as the roster shows it.  Field-for-field the platform's shape, so the ported roster page is not rewritten around a new contract, with two consequences of the OSS line: ``email`` is nullable here (a local operator identity has no sign-in address), and ``invitation_id`` is always null until the invitation flow rehomes, which is what fills it.  ``attribution_user_id`` is the addition the platform has no counterpart for. Keys, budgets, and usage attach to the gateway's string-keyed ``users`` row, not to this UUID identity, so this carries the ``user_id`` a caller passes to when minting a key for this member. It is null when no usable row exists (nobody minted one, or it was soft-deleted through soft-deleted), which is the signal not to offer this member as a key owner: key creation would refuse. How the two ids converge is the open question in otari-ai#1727; this field is the join until it is answered, and is what lets either answer land without the dashboard changing.
+    A member row joined to the identity behind it, as the roster shows it.  Field-for-field the platform's shape, so the ported roster page is not rewritten around a new contract, except that ``email`` is nullable here (a local operator identity has no sign-in address).  ``invitation_id`` and ``invitation_expires_at`` name an ``invited`` row's current invitation, which may have expired, so the roster can offer to revoke or reissue it.  ``attribution_user_id`` is the addition the platform has no counterpart for. Keys, budgets, and usage attach to the gateway's string-keyed ``users`` row, not to this UUID identity, so this carries the ``user_id`` a caller passes to when minting a key for this member. It is null when no usable row exists (nobody minted one, or it was soft-deleted through soft-deleted), which is the signal not to offer this member as a key owner: key creation would refuse. How the two ids converge is the open question in otari-ai#1727; this field is the join until it is answered, and is what lets either answer land without the dashboard changing.
     """ # noqa: E501
     attribution: Optional[MemberAttributionPublic] = None
     attribution_user_id: Optional[StrictStr] = None
     created_at: datetime
     email: Optional[StrictStr] = None
     full_name: Optional[StrictStr] = None
+    invitation_expires_at: Optional[datetime] = Field(default=None, description="When the invitation in invitation_id expires, or expired. Null when there is none.")
     invitation_id: Optional[UUID] = None
     organization_member_id: Optional[UUID] = None
     role: StrictStr
@@ -43,7 +44,7 @@ class ActiveOrganizationMemberPublic(BaseModel):
     updated_at: Optional[datetime] = None
     user_id: Optional[UUID] = None
     workspaces: Optional[List[MemberWorkspacePlacementPublic]] = None
-    __properties: ClassVar[List[str]] = ["attribution", "attribution_user_id", "created_at", "email", "full_name", "invitation_id", "organization_member_id", "role", "status", "updated_at", "user_id", "workspaces"]
+    __properties: ClassVar[List[str]] = ["attribution", "attribution_user_id", "created_at", "email", "full_name", "invitation_expires_at", "invitation_id", "organization_member_id", "role", "status", "updated_at", "user_id", "workspaces"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -114,6 +115,11 @@ class ActiveOrganizationMemberPublic(BaseModel):
         if self.full_name is None and "full_name" in self.model_fields_set:
             _dict['full_name'] = None
 
+        # set to None if invitation_expires_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.invitation_expires_at is None and "invitation_expires_at" in self.model_fields_set:
+            _dict['invitation_expires_at'] = None
+
         # set to None if invitation_id (nullable) is None
         # and model_fields_set contains the field
         if self.invitation_id is None and "invitation_id" in self.model_fields_set:
@@ -151,6 +157,7 @@ class ActiveOrganizationMemberPublic(BaseModel):
             "created_at": obj.get("created_at"),
             "email": obj.get("email"),
             "full_name": obj.get("full_name"),
+            "invitation_expires_at": obj.get("invitation_expires_at"),
             "invitation_id": obj.get("invitation_id"),
             "organization_member_id": obj.get("organization_member_id"),
             "role": obj.get("role"),

@@ -27,7 +27,7 @@ class RequestPasswordResetResponse(BaseModel):
     """
     RequestPasswordResetResponse
     """ # noqa: E501
-    message: StrictStr = Field(description="The same message whether or not the address has a password to reset.")
+    message: StrictStr = Field(description="The same message whether or not a link was sent.")
     __properties: ClassVar[List[str]] = ["message"]
 
     model_config = ConfigDict(

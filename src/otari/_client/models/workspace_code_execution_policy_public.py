@@ -33,6 +33,7 @@ class WorkspaceCodeExecutionPolicyPublic(BaseModel):
     available_tools: List[StrictStr]
     configured: StrictBool
     created_at: Optional[StrictStr]
+    default_enabled: StrictBool
     default_purpose_hint: Optional[StrictStr]
     enabled: StrictBool
     exec_timeout_s: Optional[StrictInt]
@@ -43,7 +44,7 @@ class WorkspaceCodeExecutionPolicyPublic(BaseModel):
     tools: Optional[List[StrictStr]]
     updated_at: Optional[StrictStr]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_images", "available_tools", "configured", "created_at", "default_purpose_hint", "enabled", "exec_timeout_s", "executor", "image", "max_iterations", "sandbox_configured", "tools", "updated_at", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_images", "available_tools", "configured", "created_at", "default_enabled", "default_purpose_hint", "enabled", "exec_timeout_s", "executor", "image", "max_iterations", "sandbox_configured", "tools", "updated_at", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -140,6 +141,7 @@ class WorkspaceCodeExecutionPolicyPublic(BaseModel):
             "available_tools": obj.get("available_tools"),
             "configured": obj.get("configured"),
             "created_at": obj.get("created_at"),
+            "default_enabled": obj.get("default_enabled"),
             "default_purpose_hint": obj.get("default_purpose_hint"),
             "enabled": obj.get("enabled"),
             "exec_timeout_s": obj.get("exec_timeout_s"),

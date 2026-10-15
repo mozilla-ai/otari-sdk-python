@@ -29,12 +29,11 @@ class PricingTier(BaseModel):
     Whole-request price cliff selected by total billable input tokens.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = None
-    cache_write_1h_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = None
     cache_write_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = None
     input_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = None
     min_input_tokens: Annotated[int, Field(strict=True, gt=0)]
     output_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = None
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "input_price_per_million", "min_input_tokens", "output_price_per_million"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "input_price_per_million", "min_input_tokens", "output_price_per_million"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -80,11 +79,6 @@ class PricingTier(BaseModel):
         if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
             _dict['cache_read_price_per_million'] = None
 
-        # set to None if cache_write_1h_price_per_million (nullable) is None
-        # and model_fields_set contains the field
-        if self.cache_write_1h_price_per_million is None and "cache_write_1h_price_per_million" in self.model_fields_set:
-            _dict['cache_write_1h_price_per_million'] = None
-
         # set to None if cache_write_price_per_million (nullable) is None
         # and model_fields_set contains the field
         if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
@@ -113,7 +107,6 @@ class PricingTier(BaseModel):
 
         _obj = cls.model_validate({
             "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
-            "cache_write_1h_price_per_million": obj.get("cache_write_1h_price_per_million"),
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "input_price_per_million": obj.get("input_price_per_million"),
             "min_input_tokens": obj.get("min_input_tokens"),

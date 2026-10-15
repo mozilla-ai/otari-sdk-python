@@ -23,6 +23,7 @@ from otari._client.models.deployment_admin_access_public import DeploymentAdminA
 from otari._client.models.deployment_user_public import DeploymentUserPublic
 from otari._client.models.deployment_user_update_request import DeploymentUserUpdateRequest
 from otari._client.models.deployment_users_public import DeploymentUsersPublic
+from otari._client.models.password_link_public import PasswordLinkPublic
 
 from otari._client.api_client import ApiClient, RequestSerialized
 from otari._client.api_response import ApiResponse
@@ -290,10 +291,276 @@ class AdminApi:
 
 
     @validate_call
+    def admin_issue_password_link(
+        self,
+        user_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> PasswordLinkPublic:
+        """Issue Password Link
+
+        Give an account a single-use link that sets its password, for someone who cannot sign in.  Where this deployment can mail links, the link goes to the account's address and is not returned, the same as \"Forgot your password?\". Where it cannot, or the send fails, the response carries the link for you to pass on, which is how a member who forgot their password gets back in on a deployment without mail. A password chosen through a link that was not mailed records the address as vouched for rather than proven. A new link replaces any earlier reset link for the account.  Refused with 409 for a deactivated account, one with no address, one that has no password and signs in with a provider or a passkey (its owner adds a password once signed in), and, where open_signup is disabled, an unverified address no organization still has as a member or invitee.
+
+        :param user_id: (required)
+        :type user_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._admin_issue_password_link_serialize(
+            user_id=user_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '201': "PasswordLinkPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def admin_issue_password_link_with_http_info(
+        self,
+        user_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[PasswordLinkPublic]:
+        """Issue Password Link
+
+        Give an account a single-use link that sets its password, for someone who cannot sign in.  Where this deployment can mail links, the link goes to the account's address and is not returned, the same as \"Forgot your password?\". Where it cannot, or the send fails, the response carries the link for you to pass on, which is how a member who forgot their password gets back in on a deployment without mail. A password chosen through a link that was not mailed records the address as vouched for rather than proven. A new link replaces any earlier reset link for the account.  Refused with 409 for a deactivated account, one with no address, one that has no password and signs in with a provider or a passkey (its owner adds a password once signed in), and, where open_signup is disabled, an unverified address no organization still has as a member or invitee.
+
+        :param user_id: (required)
+        :type user_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._admin_issue_password_link_serialize(
+            user_id=user_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '201': "PasswordLinkPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def admin_issue_password_link_without_preload_content(
+        self,
+        user_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Issue Password Link
+
+        Give an account a single-use link that sets its password, for someone who cannot sign in.  Where this deployment can mail links, the link goes to the account's address and is not returned, the same as \"Forgot your password?\". Where it cannot, or the send fails, the response carries the link for you to pass on, which is how a member who forgot their password gets back in on a deployment without mail. A password chosen through a link that was not mailed records the address as vouched for rather than proven. A new link replaces any earlier reset link for the account.  Refused with 409 for a deactivated account, one with no address, one that has no password and signs in with a provider or a passkey (its owner adds a password once signed in), and, where open_signup is disabled, an unverified address no organization still has as a member or invitee.
+
+        :param user_id: (required)
+        :type user_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._admin_issue_password_link_serialize(
+            user_id=user_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '201': "PasswordLinkPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _admin_issue_password_link_serialize(
+        self,
+        user_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if user_id is not None:
+            _path_params['user_id'] = user_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/admin/users/{user_id}/password-link',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def admin_list_deployment_users(
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
+        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Narrow to accounts whose name or email contains this text, case-insensitively.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -309,12 +576,14 @@ class AdminApi:
     ) -> DeploymentUsersPublic:
         """List Deployment Users
 
-        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /api/v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never.
+        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /api/v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never. ``search`` narrows the page and the count together.
 
         :param skip: Number of records to skip
         :type skip: int
         :param limit: Maximum number of records to return
         :type limit: int
+        :param search: Narrow to accounts whose name or email contains this text, case-insensitively.
+        :type search: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -340,6 +609,7 @@ class AdminApi:
         _param = self._admin_list_deployment_users_serialize(
             skip=skip,
             limit=limit,
+            search=search,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -366,6 +636,7 @@ class AdminApi:
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
+        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Narrow to accounts whose name or email contains this text, case-insensitively.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -381,12 +652,14 @@ class AdminApi:
     ) -> ApiResponse[DeploymentUsersPublic]:
         """List Deployment Users
 
-        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /api/v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never.
+        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /api/v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never. ``search`` narrows the page and the count together.
 
         :param skip: Number of records to skip
         :type skip: int
         :param limit: Maximum number of records to return
         :type limit: int
+        :param search: Narrow to accounts whose name or email contains this text, case-insensitively.
+        :type search: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -412,6 +685,7 @@ class AdminApi:
         _param = self._admin_list_deployment_users_serialize(
             skip=skip,
             limit=limit,
+            search=search,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -438,6 +712,7 @@ class AdminApi:
         self,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
+        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Narrow to accounts whose name or email contains this text, case-insensitively.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -453,12 +728,14 @@ class AdminApi:
     ) -> RESTResponseType:
         """List Deployment Users
 
-        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /api/v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never.
+        List every account on this deployment, with the organizations each belongs to.  Deployment-wide, so it is not the same list as ``GET /api/v1/organizations/me/members``: that one is the caller's organization roster and drops a suspended membership, while this one carries every identity at whatever standing, including one whose memberships are all suspended. Each row also reports when the account last signed in to the dashboard, and null there means never. ``search`` narrows the page and the count together.
 
         :param skip: Number of records to skip
         :type skip: int
         :param limit: Maximum number of records to return
         :type limit: int
+        :param search: Narrow to accounts whose name or email contains this text, case-insensitively.
+        :type search: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -484,6 +761,7 @@ class AdminApi:
         _param = self._admin_list_deployment_users_serialize(
             skip=skip,
             limit=limit,
+            search=search,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -505,6 +783,7 @@ class AdminApi:
         self,
         skip,
         limit,
+        search,
         _request_auth,
         _content_type,
         _headers,
@@ -534,6 +813,10 @@ class AdminApi:
         if limit is not None:
             
             _query_params.append(('limit', limit))
+            
+        if search is not None:
+            
+            _query_params.append(('search', search))
             
         # process the header parameters
         # process the form parameters

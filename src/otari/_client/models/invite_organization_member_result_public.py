@@ -34,11 +34,12 @@ class InviteOrganizationMemberResultPublic(BaseModel):
     email: StrictStr
     expires_at: datetime
     invitation_id: UUID
-    mail_sent: StrictBool = Field(description="Whether the invitation email was actually dispatched. False when mail is not configured, or the send itself failed.")
+    mail_limited: Optional[StrictBool] = Field(default=False, description="Whether the email was held back because the organization or the address reached its invitation mail limit for the day. Share the link yourself, or reissue the invitation later to email a new one.")
+    mail_sent: StrictBool = Field(description="Whether the invitation email was actually dispatched. False when mail is not configured, the send itself failed, or mail_limited.")
     organization_member_id: UUID
     role: StrictStr
     status: Optional[StrictStr] = 'invited'
-    __properties: ClassVar[List[str]] = ["accept_link", "created_at", "email", "expires_at", "invitation_id", "mail_sent", "organization_member_id", "role", "status"]
+    __properties: ClassVar[List[str]] = ["accept_link", "created_at", "email", "expires_at", "invitation_id", "mail_limited", "mail_sent", "organization_member_id", "role", "status"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -111,6 +112,7 @@ class InviteOrganizationMemberResultPublic(BaseModel):
             "email": obj.get("email"),
             "expires_at": obj.get("expires_at"),
             "invitation_id": obj.get("invitation_id"),
+            "mail_limited": obj.get("mail_limited") if obj.get("mail_limited") is not None else False,
             "mail_sent": obj.get("mail_sent"),
             "organization_member_id": obj.get("organization_member_id"),
             "role": obj.get("role"),

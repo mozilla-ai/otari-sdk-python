@@ -26,12 +26,13 @@ from pydantic_core import to_jsonable_python
 
 class SearchResponse(BaseModel):
     """
-    A completed search.
+    A completed direct search.
     """ # noqa: E501
     object: Optional[StrictStr] = 'search'
+    raw: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     results: List[SearchResultItem]
     search_tool: StrictStr = Field(description="The configured search tool that served the request")
-    __properties: ClassVar[List[str]] = ["object", "results", "search_tool"]
+    __properties: ClassVar[List[str]] = ["object", "raw", "results", "search_tool"]
 
     @field_validator('object')
     def object_validate_enum(cls, value):
@@ -89,6 +90,11 @@ class SearchResponse(BaseModel):
                 if _item_results:
                     _items.append(_item_results.to_dict())
             _dict['results'] = _items
+        # set to None if raw (nullable) is None
+        # and model_fields_set contains the field
+        if self.raw is None and "raw" in self.model_fields_set:
+            _dict['raw'] = None
+
         return _dict
 
     @classmethod
@@ -102,6 +108,7 @@ class SearchResponse(BaseModel):
 
         _obj = cls.model_validate({
             "object": obj.get("object") if obj.get("object") is not None else 'search',
+            "raw": obj.get("raw"),
             "results": [SearchResultItem.from_dict(_item) for _item in obj["results"]] if obj.get("results") is not None else None,
             "search_tool": obj.get("search_tool")
         })

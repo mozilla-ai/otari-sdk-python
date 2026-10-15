@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,10 +27,24 @@ class AcceptInvitationResultPublic(BaseModel):
     """
     What accepting produces: enough for the accept page to say where the visitor landed.  No session and no token. When the request carried a password, the identity can sign in straight away; otherwise it stays password-less until claimed by signup or a provider sign-in.
     """ # noqa: E501
+    can_sign_in: Optional[StrictBool] = Field(default=True, description="Whether the invited address can sign in now, with a password (this accept's included) or through a provider. False when it accepted without one and has never signed in.")
     organization_name: StrictStr
     password_set: Optional[StrictBool] = Field(default=False, description="Whether this accept set the identity's password.")
     role: StrictStr
-    __properties: ClassVar[List[str]] = ["organization_name", "password_set", "role"]
+    verification_pending: Optional[StrictBool] = Field(default=False, description="Whether the invited address chose a password through signup and has not verified it yet, so it has to open its verification link before it can sign in.")
+    ways_in: Optional[List[StrictStr]] = Field(default=None, description="When can_sign_in is false, what this deployment offers instead, as the preview's ways_in says.")
+    __properties: ClassVar[List[str]] = ["can_sign_in", "organization_name", "password_set", "role", "verification_pending", "ways_in"]
+
+    @field_validator('ways_in')
+    def ways_in_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        for i in value:
+            if i not in set(['provider', 'password_reset']):
+                raise ValueError("each list item must be one of ('provider', 'password_reset')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,9 +97,12 @@ class AcceptInvitationResultPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "can_sign_in": obj.get("can_sign_in") if obj.get("can_sign_in") is not None else True,
             "organization_name": obj.get("organization_name"),
             "password_set": obj.get("password_set") if obj.get("password_set") is not None else False,
-            "role": obj.get("role")
+            "role": obj.get("role"),
+            "verification_pending": obj.get("verification_pending") if obj.get("verification_pending") is not None else False,
+            "ways_in": obj.get("ways_in")
         })
         return _obj
 

@@ -153,10 +153,12 @@ GET /api/v1/models/metadata                         # not yet wrapped
 GET /api/v1/traces                                  # not yet wrapped
 GET /api/v1/traces/count                            # not yet wrapped
 GET /api/v1/traces/series                           # not yet wrapped
+GET /api/v1/traces/requests/{request_id}            # not yet wrapped
 GET /api/v1/traces/{trace_id}                       # not yet wrapped
 GET /api/v1/organizations/me/traces                 # not yet wrapped
 GET /api/v1/organizations/me/traces/count           # not yet wrapped
 GET /api/v1/organizations/me/traces/series          # not yet wrapped
+GET /api/v1/organizations/me/traces/requests/{request_id}  # not yet wrapped
 GET /api/v1/organizations/me/traces/{trace_id}      # not yet wrapped
 # Other control-plane extensions of already-covered resources
 GET /api/v1/usage/count                             # not yet wrapped
@@ -164,9 +166,20 @@ GET /api/v1/usage/requests/{request_id}            # not yet wrapped
 POST /api/v1/keys/{key_id}/rotate                   # not yet wrapped
 GET /api/v1/budgets/{budget_id}/reset-logs          # not yet wrapped
 PUT /api/v1/budgets/{budget_id}                     # not yet wrapped
+GET /api/v1/keys/{key_id}/end-users                 # not yet wrapped
+PUT /api/v1/keys/{key_id}/end-users                 # not yet wrapped
+PATCH /api/v1/keys/{key_id}/end-users               # not yet wrapped
 GET /api/v1/keys/{key_id}/end-users/{external_id}   # not yet wrapped
 PUT /api/v1/keys/{key_id}/end-users/{external_id}   # not yet wrapped
 PATCH /api/v1/keys/{key_id}/end-users/{external_id} # not yet wrapped
+# A service key managing its own end users, authenticated with that key
+GET /api/v1/end-users                               # not yet wrapped
+PUT /api/v1/end-users                               # not yet wrapped
+PATCH /api/v1/end-users                             # not yet wrapped
+GET /api/v1/end-users/{external_id}                 # not yet wrapped
+PUT /api/v1/end-users/{external_id}                 # not yet wrapped
+PATCH /api/v1/end-users/{external_id}               # not yet wrapped
+GET /api/v1/end-user-budgets                        # not yet wrapped
 
 # --- Second wave of gateway endpoints (added after the initial manifest) ---
 # Dashboard session auth: browser cookie flow for the admin UI, not an SDK surface.
@@ -180,9 +193,10 @@ DELETE /api/v1/auth/session                         # dashboard-only
 # flow. An SDK authenticates with the master key or an API key and never holds
 # a password, so there is nothing here for one to wrap.
 PUT /api/v1/auth/password                           # dashboard-only
-# The name the signed-in identity goes by: the account page's own write, beside
+# Who the signed-in identity is, and the name it goes by: the account page's own read and write, beside
 # the credential ones. An SDK authenticates as a key rather than as a person and
 # has no account page to render, so there is nothing here for one to wrap.
+GET /api/v1/auth/profile                            # dashboard-only
 PATCH /api/v1/auth/profile                          # dashboard-only
 # A signed-in person's message to the Otari team, sent from the top bar (the
 # account menu on a phone).
@@ -196,6 +210,8 @@ POST /api/v1/auth/verify-email                      # dashboard-only
 POST /api/v1/auth/resend-verification               # dashboard-only
 POST /api/v1/auth/password/reset                    # dashboard-only
 POST /api/v1/auth/password/reset/confirm            # dashboard-only
+POST /api/v1/auth/password/reset/validate           # dashboard-only
+POST /api/v1/auth/verify-email/validate             # dashboard-only
 # Passkeys (otari#652): both ceremonies need a WebAuthn authenticator, which is
 # a browser API. An SDK cannot produce an attestation or an assertion, so there
 # is nothing here for one to wrap, including the credential list: it exists to
@@ -292,6 +308,7 @@ DELETE /api/v1/scoped-budgets/{budget_id}                       # not yet wrappe
 GET /api/v1/admin/access                                        # dashboard-only
 GET /api/v1/admin/users                                         # dashboard-only
 PATCH /api/v1/admin/users/{user_id}                             # dashboard-only
+POST /api/v1/admin/users/{user_id}/password-link                # dashboard-only
 # Tenancy: organizations, workspaces, and their memberships. The dashboard's
 # tenancy pages are the consumer; an SDK caller acts inside one workspace with a
 # key that already names it, so none of these is an SDK surface yet. Move to
@@ -378,6 +395,7 @@ POST /api/v1/organizations/me/guardrail-definitions/{definition_id}/test  # dash
 POST /api/v1/organizations/me/member-invitations                # dashboard-only
 POST /api/v1/organizations/me/member-invitations/bulk           # dashboard-only
 DELETE /api/v1/organizations/me/member-invitations/{invitation_id} # dashboard-only
+POST /api/v1/organizations/me/member-invitations/{invitation_id}/reissue # dashboard-only
 # The invitee's side of the same flow, and dashboard-only for the same reason
 # the admin's side above is: it acts as a signed-in person deciding about their
 # own membership, not as a key-holder calling the gateway.

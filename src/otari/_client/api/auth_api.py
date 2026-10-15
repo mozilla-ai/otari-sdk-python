@@ -23,6 +23,8 @@ from otari._client.models.authenticate_passkey_request import AuthenticatePasske
 from otari._client.models.authorize_response import AuthorizeResponse
 from otari._client.models.caller_identity_public import CallerIdentityPublic
 from otari._client.models.create_session_request import CreateSessionRequest
+from otari._client.models.mailed_link_request import MailedLinkRequest
+from otari._client.models.mailed_link_status_response import MailedLinkStatusResponse
 from otari._client.models.o_auth_callback_request import OAuthCallbackRequest
 from otari._client.models.o_auth_session_response import OAuthSessionResponse
 from otari._client.models.passkey_session_response import PasskeySessionResponse
@@ -866,7 +868,7 @@ class AuthApi:
     ) -> OAuthSessionResponse:
         """Callback
 
-        Exchange an authorization code and set the HttpOnly session cookie.  The session is bound to the identity the provider's account resolves to, exactly as a password sign-in binds one to the identity that authenticated, so every request it later authenticates resolves the same caller.  A refusal is counted like the other sign-in failures (``record_auth_failure``) and rendered by the tenancy error handler. Like the passkey route there is no separate post-failure throttle: this route is throttled unconditionally on the way in, because there is no legitimate caller here whose correct credential must never be blocked. An authorization code is single-use and minted by a redirect, not something a person retries by hand.  **Maintenance mode freezes this the way it freezes the other two sign-ins.** The freeze is on starting a session, not on a credential, so an OAuth sign-in has to answer to it or the switch is bypassable by anybody holding a Google account. Refused before the exchange, so a frozen deployment makes no outbound call, spends nobody's authorization code, and counts no auth failure: nobody failed to authenticate, the gateway declined to try.
+        Exchange an authorization code and set the HttpOnly session cookie.  The session is bound to the identity the provider's account resolves to, exactly as a password sign-in binds one to the identity that authenticated, so every request it later authenticates resolves the same caller.  A refusal is counted like the other sign-in failures (``record_auth_failure``) and rendered by the tenancy error handler. Like the passkey route there is no separate post-failure throttle: this route is throttled unconditionally on the way in, because there is no legitimate caller here whose correct credential must never be blocked. An authorization code is single-use and minted by a redirect, not something a person retries by hand.  **Maintenance mode freezes this the way it freezes the other two sign-ins.** The freeze is on starting a session, not on a credential, so an OAuth sign-in has to answer to it or the switch is bypassable by anybody holding a Google account. Refused before the exchange, so a frozen deployment makes no outbound call, spends nobody's authorization code, and counts no auth failure: nobody failed to authenticate, the gateway declined to try.  A sign-in that created the account, or is the first way in to one, is reported to ``GrowthSignalPort`` as a signup once it has committed. Where the deployment publishes terms, that sign-in is refused with ``terms_not_accepted`` unless the body carries ``terms_accepted``, and nothing it would have created is kept.
 
         :param provider: Which OAuth provider to sign in with. (required)
         :type provider: str
@@ -938,7 +940,7 @@ class AuthApi:
     ) -> ApiResponse[OAuthSessionResponse]:
         """Callback
 
-        Exchange an authorization code and set the HttpOnly session cookie.  The session is bound to the identity the provider's account resolves to, exactly as a password sign-in binds one to the identity that authenticated, so every request it later authenticates resolves the same caller.  A refusal is counted like the other sign-in failures (``record_auth_failure``) and rendered by the tenancy error handler. Like the passkey route there is no separate post-failure throttle: this route is throttled unconditionally on the way in, because there is no legitimate caller here whose correct credential must never be blocked. An authorization code is single-use and minted by a redirect, not something a person retries by hand.  **Maintenance mode freezes this the way it freezes the other two sign-ins.** The freeze is on starting a session, not on a credential, so an OAuth sign-in has to answer to it or the switch is bypassable by anybody holding a Google account. Refused before the exchange, so a frozen deployment makes no outbound call, spends nobody's authorization code, and counts no auth failure: nobody failed to authenticate, the gateway declined to try.
+        Exchange an authorization code and set the HttpOnly session cookie.  The session is bound to the identity the provider's account resolves to, exactly as a password sign-in binds one to the identity that authenticated, so every request it later authenticates resolves the same caller.  A refusal is counted like the other sign-in failures (``record_auth_failure``) and rendered by the tenancy error handler. Like the passkey route there is no separate post-failure throttle: this route is throttled unconditionally on the way in, because there is no legitimate caller here whose correct credential must never be blocked. An authorization code is single-use and minted by a redirect, not something a person retries by hand.  **Maintenance mode freezes this the way it freezes the other two sign-ins.** The freeze is on starting a session, not on a credential, so an OAuth sign-in has to answer to it or the switch is bypassable by anybody holding a Google account. Refused before the exchange, so a frozen deployment makes no outbound call, spends nobody's authorization code, and counts no auth failure: nobody failed to authenticate, the gateway declined to try.  A sign-in that created the account, or is the first way in to one, is reported to ``GrowthSignalPort`` as a signup once it has committed. Where the deployment publishes terms, that sign-in is refused with ``terms_not_accepted`` unless the body carries ``terms_accepted``, and nothing it would have created is kept.
 
         :param provider: Which OAuth provider to sign in with. (required)
         :type provider: str
@@ -1010,7 +1012,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Callback
 
-        Exchange an authorization code and set the HttpOnly session cookie.  The session is bound to the identity the provider's account resolves to, exactly as a password sign-in binds one to the identity that authenticated, so every request it later authenticates resolves the same caller.  A refusal is counted like the other sign-in failures (``record_auth_failure``) and rendered by the tenancy error handler. Like the passkey route there is no separate post-failure throttle: this route is throttled unconditionally on the way in, because there is no legitimate caller here whose correct credential must never be blocked. An authorization code is single-use and minted by a redirect, not something a person retries by hand.  **Maintenance mode freezes this the way it freezes the other two sign-ins.** The freeze is on starting a session, not on a credential, so an OAuth sign-in has to answer to it or the switch is bypassable by anybody holding a Google account. Refused before the exchange, so a frozen deployment makes no outbound call, spends nobody's authorization code, and counts no auth failure: nobody failed to authenticate, the gateway declined to try.
+        Exchange an authorization code and set the HttpOnly session cookie.  The session is bound to the identity the provider's account resolves to, exactly as a password sign-in binds one to the identity that authenticated, so every request it later authenticates resolves the same caller.  A refusal is counted like the other sign-in failures (``record_auth_failure``) and rendered by the tenancy error handler. Like the passkey route there is no separate post-failure throttle: this route is throttled unconditionally on the way in, because there is no legitimate caller here whose correct credential must never be blocked. An authorization code is single-use and minted by a redirect, not something a person retries by hand.  **Maintenance mode freezes this the way it freezes the other two sign-ins.** The freeze is on starting a session, not on a credential, so an OAuth sign-in has to answer to it or the switch is bypassable by anybody holding a Google account. Refused before the exchange, so a frozen deployment makes no outbound call, spends nobody's authorization code, and counts no auth failure: nobody failed to authenticate, the gateway declined to try.  A sign-in that created the account, or is the first way in to one, is reported to ``GrowthSignalPort`` as a signup once it has committed. Where the deployment publishes terms, that sign-in is refused with ``terms_not_accepted`` unless the body carries ``terms_accepted``, and nothing it would have created is kept.
 
         :param provider: Which OAuth provider to sign in with. (required)
         :type provider: str
@@ -1156,7 +1158,7 @@ class AuthApi:
     ) -> None:
         """Confirm Reset
 
-        Complete a password reset. Single-use: the token stops working after this.
+        Complete a password reset, or choose a first password. Single-use: the token stops working after this.  Not throttled with the address-bearing routes, for the reason the verification route gives: the token is the proof.
 
         :param reset_password_request: (required)
         :type reset_password_request: ResetPasswordRequest
@@ -1224,7 +1226,7 @@ class AuthApi:
     ) -> ApiResponse[None]:
         """Confirm Reset
 
-        Complete a password reset. Single-use: the token stops working after this.
+        Complete a password reset, or choose a first password. Single-use: the token stops working after this.  Not throttled with the address-bearing routes, for the reason the verification route gives: the token is the proof.
 
         :param reset_password_request: (required)
         :type reset_password_request: ResetPasswordRequest
@@ -1292,7 +1294,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Confirm Reset
 
-        Complete a password reset. Single-use: the token stops working after this.
+        Complete a password reset, or choose a first password. Single-use: the token stops working after this.  Not throttled with the address-bearing routes, for the reason the verification route gives: the token is the proof.
 
         :param reset_password_request: (required)
         :type reset_password_request: ResetPasswordRequest
@@ -2177,6 +2179,253 @@ class AuthApi:
         return self.api_client.param_serialize(
             method='DELETE',
             resource_path='/api/v1/auth/session',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def auth_get_own_profile(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> CallerIdentityPublic:
+        """Get Own Profile
+
+        Report who the caller is, whether or not they belong to an organization.  The same shape ``GET /api/v1/organizations/me`` carries as ``caller``, for an identity that context cannot describe because it has no active membership.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_get_own_profile_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "CallerIdentityPublic",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def auth_get_own_profile_with_http_info(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[CallerIdentityPublic]:
+        """Get Own Profile
+
+        Report who the caller is, whether or not they belong to an organization.  The same shape ``GET /api/v1/organizations/me`` carries as ``caller``, for an identity that context cannot describe because it has no active membership.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_get_own_profile_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "CallerIdentityPublic",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def auth_get_own_profile_without_preload_content(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Own Profile
+
+        Report who the caller is, whether or not they belong to an organization.  The same shape ``GET /api/v1/organizations/me`` carries as ``caller``, for an identity that context cannot describe because it has no active membership.
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_get_own_profile_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "CallerIdentityPublic",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _auth_get_own_profile_serialize(
+        self,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/auth/profile',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3828,7 +4077,7 @@ class AuthApi:
     ) -> PasswordResponse:
         """Set Dashboard Password
 
-        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. The operator setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
+        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. The operator setting a password for the first time retires master-key sign-in on this deployment.  With the master key the caller is the deployment's operator, so an ``email`` sent then is the operator's own sign-in address: on an unclaimed deployment it claims the deployment with that address. This never sets another account's password; an address another account holds is refused with 409. To help a member who forgot their password, send them a link with ``POST /api/v1/admin/users/{user_id}/password-link``.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
 
         :param set_password_request: (required)
         :type set_password_request: SetPasswordRequest
@@ -3896,7 +4145,7 @@ class AuthApi:
     ) -> ApiResponse[PasswordResponse]:
         """Set Dashboard Password
 
-        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. The operator setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
+        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. The operator setting a password for the first time retires master-key sign-in on this deployment.  With the master key the caller is the deployment's operator, so an ``email`` sent then is the operator's own sign-in address: on an unclaimed deployment it claims the deployment with that address. This never sets another account's password; an address another account holds is refused with 409. To help a member who forgot their password, send them a link with ``POST /api/v1/admin/users/{user_id}/password-link``.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
 
         :param set_password_request: (required)
         :type set_password_request: SetPasswordRequest
@@ -3964,7 +4213,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Set Dashboard Password
 
-        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. The operator setting a password for the first time retires master-key sign-in on this deployment.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
+        Set or change the password the caller signs in to the dashboard with.  Always the caller's own identity. Supply ``email`` when it has no sign-in address yet, which is the state first boot leaves the operator in, and ``current_password`` when it already has a password and the request is authenticated by the session cookie. The master key in a header is what excuses ``current_password``, which is how a forgotten password is recovered; it does not excuse ``email``, because an identity with no address has nothing to sign in with whoever is asking. The operator setting a password for the first time retires master-key sign-in on this deployment.  With the master key the caller is the deployment's operator, so an ``email`` sent then is the operator's own sign-in address: on an unclaimed deployment it claims the deployment with that address. This never sets another account's password; an address another account holds is refused with 409. To help a member who forgot their password, send them a link with ``POST /api/v1/admin/users/{user_id}/password-link``.  Every other session this identity holds ends, the caller's own excepted, so a cookie stolen before the change does not outlive it.
 
         :param set_password_request: (required)
         :type set_password_request: SetPasswordRequest
@@ -4106,7 +4355,7 @@ class AuthApi:
     ) -> SignupResponse:
         """Signup
 
-        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.
+        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.  Refused with a 400 where the deployment publishes terms and ``terms_accepted`` is not set, whatever the address.
 
         :param signup_request: (required)
         :type signup_request: SignupRequest
@@ -4174,7 +4423,7 @@ class AuthApi:
     ) -> ApiResponse[SignupResponse]:
         """Signup
 
-        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.
+        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.  Refused with a 400 where the deployment publishes terms and ``terms_accepted`` is not set, whatever the address.
 
         :param signup_request: (required)
         :type signup_request: SignupRequest
@@ -4242,7 +4491,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Signup
 
-        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.
+        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.  Refused with a 400 where the deployment publishes terms and ``terms_accepted`` is not set, whatever the address.
 
         :param signup_request: (required)
         :type signup_request: SignupRequest
@@ -4642,6 +4891,562 @@ class AuthApi:
 
 
     @validate_call
+    def auth_validate_reset_link(
+        self,
+        mailed_link_request: MailedLinkRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> MailedLinkStatusResponse:
+        """Validate Reset Link
+
+        Say whether a password reset link can still be used, without using it.
+
+        :param mailed_link_request: (required)
+        :type mailed_link_request: MailedLinkRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_validate_reset_link_serialize(
+            mailed_link_request=mailed_link_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "MailedLinkStatusResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def auth_validate_reset_link_with_http_info(
+        self,
+        mailed_link_request: MailedLinkRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[MailedLinkStatusResponse]:
+        """Validate Reset Link
+
+        Say whether a password reset link can still be used, without using it.
+
+        :param mailed_link_request: (required)
+        :type mailed_link_request: MailedLinkRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_validate_reset_link_serialize(
+            mailed_link_request=mailed_link_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "MailedLinkStatusResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def auth_validate_reset_link_without_preload_content(
+        self,
+        mailed_link_request: MailedLinkRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Validate Reset Link
+
+        Say whether a password reset link can still be used, without using it.
+
+        :param mailed_link_request: (required)
+        :type mailed_link_request: MailedLinkRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_validate_reset_link_serialize(
+            mailed_link_request=mailed_link_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "MailedLinkStatusResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _auth_validate_reset_link_serialize(
+        self,
+        mailed_link_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if mailed_link_request is not None:
+            _body_params = mailed_link_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/auth/password/reset/validate',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def auth_validate_verification_link(
+        self,
+        mailed_link_request: MailedLinkRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> MailedLinkStatusResponse:
+        """Validate Verification Link
+
+        Say whether an email verification link can still be used, without using it.  Verifying still needs the password chosen at signup, which this does not check.
+
+        :param mailed_link_request: (required)
+        :type mailed_link_request: MailedLinkRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_validate_verification_link_serialize(
+            mailed_link_request=mailed_link_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "MailedLinkStatusResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def auth_validate_verification_link_with_http_info(
+        self,
+        mailed_link_request: MailedLinkRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[MailedLinkStatusResponse]:
+        """Validate Verification Link
+
+        Say whether an email verification link can still be used, without using it.  Verifying still needs the password chosen at signup, which this does not check.
+
+        :param mailed_link_request: (required)
+        :type mailed_link_request: MailedLinkRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_validate_verification_link_serialize(
+            mailed_link_request=mailed_link_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "MailedLinkStatusResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def auth_validate_verification_link_without_preload_content(
+        self,
+        mailed_link_request: MailedLinkRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Validate Verification Link
+
+        Say whether an email verification link can still be used, without using it.  Verifying still needs the password chosen at signup, which this does not check.
+
+        :param mailed_link_request: (required)
+        :type mailed_link_request: MailedLinkRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_validate_verification_link_serialize(
+            mailed_link_request=mailed_link_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "MailedLinkStatusResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _auth_validate_verification_link_serialize(
+        self,
+        mailed_link_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if mailed_link_request is not None:
+            _body_params = mailed_link_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/auth/verify-email/validate',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def auth_verify_email_route(
         self,
         verify_email_request: VerifyEmailRequest,
@@ -4660,7 +5465,7 @@ class AuthApi:
     ) -> VerifyEmailResponse:
         """Verify Email Route
 
-        Confirm an address from its verification link, lifting the sign-in gate.
+        Confirm an address from its verification link and the password chosen at signup, lifting the sign-in gate.  One refusal for a link that is unknown, expired or spent and for a password that does not match, and a refusal consumes nothing. Refusals are counted per client IP and answer 429 once over the limit, so a held link cannot be used to guess its password; a verification that succeeds is never counted.
 
         :param verify_email_request: (required)
         :type verify_email_request: VerifyEmailRequest
@@ -4728,7 +5533,7 @@ class AuthApi:
     ) -> ApiResponse[VerifyEmailResponse]:
         """Verify Email Route
 
-        Confirm an address from its verification link, lifting the sign-in gate.
+        Confirm an address from its verification link and the password chosen at signup, lifting the sign-in gate.  One refusal for a link that is unknown, expired or spent and for a password that does not match, and a refusal consumes nothing. Refusals are counted per client IP and answer 429 once over the limit, so a held link cannot be used to guess its password; a verification that succeeds is never counted.
 
         :param verify_email_request: (required)
         :type verify_email_request: VerifyEmailRequest
@@ -4796,7 +5601,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Verify Email Route
 
-        Confirm an address from its verification link, lifting the sign-in gate.
+        Confirm an address from its verification link and the password chosen at signup, lifting the sign-in gate.  One refusal for a link that is unknown, expired or spent and for a password that does not match, and a refusal consumes nothing. Refusals are counted per client IP and answer 429 once over the limit, so a held link cannot be used to guess its password; a verification that succeeds is never counted.
 
         :param verify_email_request: (required)
         :type verify_email_request: VerifyEmailRequest

@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictBool, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
 from uuid import UUID
@@ -608,7 +608,7 @@ class KeysApi:
     ) -> EndUserPublic:
         """Get End User
 
-        Get an end user of a service key by the id the service names it by.  End users belong to the key's user, so every service key of one user reaches the same end users.
+        Get an end user of a service key by the id the service names it by.  End users belong to the key's user, so every service key of one user reaches the same end users. An id with a '.' or '..' segment is refused with 400; ``GET /keys/{key_id}/end-users?external_id=`` reads any end user.
 
         :param key_id: (required)
         :type key_id: str
@@ -680,7 +680,7 @@ class KeysApi:
     ) -> ApiResponse[EndUserPublic]:
         """Get End User
 
-        Get an end user of a service key by the id the service names it by.  End users belong to the key's user, so every service key of one user reaches the same end users.
+        Get an end user of a service key by the id the service names it by.  End users belong to the key's user, so every service key of one user reaches the same end users. An id with a '.' or '..' segment is refused with 400; ``GET /keys/{key_id}/end-users?external_id=`` reads any end user.
 
         :param key_id: (required)
         :type key_id: str
@@ -752,7 +752,7 @@ class KeysApi:
     ) -> RESTResponseType:
         """Get End User
 
-        Get an end user of a service key by the id the service names it by.  End users belong to the key's user, so every service key of one user reaches the same end users.
+        Get an end user of a service key by the id the service names it by.  End users belong to the key's user, so every service key of one user reaches the same end users. An id with a '.' or '..' segment is refused with 400; ``GET /keys/{key_id}/end-users?external_id=`` reads any end user.
 
         :param key_id: (required)
         :type key_id: str
@@ -1134,6 +1134,373 @@ class KeysApi:
 
 
     @validate_call
+    def keys_list_end_users(
+        self,
+        key_id: StrictStr,
+        skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
+        limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        budget_id: Annotated[Optional[StrictStr], Field(description="Only end users on this budget.")] = None,
+        blocked: Annotated[Optional[StrictBool], Field(description="Only end users that are, or are not, blocked.")] = None,
+        external_id: Annotated[Optional[StrictStr], Field(description="Only the end user the service names with this `user` value: zero or one.")] = None,
+        include_total: Annotated[Optional[StrictBool], Field(description="Also count every matching end user, in the Otari-Total-Count response header.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> List[EndUserPublic]:
+        """List End Users
+
+        List the end users of a service key, oldest first.  End users belong to the key's user, so every service key of one user lists the same end users. A deleted end user is not listed. ``external_id`` reads one end user by any id, one containing '/' included, as a list of zero or one.
+
+        :param key_id: (required)
+        :type key_id: str
+        :param skip:
+        :type skip: int
+        :param limit:
+        :type limit: int
+        :param budget_id: Only end users on this budget.
+        :type budget_id: str
+        :param blocked: Only end users that are, or are not, blocked.
+        :type blocked: bool
+        :param external_id: Only the end user the service names with this `user` value: zero or one.
+        :type external_id: str
+        :param include_total: Also count every matching end user, in the Otari-Total-Count response header.
+        :type include_total: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._keys_list_end_users_serialize(
+            key_id=key_id,
+            skip=skip,
+            limit=limit,
+            budget_id=budget_id,
+            blocked=blocked,
+            external_id=external_id,
+            include_total=include_total,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[EndUserPublic]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def keys_list_end_users_with_http_info(
+        self,
+        key_id: StrictStr,
+        skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
+        limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        budget_id: Annotated[Optional[StrictStr], Field(description="Only end users on this budget.")] = None,
+        blocked: Annotated[Optional[StrictBool], Field(description="Only end users that are, or are not, blocked.")] = None,
+        external_id: Annotated[Optional[StrictStr], Field(description="Only the end user the service names with this `user` value: zero or one.")] = None,
+        include_total: Annotated[Optional[StrictBool], Field(description="Also count every matching end user, in the Otari-Total-Count response header.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[List[EndUserPublic]]:
+        """List End Users
+
+        List the end users of a service key, oldest first.  End users belong to the key's user, so every service key of one user lists the same end users. A deleted end user is not listed. ``external_id`` reads one end user by any id, one containing '/' included, as a list of zero or one.
+
+        :param key_id: (required)
+        :type key_id: str
+        :param skip:
+        :type skip: int
+        :param limit:
+        :type limit: int
+        :param budget_id: Only end users on this budget.
+        :type budget_id: str
+        :param blocked: Only end users that are, or are not, blocked.
+        :type blocked: bool
+        :param external_id: Only the end user the service names with this `user` value: zero or one.
+        :type external_id: str
+        :param include_total: Also count every matching end user, in the Otari-Total-Count response header.
+        :type include_total: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._keys_list_end_users_serialize(
+            key_id=key_id,
+            skip=skip,
+            limit=limit,
+            budget_id=budget_id,
+            blocked=blocked,
+            external_id=external_id,
+            include_total=include_total,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[EndUserPublic]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def keys_list_end_users_without_preload_content(
+        self,
+        key_id: StrictStr,
+        skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
+        limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        budget_id: Annotated[Optional[StrictStr], Field(description="Only end users on this budget.")] = None,
+        blocked: Annotated[Optional[StrictBool], Field(description="Only end users that are, or are not, blocked.")] = None,
+        external_id: Annotated[Optional[StrictStr], Field(description="Only the end user the service names with this `user` value: zero or one.")] = None,
+        include_total: Annotated[Optional[StrictBool], Field(description="Also count every matching end user, in the Otari-Total-Count response header.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """List End Users
+
+        List the end users of a service key, oldest first.  End users belong to the key's user, so every service key of one user lists the same end users. A deleted end user is not listed. ``external_id`` reads one end user by any id, one containing '/' included, as a list of zero or one.
+
+        :param key_id: (required)
+        :type key_id: str
+        :param skip:
+        :type skip: int
+        :param limit:
+        :type limit: int
+        :param budget_id: Only end users on this budget.
+        :type budget_id: str
+        :param blocked: Only end users that are, or are not, blocked.
+        :type blocked: bool
+        :param external_id: Only the end user the service names with this `user` value: zero or one.
+        :type external_id: str
+        :param include_total: Also count every matching end user, in the Otari-Total-Count response header.
+        :type include_total: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._keys_list_end_users_serialize(
+            key_id=key_id,
+            skip=skip,
+            limit=limit,
+            budget_id=budget_id,
+            blocked=blocked,
+            external_id=external_id,
+            include_total=include_total,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[EndUserPublic]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _keys_list_end_users_serialize(
+        self,
+        key_id,
+        skip,
+        limit,
+        budget_id,
+        blocked,
+        external_id,
+        include_total,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if key_id is not None:
+            _path_params['key_id'] = key_id
+        # process the query parameters
+        if skip is not None:
+            
+            _query_params.append(('skip', skip))
+            
+        if limit is not None:
+            
+            _query_params.append(('limit', limit))
+            
+        if budget_id is not None:
+            
+            _query_params.append(('budget_id', budget_id))
+            
+        if blocked is not None:
+            
+            _query_params.append(('blocked', blocked))
+            
+        if external_id is not None:
+            
+            _query_params.append(('external_id', external_id))
+            
+        if include_total is not None:
+            
+            _query_params.append(('include_total', include_total))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/keys/{key_id}/end-users',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def keys_list_keys(
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
@@ -1455,7 +1822,7 @@ class KeysApi:
     ) -> EndUserPublic:
         """Put End User
 
-        Put an end user of a service key on a budget from the key's list, creating it if it does not exist yet.  Answers 201 when the end user was created, so one can be placed on a budget before its first request. An end user already on the budget keeps its current period, so repeating the call changes nothing. A budget that is not on the key's ``end_user_budget_ids`` is refused with 403 and ``end_user_budget_not_allowed``.
+        Put an end user of a service key on a budget from the key's list, creating it if it does not exist yet.  Answers 201 when the end user was created, so one can be placed on a budget before its first request. An end user already on the budget keeps its current period, so repeating the call changes nothing. A budget that is not on the key's ``end_user_budget_ids`` is refused with 403 and ``end_user_budget_not_allowed``. An id with a '.' or '..' segment is refused with 400; ``PUT /keys/{key_id}/end-users?external_id=`` takes any id.
 
         :param key_id: (required)
         :type key_id: str
@@ -1532,7 +1899,7 @@ class KeysApi:
     ) -> ApiResponse[EndUserPublic]:
         """Put End User
 
-        Put an end user of a service key on a budget from the key's list, creating it if it does not exist yet.  Answers 201 when the end user was created, so one can be placed on a budget before its first request. An end user already on the budget keeps its current period, so repeating the call changes nothing. A budget that is not on the key's ``end_user_budget_ids`` is refused with 403 and ``end_user_budget_not_allowed``.
+        Put an end user of a service key on a budget from the key's list, creating it if it does not exist yet.  Answers 201 when the end user was created, so one can be placed on a budget before its first request. An end user already on the budget keeps its current period, so repeating the call changes nothing. A budget that is not on the key's ``end_user_budget_ids`` is refused with 403 and ``end_user_budget_not_allowed``. An id with a '.' or '..' segment is refused with 400; ``PUT /keys/{key_id}/end-users?external_id=`` takes any id.
 
         :param key_id: (required)
         :type key_id: str
@@ -1609,7 +1976,7 @@ class KeysApi:
     ) -> RESTResponseType:
         """Put End User
 
-        Put an end user of a service key on a budget from the key's list, creating it if it does not exist yet.  Answers 201 when the end user was created, so one can be placed on a budget before its first request. An end user already on the budget keeps its current period, so repeating the call changes nothing. A budget that is not on the key's ``end_user_budget_ids`` is refused with 403 and ``end_user_budget_not_allowed``.
+        Put an end user of a service key on a budget from the key's list, creating it if it does not exist yet.  Answers 201 when the end user was created, so one can be placed on a budget before its first request. An end user already on the budget keeps its current period, so repeating the call changes nothing. A budget that is not on the key's ``end_user_budget_ids`` is refused with 403 and ``end_user_budget_not_allowed``. An id with a '.' or '..' segment is refused with 400; ``PUT /keys/{key_id}/end-users?external_id=`` takes any id.
 
         :param key_id: (required)
         :type key_id: str
@@ -1730,6 +2097,319 @@ class KeysApi:
         return self.api_client.param_serialize(
             method='PUT',
             resource_path='/api/v1/keys/{key_id}/end-users/{external_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def keys_put_end_user_by_query(
+        self,
+        key_id: StrictStr,
+        external_id: Annotated[str, Field(min_length=1, strict=True, description="The id the service names the end user by in a request's user field, any id, '/' included")],
+        end_user_put: EndUserPut,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> EndUserPublic:
+        """Put End User By Query
+
+        Put the end user named by ``external_id`` on a budget from the key's list, creating it if it does not exist yet.  The same as ``PUT /keys/{key_id}/end-users/{external_id}``, for any id, one containing '/' included.
+
+        :param key_id: (required)
+        :type key_id: str
+        :param external_id: The id the service names the end user by in a request's user field, any id, '/' included (required)
+        :type external_id: str
+        :param end_user_put: (required)
+        :type end_user_put: EndUserPut
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._keys_put_end_user_by_query_serialize(
+            key_id=key_id,
+            external_id=external_id,
+            end_user_put=end_user_put,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "EndUserPublic",
+            '201': "EndUserPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def keys_put_end_user_by_query_with_http_info(
+        self,
+        key_id: StrictStr,
+        external_id: Annotated[str, Field(min_length=1, strict=True, description="The id the service names the end user by in a request's user field, any id, '/' included")],
+        end_user_put: EndUserPut,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[EndUserPublic]:
+        """Put End User By Query
+
+        Put the end user named by ``external_id`` on a budget from the key's list, creating it if it does not exist yet.  The same as ``PUT /keys/{key_id}/end-users/{external_id}``, for any id, one containing '/' included.
+
+        :param key_id: (required)
+        :type key_id: str
+        :param external_id: The id the service names the end user by in a request's user field, any id, '/' included (required)
+        :type external_id: str
+        :param end_user_put: (required)
+        :type end_user_put: EndUserPut
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._keys_put_end_user_by_query_serialize(
+            key_id=key_id,
+            external_id=external_id,
+            end_user_put=end_user_put,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "EndUserPublic",
+            '201': "EndUserPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def keys_put_end_user_by_query_without_preload_content(
+        self,
+        key_id: StrictStr,
+        external_id: Annotated[str, Field(min_length=1, strict=True, description="The id the service names the end user by in a request's user field, any id, '/' included")],
+        end_user_put: EndUserPut,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Put End User By Query
+
+        Put the end user named by ``external_id`` on a budget from the key's list, creating it if it does not exist yet.  The same as ``PUT /keys/{key_id}/end-users/{external_id}``, for any id, one containing '/' included.
+
+        :param key_id: (required)
+        :type key_id: str
+        :param external_id: The id the service names the end user by in a request's user field, any id, '/' included (required)
+        :type external_id: str
+        :param end_user_put: (required)
+        :type end_user_put: EndUserPut
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._keys_put_end_user_by_query_serialize(
+            key_id=key_id,
+            external_id=external_id,
+            end_user_put=end_user_put,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "EndUserPublic",
+            '201': "EndUserPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _keys_put_end_user_by_query_serialize(
+        self,
+        key_id,
+        external_id,
+        end_user_put,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if key_id is not None:
+            _path_params['key_id'] = key_id
+        # process the query parameters
+        if external_id is not None:
+            
+            _query_params.append(('external_id', external_id))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if end_user_put is not None:
+            _body_params = end_user_put
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PUT',
+            resource_path='/api/v1/keys/{key_id}/end-users',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2031,7 +2711,7 @@ class KeysApi:
     ) -> EndUserPublic:
         """Update End User
 
-        Block, unblock or move an end user of a service key.  A move restarts the end user's period on the new budget but keeps what it has spent and used so far, as the users API does. The budget must be on the key's ``end_user_budget_ids``.
+        Block, unblock or move an end user of a service key.  A move restarts the end user's period on the new budget but keeps what it has spent and used so far, as the users API does. The budget must be on the key's ``end_user_budget_ids``. An id with a '.' or '..' segment is refused with 400; ``PATCH /keys/{key_id}/end-users?external_id=`` takes any id.
 
         :param key_id: (required)
         :type key_id: str
@@ -2107,7 +2787,7 @@ class KeysApi:
     ) -> ApiResponse[EndUserPublic]:
         """Update End User
 
-        Block, unblock or move an end user of a service key.  A move restarts the end user's period on the new budget but keeps what it has spent and used so far, as the users API does. The budget must be on the key's ``end_user_budget_ids``.
+        Block, unblock or move an end user of a service key.  A move restarts the end user's period on the new budget but keeps what it has spent and used so far, as the users API does. The budget must be on the key's ``end_user_budget_ids``. An id with a '.' or '..' segment is refused with 400; ``PATCH /keys/{key_id}/end-users?external_id=`` takes any id.
 
         :param key_id: (required)
         :type key_id: str
@@ -2183,7 +2863,7 @@ class KeysApi:
     ) -> RESTResponseType:
         """Update End User
 
-        Block, unblock or move an end user of a service key.  A move restarts the end user's period on the new budget but keeps what it has spent and used so far, as the users API does. The budget must be on the key's ``end_user_budget_ids``.
+        Block, unblock or move an end user of a service key.  A move restarts the end user's period on the new budget but keeps what it has spent and used so far, as the users API does. The budget must be on the key's ``end_user_budget_ids``. An id with a '.' or '..' segment is refused with 400; ``PATCH /keys/{key_id}/end-users?external_id=`` takes any id.
 
         :param key_id: (required)
         :type key_id: str
@@ -2303,6 +2983,316 @@ class KeysApi:
         return self.api_client.param_serialize(
             method='PATCH',
             resource_path='/api/v1/keys/{key_id}/end-users/{external_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def keys_update_end_user_by_query(
+        self,
+        key_id: StrictStr,
+        external_id: Annotated[str, Field(min_length=1, strict=True, description="The id the service names the end user by in a request's user field, any id, '/' included")],
+        end_user_update: EndUserUpdate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> EndUserPublic:
+        """Update End User By Query
+
+        Block, unblock or move the end user of a service key named by ``external_id``.  The same as ``PATCH /keys/{key_id}/end-users/{external_id}``, for any id, one containing '/' included.
+
+        :param key_id: (required)
+        :type key_id: str
+        :param external_id: The id the service names the end user by in a request's user field, any id, '/' included (required)
+        :type external_id: str
+        :param end_user_update: (required)
+        :type end_user_update: EndUserUpdate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._keys_update_end_user_by_query_serialize(
+            key_id=key_id,
+            external_id=external_id,
+            end_user_update=end_user_update,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "EndUserPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def keys_update_end_user_by_query_with_http_info(
+        self,
+        key_id: StrictStr,
+        external_id: Annotated[str, Field(min_length=1, strict=True, description="The id the service names the end user by in a request's user field, any id, '/' included")],
+        end_user_update: EndUserUpdate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[EndUserPublic]:
+        """Update End User By Query
+
+        Block, unblock or move the end user of a service key named by ``external_id``.  The same as ``PATCH /keys/{key_id}/end-users/{external_id}``, for any id, one containing '/' included.
+
+        :param key_id: (required)
+        :type key_id: str
+        :param external_id: The id the service names the end user by in a request's user field, any id, '/' included (required)
+        :type external_id: str
+        :param end_user_update: (required)
+        :type end_user_update: EndUserUpdate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._keys_update_end_user_by_query_serialize(
+            key_id=key_id,
+            external_id=external_id,
+            end_user_update=end_user_update,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "EndUserPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def keys_update_end_user_by_query_without_preload_content(
+        self,
+        key_id: StrictStr,
+        external_id: Annotated[str, Field(min_length=1, strict=True, description="The id the service names the end user by in a request's user field, any id, '/' included")],
+        end_user_update: EndUserUpdate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Update End User By Query
+
+        Block, unblock or move the end user of a service key named by ``external_id``.  The same as ``PATCH /keys/{key_id}/end-users/{external_id}``, for any id, one containing '/' included.
+
+        :param key_id: (required)
+        :type key_id: str
+        :param external_id: The id the service names the end user by in a request's user field, any id, '/' included (required)
+        :type external_id: str
+        :param end_user_update: (required)
+        :type end_user_update: EndUserUpdate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._keys_update_end_user_by_query_serialize(
+            key_id=key_id,
+            external_id=external_id,
+            end_user_update=end_user_update,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "EndUserPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _keys_update_end_user_by_query_serialize(
+        self,
+        key_id,
+        external_id,
+        end_user_update,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if key_id is not None:
+            _path_params['key_id'] = key_id
+        # process the query parameters
+        if external_id is not None:
+            
+            _query_params.append(('external_id', external_id))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if end_user_update is not None:
+            _body_params = end_user_update
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PATCH',
+            resource_path='/api/v1/keys/{key_id}/end-users',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

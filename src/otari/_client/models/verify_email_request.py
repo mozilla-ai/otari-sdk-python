@@ -28,8 +28,9 @@ class VerifyEmailRequest(BaseModel):
     """
     VerifyEmailRequest
     """ # noqa: E501
+    password: Annotated[str, Field(strict=True, max_length=1024)] = Field(description="The password chosen at signup. The link verifies the address only together with it, so a link that reaches someone who did not sign up verifies nothing.")
     token: Annotated[str, Field(strict=True, max_length=512)] = Field(description="The token from the verification link.")
-    __properties: ClassVar[List[str]] = ["token"]
+    __properties: ClassVar[List[str]] = ["password", "token"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -82,6 +83,7 @@ class VerifyEmailRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "password": obj.get("password"),
             "token": obj.get("token")
         })
         return _obj
