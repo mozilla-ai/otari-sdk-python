@@ -31,7 +31,6 @@ class OrganizationModelPricingPublic(BaseModel):
     One stored rate override.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[StrictFloat, StrictInt]]
-    cache_write_1h_price_per_million: Optional[Union[StrictFloat, StrictInt]]
     cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]]
     created_at: datetime
     effective_from: datetime
@@ -44,7 +43,7 @@ class OrganizationModelPricingPublic(BaseModel):
     pricing_tiers: List[PricingTier]
     unit: StrictStr
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "created_at", "effective_from", "effective_to", "id", "input_price_per_million", "model_key", "organization_id", "output_price_per_million", "pricing_tiers", "unit", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_from", "effective_to", "id", "input_price_per_million", "model_key", "organization_id", "output_price_per_million", "pricing_tiers", "unit", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -97,11 +96,6 @@ class OrganizationModelPricingPublic(BaseModel):
         if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
             _dict['cache_read_price_per_million'] = None
 
-        # set to None if cache_write_1h_price_per_million (nullable) is None
-        # and model_fields_set contains the field
-        if self.cache_write_1h_price_per_million is None and "cache_write_1h_price_per_million" in self.model_fields_set:
-            _dict['cache_write_1h_price_per_million'] = None
-
         # set to None if cache_write_price_per_million (nullable) is None
         # and model_fields_set contains the field
         if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
@@ -125,7 +119,6 @@ class OrganizationModelPricingPublic(BaseModel):
 
         _obj = cls.model_validate({
             "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
-            "cache_write_1h_price_per_million": obj.get("cache_write_1h_price_per_million"),
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "created_at": obj.get("created_at"),
             "effective_from": obj.get("effective_from"),

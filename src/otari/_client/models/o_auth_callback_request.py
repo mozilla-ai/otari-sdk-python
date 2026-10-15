@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,7 +30,8 @@ class OAuthCallbackRequest(BaseModel):
     """ # noqa: E501
     code: Annotated[str, Field(strict=True, max_length=2048)] = Field(description="The authorization code from the provider's redirect.")
     state: Annotated[str, Field(strict=True, max_length=512)] = Field(description="The 'state' from the provider's redirect, as issued by /authorize.")
-    __properties: ClassVar[List[str]] = ["code", "state"]
+    terms_accepted: Optional[StrictBool] = Field(default=False, description="Whether the person accepted this deployment's terms before going to the provider. Required where the bootstrap reports a terms_url and the sign-in creates the account, or is the first way in to one nobody has claimed yet; ignored otherwise.")
+    __properties: ClassVar[List[str]] = ["code", "state", "terms_accepted"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -84,7 +85,8 @@ class OAuthCallbackRequest(BaseModel):
 
         _obj = cls.model_validate({
             "code": obj.get("code"),
-            "state": obj.get("state")
+            "state": obj.get("state"),
+            "terms_accepted": obj.get("terms_accepted") if obj.get("terms_accepted") is not None else False
         })
         return _obj
 

@@ -31,7 +31,6 @@ class OrganizationModelPricingCreate(BaseModel):
     Create one rate override for a model, for a period.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cached-input tokens")
-    cache_write_1h_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M Anthropic 1-hour cache-write tokens")
     cache_write_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cache-write (creation) tokens")
     effective_from: Optional[datetime] = Field(default=None, description="ISO 8601 datetime from which this rate applies, inclusive. Defaults to now.")
     effective_to: Optional[datetime] = Field(default=None, description="ISO 8601 datetime at which this rate stops applying, exclusive. Null leaves it open ended. Because the end is exclusive, the next period may begin at exactly this instant without overlapping.")
@@ -40,7 +39,7 @@ class OrganizationModelPricingCreate(BaseModel):
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens; unused by a rate in requests or images")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
     unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint, each priced per million. A completion model priced per requests is charged one request per successful call.")
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers", "unit"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('model_key')
     def model_key_validate_regular_expression(cls, value):
@@ -113,11 +112,6 @@ class OrganizationModelPricingCreate(BaseModel):
         if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
             _dict['cache_read_price_per_million'] = None
 
-        # set to None if cache_write_1h_price_per_million (nullable) is None
-        # and model_fields_set contains the field
-        if self.cache_write_1h_price_per_million is None and "cache_write_1h_price_per_million" in self.model_fields_set:
-            _dict['cache_write_1h_price_per_million'] = None
-
         # set to None if cache_write_price_per_million (nullable) is None
         # and model_fields_set contains the field
         if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
@@ -151,7 +145,6 @@ class OrganizationModelPricingCreate(BaseModel):
 
         _obj = cls.model_validate({
             "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
-            "cache_write_1h_price_per_million": obj.get("cache_write_1h_price_per_million"),
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "effective_from": obj.get("effective_from"),
             "effective_to": obj.get("effective_to"),

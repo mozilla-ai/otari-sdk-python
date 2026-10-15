@@ -27,10 +27,9 @@ from pydantic_core import to_jsonable_python
 
 class OrgProviderKeyModelPublic(BaseModel):
     """
-    One offered model, with the rate the caller's organization is charged for it.  ``price_source`` says which rung of ``services.pricing_service`` answered: ``organization`` for a rate an admin set, ``defaults`` for the community-maintained rate this surface seeded or the genai-prices fallback, ``deployment`` for the deployment's own price list, and None when nothing prices the model yet. ``pricing_id`` names the organization's own row where there is one, so a client can edit that rate without re-deriving the key. ``unit`` says what the rates are per, as on a pricing row: tokens, requests or images, so a per-request rate is not read as a per-token one.
+    One offered model, with the rate the caller's organization is charged for it.  ``price_source`` says which rung of ``services.pricing_service`` answered: ``organization`` for a rate an admin set, ``defaults`` for the community-maintained rate this surface seeded or the models.dev fallback, ``deployment`` for the deployment's own price list, and None when nothing prices the model yet. ``pricing_id`` names the organization's own row where there is one, so a client can edit that rate without re-deriving the key. ``unit`` says what the rates are per, as on a pricing row: tokens, requests or images, so a per-request rate is not read as a per-token one.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
-    cache_write_1h_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     created_at: datetime
     enabled: StrictBool
@@ -43,7 +42,7 @@ class OrgProviderKeyModelPublic(BaseModel):
     pricing_id: Optional[UUID] = None
     unit: Optional[StrictStr] = 'tokens'
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "created_at", "enabled", "id", "input_price_per_million", "model", "org_provider_key_id", "output_price_per_million", "price_source", "pricing_id", "unit", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "enabled", "id", "input_price_per_million", "model", "org_provider_key_id", "output_price_per_million", "price_source", "pricing_id", "unit", "updated_at"]
 
     @field_validator('price_source')
     def price_source_validate_enum(cls, value):
@@ -99,11 +98,6 @@ class OrgProviderKeyModelPublic(BaseModel):
         if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
             _dict['cache_read_price_per_million'] = None
 
-        # set to None if cache_write_1h_price_per_million (nullable) is None
-        # and model_fields_set contains the field
-        if self.cache_write_1h_price_per_million is None and "cache_write_1h_price_per_million" in self.model_fields_set:
-            _dict['cache_write_1h_price_per_million'] = None
-
         # set to None if cache_write_price_per_million (nullable) is None
         # and model_fields_set contains the field
         if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
@@ -147,7 +141,6 @@ class OrgProviderKeyModelPublic(BaseModel):
 
         _obj = cls.model_validate({
             "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
-            "cache_write_1h_price_per_million": obj.get("cache_write_1h_price_per_million"),
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "created_at": obj.get("created_at"),
             "enabled": obj.get("enabled"),

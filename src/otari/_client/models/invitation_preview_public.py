@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,12 +28,22 @@ class InvitationPreviewPublic(BaseModel):
     """
     What an unauthenticated visitor sees before committing to accept.  Deliberately narrow: the address it was sent to, the organization's name, and the role on offer. The token is the caller's only credential here, not a session, so this carries nothing that identifies who sent it or any other member.
     """ # noqa: E501
+    can_sign_in: StrictBool = Field(description="Whether the invited address can already sign in, with a password or through a provider.")
     email: StrictStr
     expires_at: datetime
-    needs_password: StrictBool = Field(description="Whether the invited address has never signed in here, so accepting should also set its password. False when the address already has a way in, and then accept refuses one.")
+    needs_password: StrictBool = Field(description="Whether accepting should also set the invited address's first password. False when the address already has a way in, and also when another organization has it as a member or invitee, since this link may not choose a password for it then; can_sign_in tells the two apart. Accept refuses a password whenever this is false.")
     organization_name: StrictStr
     role: StrictStr
-    __properties: ClassVar[List[str]] = ["email", "expires_at", "needs_password", "organization_name", "role"]
+    ways_in: List[StrictStr] = Field(description="When the address cannot sign in yet and this link will not set its password, what this deployment offers instead once it has accepted: 'provider' (sign in with Google or GitHub) and 'password_reset' (choose a password with \"Forgot your password?\"). Empty otherwise, and empty when the deployment offers neither, in which case whoever administers it has to help.")
+    __properties: ClassVar[List[str]] = ["can_sign_in", "email", "expires_at", "needs_password", "organization_name", "role", "ways_in"]
+
+    @field_validator('ways_in')
+    def ways_in_validate_enum(cls, value):
+        """Validates the enum"""
+        for i in value:
+            if i not in set(['provider', 'password_reset']):
+                raise ValueError("each list item must be one of ('provider', 'password_reset')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,11 +96,13 @@ class InvitationPreviewPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "can_sign_in": obj.get("can_sign_in"),
             "email": obj.get("email"),
             "expires_at": obj.get("expires_at"),
             "needs_password": obj.get("needs_password"),
             "organization_name": obj.get("organization_name"),
-            "role": obj.get("role")
+            "role": obj.get("role"),
+            "ways_in": obj.get("ways_in")
         })
         return _obj
 

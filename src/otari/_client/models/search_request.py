@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -26,16 +26,18 @@ from pydantic_core import to_jsonable_python
 
 class SearchRequest(BaseModel):
     """
-    A search request, following LiteLLM's ``/v1/search`` body.
+    A direct search request: LiteLLM's ``/v1/search`` body, plus ``include_raw`` and ``provider_options``.
     """ # noqa: E501
     country: Optional[Annotated[str, Field(min_length=2, strict=True, max_length=2)]] = Field(default=None, description="Two-letter ISO country code to localize results to")
-    max_results: Optional[Annotated[int, Field(le=20, strict=True, ge=1)]] = Field(default=None, description="Maximum number of results to return")
+    include_raw: Optional[StrictBool] = Field(default=False, description="Also return the provider's whole response, as raw.")
+    max_results: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Maximum number of results to return; 10 when unset. Lowered to the workspace's ceiling when it sets one, and to the provider's own maximum.")
     max_tokens_per_page: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Approximate cap on the page content returned per result")
+    provider_options: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     query: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The search query")
     search_domain_filter: Optional[Annotated[List[StrictStr], Field(max_length=20)]] = Field(default=None, description="Restrict results to these domains; prefix a domain with '-' to exclude it instead")
-    search_tool_name: Optional[StrictStr] = Field(default=None, description="Configured search tool to run against. Optional when exactly one tool is configured, and ignored on POST /api/v1/search/{search_tool_name}.")
+    search_tool_name: Optional[StrictStr] = Field(default=None, description="Configured search tool to run against. Optional when the deployment names a default (web_search_default_tool) or has exactly one tool, and ignored on POST /api/v1/search/{search_tool_name}.")
     user: Optional[StrictStr] = Field(default=None, description="User ID for usage attribution")
-    __properties: ClassVar[List[str]] = ["country", "max_results", "max_tokens_per_page", "query", "search_domain_filter", "search_tool_name", "user"]
+    __properties: ClassVar[List[str]] = ["country", "include_raw", "max_results", "max_tokens_per_page", "provider_options", "query", "search_domain_filter", "search_tool_name", "user"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -91,6 +93,11 @@ class SearchRequest(BaseModel):
         if self.max_tokens_per_page is None and "max_tokens_per_page" in self.model_fields_set:
             _dict['max_tokens_per_page'] = None
 
+        # set to None if provider_options (nullable) is None
+        # and model_fields_set contains the field
+        if self.provider_options is None and "provider_options" in self.model_fields_set:
+            _dict['provider_options'] = None
+
         # set to None if search_domain_filter (nullable) is None
         # and model_fields_set contains the field
         if self.search_domain_filter is None and "search_domain_filter" in self.model_fields_set:
@@ -119,8 +126,10 @@ class SearchRequest(BaseModel):
 
         _obj = cls.model_validate({
             "country": obj.get("country"),
+            "include_raw": obj.get("include_raw") if obj.get("include_raw") is not None else False,
             "max_results": obj.get("max_results"),
             "max_tokens_per_page": obj.get("max_tokens_per_page"),
+            "provider_options": obj.get("provider_options"),
             "query": obj.get("query"),
             "search_domain_filter": obj.get("search_domain_filter"),
             "search_tool_name": obj.get("search_tool_name"),

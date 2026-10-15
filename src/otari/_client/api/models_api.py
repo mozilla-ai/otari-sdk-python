@@ -839,7 +839,7 @@ class ModelsApi:
     ) -> ModelListResponse:
         """List Models
 
-        List all available models.  Returns models auto-discovered from configured providers, enriched with pricing data from the model_pricing table when available, and with each model's token limits: the context window from models.dev, or from genai-prices where models.dev has none, and the output limit from models.dev alone. A limit neither knows is null. Models that only exist in the pricing table are also included for backward compatibility.
+        List all available models.  Returns models auto-discovered from configured providers, enriched with pricing data from the model_pricing table when available, and with each model's token limits: the context window from the live models.dev catalog, or from the pricing snapshot where it has none, and the output limit from the live catalog alone. A limit neither knows is null. Models that only exist in the pricing table are also included for backward compatibility.
 
         :param provider: Filter models by provider name
         :type provider: str
@@ -907,7 +907,7 @@ class ModelsApi:
     ) -> ApiResponse[ModelListResponse]:
         """List Models
 
-        List all available models.  Returns models auto-discovered from configured providers, enriched with pricing data from the model_pricing table when available, and with each model's token limits: the context window from models.dev, or from genai-prices where models.dev has none, and the output limit from models.dev alone. A limit neither knows is null. Models that only exist in the pricing table are also included for backward compatibility.
+        List all available models.  Returns models auto-discovered from configured providers, enriched with pricing data from the model_pricing table when available, and with each model's token limits: the context window from the live models.dev catalog, or from the pricing snapshot where it has none, and the output limit from the live catalog alone. A limit neither knows is null. Models that only exist in the pricing table are also included for backward compatibility.
 
         :param provider: Filter models by provider name
         :type provider: str
@@ -975,7 +975,7 @@ class ModelsApi:
     ) -> RESTResponseType:
         """List Models
 
-        List all available models.  Returns models auto-discovered from configured providers, enriched with pricing data from the model_pricing table when available, and with each model's token limits: the context window from models.dev, or from genai-prices where models.dev has none, and the output limit from models.dev alone. A limit neither knows is null. Models that only exist in the pricing table are also included for backward compatibility.
+        List all available models.  Returns models auto-discovered from configured providers, enriched with pricing data from the model_pricing table when available, and with each model's token limits: the context window from the live models.dev catalog, or from the pricing snapshot where it has none, and the output limit from the live catalog alone. A limit neither knows is null. Models that only exist in the pricing table are also included for backward compatibility.
 
         :param provider: Filter models by provider name
         :type provider: str

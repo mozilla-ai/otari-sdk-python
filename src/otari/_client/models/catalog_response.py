@@ -31,8 +31,8 @@ class CatalogResponse(BaseModel):
     The grouped catalog, and the facts a reader needs to interpret its prices.
     """ # noqa: E501
     count: StrictInt = Field(description="Models matching all filters before paging.")
-    default_pricing: StrictBool = Field(description="Whether an unpriced model is metered at the genai-prices default.")
-    defaults_as_of: Optional[datetime] = Field(description="When the accepted genai-prices snapshot was taken. Null while the bundled dataset serves.")
+    default_pricing: StrictBool = Field(description="Whether an unpriced model is metered at the models.dev default.")
+    defaults_as_of: Optional[datetime] = Field(description="When the accepted models.dev snapshot, which the defaults are billed from, was taken. Null while the bundled snapshot serves.")
     facets: Optional[CatalogFacets] = Field(default=None, description="Present when include_facets is requested.")
     metadata_available: StrictBool = Field(description="False when models.dev could not be read; descriptions are then absent.")
     models: List[CatalogModelSummary]

@@ -624,7 +624,7 @@ class AliasesApi:
     @validate_call
     def aliases_list_aliases(
         self,
-        workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace in your organization.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -640,9 +640,9 @@ class AliasesApi:
     ) -> List[AliasResponse]:
         """List Aliases
 
-        List every alias in force, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
+        List every alias in force in your organization, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
-        :param workspace_id: Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace.
+        :param workspace_id: Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace in your organization.
         :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -692,7 +692,7 @@ class AliasesApi:
     @validate_call
     def aliases_list_aliases_with_http_info(
         self,
-        workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace in your organization.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -708,9 +708,9 @@ class AliasesApi:
     ) -> ApiResponse[List[AliasResponse]]:
         """List Aliases
 
-        List every alias in force, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
+        List every alias in force in your organization, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
-        :param workspace_id: Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace.
+        :param workspace_id: Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace in your organization.
         :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -760,7 +760,7 @@ class AliasesApi:
     @validate_call
     def aliases_list_aliases_without_preload_content(
         self,
-        workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace in your organization.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -776,9 +776,9 @@ class AliasesApi:
     ) -> RESTResponseType:
         """List Aliases
 
-        List every alias in force, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
+        List every alias in force in your organization, from config.yml and from storage.  Every scope at once, workspace-wide and user-scoped alike: this is the master-key management view, not what any one caller resolves.
 
-        :param workspace_id: Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace.
+        :param workspace_id: Only stored entries in this workspace. Config-file entries are always included, being deployment-wide. Omit to list the stored entries of every workspace in your organization.
         :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

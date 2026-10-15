@@ -57,7 +57,7 @@ class InvitationsApi:
     ) -> AcceptInvitationResultPublic:
         """Accept Invitation
 
-        Accept a pending invitation, resolving it to an active membership and optionally setting a first password.
+        Accept a pending invitation, resolving it to an active membership and optionally setting a first password.  Setting a first password makes the account usable for the first time, so it is reported to ``GrowthSignalPort`` as a signup.
 
         :param accept_invitation_request: (required)
         :type accept_invitation_request: AcceptInvitationRequest
@@ -125,7 +125,7 @@ class InvitationsApi:
     ) -> ApiResponse[AcceptInvitationResultPublic]:
         """Accept Invitation
 
-        Accept a pending invitation, resolving it to an active membership and optionally setting a first password.
+        Accept a pending invitation, resolving it to an active membership and optionally setting a first password.  Setting a first password makes the account usable for the first time, so it is reported to ``GrowthSignalPort`` as a signup.
 
         :param accept_invitation_request: (required)
         :type accept_invitation_request: AcceptInvitationRequest
@@ -193,7 +193,7 @@ class InvitationsApi:
     ) -> RESTResponseType:
         """Accept Invitation
 
-        Accept a pending invitation, resolving it to an active membership and optionally setting a first password.
+        Accept a pending invitation, resolving it to an active membership and optionally setting a first password.  Setting a first password makes the account usable for the first time, so it is reported to ``GrowthSignalPort`` as a signup.
 
         :param accept_invitation_request: (required)
         :type accept_invitation_request: AcceptInvitationRequest

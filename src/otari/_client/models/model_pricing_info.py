@@ -29,13 +29,12 @@ class ModelPricingInfo(BaseModel):
     Pricing information for a model.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
-    cache_write_1h_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     input_price_per_million: Union[StrictFloat, StrictInt]
     output_price_per_million: Union[StrictFloat, StrictInt]
     pricing_tiers: Optional[List[PricingTiersInner]] = None
     unit: Optional[StrictStr] = 'tokens'
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -88,11 +87,6 @@ class ModelPricingInfo(BaseModel):
         if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
             _dict['cache_read_price_per_million'] = None
 
-        # set to None if cache_write_1h_price_per_million (nullable) is None
-        # and model_fields_set contains the field
-        if self.cache_write_1h_price_per_million is None and "cache_write_1h_price_per_million" in self.model_fields_set:
-            _dict['cache_write_1h_price_per_million'] = None
-
         # set to None if cache_write_price_per_million (nullable) is None
         # and model_fields_set contains the field
         if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
@@ -111,7 +105,6 @@ class ModelPricingInfo(BaseModel):
 
         _obj = cls.model_validate({
             "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
-            "cache_write_1h_price_per_million": obj.get("cache_write_1h_price_per_million"),
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "input_price_per_million": obj.get("input_price_per_million"),
             "output_price_per_million": obj.get("output_price_per_million"),

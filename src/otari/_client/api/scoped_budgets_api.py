@@ -870,7 +870,7 @@ class ScopedBudgetsApi:
     ) -> List[ScopedBudgetResponse]:
         """List Scoped Budgets
 
-        List scoped budgets, optionally filtered to one scope.
+        List the scoped budgets in the caller's organization, optionally filtered to one scope.
 
         :param scope_type:
         :type scope_type: str
@@ -950,7 +950,7 @@ class ScopedBudgetsApi:
     ) -> ApiResponse[List[ScopedBudgetResponse]]:
         """List Scoped Budgets
 
-        List scoped budgets, optionally filtered to one scope.
+        List the scoped budgets in the caller's organization, optionally filtered to one scope.
 
         :param scope_type:
         :type scope_type: str
@@ -1030,7 +1030,7 @@ class ScopedBudgetsApi:
     ) -> RESTResponseType:
         """List Scoped Budgets
 
-        List scoped budgets, optionally filtered to one scope.
+        List the scoped budgets in the caller's organization, optionally filtered to one scope.
 
         :param scope_type:
         :type scope_type: str

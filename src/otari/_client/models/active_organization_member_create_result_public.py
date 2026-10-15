@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class ActiveOrganizationMemberCreateResultPublic(BaseModel):
     """
-    The outcome of adding a member.  The platform answers ``invited`` on both its branches, because being added there always needs acceptance: a known address gets an ``invited`` membership, an unknown one an emailed invitation. This edition has neither an invitation to send nor a way to accept one, so it answers on the other arm of the same union, ``active``, and the invitation fields stay null until that flow rehomes.
+    The outcome of adding a member directly.  The platform answers ``invited`` on both its branches, because being added there always needs acceptance. A direct add here needs none, so it answers on the other arm of the same union, ``active``, and the invitation fields stay null; inviting answers ``InviteOrganizationMemberResultPublic``.
     """ # noqa: E501
     attribution_user_id: Optional[StrictStr] = None
     created_at: Optional[datetime] = None

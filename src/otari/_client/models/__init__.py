@@ -197,6 +197,7 @@ from otari._client.models.embedding_data import EmbeddingData
 from otari._client.models.embedding_request import EmbeddingRequest
 from otari._client.models.embedding_response import EmbeddingResponse
 from otari._client.models.embedding_usage import EmbeddingUsage
+from otari._client.models.end_user_budget_public import EndUserBudgetPublic
 from otari._client.models.end_user_public import EndUserPublic
 from otari._client.models.end_user_put import EndUserPut
 from otari._client.models.end_user_update import EndUserUpdate
@@ -381,6 +382,9 @@ from otari._client.models.msg_function_call import MSGFunctionCall
 from otari._client.models.msg_image_url import MSGImageURL
 from otari._client.models.msg_input_audio import MSGInputAudio
 from otari._client.models.mail_settings import MailSettings
+from otari._client.models.mailed_link_request import MailedLinkRequest
+from otari._client.models.mailed_link_status import MailedLinkStatus
+from otari._client.models.mailed_link_status_response import MailedLinkStatusResponse
 from otari._client.models.maintenance_mode import MaintenanceMode
 from otari._client.models.managed_tool import ManagedTool
 from otari._client.models.mcp_error_body import McpErrorBody
@@ -456,6 +460,7 @@ from otari._client.models.organization_model_pricing_public import OrganizationM
 from otari._client.models.organization_model_pricing_update import OrganizationModelPricingUpdate
 from otari._client.models.organization_model_pricings_public import OrganizationModelPricingsPublic
 from otari._client.models.organization_public import OrganizationPublic
+from otari._client.models.organization_refusal import OrganizationRefusal
 from otari._client.models.organization_scoped_budget_create import OrganizationScopedBudgetCreate
 from otari._client.models.organization_scoped_budget_public import OrganizationScopedBudgetPublic
 from otari._client.models.organization_scoped_budget_update import OrganizationScopedBudgetUpdate
@@ -463,6 +468,7 @@ from otari._client.models.organization_scoped_budgets_public import Organization
 from otari._client.models.output_shape import OutputShape
 from otari._client.models.overview_summary_response import OverviewSummaryResponse
 from otari._client.models.passkey_session_response import PasskeySessionResponse
+from otari._client.models.password_link_public import PasswordLinkPublic
 from otari._client.models.password_response import PasswordResponse
 from otari._client.models.pending_organization_invitation_public import PendingOrganizationInvitationPublic
 from otari._client.models.pending_organization_invitations_public import PendingOrganizationInvitationsPublic

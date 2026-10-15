@@ -344,7 +344,7 @@ class OrganizationsApi:
     ) -> BulkInviteOrganizationMembersResultPublic:
         """Bulk Invite Active Organization Members
 
-        Invite several addresses to the caller's active organization at once.  Organization owners and admins only. Every address gets the same role and workspace assignments. Each one is checked as ``POST /me/member-invitations`` would check it, and an address that is refused lands in ``failed`` with the reason rather than failing the request, so the answer is 200 even when some or all were refused. Each invited entry carries its own ``mail_sent`` and accept link.
+        Invite several addresses to the caller's active organization at once.  Organization owners and admins only. Every address gets the same role and workspace assignments. Each one is checked as ``POST /me/member-invitations`` would check it, and an address that is refused lands in ``failed`` with the reason rather than failing the request, so the answer is 200 even when some or all were refused. Each invited entry carries its own ``mail_sent``, and its accept link when that is false.
 
         :param bulk_invite_organization_members_request: (required)
         :type bulk_invite_organization_members_request: BulkInviteOrganizationMembersRequest
@@ -412,7 +412,7 @@ class OrganizationsApi:
     ) -> ApiResponse[BulkInviteOrganizationMembersResultPublic]:
         """Bulk Invite Active Organization Members
 
-        Invite several addresses to the caller's active organization at once.  Organization owners and admins only. Every address gets the same role and workspace assignments. Each one is checked as ``POST /me/member-invitations`` would check it, and an address that is refused lands in ``failed`` with the reason rather than failing the request, so the answer is 200 even when some or all were refused. Each invited entry carries its own ``mail_sent`` and accept link.
+        Invite several addresses to the caller's active organization at once.  Organization owners and admins only. Every address gets the same role and workspace assignments. Each one is checked as ``POST /me/member-invitations`` would check it, and an address that is refused lands in ``failed`` with the reason rather than failing the request, so the answer is 200 even when some or all were refused. Each invited entry carries its own ``mail_sent``, and its accept link when that is false.
 
         :param bulk_invite_organization_members_request: (required)
         :type bulk_invite_organization_members_request: BulkInviteOrganizationMembersRequest
@@ -480,7 +480,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """Bulk Invite Active Organization Members
 
-        Invite several addresses to the caller's active organization at once.  Organization owners and admins only. Every address gets the same role and workspace assignments. Each one is checked as ``POST /me/member-invitations`` would check it, and an address that is refused lands in ``failed`` with the reason rather than failing the request, so the answer is 200 even when some or all were refused. Each invited entry carries its own ``mail_sent`` and accept link.
+        Invite several addresses to the caller's active organization at once.  Organization owners and admins only. Every address gets the same role and workspace assignments. Each one is checked as ``POST /me/member-invitations`` would check it, and an address that is refused lands in ``failed`` with the reason rather than failing the request, so the answer is 200 even when some or all were refused. Each invited entry carries its own ``mail_sent``, and its accept link when that is false.
 
         :param bulk_invite_organization_members_request: (required)
         :type bulk_invite_organization_members_request: BulkInviteOrganizationMembersRequest
@@ -900,7 +900,7 @@ class OrganizationsApi:
     ) -> ActiveOrganizationMemberCreateResultPublic:
         """Create Active Organization Member
 
-        Add a member to the caller's active organization, by email address.  Organization owners and admins only. The member is active immediately and the response says so: this edition has no invitation to send and no way to accept one, so it answers on the ``active`` arm of the result rather than the ``invited`` one the platform uses. An address that belongs to no identity yet creates one, which carries the address as the handle a future sign-in flow will claim it by, and can do nothing until then.
+        Add a member to the caller's active organization, by email address.  Organization owners and admins only. The member is active immediately, with no invitation to accept and no email sent, so the person has to be told some other way. An address that belongs to no identity yet creates one, which gets in by signing up, by \"Forgot your password?\" or by a Google or GitHub sign-in; on a deployment with no mail and no provider it waits for an operator's password link, so invite it instead (``POST /me/member-invitations``), whose link can set its first password.
 
         :param active_organization_member_create_request: (required)
         :type active_organization_member_create_request: ActiveOrganizationMemberCreateRequest
@@ -968,7 +968,7 @@ class OrganizationsApi:
     ) -> ApiResponse[ActiveOrganizationMemberCreateResultPublic]:
         """Create Active Organization Member
 
-        Add a member to the caller's active organization, by email address.  Organization owners and admins only. The member is active immediately and the response says so: this edition has no invitation to send and no way to accept one, so it answers on the ``active`` arm of the result rather than the ``invited`` one the platform uses. An address that belongs to no identity yet creates one, which carries the address as the handle a future sign-in flow will claim it by, and can do nothing until then.
+        Add a member to the caller's active organization, by email address.  Organization owners and admins only. The member is active immediately, with no invitation to accept and no email sent, so the person has to be told some other way. An address that belongs to no identity yet creates one, which gets in by signing up, by \"Forgot your password?\" or by a Google or GitHub sign-in; on a deployment with no mail and no provider it waits for an operator's password link, so invite it instead (``POST /me/member-invitations``), whose link can set its first password.
 
         :param active_organization_member_create_request: (required)
         :type active_organization_member_create_request: ActiveOrganizationMemberCreateRequest
@@ -1036,7 +1036,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """Create Active Organization Member
 
-        Add a member to the caller's active organization, by email address.  Organization owners and admins only. The member is active immediately and the response says so: this edition has no invitation to send and no way to accept one, so it answers on the ``active`` arm of the result rather than the ``invited`` one the platform uses. An address that belongs to no identity yet creates one, which carries the address as the handle a future sign-in flow will claim it by, and can do nothing until then.
+        Add a member to the caller's active organization, by email address.  Organization owners and admins only. The member is active immediately, with no invitation to accept and no email sent, so the person has to be told some other way. An address that belongs to no identity yet creates one, which gets in by signing up, by \"Forgot your password?\" or by a Google or GitHub sign-in; on a deployment with no mail and no provider it waits for an operator's password link, so invite it instead (``POST /me/member-invitations``), whose link can set its first password.
 
         :param active_organization_member_create_request: (required)
         :type active_organization_member_create_request: ActiveOrganizationMemberCreateRequest
@@ -1178,7 +1178,7 @@ class OrganizationsApi:
     ) -> OrganizationPublic:
         """Create Organization
 
-        Create an organization with the caller as its owner.  Takes a name; the slug is derived from it with a random suffix, so two organizations may share a name and a later rename does not move the slug. A default workspace is provisioned alongside, because an organization without one has nowhere to hold a key, a budget or a usage row.  The caller is **not** moved into it. Switching is a separate call (``POST /me/switch``), so creating an organization does not change what the rest of the caller's session is looking at.
+        Create an organization with the caller as its owner.  Takes a name; the slug is derived from it with a random suffix, so two organizations may share a name and a later rename does not move the slug. A default workspace is provisioned alongside, because an organization without one has nowhere to hold a key, a budget or a usage row.  The caller is **not** moved into it. Switching is a separate call (``POST /me/switch``), so creating an organization does not change what the rest of the caller's session is looking at.  Where signup is closed, the caller must already be an active member of an organization; a caller with none is refused with a 403.
 
         :param organization_create_request: (required)
         :type organization_create_request: OrganizationCreateRequest
@@ -1214,6 +1214,7 @@ class OrganizationsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "OrganizationPublic",
+            '403': "OrganizationRefusal",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1246,7 +1247,7 @@ class OrganizationsApi:
     ) -> ApiResponse[OrganizationPublic]:
         """Create Organization
 
-        Create an organization with the caller as its owner.  Takes a name; the slug is derived from it with a random suffix, so two organizations may share a name and a later rename does not move the slug. A default workspace is provisioned alongside, because an organization without one has nowhere to hold a key, a budget or a usage row.  The caller is **not** moved into it. Switching is a separate call (``POST /me/switch``), so creating an organization does not change what the rest of the caller's session is looking at.
+        Create an organization with the caller as its owner.  Takes a name; the slug is derived from it with a random suffix, so two organizations may share a name and a later rename does not move the slug. A default workspace is provisioned alongside, because an organization without one has nowhere to hold a key, a budget or a usage row.  The caller is **not** moved into it. Switching is a separate call (``POST /me/switch``), so creating an organization does not change what the rest of the caller's session is looking at.  Where signup is closed, the caller must already be an active member of an organization; a caller with none is refused with a 403.
 
         :param organization_create_request: (required)
         :type organization_create_request: OrganizationCreateRequest
@@ -1282,6 +1283,7 @@ class OrganizationsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "OrganizationPublic",
+            '403': "OrganizationRefusal",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1314,7 +1316,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """Create Organization
 
-        Create an organization with the caller as its owner.  Takes a name; the slug is derived from it with a random suffix, so two organizations may share a name and a later rename does not move the slug. A default workspace is provisioned alongside, because an organization without one has nowhere to hold a key, a budget or a usage row.  The caller is **not** moved into it. Switching is a separate call (``POST /me/switch``), so creating an organization does not change what the rest of the caller's session is looking at.
+        Create an organization with the caller as its owner.  Takes a name; the slug is derived from it with a random suffix, so two organizations may share a name and a later rename does not move the slug. A default workspace is provisioned alongside, because an organization without one has nowhere to hold a key, a budget or a usage row.  The caller is **not** moved into it. Switching is a separate call (``POST /me/switch``), so creating an organization does not change what the rest of the caller's session is looking at.  Where signup is closed, the caller must already be an active member of an organization; a caller with none is refused with a 403.
 
         :param organization_create_request: (required)
         :type organization_create_request: OrganizationCreateRequest
@@ -1350,6 +1352,7 @@ class OrganizationsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "OrganizationPublic",
+            '403': "OrganizationRefusal",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -2018,6 +2021,7 @@ class OrganizationsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OrganizationMembershipContextPublic",
+            '404': "OrganizationRefusal",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -2081,6 +2085,7 @@ class OrganizationsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OrganizationMembershipContextPublic",
+            '404': "OrganizationRefusal",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -2144,6 +2149,7 @@ class OrganizationsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OrganizationMembershipContextPublic",
+            '404': "OrganizationRefusal",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -2233,7 +2239,7 @@ class OrganizationsApi:
     ) -> InviteOrganizationMemberResultPublic:
         """Invite Active Organization Member
 
-        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /api/v1/invitations/accept``). The response always carries the accept link, whether or not it was actually emailed (``mail_sent``), so an operator can share it themselves when mail is not configured or the send fails.
+        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /api/v1/invitations/accept``). When the email did not go out (``mail_sent`` is false: mail is not configured, the send failed, or the invitation mail limit was reached), the response carries the accept link so the caller can share it themselves. An address whose invitation is still pending is refused; reissue that invitation to send a new link.
 
         :param invite_organization_member_request: (required)
         :type invite_organization_member_request: InviteOrganizationMemberRequest
@@ -2301,7 +2307,7 @@ class OrganizationsApi:
     ) -> ApiResponse[InviteOrganizationMemberResultPublic]:
         """Invite Active Organization Member
 
-        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /api/v1/invitations/accept``). The response always carries the accept link, whether or not it was actually emailed (``mail_sent``), so an operator can share it themselves when mail is not configured or the send fails.
+        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /api/v1/invitations/accept``). When the email did not go out (``mail_sent`` is false: mail is not configured, the send failed, or the invitation mail limit was reached), the response carries the accept link so the caller can share it themselves. An address whose invitation is still pending is refused; reissue that invitation to send a new link.
 
         :param invite_organization_member_request: (required)
         :type invite_organization_member_request: InviteOrganizationMemberRequest
@@ -2369,7 +2375,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """Invite Active Organization Member
 
-        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /api/v1/invitations/accept``). The response always carries the accept link, whether or not it was actually emailed (``mail_sent``), so an operator can share it themselves when mail is not configured or the send fails.
+        Invite an address to the caller's active organization by email.  Organization owners and admins only. Unlike ``POST /me/members``, the membership lands ``invited`` rather than ``active``: it becomes active once the recipient accepts (``POST /api/v1/invitations/accept``). When the email did not go out (``mail_sent`` is false: mail is not configured, the send failed, or the invitation mail limit was reached), the response carries the accept link so the caller can share it themselves. An address whose invitation is still pending is refused; reissue that invitation to send a new link.
 
         :param invite_organization_member_request: (required)
         :type invite_organization_member_request: InviteOrganizationMemberRequest
@@ -3609,6 +3615,271 @@ class OrganizationsApi:
 
 
     @validate_call
+    def organizations_reissue_active_organization_member_invitation(
+        self,
+        invitation_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> InviteOrganizationMemberResultPublic:
+        """Reissue Active Organization Member Invitation
+
+        Give a pending or expired invitation a new accept link. Organization owners and admins only.  The old link stops working. The new one is emailed as an invitation is, and returned in ``accept_link`` when it was not, so a lost link can be recovered whether or not the deployment sends mail.
+
+        :param invitation_id: (required)
+        :type invitation_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._organizations_reissue_active_organization_member_invitation_serialize(
+            invitation_id=invitation_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "InviteOrganizationMemberResultPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def organizations_reissue_active_organization_member_invitation_with_http_info(
+        self,
+        invitation_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[InviteOrganizationMemberResultPublic]:
+        """Reissue Active Organization Member Invitation
+
+        Give a pending or expired invitation a new accept link. Organization owners and admins only.  The old link stops working. The new one is emailed as an invitation is, and returned in ``accept_link`` when it was not, so a lost link can be recovered whether or not the deployment sends mail.
+
+        :param invitation_id: (required)
+        :type invitation_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._organizations_reissue_active_organization_member_invitation_serialize(
+            invitation_id=invitation_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "InviteOrganizationMemberResultPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def organizations_reissue_active_organization_member_invitation_without_preload_content(
+        self,
+        invitation_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Reissue Active Organization Member Invitation
+
+        Give a pending or expired invitation a new accept link. Organization owners and admins only.  The old link stops working. The new one is emailed as an invitation is, and returned in ``accept_link`` when it was not, so a lost link can be recovered whether or not the deployment sends mail.
+
+        :param invitation_id: (required)
+        :type invitation_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._organizations_reissue_active_organization_member_invitation_serialize(
+            invitation_id=invitation_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "InviteOrganizationMemberResultPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _organizations_reissue_active_organization_member_invitation_serialize(
+        self,
+        invitation_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if invitation_id is not None:
+            _path_params['invitation_id'] = invitation_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/organizations/me/member-invitations/{invitation_id}/reissue',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def organizations_remove_active_organization_member(
         self,
         organization_member_id: UUID,
@@ -3892,7 +4163,7 @@ class OrganizationsApi:
     ) -> Message:
         """Revoke Active Organization Member Invitation
 
-        Revoke an unaccepted invitation. Organization owners and admins only.  Suspends the paired membership rather than deleting it, the same as removing an active member: re-inviting the same address later revives it.
+        Revoke an unaccepted invitation, pending or expired. Organization owners and admins only.  Suspends the paired membership rather than deleting it, the same as removing an active member: re-inviting the same address later revives it.
 
         :param invitation_id: (required)
         :type invitation_id: UUID
@@ -3960,7 +4231,7 @@ class OrganizationsApi:
     ) -> ApiResponse[Message]:
         """Revoke Active Organization Member Invitation
 
-        Revoke an unaccepted invitation. Organization owners and admins only.  Suspends the paired membership rather than deleting it, the same as removing an active member: re-inviting the same address later revives it.
+        Revoke an unaccepted invitation, pending or expired. Organization owners and admins only.  Suspends the paired membership rather than deleting it, the same as removing an active member: re-inviting the same address later revives it.
 
         :param invitation_id: (required)
         :type invitation_id: UUID
@@ -4028,7 +4299,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """Revoke Active Organization Member Invitation
 
-        Revoke an unaccepted invitation. Organization owners and admins only.  Suspends the paired membership rather than deleting it, the same as removing an active member: re-inviting the same address later revives it.
+        Revoke an unaccepted invitation, pending or expired. Organization owners and admins only.  Suspends the paired membership rather than deleting it, the same as removing an active member: re-inviting the same address later revives it.
 
         :param invitation_id: (required)
         :type invitation_id: UUID

@@ -48,6 +48,7 @@ class PricingApi:
     @validate_call
     def pricing_confirm_pricing_refresh(
         self,
+        digest: Annotated[Optional[StrictStr], Field(description="The `digest` of the previewed snapshot; 409 when the pending one differs.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -65,6 +66,8 @@ class PricingApi:
 
         Activate the latest reviewed default-price snapshot.
 
+        :param digest: The `digest` of the previewed snapshot; 409 when the pending one differs.
+        :type digest: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -88,6 +91,7 @@ class PricingApi:
         """ # noqa: E501
 
         _param = self._pricing_confirm_pricing_refresh_serialize(
+            digest=digest,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -96,6 +100,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "PricingRefreshConfirmationResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -111,6 +116,7 @@ class PricingApi:
     @validate_call
     def pricing_confirm_pricing_refresh_with_http_info(
         self,
+        digest: Annotated[Optional[StrictStr], Field(description="The `digest` of the previewed snapshot; 409 when the pending one differs.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -128,6 +134,8 @@ class PricingApi:
 
         Activate the latest reviewed default-price snapshot.
 
+        :param digest: The `digest` of the previewed snapshot; 409 when the pending one differs.
+        :type digest: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -151,6 +159,7 @@ class PricingApi:
         """ # noqa: E501
 
         _param = self._pricing_confirm_pricing_refresh_serialize(
+            digest=digest,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -159,6 +168,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "PricingRefreshConfirmationResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -174,6 +184,7 @@ class PricingApi:
     @validate_call
     def pricing_confirm_pricing_refresh_without_preload_content(
         self,
+        digest: Annotated[Optional[StrictStr], Field(description="The `digest` of the previewed snapshot; 409 when the pending one differs.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -191,6 +202,8 @@ class PricingApi:
 
         Activate the latest reviewed default-price snapshot.
 
+        :param digest: The `digest` of the previewed snapshot; 409 when the pending one differs.
+        :type digest: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -214,6 +227,7 @@ class PricingApi:
         """ # noqa: E501
 
         _param = self._pricing_confirm_pricing_refresh_serialize(
+            digest=digest,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -222,6 +236,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "PricingRefreshConfirmationResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -232,6 +247,7 @@ class PricingApi:
 
     def _pricing_confirm_pricing_refresh_serialize(
         self,
+        digest,
         _request_auth,
         _content_type,
         _headers,
@@ -254,6 +270,10 @@ class PricingApi:
 
         # process the path parameters
         # process the query parameters
+        if digest is not None:
+            
+            _query_params.append(('digest', digest))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1973,7 +1993,7 @@ class PricingApi:
     ) -> List[PricingDriftRow]:
         """List Pricing Drift
 
-        Every stored deployment rate in force today, beside today's default for it.  A stored row shadows the genai-prices default silently and forever, whether it was a deliberate override or a copy of a then-current default. This is what makes the difference visible: a row that matches the default is a row that could be deleted, and a row far from it is one worth a second look. Tool rows (``otari:``) are per request and have no default to drift from, so they are left out.
+        Every stored deployment rate in force today, beside today's default for it.  A stored row shadows the models.dev default silently and forever, whether it was a deliberate override or a copy of a then-current default. This is what makes the difference visible: a row that matches the default is a row that could be deleted, and a row far from it is one worth a second look. Tool rows (``otari:``) are per request and have no default to drift from, so they are left out.
 
         :param limit:
         :type limit: int
@@ -2041,7 +2061,7 @@ class PricingApi:
     ) -> ApiResponse[List[PricingDriftRow]]:
         """List Pricing Drift
 
-        Every stored deployment rate in force today, beside today's default for it.  A stored row shadows the genai-prices default silently and forever, whether it was a deliberate override or a copy of a then-current default. This is what makes the difference visible: a row that matches the default is a row that could be deleted, and a row far from it is one worth a second look. Tool rows (``otari:``) are per request and have no default to drift from, so they are left out.
+        Every stored deployment rate in force today, beside today's default for it.  A stored row shadows the models.dev default silently and forever, whether it was a deliberate override or a copy of a then-current default. This is what makes the difference visible: a row that matches the default is a row that could be deleted, and a row far from it is one worth a second look. Tool rows (``otari:``) are per request and have no default to drift from, so they are left out.
 
         :param limit:
         :type limit: int
@@ -2109,7 +2129,7 @@ class PricingApi:
     ) -> RESTResponseType:
         """List Pricing Drift
 
-        Every stored deployment rate in force today, beside today's default for it.  A stored row shadows the genai-prices default silently and forever, whether it was a deliberate override or a copy of a then-current default. This is what makes the difference visible: a row that matches the default is a row that could be deleted, and a row far from it is one worth a second look. Tool rows (``otari:``) are per request and have no default to drift from, so they are left out.
+        Every stored deployment rate in force today, beside today's default for it.  A stored row shadows the models.dev default silently and forever, whether it was a deliberate override or a copy of a then-current default. This is what makes the difference visible: a row that matches the default is a row that could be deleted, and a row far from it is one worth a second look. Tool rows (``otari:``) are per request and have no default to drift from, so they are left out.
 
         :param limit:
         :type limit: int
@@ -2738,6 +2758,7 @@ class PricingApi:
     @validate_call
     def pricing_reject_pricing_refresh(
         self,
+        digest: Annotated[Optional[StrictStr], Field(description="The `digest` of the previewed snapshot; 409 when the pending one differs.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2755,6 +2776,8 @@ class PricingApi:
 
         Discard a reviewed default-price snapshot without applying it.
 
+        :param digest: The `digest` of the previewed snapshot; 409 when the pending one differs.
+        :type digest: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2778,6 +2801,7 @@ class PricingApi:
         """ # noqa: E501
 
         _param = self._pricing_reject_pricing_refresh_serialize(
+            digest=digest,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2786,6 +2810,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '204': None,
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -2801,6 +2826,7 @@ class PricingApi:
     @validate_call
     def pricing_reject_pricing_refresh_with_http_info(
         self,
+        digest: Annotated[Optional[StrictStr], Field(description="The `digest` of the previewed snapshot; 409 when the pending one differs.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2818,6 +2844,8 @@ class PricingApi:
 
         Discard a reviewed default-price snapshot without applying it.
 
+        :param digest: The `digest` of the previewed snapshot; 409 when the pending one differs.
+        :type digest: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2841,6 +2869,7 @@ class PricingApi:
         """ # noqa: E501
 
         _param = self._pricing_reject_pricing_refresh_serialize(
+            digest=digest,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2849,6 +2878,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '204': None,
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -2864,6 +2894,7 @@ class PricingApi:
     @validate_call
     def pricing_reject_pricing_refresh_without_preload_content(
         self,
+        digest: Annotated[Optional[StrictStr], Field(description="The `digest` of the previewed snapshot; 409 when the pending one differs.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2881,6 +2912,8 @@ class PricingApi:
 
         Discard a reviewed default-price snapshot without applying it.
 
+        :param digest: The `digest` of the previewed snapshot; 409 when the pending one differs.
+        :type digest: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2904,6 +2937,7 @@ class PricingApi:
         """ # noqa: E501
 
         _param = self._pricing_reject_pricing_refresh_serialize(
+            digest=digest,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2912,6 +2946,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '204': None,
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -2922,6 +2957,7 @@ class PricingApi:
 
     def _pricing_reject_pricing_refresh_serialize(
         self,
+        digest,
         _request_auth,
         _content_type,
         _headers,
@@ -2944,11 +2980,22 @@ class PricingApi:
 
         # process the path parameters
         # process the query parameters
+        if digest is not None:
+            
+            _query_params.append(('digest', digest))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
 
 
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
 
 
         # authentication setting

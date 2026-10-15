@@ -31,7 +31,6 @@ class OrganizationModelPricingUpdate(BaseModel):
     Replace an override's rates and period.  ``effective_from`` is required here, where a create defaults it to now. A replacement states the whole row, so defaulting an omitted start would move a stored period to the present: an operator editing next quarter's rate through a client that does not send the field would silently bring it into effect today, or collide with the period that currently applies. Stating it is the only reading that cannot surprise.  A full replacement rather than a patch: every rate field is present in the body and an omitted optional rate is cleared, so the stored row is exactly what was sent. That is the opposite of ``POST /api/v1/pricing``, which inherits an omitted cache rate from the model's previous version, and deliberately so: that surface versions a catalog where each write adds a row, while this one edits a single row in place and an inheriting patch would make the result depend on what happened to be stored before.  ``model_key`` is absent because it is immutable. Repointing an override at another model is retiring one and creating another, which is two requests.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cached-input tokens")
-    cache_write_1h_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M Anthropic 1-hour cache-write tokens")
     cache_write_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cache-write (creation) tokens")
     effective_from: datetime = Field(description="ISO 8601 datetime from which this rate applies, inclusive. Required on a replacement, so an omitted value cannot silently move a stored period to the present.")
     effective_to: Optional[datetime] = Field(default=None, description="ISO 8601 datetime at which this rate stops applying, exclusive. Null leaves it open ended. Because the end is exclusive, the next period may begin at exactly this instant without overlapping.")
@@ -39,7 +38,7 @@ class OrganizationModelPricingUpdate(BaseModel):
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens; unused by a rate in requests or images")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
     unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint, each priced per million. A completion model priced per requests is charged one request per successful call.")
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_1h_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('unit')
     def unit_validate_enum(cls, value):
@@ -102,11 +101,6 @@ class OrganizationModelPricingUpdate(BaseModel):
         if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
             _dict['cache_read_price_per_million'] = None
 
-        # set to None if cache_write_1h_price_per_million (nullable) is None
-        # and model_fields_set contains the field
-        if self.cache_write_1h_price_per_million is None and "cache_write_1h_price_per_million" in self.model_fields_set:
-            _dict['cache_write_1h_price_per_million'] = None
-
         # set to None if cache_write_price_per_million (nullable) is None
         # and model_fields_set contains the field
         if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
@@ -135,7 +129,6 @@ class OrganizationModelPricingUpdate(BaseModel):
 
         _obj = cls.model_validate({
             "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
-            "cache_write_1h_price_per_million": obj.get("cache_write_1h_price_per_million"),
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "effective_from": obj.get("effective_from"),
             "effective_to": obj.get("effective_to"),
