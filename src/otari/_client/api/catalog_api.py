@@ -341,7 +341,7 @@ class CatalogApi:
     ) -> CatalogResponse:
         """List Catalog
 
-        The models this caller may use, one entry each however many providers serve it.  Prices are the caller's: an organization's override where one applies, else the deployment's row, else the models.dev default. Aliases and routing policies are not models and are not listed; see Routing. A visitor, where the catalog is public, sees the configured instances and the hosted models at the deployment's rates, and nothing that belongs to a tenant.
+        The models this caller may use, one entry each however many providers serve it.  Prices are the caller's: an organization's override where one applies, else the deployment's row, else the models.dev default. Aliases and routing policies are not models and are not listed; see Routing. A visitor, where the catalog is public, sees the configured instances and the hosted models every organization reaches, at the deployment's rates, and nothing that belongs to a tenant.
 
         :param at_context: Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.
         :type at_context: int
@@ -473,7 +473,7 @@ class CatalogApi:
     ) -> ApiResponse[CatalogResponse]:
         """List Catalog
 
-        The models this caller may use, one entry each however many providers serve it.  Prices are the caller's: an organization's override where one applies, else the deployment's row, else the models.dev default. Aliases and routing policies are not models and are not listed; see Routing. A visitor, where the catalog is public, sees the configured instances and the hosted models at the deployment's rates, and nothing that belongs to a tenant.
+        The models this caller may use, one entry each however many providers serve it.  Prices are the caller's: an organization's override where one applies, else the deployment's row, else the models.dev default. Aliases and routing policies are not models and are not listed; see Routing. A visitor, where the catalog is public, sees the configured instances and the hosted models every organization reaches, at the deployment's rates, and nothing that belongs to a tenant.
 
         :param at_context: Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.
         :type at_context: int
@@ -605,7 +605,7 @@ class CatalogApi:
     ) -> RESTResponseType:
         """List Catalog
 
-        The models this caller may use, one entry each however many providers serve it.  Prices are the caller's: an organization's override where one applies, else the deployment's row, else the models.dev default. Aliases and routing policies are not models and are not listed; see Routing. A visitor, where the catalog is public, sees the configured instances and the hosted models at the deployment's rates, and nothing that belongs to a tenant.
+        The models this caller may use, one entry each however many providers serve it.  Prices are the caller's: an organization's override where one applies, else the deployment's row, else the models.dev default. Aliases and routing policies are not models and are not listed; see Routing. A visitor, where the catalog is public, sees the configured instances and the hosted models every organization reaches, at the deployment's rates, and nothing that belongs to a tenant.
 
         :param at_context: Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.
         :type at_context: int

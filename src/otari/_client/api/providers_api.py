@@ -1614,7 +1614,7 @@ class ProvidersApi:
     ) -> ProviderHealthResponse:
         """Provider Health
 
-        Report every configured provider's reachability, with a last-checked time.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
+        Report every configured provider's reachability, with a last-checked time.  Covers the configured provider instances and every hosted provider switched on, each hosted provider under its provider name. A hosted provider that a configured instance of the same name shadows is not reported. One whose stored key cannot be decrypted with the configured `OTARI_SECRET_KEY` is reported unreachable with that reason.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
 
         :param refresh:
         :type refresh: bool
@@ -1682,7 +1682,7 @@ class ProvidersApi:
     ) -> ApiResponse[ProviderHealthResponse]:
         """Provider Health
 
-        Report every configured provider's reachability, with a last-checked time.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
+        Report every configured provider's reachability, with a last-checked time.  Covers the configured provider instances and every hosted provider switched on, each hosted provider under its provider name. A hosted provider that a configured instance of the same name shadows is not reported. One whose stored key cannot be decrypted with the configured `OTARI_SECRET_KEY` is reported unreachable with that reason.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
 
         :param refresh:
         :type refresh: bool
@@ -1750,7 +1750,7 @@ class ProvidersApi:
     ) -> RESTResponseType:
         """Provider Health
 
-        Report every configured provider's reachability, with a last-checked time.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
+        Report every configured provider's reachability, with a last-checked time.  Covers the configured provider instances and every hosted provider switched on, each hosted provider under its provider name. A hosted provider that a configured instance of the same name shadows is not reported. One whose stored key cannot be decrypted with the configured `OTARI_SECRET_KEY` is reported unreachable with that reason.  Reuses the per-provider model-discovery test path, so a provider is healthy when its credentials can list models. Results are served from the discovery cache (cheap enough to poll), so ``checked_at`` reflects when each provider was actually dialed. Pass ``refresh=true`` to force a live re-dial of every provider.  A provider whose backend serves no model-listing endpoint cannot be verified this way, but it is not unreachable either: it is reported with ``discovery_unsupported`` and counted under ``degraded`` rather than as a reachability failure.
 
         :param refresh:
         :type refresh: bool

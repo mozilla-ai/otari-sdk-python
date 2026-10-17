@@ -97,6 +97,8 @@ class OrganizationPricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "OrganizationModelPricingPublic",
+            '403': None,
+            '409': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -165,6 +167,8 @@ class OrganizationPricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "OrganizationModelPricingPublic",
+            '403': None,
+            '409': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -233,6 +237,8 @@ class OrganizationPricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "OrganizationModelPricingPublic",
+            '403': None,
+            '409': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -339,7 +345,7 @@ class OrganizationPricingApi:
     ) -> None:
         """Delete Organization Pricing
 
-        Remove an override, returning the model to the deployment price list.
+        Remove an override, returning the model to the deployment price list.  Refused with a 403 for a rate the deployment operator set, which only the operator may remove.
 
         :param pricing_id: (required)
         :type pricing_id: UUID
@@ -375,6 +381,7 @@ class OrganizationPricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '204': None,
+            '403': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -407,7 +414,7 @@ class OrganizationPricingApi:
     ) -> ApiResponse[None]:
         """Delete Organization Pricing
 
-        Remove an override, returning the model to the deployment price list.
+        Remove an override, returning the model to the deployment price list.  Refused with a 403 for a rate the deployment operator set, which only the operator may remove.
 
         :param pricing_id: (required)
         :type pricing_id: UUID
@@ -443,6 +450,7 @@ class OrganizationPricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '204': None,
+            '403': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -475,7 +483,7 @@ class OrganizationPricingApi:
     ) -> RESTResponseType:
         """Delete Organization Pricing
 
-        Remove an override, returning the model to the deployment price list.
+        Remove an override, returning the model to the deployment price list.  Refused with a 403 for a rate the deployment operator set, which only the operator may remove.
 
         :param pricing_id: (required)
         :type pricing_id: UUID
@@ -511,6 +519,7 @@ class OrganizationPricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '204': None,
+            '403': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -906,7 +915,7 @@ class OrganizationPricingApi:
     ) -> OrganizationModelPricingPublic:
         """Replace Organization Pricing
 
-        Replace an override's rates and period.  Future requests in the period price at the new rate; usage already settled keeps the cost it was billed, because a settled cost is stored on the usage row rather than recomputed.  Refused with a 403 on the same deployment-supplied-model rule the create path carries, so a row stored before that rule existed cannot be edited into a rate nobody could create today.
+        Replace an override's rates and period.  Future requests in the period price at the new rate; usage already settled keeps the cost it was billed, because a settled cost is stored on the usage row rather than recomputed.  Refused with a 403 on the same deployment-supplied-model rule the create path carries, so a row stored before that rule existed cannot be edited into a rate nobody could create today, and with a 403 for a rate the deployment operator set, which only the operator may change.
 
         :param pricing_id: (required)
         :type pricing_id: UUID
@@ -945,6 +954,7 @@ class OrganizationPricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OrganizationModelPricingPublic",
+            '403': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -978,7 +988,7 @@ class OrganizationPricingApi:
     ) -> ApiResponse[OrganizationModelPricingPublic]:
         """Replace Organization Pricing
 
-        Replace an override's rates and period.  Future requests in the period price at the new rate; usage already settled keeps the cost it was billed, because a settled cost is stored on the usage row rather than recomputed.  Refused with a 403 on the same deployment-supplied-model rule the create path carries, so a row stored before that rule existed cannot be edited into a rate nobody could create today.
+        Replace an override's rates and period.  Future requests in the period price at the new rate; usage already settled keeps the cost it was billed, because a settled cost is stored on the usage row rather than recomputed.  Refused with a 403 on the same deployment-supplied-model rule the create path carries, so a row stored before that rule existed cannot be edited into a rate nobody could create today, and with a 403 for a rate the deployment operator set, which only the operator may change.
 
         :param pricing_id: (required)
         :type pricing_id: UUID
@@ -1017,6 +1027,7 @@ class OrganizationPricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OrganizationModelPricingPublic",
+            '403': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1050,7 +1061,7 @@ class OrganizationPricingApi:
     ) -> RESTResponseType:
         """Replace Organization Pricing
 
-        Replace an override's rates and period.  Future requests in the period price at the new rate; usage already settled keeps the cost it was billed, because a settled cost is stored on the usage row rather than recomputed.  Refused with a 403 on the same deployment-supplied-model rule the create path carries, so a row stored before that rule existed cannot be edited into a rate nobody could create today.
+        Replace an override's rates and period.  Future requests in the period price at the new rate; usage already settled keeps the cost it was billed, because a settled cost is stored on the usage row rather than recomputed.  Refused with a 403 on the same deployment-supplied-model rule the create path carries, so a row stored before that rule existed cannot be edited into a rate nobody could create today, and with a 403 for a rate the deployment operator set, which only the operator may change.
 
         :param pricing_id: (required)
         :type pricing_id: UUID
@@ -1089,6 +1100,7 @@ class OrganizationPricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OrganizationModelPricingPublic",
+            '403': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(

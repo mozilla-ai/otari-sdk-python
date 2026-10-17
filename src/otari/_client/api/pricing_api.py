@@ -870,7 +870,7 @@ class PricingApi:
     ) -> PricingResponse:
         """Get Pricing
 
-        Get pricing for a specific model as of a timestamp.
+        Get pricing for a specific model as of a timestamp.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
@@ -909,6 +909,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "PricingResponse",
+            '404': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -942,7 +943,7 @@ class PricingApi:
     ) -> ApiResponse[PricingResponse]:
         """Get Pricing
 
-        Get pricing for a specific model as of a timestamp.
+        Get pricing for a specific model as of a timestamp.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
@@ -981,6 +982,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "PricingResponse",
+            '404': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1014,7 +1016,7 @@ class PricingApi:
     ) -> RESTResponseType:
         """Get Pricing
 
-        Get pricing for a specific model as of a timestamp.
+        Get pricing for a specific model as of a timestamp.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
@@ -1053,6 +1055,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "PricingResponse",
+            '404': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1160,7 +1163,7 @@ class PricingApi:
     ) -> List[PricingResponse]:
         """Get Pricing History
 
-        Return the full pricing history for a model.
+        Return the full pricing history for a model.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
@@ -1196,6 +1199,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[PricingResponse]",
+            '404': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1228,7 +1232,7 @@ class PricingApi:
     ) -> ApiResponse[List[PricingResponse]]:
         """Get Pricing History
 
-        Return the full pricing history for a model.
+        Return the full pricing history for a model.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
@@ -1264,6 +1268,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[PricingResponse]",
+            '404': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1296,7 +1301,7 @@ class PricingApi:
     ) -> RESTResponseType:
         """Get Pricing History
 
-        Return the full pricing history for a model.
+        Return the full pricing history for a model.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
@@ -1332,6 +1337,7 @@ class PricingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[PricingResponse]",
+            '404': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1426,7 +1432,7 @@ class PricingApi:
     ) -> CurrentPricingPage:
         """List Current Pricing
 
-        List the rate each priced model is metered at, one row per model key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of models. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. ``count`` is the number of priced models, so a caller can page without reading the collection to learn how long it is.
+        List the rate each priced model is metered at, one row per model key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of models. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. ``count`` is the number of priced models, so a caller can page without reading the collection to learn how long it is. A hosted provider restricted to another organization than the caller's is left out of both.
 
         :param skip:
         :type skip: int
@@ -1498,7 +1504,7 @@ class PricingApi:
     ) -> ApiResponse[CurrentPricingPage]:
         """List Current Pricing
 
-        List the rate each priced model is metered at, one row per model key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of models. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. ``count`` is the number of priced models, so a caller can page without reading the collection to learn how long it is.
+        List the rate each priced model is metered at, one row per model key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of models. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. ``count`` is the number of priced models, so a caller can page without reading the collection to learn how long it is. A hosted provider restricted to another organization than the caller's is left out of both.
 
         :param skip:
         :type skip: int
@@ -1570,7 +1576,7 @@ class PricingApi:
     ) -> RESTResponseType:
         """List Current Pricing
 
-        List the rate each priced model is metered at, one row per model key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of models. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. ``count`` is the number of priced models, so a caller can page without reading the collection to learn how long it is.
+        List the rate each priced model is metered at, one row per model key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of models. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. ``count`` is the number of priced models, so a caller can page without reading the collection to learn how long it is. A hosted provider restricted to another organization than the caller's is left out of both.
 
         :param skip:
         :type skip: int
@@ -1710,7 +1716,7 @@ class PricingApi:
     ) -> List[PricingResponse]:
         """List Pricing
 
-        List all model pricing.
+        List all model pricing.  A hosted provider restricted to another organization than the caller's is left out, as it is from the catalog.
 
         :param skip:
         :type skip: int
@@ -1782,7 +1788,7 @@ class PricingApi:
     ) -> ApiResponse[List[PricingResponse]]:
         """List Pricing
 
-        List all model pricing.
+        List all model pricing.  A hosted provider restricted to another organization than the caller's is left out, as it is from the catalog.
 
         :param skip:
         :type skip: int
@@ -1854,7 +1860,7 @@ class PricingApi:
     ) -> RESTResponseType:
         """List Pricing
 
-        List all model pricing.
+        List all model pricing.  A hosted provider restricted to another organization than the caller's is left out, as it is from the catalog.
 
         :param skip:
         :type skip: int
