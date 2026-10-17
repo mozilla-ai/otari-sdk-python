@@ -20,29 +20,32 @@ import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, Dict, Optional
 from otari._client.models.token_charge_line import TokenChargeLine
+from otari._client.models.tool_charge_line import ToolChargeLine
 from otari._client.models.unit_charge_line import UnitChargeLine
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-USAGEENTRYPRICINGBREAKDOWNINNER_ANY_OF_SCHEMAS = ["Dict[str, object]", "TokenChargeLine", "UnitChargeLine"]
+USAGEENTRYPRICINGBREAKDOWNINNER_ANY_OF_SCHEMAS = ["Dict[str, object]", "TokenChargeLine", "ToolChargeLine", "UnitChargeLine"]
 
 class UsageEntryPricingBreakdownInner(BaseModel):
     """
     UsageEntryPricingBreakdownInner
     """
 
+    # data type: ToolChargeLine
+    anyof_schema_1_validator: Optional[ToolChargeLine] = None
     # data type: TokenChargeLine
-    anyof_schema_1_validator: Optional[TokenChargeLine] = None
+    anyof_schema_2_validator: Optional[TokenChargeLine] = None
     # data type: UnitChargeLine
-    anyof_schema_2_validator: Optional[UnitChargeLine] = None
+    anyof_schema_3_validator: Optional[UnitChargeLine] = None
     # data type: Dict[str, object]
-    anyof_schema_3_validator: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
+    anyof_schema_4_validator: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[Dict[str, object], TokenChargeLine, UnitChargeLine]] = None
+        actual_instance: Optional[Union[Dict[str, object], TokenChargeLine, ToolChargeLine, UnitChargeLine]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "Dict[str, object]", "TokenChargeLine", "UnitChargeLine" }
+    any_of_schemas: Set[str] = { "Dict[str, object]", "TokenChargeLine", "ToolChargeLine", "UnitChargeLine" }
 
     model_config = {
         "validate_assignment": True,
@@ -63,6 +66,12 @@ class UsageEntryPricingBreakdownInner(BaseModel):
     def actual_instance_must_validate_anyof(cls, v):
         instance = UsageEntryPricingBreakdownInner.model_construct()
         error_messages = []
+        # validate data type: ToolChargeLine
+        if not isinstance(v, ToolChargeLine):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `ToolChargeLine`")
+        else:
+            return v
+
         # validate data type: TokenChargeLine
         if not isinstance(v, TokenChargeLine):
             error_messages.append(f"Error! Input type `{type(v)}` is not `TokenChargeLine`")
@@ -77,13 +86,13 @@ class UsageEntryPricingBreakdownInner(BaseModel):
 
         # validate data type: Dict[str, object]
         try:
-            instance.anyof_schema_3_validator = v
+            instance.anyof_schema_4_validator = v
             return v
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in UsageEntryPricingBreakdownInner with anyOf schemas: Dict[str, object], TokenChargeLine, UnitChargeLine. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in UsageEntryPricingBreakdownInner with anyOf schemas: Dict[str, object], TokenChargeLine, ToolChargeLine, UnitChargeLine. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -96,13 +105,19 @@ class UsageEntryPricingBreakdownInner(BaseModel):
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
         error_messages = []
-        # anyof_schema_1_validator: Optional[TokenChargeLine] = None
+        # anyof_schema_1_validator: Optional[ToolChargeLine] = None
+        try:
+            instance.actual_instance = ToolChargeLine.from_json(json_str)
+            return instance
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
+        # anyof_schema_2_validator: Optional[TokenChargeLine] = None
         try:
             instance.actual_instance = TokenChargeLine.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
-        # anyof_schema_2_validator: Optional[UnitChargeLine] = None
+        # anyof_schema_3_validator: Optional[UnitChargeLine] = None
         try:
             instance.actual_instance = UnitChargeLine.from_json(json_str)
             return instance
@@ -111,16 +126,16 @@ class UsageEntryPricingBreakdownInner(BaseModel):
         # deserialize data into Dict[str, object]
         try:
             # validation
-            instance.anyof_schema_3_validator = json.loads(json_str)
+            instance.anyof_schema_4_validator = json.loads(json_str)
             # assign value to actual_instance
-            instance.actual_instance = instance.anyof_schema_3_validator
+            instance.actual_instance = instance.anyof_schema_4_validator
             return instance
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into UsageEntryPricingBreakdownInner with anyOf schemas: Dict[str, object], TokenChargeLine, UnitChargeLine. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into UsageEntryPricingBreakdownInner with anyOf schemas: Dict[str, object], TokenChargeLine, ToolChargeLine, UnitChargeLine. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -134,7 +149,7 @@ class UsageEntryPricingBreakdownInner(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], Dict[str, object], TokenChargeLine, UnitChargeLine]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], Dict[str, object], TokenChargeLine, ToolChargeLine, UnitChargeLine]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None
