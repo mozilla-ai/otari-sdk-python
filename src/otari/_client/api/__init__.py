@@ -18,6 +18,7 @@ from otari._client.api.feedback_api import FeedbackApi
 from otari._client.api.files_api import FilesApi
 from otari._client.api.health_api import HealthApi
 from otari._client.api.hooks_api import HooksApi
+from otari._client.api.hosted_providers_api import HostedProvidersApi
 from otari._client.api.images_api import ImagesApi
 from otari._client.api.invitations_api import InvitationsApi
 from otari._client.api.keys_api import KeysApi
@@ -26,6 +27,7 @@ from otari._client.api.mcp_servers_api import McpServersApi
 from otari._client.api.messages_api import MessagesApi
 from otari._client.api.models_api import ModelsApi
 from otari._client.api.moderations_api import ModerationsApi
+from otari._client.api.oauth_api import OauthApi
 from otari._client.api.organization_budgets_api import OrganizationBudgetsApi
 from otari._client.api.organization_guardrail_definitions_api import OrganizationGuardrailDefinitionsApi
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi

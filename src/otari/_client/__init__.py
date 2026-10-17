@@ -35,6 +35,7 @@ __all__ = [
     "FilesApi",
     "HealthApi",
     "HooksApi",
+    "HostedProvidersApi",
     "ImagesApi",
     "InvitationsApi",
     "KeysApi",
@@ -43,6 +44,7 @@ __all__ = [
     "MessagesApi",
     "ModelsApi",
     "ModerationsApi",
+    "OauthApi",
     "OrganizationBudgetsApi",
     "OrganizationGuardrailDefinitionsApi",
     "OrganizationGuardrailsApi",
@@ -127,6 +129,8 @@ __all__ = [
     "AudioSpeechRequest",
     "AuthenticatePasskeyRequest",
     "AuthorizeResponse",
+    "AutomaticFallbackPublic",
+    "AutomaticFallbacksResponse",
     "BATCHBatchError",
     "BATCHBatchRequestCounts",
     "BATCHBatchUsage",
@@ -282,6 +286,11 @@ __all__ = [
     "ExternalIngestError",
     "ExternalIngestResult",
     "ExternalUsageEvent",
+    "FallbackOfferingPublic",
+    "FederationRuleCreate",
+    "FederationRulePublic",
+    "FederationTokenRequest",
+    "FederationTokenResponse",
     "FeedbackSubmission",
     "GateResultResponse",
     "GatewaySettings",
@@ -292,6 +301,19 @@ __all__ = [
     "GuardrailProfileSpec",
     "GuardrailStage",
     "HTTPValidationError",
+    "HostedAvailableModelsPublic",
+    "HostedCatalogKeptGroupPublic",
+    "HostedCatalogProviderRefreshPublic",
+    "HostedCatalogRefreshPublic",
+    "HostedModelCreateRequest",
+    "HostedModelPublic",
+    "HostedModelUpdateRequest",
+    "HostedModelsPublic",
+    "HostedModelsRefreshPublic",
+    "HostedProviderCreateRequest",
+    "HostedProviderPublic",
+    "HostedProviderUpdateRequest",
+    "HostedProvidersPublic",
     "IMGImage",
     "IMGUsage",
     "IMGUsageInputTokensDetails",
@@ -488,6 +510,7 @@ __all__ = [
     "NoulCriteria",
     "NoulQuestion",
     "OAuthCallbackRequest",
+    "OAuthErrorResponse",
     "OAuthSessionResponse",
     "OfferingUsage",
     "OpenAIFileDeleted",
@@ -765,6 +788,7 @@ from otari._client.api.feedback_api import FeedbackApi as FeedbackApi
 from otari._client.api.files_api import FilesApi as FilesApi
 from otari._client.api.health_api import HealthApi as HealthApi
 from otari._client.api.hooks_api import HooksApi as HooksApi
+from otari._client.api.hosted_providers_api import HostedProvidersApi as HostedProvidersApi
 from otari._client.api.images_api import ImagesApi as ImagesApi
 from otari._client.api.invitations_api import InvitationsApi as InvitationsApi
 from otari._client.api.keys_api import KeysApi as KeysApi
@@ -773,6 +797,7 @@ from otari._client.api.mcp_servers_api import McpServersApi as McpServersApi
 from otari._client.api.messages_api import MessagesApi as MessagesApi
 from otari._client.api.models_api import ModelsApi as ModelsApi
 from otari._client.api.moderations_api import ModerationsApi as ModerationsApi
+from otari._client.api.oauth_api import OauthApi as OauthApi
 from otari._client.api.organization_budgets_api import OrganizationBudgetsApi as OrganizationBudgetsApi
 from otari._client.api.organization_guardrail_definitions_api import OrganizationGuardrailDefinitionsApi as OrganizationGuardrailDefinitionsApi
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi as OrganizationGuardrailsApi
@@ -861,6 +886,8 @@ from otari._client.models.audio_content import AudioContent as AudioContent
 from otari._client.models.audio_speech_request import AudioSpeechRequest as AudioSpeechRequest
 from otari._client.models.authenticate_passkey_request import AuthenticatePasskeyRequest as AuthenticatePasskeyRequest
 from otari._client.models.authorize_response import AuthorizeResponse as AuthorizeResponse
+from otari._client.models.automatic_fallback_public import AutomaticFallbackPublic as AutomaticFallbackPublic
+from otari._client.models.automatic_fallbacks_response import AutomaticFallbacksResponse as AutomaticFallbacksResponse
 from otari._client.models.batch_batch_error import BATCHBatchError as BATCHBatchError
 from otari._client.models.batch_batch_request_counts import BATCHBatchRequestCounts as BATCHBatchRequestCounts
 from otari._client.models.batch_batch_usage import BATCHBatchUsage as BATCHBatchUsage
@@ -1016,6 +1043,11 @@ from otari._client.models.external_events_request import ExternalEventsRequest a
 from otari._client.models.external_ingest_error import ExternalIngestError as ExternalIngestError
 from otari._client.models.external_ingest_result import ExternalIngestResult as ExternalIngestResult
 from otari._client.models.external_usage_event import ExternalUsageEvent as ExternalUsageEvent
+from otari._client.models.fallback_offering_public import FallbackOfferingPublic as FallbackOfferingPublic
+from otari._client.models.federation_rule_create import FederationRuleCreate as FederationRuleCreate
+from otari._client.models.federation_rule_public import FederationRulePublic as FederationRulePublic
+from otari._client.models.federation_token_request import FederationTokenRequest as FederationTokenRequest
+from otari._client.models.federation_token_response import FederationTokenResponse as FederationTokenResponse
 from otari._client.models.feedback_submission import FeedbackSubmission as FeedbackSubmission
 from otari._client.models.gate_result_response import GateResultResponse as GateResultResponse
 from otari._client.models.gateway_settings import GatewaySettings as GatewaySettings
@@ -1026,6 +1058,19 @@ from otari._client.models.guardrail_parameter_spec import GuardrailParameterSpec
 from otari._client.models.guardrail_profile_spec import GuardrailProfileSpec as GuardrailProfileSpec
 from otari._client.models.guardrail_stage import GuardrailStage as GuardrailStage
 from otari._client.models.http_validation_error import HTTPValidationError as HTTPValidationError
+from otari._client.models.hosted_available_models_public import HostedAvailableModelsPublic as HostedAvailableModelsPublic
+from otari._client.models.hosted_catalog_kept_group_public import HostedCatalogKeptGroupPublic as HostedCatalogKeptGroupPublic
+from otari._client.models.hosted_catalog_provider_refresh_public import HostedCatalogProviderRefreshPublic as HostedCatalogProviderRefreshPublic
+from otari._client.models.hosted_catalog_refresh_public import HostedCatalogRefreshPublic as HostedCatalogRefreshPublic
+from otari._client.models.hosted_model_create_request import HostedModelCreateRequest as HostedModelCreateRequest
+from otari._client.models.hosted_model_public import HostedModelPublic as HostedModelPublic
+from otari._client.models.hosted_model_update_request import HostedModelUpdateRequest as HostedModelUpdateRequest
+from otari._client.models.hosted_models_public import HostedModelsPublic as HostedModelsPublic
+from otari._client.models.hosted_models_refresh_public import HostedModelsRefreshPublic as HostedModelsRefreshPublic
+from otari._client.models.hosted_provider_create_request import HostedProviderCreateRequest as HostedProviderCreateRequest
+from otari._client.models.hosted_provider_public import HostedProviderPublic as HostedProviderPublic
+from otari._client.models.hosted_provider_update_request import HostedProviderUpdateRequest as HostedProviderUpdateRequest
+from otari._client.models.hosted_providers_public import HostedProvidersPublic as HostedProvidersPublic
 from otari._client.models.img_image import IMGImage as IMGImage
 from otari._client.models.img_usage import IMGUsage as IMGUsage
 from otari._client.models.img_usage_input_tokens_details import IMGUsageInputTokensDetails as IMGUsageInputTokensDetails
@@ -1222,6 +1267,7 @@ from otari._client.models.moderation_result import ModerationResult as Moderatio
 from otari._client.models.noul_criteria import NoulCriteria as NoulCriteria
 from otari._client.models.noul_question import NoulQuestion as NoulQuestion
 from otari._client.models.o_auth_callback_request import OAuthCallbackRequest as OAuthCallbackRequest
+from otari._client.models.o_auth_error_response import OAuthErrorResponse as OAuthErrorResponse
 from otari._client.models.o_auth_session_response import OAuthSessionResponse as OAuthSessionResponse
 from otari._client.models.offering_usage import OfferingUsage as OfferingUsage
 from otari._client.models.open_ai_file_deleted import OpenAIFileDeleted as OpenAIFileDeleted

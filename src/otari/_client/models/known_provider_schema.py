@@ -29,10 +29,10 @@ class KnownProviderSchema(BaseModel):
     """ # noqa: E501
     default_api_base: Optional[StrictStr] = Field(default=None, description="Built-in endpoint; blank means the SDK's default.")
     env_key: Optional[StrictStr] = Field(default=None, description="Env var the SDK reads this provider's key from.")
-    env_key_present: Optional[StrictBool] = Field(default=False, description="True when env_key is already set on the server, so a pasted key is optional (env fallback).")
+    env_key_present: Optional[StrictBool] = Field(default=False, description="True when env_key is set on the server. Informational: a stored provider never reads it, so a key the provider requires must still be supplied.")
     id: StrictStr = Field(description="any-llm provider id, used as the default instance name.")
     name: StrictStr = Field(description="Human-friendly display name.")
-    requires_api_key: StrictBool = Field(description="False for keyless local backends (Ollama, llama.cpp).")
+    requires_api_key: StrictBool = Field(description="False for providers that need no key: keyless local backends (Ollama, llama.cpp) and ambient cloud credentials (Bedrock, Vertex AI).")
     __properties: ClassVar[List[str]] = ["default_api_base", "env_key", "env_key_present", "id", "name", "requires_api_key"]
 
     model_config = ConfigDict(
