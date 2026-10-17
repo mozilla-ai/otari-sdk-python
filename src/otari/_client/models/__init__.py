@@ -606,6 +606,7 @@ from otari._client.models.text_content import TextContent
 from otari._client.models.text_resource_contents import TextResourceContents
 from otari._client.models.token_charge_line import TokenChargeLine
 from otari._client.models.tool_calls_inner import ToolCallsInner
+from otari._client.models.tool_charge_line import ToolChargeLine
 from otari._client.models.tool_choice import ToolChoice
 from otari._client.models.tool_choice1 import ToolChoice1
 from otari._client.models.tool_meter import ToolMeter

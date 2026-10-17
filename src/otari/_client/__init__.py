@@ -682,6 +682,7 @@ __all__ = [
     "TextResourceContents",
     "TokenChargeLine",
     "ToolCallsInner",
+    "ToolChargeLine",
     "ToolChoice",
     "ToolChoice1",
     "ToolMeter",
@@ -1439,6 +1440,7 @@ from otari._client.models.text_content import TextContent as TextContent
 from otari._client.models.text_resource_contents import TextResourceContents as TextResourceContents
 from otari._client.models.token_charge_line import TokenChargeLine as TokenChargeLine
 from otari._client.models.tool_calls_inner import ToolCallsInner as ToolCallsInner
+from otari._client.models.tool_charge_line import ToolChargeLine as ToolChargeLine
 from otari._client.models.tool_choice import ToolChoice as ToolChoice
 from otari._client.models.tool_choice1 import ToolChoice1 as ToolChoice1
 from otari._client.models.tool_meter import ToolMeter as ToolMeter
