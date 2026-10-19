@@ -45,6 +45,7 @@ class MessagesRequest(BaseModel):
     messages: Annotated[List[Dict[str, Any]], Field(min_length=1)]
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     model: StrictStr
+    output_config: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     output_format: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     prompt_cache_key: Optional[StrictStr] = None
     service_tier: Optional[StrictStr] = None
@@ -59,7 +60,7 @@ class MessagesRequest(BaseModel):
     tools_header: Optional[StrictStr] = None
     top_k: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["betas", "cache_control", "container", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_format", "prompt_cache_key", "service_tier", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
+    __properties: ClassVar[List[str]] = ["betas", "cache_control", "container", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_config", "output_format", "prompt_cache_key", "service_tier", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -165,6 +166,11 @@ class MessagesRequest(BaseModel):
         if self.metadata is None and "metadata" in self.model_fields_set:
             _dict['metadata'] = None
 
+        # set to None if output_config (nullable) is None
+        # and model_fields_set contains the field
+        if self.output_config is None and "output_config" in self.model_fields_set:
+            _dict['output_config'] = None
+
         # set to None if output_format (nullable) is None
         # and model_fields_set contains the field
         if self.output_format is None and "output_format" in self.model_fields_set:
@@ -254,6 +260,7 @@ class MessagesRequest(BaseModel):
             "messages": obj.get("messages"),
             "metadata": obj.get("metadata"),
             "model": obj.get("model"),
+            "output_config": obj.get("output_config"),
             "output_format": obj.get("output_format"),
             "prompt_cache_key": obj.get("prompt_cache_key"),
             "service_tier": obj.get("service_tier"),
