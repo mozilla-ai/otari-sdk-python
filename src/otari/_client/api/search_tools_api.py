@@ -1391,7 +1391,7 @@ class SearchToolsApi:
     ) -> SearchToolTestResponse:
         """Test Search Tool
 
-        Test a configured or stored instance with one search or one fetch.  Takes ``query`` for a search instance or ``url`` for a fetch instance, and answers as ``POST /search-tools/test`` does. ``builtin_fetch`` has no test yet, and answers a 400.
+        Test a configured or stored instance with one search or one fetch.  Takes ``query`` for a search instance or ``url`` for a fetch instance, and answers as ``POST /search-tools/test`` does. ``builtin_fetch``, the built-in fetcher, fetches as a fetch tool call does, with no domain policy.
 
         :param name: (required)
         :type name: str
@@ -1463,7 +1463,7 @@ class SearchToolsApi:
     ) -> ApiResponse[SearchToolTestResponse]:
         """Test Search Tool
 
-        Test a configured or stored instance with one search or one fetch.  Takes ``query`` for a search instance or ``url`` for a fetch instance, and answers as ``POST /search-tools/test`` does. ``builtin_fetch`` has no test yet, and answers a 400.
+        Test a configured or stored instance with one search or one fetch.  Takes ``query`` for a search instance or ``url`` for a fetch instance, and answers as ``POST /search-tools/test`` does. ``builtin_fetch``, the built-in fetcher, fetches as a fetch tool call does, with no domain policy.
 
         :param name: (required)
         :type name: str
@@ -1535,7 +1535,7 @@ class SearchToolsApi:
     ) -> RESTResponseType:
         """Test Search Tool
 
-        Test a configured or stored instance with one search or one fetch.  Takes ``query`` for a search instance or ``url`` for a fetch instance, and answers as ``POST /search-tools/test`` does. ``builtin_fetch`` has no test yet, and answers a 400.
+        Test a configured or stored instance with one search or one fetch.  Takes ``query`` for a search instance or ``url`` for a fetch instance, and answers as ``POST /search-tools/test`` does. ``builtin_fetch``, the built-in fetcher, fetches as a fetch tool call does, with no domain policy.
 
         :param name: (required)
         :type name: str

@@ -40,10 +40,11 @@ class SearchProviderSchema(BaseModel):
     options: Optional[List[SearchProviderOptionSchema]] = Field(default=None, description="The native options a tool may set, under the provider's own names. Null when there is no schema for the provider yet, so a tool's options are passed unchecked.")
     query_in_url: Optional[StrictBool] = Field(default=None, description="Search: true when the query travels in the request URL.")
     renders_javascript: Optional[StrictBool] = Field(default=None, description="Fetch: true when the provider runs a page's JavaScript before reading it.")
+    reports_final_url: Optional[StrictBool] = Field(default=None, description="Fetch: true when the provider reports where a page was found after redirects. When false it answers with the URL as asked, so a redirect it follows is not checked against the domain policy.")
     requires_api_base: StrictBool = Field(description="True when this provider has no endpoint of its own, so the tool must say where the backend is.")
     requires_api_key: StrictBool = Field(description="True when a tool on this provider must carry an API key.")
     tier: Optional[StrictStr] = Field(default=None, description="The library's tier for the provider.")
-    __properties: ClassVar[List[str]] = ["default_api_base", "doc_url", "formats", "id", "instances", "key_in_url", "kind", "max_results", "max_urls_per_call", "options", "query_in_url", "renders_javascript", "requires_api_base", "requires_api_key", "tier"]
+    __properties: ClassVar[List[str]] = ["default_api_base", "doc_url", "formats", "id", "instances", "key_in_url", "kind", "max_results", "max_urls_per_call", "options", "query_in_url", "renders_javascript", "reports_final_url", "requires_api_base", "requires_api_key", "tier"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -143,6 +144,11 @@ class SearchProviderSchema(BaseModel):
         if self.renders_javascript is None and "renders_javascript" in self.model_fields_set:
             _dict['renders_javascript'] = None
 
+        # set to None if reports_final_url (nullable) is None
+        # and model_fields_set contains the field
+        if self.reports_final_url is None and "reports_final_url" in self.model_fields_set:
+            _dict['reports_final_url'] = None
+
         # set to None if tier (nullable) is None
         # and model_fields_set contains the field
         if self.tier is None and "tier" in self.model_fields_set:
@@ -172,6 +178,7 @@ class SearchProviderSchema(BaseModel):
             "options": [SearchProviderOptionSchema.from_dict(_item) for _item in obj["options"]] if obj.get("options") is not None else None,
             "query_in_url": obj.get("query_in_url"),
             "renders_javascript": obj.get("renders_javascript"),
+            "reports_final_url": obj.get("reports_final_url"),
             "requires_api_base": obj.get("requires_api_base"),
             "requires_api_key": obj.get("requires_api_key"),
             "tier": obj.get("tier")
