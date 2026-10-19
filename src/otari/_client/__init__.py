@@ -283,6 +283,7 @@ __all__ = [
     "EndUserPublic",
     "EndUserPut",
     "EndUserUpdate",
+    "EndUsersDeleted",
     "ExecutionState",
     "ExplainRequest",
     "ExplainResponse",
@@ -1048,6 +1049,7 @@ from otari._client.models.end_user_budget_public import EndUserBudgetPublic as E
 from otari._client.models.end_user_public import EndUserPublic as EndUserPublic
 from otari._client.models.end_user_put import EndUserPut as EndUserPut
 from otari._client.models.end_user_update import EndUserUpdate as EndUserUpdate
+from otari._client.models.end_users_deleted import EndUsersDeleted as EndUsersDeleted
 from otari._client.models.execution_state import ExecutionState as ExecutionState
 from otari._client.models.explain_request import ExplainRequest as ExplainRequest
 from otari._client.models.explain_response import ExplainResponse as ExplainResponse

@@ -207,6 +207,7 @@ from otari._client.models.end_user_budget_public import EndUserBudgetPublic
 from otari._client.models.end_user_public import EndUserPublic
 from otari._client.models.end_user_put import EndUserPut
 from otari._client.models.end_user_update import EndUserUpdate
+from otari._client.models.end_users_deleted import EndUsersDeleted
 from otari._client.models.execution_state import ExecutionState
 from otari._client.models.explain_request import ExplainRequest
 from otari._client.models.explain_response import ExplainResponse
