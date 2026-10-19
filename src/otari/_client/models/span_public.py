@@ -42,6 +42,8 @@ class SpanPublic(BaseModel):
     opens_turn: StrictBool
     operation: Optional[StrictStr]
     origin: StrictStr
+    otel_span_id: Optional[StrictStr] = Field(description="The OpenTelemetry span id an OTLP span was exported with, in lowercase hex. Null on a span the gateway recorded itself.")
+    otel_trace_id: Optional[StrictStr] = Field(description="The OpenTelemetry trace id an OTLP span was exported with, in lowercase hex. Null on a span the gateway recorded itself.")
     outcome: StrictStr
     output_tokens: Optional[StrictInt]
     parent_span_id: Optional[StrictStr]
@@ -53,7 +55,7 @@ class SpanPublic(BaseModel):
     tool_call_id: Optional[StrictStr]
     tool_name: Optional[StrictStr]
     tool_type: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["approximate", "attributes", "cost", "duration_ms", "end_time", "error_class", "input_tokens", "kind", "model", "name", "opens_turn", "operation", "origin", "outcome", "output_tokens", "parent_span_id", "provider", "recovered", "request_id", "span_id", "start_time", "tool_call_id", "tool_name", "tool_type"]
+    __properties: ClassVar[List[str]] = ["approximate", "attributes", "cost", "duration_ms", "end_time", "error_class", "input_tokens", "kind", "model", "name", "opens_turn", "operation", "origin", "otel_span_id", "otel_trace_id", "outcome", "output_tokens", "parent_span_id", "provider", "recovered", "request_id", "span_id", "start_time", "tool_call_id", "tool_name", "tool_type"]
 
     @field_validator('origin')
     def origin_validate_enum(cls, value):
@@ -150,6 +152,16 @@ class SpanPublic(BaseModel):
         if self.operation is None and "operation" in self.model_fields_set:
             _dict['operation'] = None
 
+        # set to None if otel_span_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.otel_span_id is None and "otel_span_id" in self.model_fields_set:
+            _dict['otel_span_id'] = None
+
+        # set to None if otel_trace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.otel_trace_id is None and "otel_trace_id" in self.model_fields_set:
+            _dict['otel_trace_id'] = None
+
         # set to None if output_tokens (nullable) is None
         # and model_fields_set contains the field
         if self.output_tokens is None and "output_tokens" in self.model_fields_set:
@@ -220,6 +232,8 @@ class SpanPublic(BaseModel):
             "opens_turn": obj.get("opens_turn"),
             "operation": obj.get("operation"),
             "origin": obj.get("origin"),
+            "otel_span_id": obj.get("otel_span_id"),
+            "otel_trace_id": obj.get("otel_trace_id"),
             "outcome": obj.get("outcome"),
             "output_tokens": obj.get("output_tokens"),
             "parent_span_id": obj.get("parent_span_id"),
