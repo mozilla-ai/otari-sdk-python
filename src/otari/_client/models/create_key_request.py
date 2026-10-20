@@ -38,11 +38,12 @@ class CreateKeyRequest(BaseModel):
     expires_at: Optional[datetime] = Field(default=None, description="Optional expiration timestamp")
     is_service_key: Optional[StrictBool] = Field(default=False, description="When true, a request may name an end user in its 'user' field. Each end user is created on first use, owned by this key's user, and billed to its own budget, while this key's own ceiling caps all of them together.")
     key_name: Optional[StrictStr] = Field(default=None, description="Optional name for the key")
+    max_end_users: Optional[Annotated[int, Field(strict=True, ge=0)]] = Field(default=None, description="Most live end users this key may have on the budgets it assigns (all of its owner's end users when it assigns none). A request that would create one more is refused with 403 and end_user_limit_reached; deleting end users frees room. Null is no cap.")
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata")
     reject_user_mismatch: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide reject_user_mismatch setting: null (default) inherits it, true always rejects a request naming a different 'user', false always accepts it. Spend binds to this key's own user either way.")
     user_id: Optional[StrictStr] = Field(default=None, description="Optional user ID to associate with this key")
     workspace_id: Optional[UUID] = Field(default=None, description="Workspace this key belongs to, which must be one in the caller's organization. Omitted means that organization's default workspace. A key belongs to exactly one workspace: requests on it are scoped and billed there, so the workspace is read off the key rather than off a request header.")
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "is_service_key", "key_name", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "is_service_key", "key_name", "max_end_users", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -113,6 +114,11 @@ class CreateKeyRequest(BaseModel):
         if self.key_name is None and "key_name" in self.model_fields_set:
             _dict['key_name'] = None
 
+        # set to None if max_end_users (nullable) is None
+        # and model_fields_set contains the field
+        if self.max_end_users is None and "max_end_users" in self.model_fields_set:
+            _dict['max_end_users'] = None
+
         # set to None if reject_user_mismatch (nullable) is None
         # and model_fields_set contains the field
         if self.reject_user_mismatch is None and "reject_user_mismatch" in self.model_fields_set:
@@ -148,6 +154,7 @@ class CreateKeyRequest(BaseModel):
             "expires_at": obj.get("expires_at"),
             "is_service_key": obj.get("is_service_key") if obj.get("is_service_key") is not None else False,
             "key_name": obj.get("key_name"),
+            "max_end_users": obj.get("max_end_users"),
             "metadata": obj.get("metadata"),
             "reject_user_mismatch": obj.get("reject_user_mismatch"),
             "user_id": obj.get("user_id"),

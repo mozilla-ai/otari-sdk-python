@@ -38,9 +38,10 @@ class UpdateKeyRequest(BaseModel):
     is_active: Optional[StrictBool] = None
     is_service_key: Optional[StrictBool] = None
     key_name: Optional[StrictStr] = None
+    max_end_users: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
     metadata: Optional[Dict[str, Any]] = None
     reject_user_mismatch: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "is_active", "is_service_key", "key_name", "metadata", "reject_user_mismatch"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "is_active", "is_service_key", "key_name", "max_end_users", "metadata", "reject_user_mismatch"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -126,6 +127,11 @@ class UpdateKeyRequest(BaseModel):
         if self.key_name is None and "key_name" in self.model_fields_set:
             _dict['key_name'] = None
 
+        # set to None if max_end_users (nullable) is None
+        # and model_fields_set contains the field
+        if self.max_end_users is None and "max_end_users" in self.model_fields_set:
+            _dict['max_end_users'] = None
+
         # set to None if metadata (nullable) is None
         # and model_fields_set contains the field
         if self.metadata is None and "metadata" in self.model_fields_set:
@@ -157,6 +163,7 @@ class UpdateKeyRequest(BaseModel):
             "is_active": obj.get("is_active"),
             "is_service_key": obj.get("is_service_key"),
             "key_name": obj.get("key_name"),
+            "max_end_users": obj.get("max_end_users"),
             "metadata": obj.get("metadata"),
             "reject_user_mismatch": obj.get("reject_user_mismatch")
         })
