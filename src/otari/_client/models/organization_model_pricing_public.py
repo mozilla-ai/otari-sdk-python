@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from uuid import UUID
 from otari._client.models.pricing_tier import PricingTier
@@ -37,13 +37,14 @@ class OrganizationModelPricingPublic(BaseModel):
     effective_to: Optional[datetime]
     id: UUID
     input_price_per_million: Union[StrictFloat, StrictInt]
+    kind: StrictStr = Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")
     model_key: StrictStr
     organization_id: UUID
     output_price_per_million: Union[StrictFloat, StrictInt]
     pricing_tiers: List[PricingTier]
     unit: StrictStr
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_from", "effective_to", "id", "input_price_per_million", "model_key", "organization_id", "output_price_per_million", "pricing_tiers", "unit", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_from", "effective_to", "id", "input_price_per_million", "kind", "model_key", "organization_id", "output_price_per_million", "pricing_tiers", "unit", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -125,6 +126,7 @@ class OrganizationModelPricingPublic(BaseModel):
             "effective_to": obj.get("effective_to"),
             "id": obj.get("id"),
             "input_price_per_million": obj.get("input_price_per_million"),
+            "kind": obj.get("kind"),
             "model_key": obj.get("model_key"),
             "organization_id": obj.get("organization_id"),
             "output_price_per_million": obj.get("output_price_per_million"),

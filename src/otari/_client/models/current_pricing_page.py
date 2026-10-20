@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class CurrentPricingPage(BaseModel):
     """
-    One page of current model prices, with the total number of priced models.
+    One page of current prices, with the total number of priced keys of any kind.
     """ # noqa: E501
     count: StrictInt
     data: List[PricingResponse]
