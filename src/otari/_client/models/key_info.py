@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
@@ -43,11 +43,12 @@ class KeyInfo(BaseModel):
     key_prefix: Optional[StrictStr]
     key_suffix: Optional[StrictStr]
     last_used_at: Optional[StrictStr]
+    max_end_users: Optional[StrictInt] = None
     metadata: Dict[str, Any]
     reject_user_mismatch: Optional[StrictBool]
     user_id: Optional[StrictStr]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "config_name", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_service_key", "key_name", "key_prefix", "key_suffix", "last_used_at", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "config_name", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_service_key", "key_name", "key_prefix", "key_suffix", "last_used_at", "max_end_users", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -133,6 +134,11 @@ class KeyInfo(BaseModel):
         if self.last_used_at is None and "last_used_at" in self.model_fields_set:
             _dict['last_used_at'] = None
 
+        # set to None if max_end_users (nullable) is None
+        # and model_fields_set contains the field
+        if self.max_end_users is None and "max_end_users" in self.model_fields_set:
+            _dict['max_end_users'] = None
+
         # set to None if reject_user_mismatch (nullable) is None
         # and model_fields_set contains the field
         if self.reject_user_mismatch is None and "reject_user_mismatch" in self.model_fields_set:
@@ -170,6 +176,7 @@ class KeyInfo(BaseModel):
             "key_prefix": obj.get("key_prefix"),
             "key_suffix": obj.get("key_suffix"),
             "last_used_at": obj.get("last_used_at"),
+            "max_end_users": obj.get("max_end_users"),
             "metadata": obj.get("metadata"),
             "reject_user_mismatch": obj.get("reject_user_mismatch"),
             "user_id": obj.get("user_id"),
