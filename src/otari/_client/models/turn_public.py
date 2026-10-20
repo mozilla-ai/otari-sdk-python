@@ -28,6 +28,7 @@ class TurnPublic(BaseModel):
     """
     One user prompt and the steps it caused.
     """ # noqa: E501
+    cache_read_tokens: StrictInt
     continued: StrictBool = Field(description="True for steps a session started with before any prompt was seen.")
     cost: Union[StrictFloat, StrictInt]
     ended_at: Optional[datetime]
@@ -40,7 +41,7 @@ class TurnPublic(BaseModel):
     state: StrictStr
     step_ids: List[StrictStr]
     tool_calls: StrictInt
-    __properties: ClassVar[List[str]] = ["continued", "cost", "ended_at", "errors", "index", "input_tokens", "llm_calls", "output_tokens", "started_at", "state", "step_ids", "tool_calls"]
+    __properties: ClassVar[List[str]] = ["cache_read_tokens", "continued", "cost", "ended_at", "errors", "index", "input_tokens", "llm_calls", "output_tokens", "started_at", "state", "step_ids", "tool_calls"]
 
     @field_validator('state')
     def state_validate_enum(cls, value):
@@ -110,6 +111,7 @@ class TurnPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "cache_read_tokens": obj.get("cache_read_tokens"),
             "continued": obj.get("continued"),
             "cost": obj.get("cost"),
             "ended_at": obj.get("ended_at"),

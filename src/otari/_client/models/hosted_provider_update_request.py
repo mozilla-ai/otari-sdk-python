@@ -34,7 +34,8 @@ class HostedProviderUpdateRequest(BaseModel):
     client_args: Optional[Dict[str, Any]] = None
     enabled: Optional[StrictBool] = None
     restricted_to_organization_id: Optional[UUID] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "enabled", "restricted_to_organization_id"]
+    serves_unlisted_models: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "enabled", "restricted_to_organization_id", "serves_unlisted_models"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -100,6 +101,11 @@ class HostedProviderUpdateRequest(BaseModel):
         if self.restricted_to_organization_id is None and "restricted_to_organization_id" in self.model_fields_set:
             _dict['restricted_to_organization_id'] = None
 
+        # set to None if serves_unlisted_models (nullable) is None
+        # and model_fields_set contains the field
+        if self.serves_unlisted_models is None and "serves_unlisted_models" in self.model_fields_set:
+            _dict['serves_unlisted_models'] = None
+
         return _dict
 
     @classmethod
@@ -116,7 +122,8 @@ class HostedProviderUpdateRequest(BaseModel):
             "api_key": obj.get("api_key"),
             "client_args": obj.get("client_args"),
             "enabled": obj.get("enabled"),
-            "restricted_to_organization_id": obj.get("restricted_to_organization_id")
+            "restricted_to_organization_id": obj.get("restricted_to_organization_id"),
+            "serves_unlisted_models": obj.get("serves_unlisted_models")
         })
         return _obj
 

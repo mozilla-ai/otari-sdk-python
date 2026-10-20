@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class DeploymentProviderMigrationRowPublic(BaseModel):
     """
-    What moving one deployment provider onto a hosted provider does, or did.  ``instance`` is the deployment provider's name, which the hosted provider keeps, so ``instance:model`` selectors keep working. ``outcome`` is ``migrate`` in a preview and ``migrated`` once applied; ``conflict``, ``unreadable``, ``invalid`` and ``failed`` leave the row where it is, with ``detail`` saying why. ``source_removed`` says whether the deployment provider was removed: it is kept while the hosted provider offers no model, so nothing it serves stops being served. ``notes`` are what an operator should check afterwards.
+    What moving one deployment provider onto a hosted provider does, or did.  ``instance`` is the deployment provider's name, which the hosted provider keeps, so ``instance:model`` selectors keep working. ``outcome`` is ``migrate`` in a preview and ``migrated`` once applied; ``conflict``, ``unreadable``, ``invalid`` and ``failed`` leave the row where it is, with ``detail`` saying why. ``source_removed`` says whether the deployment provider was removed: it is kept while the hosted provider offers no model, and when it changed while the move ran. ``notes`` are what an operator should check afterwards.
     """ # noqa: E501
     api_base: Optional[StrictStr] = None
     detail: Optional[StrictStr] = None

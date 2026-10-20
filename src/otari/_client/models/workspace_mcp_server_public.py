@@ -17,9 +17,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
+from otari._client.models.workspace_mcp_server_health import WorkspaceMcpServerHealth
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,13 +33,14 @@ class WorkspaceMcpServerPublic(BaseModel):
     created_at: StrictStr
     enabled: StrictBool
     has_token: StrictBool
+    health: Optional[WorkspaceMcpServerHealth] = Field(description="The last connection check; null until one has run")
     id: UUID
     name: StrictStr
     purpose_hint: Optional[StrictStr]
     updated_at: StrictStr
     url: StrictStr
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_tools", "created_at", "enabled", "has_token", "id", "name", "purpose_hint", "updated_at", "url", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_tools", "created_at", "enabled", "has_token", "health", "id", "name", "purpose_hint", "updated_at", "url", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -79,10 +81,18 @@ class WorkspaceMcpServerPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of health
+        if self.health:
+            _dict['health'] = self.health.to_dict()
         # set to None if allowed_tools (nullable) is None
         # and model_fields_set contains the field
         if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
             _dict['allowed_tools'] = None
+
+        # set to None if health (nullable) is None
+        # and model_fields_set contains the field
+        if self.health is None and "health" in self.model_fields_set:
+            _dict['health'] = None
 
         # set to None if purpose_hint (nullable) is None
         # and model_fields_set contains the field
@@ -105,6 +115,7 @@ class WorkspaceMcpServerPublic(BaseModel):
             "created_at": obj.get("created_at"),
             "enabled": obj.get("enabled"),
             "has_token": obj.get("has_token"),
+            "health": WorkspaceMcpServerHealth.from_dict(obj["health"]) if obj.get("health") is not None else None,
             "id": obj.get("id"),
             "name": obj.get("name"),
             "purpose_hint": obj.get("purpose_hint"),

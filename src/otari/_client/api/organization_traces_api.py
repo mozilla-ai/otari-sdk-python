@@ -55,7 +55,7 @@ class OrganizationTracesApi:
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
         session_source: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=4)]], Field(description="What grouped the session.")] = None,
         has_error: Annotated[Optional[StrictBool], Field(description="Only sessions with, or without, an unrecovered error.")] = None,
-        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=64)]], Field(description="A trace id, or the start of one.")] = None,
+        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=128)]], Field(description="Part of a trace id, session name, harness or user id, in any case.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -89,7 +89,7 @@ class OrganizationTracesApi:
         :type session_source: List[str]
         :param has_error: Only sessions with, or without, an unrecovered error.
         :type has_error: bool
-        :param q: A trace id, or the start of one.
+        :param q: Part of a trace id, session name, harness or user id, in any case.
         :type q: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -155,7 +155,7 @@ class OrganizationTracesApi:
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
         session_source: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=4)]], Field(description="What grouped the session.")] = None,
         has_error: Annotated[Optional[StrictBool], Field(description="Only sessions with, or without, an unrecovered error.")] = None,
-        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=64)]], Field(description="A trace id, or the start of one.")] = None,
+        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=128)]], Field(description="Part of a trace id, session name, harness or user id, in any case.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -189,7 +189,7 @@ class OrganizationTracesApi:
         :type session_source: List[str]
         :param has_error: Only sessions with, or without, an unrecovered error.
         :type has_error: bool
-        :param q: A trace id, or the start of one.
+        :param q: Part of a trace id, session name, harness or user id, in any case.
         :type q: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -255,7 +255,7 @@ class OrganizationTracesApi:
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
         session_source: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=4)]], Field(description="What grouped the session.")] = None,
         has_error: Annotated[Optional[StrictBool], Field(description="Only sessions with, or without, an unrecovered error.")] = None,
-        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=64)]], Field(description="A trace id, or the start of one.")] = None,
+        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=128)]], Field(description="Part of a trace id, session name, harness or user id, in any case.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -289,7 +289,7 @@ class OrganizationTracesApi:
         :type session_source: List[str]
         :param has_error: Only sessions with, or without, an unrecovered error.
         :type has_error: bool
-        :param q: A trace id, or the start of one.
+        :param q: Part of a trace id, session name, harness or user id, in any case.
         :type q: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -756,6 +756,8 @@ class OrganizationTracesApi:
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
+        sort: Annotated[Optional[StrictStr], Field(description="What to order by. Latency runs from a session's start to its last activity.")] = None,
+        order: Annotated[Optional[StrictStr], Field(description="The direction of `sort`.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
         start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
         end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
@@ -764,7 +766,7 @@ class OrganizationTracesApi:
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
         session_source: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=4)]], Field(description="What grouped the session.")] = None,
         has_error: Annotated[Optional[StrictBool], Field(description="Only sessions with, or without, an unrecovered error.")] = None,
-        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=64)]], Field(description="A trace id, or the start of one.")] = None,
+        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=128)]], Field(description="Part of a trace id, session name, harness or user id, in any case.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -780,12 +782,16 @@ class OrganizationTracesApi:
     ) -> TraceListPublic:
         """List Traces
 
-        List agent sessions, most recently active first.
+        List agent sessions, most recently active first unless ``sort`` says otherwise.
 
         :param skip:
         :type skip: int
         :param limit:
         :type limit: int
+        :param sort: What to order by. Latency runs from a session's start to its last activity.
+        :type sort: str
+        :param order: The direction of `sort`.
+        :type order: str
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
         :param start: Last activity at or after this instant (ISO 8601).
@@ -802,7 +808,7 @@ class OrganizationTracesApi:
         :type session_source: List[str]
         :param has_error: Only sessions with, or without, an unrecovered error.
         :type has_error: bool
-        :param q: A trace id, or the start of one.
+        :param q: Part of a trace id, session name, harness or user id, in any case.
         :type q: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -829,6 +835,8 @@ class OrganizationTracesApi:
         _param = self._organization_traces_list_traces_serialize(
             skip=skip,
             limit=limit,
+            sort=sort,
+            order=order,
             workspace_id=workspace_id,
             start=start,
             end=end,
@@ -864,6 +872,8 @@ class OrganizationTracesApi:
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
+        sort: Annotated[Optional[StrictStr], Field(description="What to order by. Latency runs from a session's start to its last activity.")] = None,
+        order: Annotated[Optional[StrictStr], Field(description="The direction of `sort`.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
         start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
         end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
@@ -872,7 +882,7 @@ class OrganizationTracesApi:
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
         session_source: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=4)]], Field(description="What grouped the session.")] = None,
         has_error: Annotated[Optional[StrictBool], Field(description="Only sessions with, or without, an unrecovered error.")] = None,
-        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=64)]], Field(description="A trace id, or the start of one.")] = None,
+        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=128)]], Field(description="Part of a trace id, session name, harness or user id, in any case.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -888,12 +898,16 @@ class OrganizationTracesApi:
     ) -> ApiResponse[TraceListPublic]:
         """List Traces
 
-        List agent sessions, most recently active first.
+        List agent sessions, most recently active first unless ``sort`` says otherwise.
 
         :param skip:
         :type skip: int
         :param limit:
         :type limit: int
+        :param sort: What to order by. Latency runs from a session's start to its last activity.
+        :type sort: str
+        :param order: The direction of `sort`.
+        :type order: str
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
         :param start: Last activity at or after this instant (ISO 8601).
@@ -910,7 +924,7 @@ class OrganizationTracesApi:
         :type session_source: List[str]
         :param has_error: Only sessions with, or without, an unrecovered error.
         :type has_error: bool
-        :param q: A trace id, or the start of one.
+        :param q: Part of a trace id, session name, harness or user id, in any case.
         :type q: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -937,6 +951,8 @@ class OrganizationTracesApi:
         _param = self._organization_traces_list_traces_serialize(
             skip=skip,
             limit=limit,
+            sort=sort,
+            order=order,
             workspace_id=workspace_id,
             start=start,
             end=end,
@@ -972,6 +988,8 @@ class OrganizationTracesApi:
         self,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
+        sort: Annotated[Optional[StrictStr], Field(description="What to order by. Latency runs from a session's start to its last activity.")] = None,
+        order: Annotated[Optional[StrictStr], Field(description="The direction of `sort`.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
         start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
         end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
@@ -980,7 +998,7 @@ class OrganizationTracesApi:
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
         session_source: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=4)]], Field(description="What grouped the session.")] = None,
         has_error: Annotated[Optional[StrictBool], Field(description="Only sessions with, or without, an unrecovered error.")] = None,
-        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=64)]], Field(description="A trace id, or the start of one.")] = None,
+        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=128)]], Field(description="Part of a trace id, session name, harness or user id, in any case.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -996,12 +1014,16 @@ class OrganizationTracesApi:
     ) -> RESTResponseType:
         """List Traces
 
-        List agent sessions, most recently active first.
+        List agent sessions, most recently active first unless ``sort`` says otherwise.
 
         :param skip:
         :type skip: int
         :param limit:
         :type limit: int
+        :param sort: What to order by. Latency runs from a session's start to its last activity.
+        :type sort: str
+        :param order: The direction of `sort`.
+        :type order: str
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
         :param start: Last activity at or after this instant (ISO 8601).
@@ -1018,7 +1040,7 @@ class OrganizationTracesApi:
         :type session_source: List[str]
         :param has_error: Only sessions with, or without, an unrecovered error.
         :type has_error: bool
-        :param q: A trace id, or the start of one.
+        :param q: Part of a trace id, session name, harness or user id, in any case.
         :type q: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1045,6 +1067,8 @@ class OrganizationTracesApi:
         _param = self._organization_traces_list_traces_serialize(
             skip=skip,
             limit=limit,
+            sort=sort,
+            order=order,
             workspace_id=workspace_id,
             start=start,
             end=end,
@@ -1075,6 +1099,8 @@ class OrganizationTracesApi:
         self,
         skip,
         limit,
+        sort,
+        order,
         workspace_id,
         start,
         end,
@@ -1117,6 +1143,14 @@ class OrganizationTracesApi:
         if limit is not None:
             
             _query_params.append(('limit', limit))
+            
+        if sort is not None:
+            
+            _query_params.append(('sort', sort))
+            
+        if order is not None:
+            
+            _query_params.append(('order', order))
             
         if workspace_id is not None:
             
@@ -1487,7 +1521,7 @@ class OrganizationTracesApi:
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
         session_source: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=4)]], Field(description="What grouped the session.")] = None,
         has_error: Annotated[Optional[StrictBool], Field(description="Only sessions with, or without, an unrecovered error.")] = None,
-        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=64)]], Field(description="A trace id, or the start of one.")] = None,
+        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=128)]], Field(description="Part of a trace id, session name, harness or user id, in any case.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1503,7 +1537,7 @@ class OrganizationTracesApi:
     ) -> TraceSeriesPublic:
         """Trace Series
 
-        Count sessions per bucket of their start, split by whether any span failed unrecovered.
+        Count sessions per bucket of their start, split by whether they failed.  A session failed when it holds an unrecovered error other than a tool's. A tool's error goes back to the model, an MCP tool's included, so a session whose only errors are tools' counts as succeeded.
 
         :param bucket:
         :type bucket: str
@@ -1523,7 +1557,7 @@ class OrganizationTracesApi:
         :type session_source: List[str]
         :param has_error: Only sessions with, or without, an unrecovered error.
         :type has_error: bool
-        :param q: A trace id, or the start of one.
+        :param q: Part of a trace id, session name, harness or user id, in any case.
         :type q: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1591,7 +1625,7 @@ class OrganizationTracesApi:
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
         session_source: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=4)]], Field(description="What grouped the session.")] = None,
         has_error: Annotated[Optional[StrictBool], Field(description="Only sessions with, or without, an unrecovered error.")] = None,
-        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=64)]], Field(description="A trace id, or the start of one.")] = None,
+        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=128)]], Field(description="Part of a trace id, session name, harness or user id, in any case.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1607,7 +1641,7 @@ class OrganizationTracesApi:
     ) -> ApiResponse[TraceSeriesPublic]:
         """Trace Series
 
-        Count sessions per bucket of their start, split by whether any span failed unrecovered.
+        Count sessions per bucket of their start, split by whether they failed.  A session failed when it holds an unrecovered error other than a tool's. A tool's error goes back to the model, an MCP tool's included, so a session whose only errors are tools' counts as succeeded.
 
         :param bucket:
         :type bucket: str
@@ -1627,7 +1661,7 @@ class OrganizationTracesApi:
         :type session_source: List[str]
         :param has_error: Only sessions with, or without, an unrecovered error.
         :type has_error: bool
-        :param q: A trace id, or the start of one.
+        :param q: Part of a trace id, session name, harness or user id, in any case.
         :type q: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1695,7 +1729,7 @@ class OrganizationTracesApi:
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
         session_source: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=4)]], Field(description="What grouped the session.")] = None,
         has_error: Annotated[Optional[StrictBool], Field(description="Only sessions with, or without, an unrecovered error.")] = None,
-        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=64)]], Field(description="A trace id, or the start of one.")] = None,
+        q: Annotated[Optional[Annotated[str, Field(strict=True, max_length=128)]], Field(description="Part of a trace id, session name, harness or user id, in any case.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1711,7 +1745,7 @@ class OrganizationTracesApi:
     ) -> RESTResponseType:
         """Trace Series
 
-        Count sessions per bucket of their start, split by whether any span failed unrecovered.
+        Count sessions per bucket of their start, split by whether they failed.  A session failed when it holds an unrecovered error other than a tool's. A tool's error goes back to the model, an MCP tool's included, so a session whose only errors are tools' counts as succeeded.
 
         :param bucket:
         :type bucket: str
@@ -1731,7 +1765,7 @@ class OrganizationTracesApi:
         :type session_source: List[str]
         :param has_error: Only sessions with, or without, an unrecovered error.
         :type has_error: bool
-        :param q: A trace id, or the start of one.
+        :param q: Part of a trace id, session name, harness or user id, in any case.
         :type q: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

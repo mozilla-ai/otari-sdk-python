@@ -17,20 +17,27 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ReencryptProviderCredentialsResponse(BaseModel):
+class HealthCheckSettingsPublic(BaseModel):
     """
-    Result of re-encrypting stored provider keys with the primary secret key.
+    Whether the checks run, how often, and what they send.
     """ # noqa: E501
-    reencrypted: StrictInt = Field(description="Number of stored provider keys re-encrypted.")
-    skipped: Optional[StrictInt] = Field(default=0, description="Number of rows whose stored key changed between the read and the write, so the re-encryption was not applied. They already hold whoever wrote them last.")
-    unreadable: StrictInt = Field(description="Number of encrypted keys left untouched because they could not be decrypted.")
-    __properties: ClassVar[List[str]] = ["reencrypted", "skipped", "unreadable"]
+    alert_emails: List[StrictStr]
+    interval_minutes: StrictInt
+    max_tokens: StrictInt
+    next_run_at: Optional[datetime]
+    prompt: StrictStr
+    reasoning_every_runs: StrictInt
+    reasoning_max_tokens: StrictInt
+    run_requested: StrictBool
+    schedule_enabled: StrictBool
+    __properties: ClassVar[List[str]] = ["alert_emails", "interval_minutes", "max_tokens", "next_run_at", "prompt", "reasoning_every_runs", "reasoning_max_tokens", "run_requested", "schedule_enabled"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -50,7 +57,7 @@ class ReencryptProviderCredentialsResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ReencryptProviderCredentialsResponse from a JSON string"""
+        """Create an instance of HealthCheckSettingsPublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,11 +78,16 @@ class ReencryptProviderCredentialsResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if next_run_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.next_run_at is None and "next_run_at" in self.model_fields_set:
+            _dict['next_run_at'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ReencryptProviderCredentialsResponse from a dict"""
+        """Create an instance of HealthCheckSettingsPublic from a dict"""
         if obj is None:
             return None
 
@@ -83,9 +95,15 @@ class ReencryptProviderCredentialsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "reencrypted": obj.get("reencrypted"),
-            "skipped": obj.get("skipped") if obj.get("skipped") is not None else 0,
-            "unreadable": obj.get("unreadable")
+            "alert_emails": obj.get("alert_emails"),
+            "interval_minutes": obj.get("interval_minutes"),
+            "max_tokens": obj.get("max_tokens"),
+            "next_run_at": obj.get("next_run_at"),
+            "prompt": obj.get("prompt"),
+            "reasoning_every_runs": obj.get("reasoning_every_runs"),
+            "reasoning_max_tokens": obj.get("reasoning_max_tokens"),
+            "run_requested": obj.get("run_requested"),
+            "schedule_enabled": obj.get("schedule_enabled")
         })
         return _obj
 

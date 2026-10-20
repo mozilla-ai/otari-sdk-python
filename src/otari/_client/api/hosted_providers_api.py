@@ -367,7 +367,7 @@ class HostedProvidersApi:
     ) -> DeploymentProviderMigrationPublic:
         """Apply Deployment Provider Migration
 
-        Move the deployment providers stored through the dashboard onto hosted providers of the same name.  Each is created as a hosted provider, offering what it lists as a create does, and the deployment provider is removed once the hosted one offers a model. One that cannot move is reported and left in place. ``rows`` limits the move to the rows of the preview the caller reviewed, at the versions it was shown them.
+        Move the deployment providers the retired dashboard page stored onto hosted providers of the same name.  Each is created as a hosted provider that serves models not on its roster, offering what it lists as a create does, and the deployment provider is removed. One that cannot move is reported and left in place. ``rows`` limits the move to the rows of the preview the caller reviewed, at the versions it was shown them.
 
         :param deployment_provider_migration_request:
         :type deployment_provider_migration_request: DeploymentProviderMigrationRequest
@@ -435,7 +435,7 @@ class HostedProvidersApi:
     ) -> ApiResponse[DeploymentProviderMigrationPublic]:
         """Apply Deployment Provider Migration
 
-        Move the deployment providers stored through the dashboard onto hosted providers of the same name.  Each is created as a hosted provider, offering what it lists as a create does, and the deployment provider is removed once the hosted one offers a model. One that cannot move is reported and left in place. ``rows`` limits the move to the rows of the preview the caller reviewed, at the versions it was shown them.
+        Move the deployment providers the retired dashboard page stored onto hosted providers of the same name.  Each is created as a hosted provider that serves models not on its roster, offering what it lists as a create does, and the deployment provider is removed. One that cannot move is reported and left in place. ``rows`` limits the move to the rows of the preview the caller reviewed, at the versions it was shown them.
 
         :param deployment_provider_migration_request:
         :type deployment_provider_migration_request: DeploymentProviderMigrationRequest
@@ -503,7 +503,7 @@ class HostedProvidersApi:
     ) -> RESTResponseType:
         """Apply Deployment Provider Migration
 
-        Move the deployment providers stored through the dashboard onto hosted providers of the same name.  Each is created as a hosted provider, offering what it lists as a create does, and the deployment provider is removed once the hosted one offers a model. One that cannot move is reported and left in place. ``rows`` limits the move to the rows of the preview the caller reviewed, at the versions it was shown them.
+        Move the deployment providers the retired dashboard page stored onto hosted providers of the same name.  Each is created as a hosted provider that serves models not on its roster, offering what it lists as a create does, and the deployment provider is removed. One that cannot move is reported and left in place. ``rows`` limits the move to the rows of the preview the caller reviewed, at the versions it was shown them.
 
         :param deployment_provider_migration_request:
         :type deployment_provider_migration_request: DeploymentProviderMigrationRequest
@@ -1154,6 +1154,271 @@ class HostedProvidersApi:
         return self.api_client.param_serialize(
             method='DELETE',
             resource_path='/api/v1/hosted-providers/{provider}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def hosted_providers_discard_deployment_provider(
+        self,
+        instance: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> None:
+        """Discard Deployment Provider
+
+        Remove a deployment provider the move could not take, which serves nothing.
+
+        :param instance: (required)
+        :type instance: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._hosted_providers_discard_deployment_provider_serialize(
+            instance=instance,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '204': None,
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def hosted_providers_discard_deployment_provider_with_http_info(
+        self,
+        instance: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[None]:
+        """Discard Deployment Provider
+
+        Remove a deployment provider the move could not take, which serves nothing.
+
+        :param instance: (required)
+        :type instance: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._hosted_providers_discard_deployment_provider_serialize(
+            instance=instance,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '204': None,
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def hosted_providers_discard_deployment_provider_without_preload_content(
+        self,
+        instance: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Discard Deployment Provider
+
+        Remove a deployment provider the move could not take, which serves nothing.
+
+        :param instance: (required)
+        :type instance: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._hosted_providers_discard_deployment_provider_serialize(
+            instance=instance,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '204': None,
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _hosted_providers_discard_deployment_provider_serialize(
+        self,
+        instance,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if instance is not None:
+            _path_params['instance'] = instance
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='DELETE',
+            resource_path='/api/v1/hosted-providers/migration/{instance}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2282,7 +2547,7 @@ class HostedProvidersApi:
     ) -> DeploymentProviderMigrationPublic:
         """Preview Deployment Provider Migration
 
-        What moving the deployment providers stored through the dashboard onto hosted providers would do.  Writes nothing and dials nothing.
+        What moving the deployment providers the retired dashboard page stored onto hosted providers would do.  The gateway moves them at startup, so this lists the ones it could not move, each with the reason. Writes nothing and dials nothing.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2345,7 +2610,7 @@ class HostedProvidersApi:
     ) -> ApiResponse[DeploymentProviderMigrationPublic]:
         """Preview Deployment Provider Migration
 
-        What moving the deployment providers stored through the dashboard onto hosted providers would do.  Writes nothing and dials nothing.
+        What moving the deployment providers the retired dashboard page stored onto hosted providers would do.  The gateway moves them at startup, so this lists the ones it could not move, each with the reason. Writes nothing and dials nothing.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2408,7 +2673,7 @@ class HostedProvidersApi:
     ) -> RESTResponseType:
         """Preview Deployment Provider Migration
 
-        What moving the deployment providers stored through the dashboard onto hosted providers would do.  Writes nothing and dials nothing.
+        What moving the deployment providers the retired dashboard page stored onto hosted providers would do.  The gateway moves them at startup, so this lists the ones it could not move, each with the reason. Writes nothing and dials nothing.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2529,7 +2794,7 @@ class HostedProvidersApi:
     ) -> HostedProvidersReencryptPublic:
         """Reencrypt Hosted Providers
 
-        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Run after rotating the key, alongside ``POST /api/v1/provider-credentials/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
+        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Run after rotating the key, alongside ``POST /api/v1/search-tools/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2592,7 +2857,7 @@ class HostedProvidersApi:
     ) -> ApiResponse[HostedProvidersReencryptPublic]:
         """Reencrypt Hosted Providers
 
-        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Run after rotating the key, alongside ``POST /api/v1/provider-credentials/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
+        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Run after rotating the key, alongside ``POST /api/v1/search-tools/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2655,7 +2920,7 @@ class HostedProvidersApi:
     ) -> RESTResponseType:
         """Reencrypt Hosted Providers
 
-        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Run after rotating the key, alongside ``POST /api/v1/provider-credentials/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
+        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Run after rotating the key, alongside ``POST /api/v1/search-tools/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

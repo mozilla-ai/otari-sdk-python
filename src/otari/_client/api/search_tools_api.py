@@ -1142,7 +1142,7 @@ class SearchToolsApi:
     ) -> ReencryptSearchToolsResponse:
         """Reencrypt Stored Search Tool Keys
 
-        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/provider-credentials/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
+        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/hosted-providers/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1205,7 +1205,7 @@ class SearchToolsApi:
     ) -> ApiResponse[ReencryptSearchToolsResponse]:
         """Reencrypt Stored Search Tool Keys
 
-        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/provider-credentials/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
+        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/hosted-providers/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1268,7 +1268,7 @@ class SearchToolsApi:
     ) -> RESTResponseType:
         """Reencrypt Stored Search Tool Keys
 
-        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/provider-credentials/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
+        Re-encrypt stored search-tool keys with the primary OTARI_SECRET_KEY.  The search-tool half of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/hosted-providers/reencrypt``. Rows that cannot be decrypted are left untouched and must be recovered by replacing the affected tool's key.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
