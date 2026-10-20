@@ -96,7 +96,8 @@ class MessagesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CountTokensResponse",
-            '422': "HTTPValidationError",
+            '4XX': "AnthropicErrorResponse",
+            '5XX': "AnthropicErrorResponse",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -164,7 +165,8 @@ class MessagesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CountTokensResponse",
-            '422': "HTTPValidationError",
+            '4XX': "AnthropicErrorResponse",
+            '5XX': "AnthropicErrorResponse",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -232,7 +234,8 @@ class MessagesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CountTokensResponse",
-            '422': "HTTPValidationError",
+            '4XX': "AnthropicErrorResponse",
+            '5XX': "AnthropicErrorResponse",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -382,7 +385,8 @@ class MessagesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "MessageResponse",
-            '422': "HTTPValidationError",
+            '4XX': "AnthropicErrorResponse",
+            '5XX': "AnthropicErrorResponse",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -458,7 +462,8 @@ class MessagesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "MessageResponse",
-            '422': "HTTPValidationError",
+            '4XX': "AnthropicErrorResponse",
+            '5XX': "AnthropicErrorResponse",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -534,7 +539,8 @@ class MessagesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "MessageResponse",
-            '422': "HTTPValidationError",
+            '4XX': "AnthropicErrorResponse",
+            '5XX': "AnthropicErrorResponse",
         }
         response_data = self.api_client.call_api(
             *_param,

@@ -120,6 +120,8 @@ __all__ = [
     "AliasResponse",
     "AllocationHealthResponse",
     "Annotations",
+    "AnthropicError",
+    "AnthropicErrorResponse",
     "AnthropicFileDeleted",
     "AnthropicFileList",
     "AnthropicFileMetadata",
@@ -892,6 +894,8 @@ from otari._client.models.alias_request import AliasRequest as AliasRequest
 from otari._client.models.alias_response import AliasResponse as AliasResponse
 from otari._client.models.allocation_health_response import AllocationHealthResponse as AllocationHealthResponse
 from otari._client.models.annotations import Annotations as Annotations
+from otari._client.models.anthropic_error import AnthropicError as AnthropicError
+from otari._client.models.anthropic_error_response import AnthropicErrorResponse as AnthropicErrorResponse
 from otari._client.models.anthropic_file_deleted import AnthropicFileDeleted as AnthropicFileDeleted
 from otari._client.models.anthropic_file_list import AnthropicFileList as AnthropicFileList
 from otari._client.models.anthropic_file_metadata import AnthropicFileMetadata as AnthropicFileMetadata
