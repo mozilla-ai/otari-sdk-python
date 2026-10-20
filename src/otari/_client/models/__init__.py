@@ -43,6 +43,8 @@ from otari._client.models.alias_request import AliasRequest
 from otari._client.models.alias_response import AliasResponse
 from otari._client.models.allocation_health_response import AllocationHealthResponse
 from otari._client.models.annotations import Annotations
+from otari._client.models.anthropic_error import AnthropicError
+from otari._client.models.anthropic_error_response import AnthropicErrorResponse
 from otari._client.models.anthropic_file_deleted import AnthropicFileDeleted
 from otari._client.models.anthropic_file_list import AnthropicFileList
 from otari._client.models.anthropic_file_metadata import AnthropicFileMetadata
