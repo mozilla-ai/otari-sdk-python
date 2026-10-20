@@ -31,11 +31,13 @@ class SpanPublic(BaseModel):
     """ # noqa: E501
     approximate: StrictBool = Field(description="True when the start was inferred rather than measured.")
     attributes: Dict[str, AttributesValue]
+    cache_read_tokens: Optional[StrictInt] = Field(description="Input tokens read from the prompt cache.")
+    cache_write_tokens: Optional[StrictInt] = Field(description="Input tokens written to the prompt cache.")
     cost: Optional[Union[StrictFloat, StrictInt]]
     duration_ms: Optional[StrictInt]
     end_time: Optional[datetime]
     error_class: Optional[StrictStr]
-    input_tokens: Optional[StrictInt]
+    input_tokens: Optional[StrictInt] = Field(description="The whole prompt, cached tokens included.")
     kind: StrictStr
     model: Optional[StrictStr]
     name: StrictStr
@@ -48,6 +50,7 @@ class SpanPublic(BaseModel):
     output_tokens: Optional[StrictInt]
     parent_span_id: Optional[StrictStr]
     provider: Optional[StrictStr]
+    reasoning_tokens: Optional[StrictInt] = Field(description="Output tokens spent reasoning.")
     recovered: StrictBool
     request_id: Optional[StrictStr]
     span_id: StrictStr
@@ -55,7 +58,7 @@ class SpanPublic(BaseModel):
     tool_call_id: Optional[StrictStr]
     tool_name: Optional[StrictStr]
     tool_type: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["approximate", "attributes", "cost", "duration_ms", "end_time", "error_class", "input_tokens", "kind", "model", "name", "opens_turn", "operation", "origin", "otel_span_id", "otel_trace_id", "outcome", "output_tokens", "parent_span_id", "provider", "recovered", "request_id", "span_id", "start_time", "tool_call_id", "tool_name", "tool_type"]
+    __properties: ClassVar[List[str]] = ["approximate", "attributes", "cache_read_tokens", "cache_write_tokens", "cost", "duration_ms", "end_time", "error_class", "input_tokens", "kind", "model", "name", "opens_turn", "operation", "origin", "otel_span_id", "otel_trace_id", "outcome", "output_tokens", "parent_span_id", "provider", "reasoning_tokens", "recovered", "request_id", "span_id", "start_time", "tool_call_id", "tool_name", "tool_type"]
 
     @field_validator('origin')
     def origin_validate_enum(cls, value):
@@ -117,6 +120,16 @@ class SpanPublic(BaseModel):
                 if self.attributes[_key_attributes]:
                     _field_dict[_key_attributes] = self.attributes[_key_attributes].to_dict()
             _dict['attributes'] = _field_dict
+        # set to None if cache_read_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_read_tokens is None and "cache_read_tokens" in self.model_fields_set:
+            _dict['cache_read_tokens'] = None
+
+        # set to None if cache_write_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.cache_write_tokens is None and "cache_write_tokens" in self.model_fields_set:
+            _dict['cache_write_tokens'] = None
+
         # set to None if cost (nullable) is None
         # and model_fields_set contains the field
         if self.cost is None and "cost" in self.model_fields_set:
@@ -177,6 +190,11 @@ class SpanPublic(BaseModel):
         if self.provider is None and "provider" in self.model_fields_set:
             _dict['provider'] = None
 
+        # set to None if reasoning_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.reasoning_tokens is None and "reasoning_tokens" in self.model_fields_set:
+            _dict['reasoning_tokens'] = None
+
         # set to None if request_id (nullable) is None
         # and model_fields_set contains the field
         if self.request_id is None and "request_id" in self.model_fields_set:
@@ -221,6 +239,8 @@ class SpanPublic(BaseModel):
             )
             if obj.get("attributes") is not None
             else None,
+            "cache_read_tokens": obj.get("cache_read_tokens"),
+            "cache_write_tokens": obj.get("cache_write_tokens"),
             "cost": obj.get("cost"),
             "duration_ms": obj.get("duration_ms"),
             "end_time": obj.get("end_time"),
@@ -238,6 +258,7 @@ class SpanPublic(BaseModel):
             "output_tokens": obj.get("output_tokens"),
             "parent_span_id": obj.get("parent_span_id"),
             "provider": obj.get("provider"),
+            "reasoning_tokens": obj.get("reasoning_tokens"),
             "recovered": obj.get("recovered"),
             "request_id": obj.get("request_id"),
             "span_id": obj.get("span_id"),

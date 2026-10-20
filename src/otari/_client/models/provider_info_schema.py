@@ -36,7 +36,7 @@ class ProviderInfoSchema(BaseModel):
     name: StrictStr = Field(description="Human-friendly provider name.")
     pricing_urls: Optional[List[StrictStr]] = None
     provider_type: StrictStr = Field(description="Underlying any-llm provider type.")
-    source: Optional[StrictStr] = Field(default='config', description="Where the instance is defined: 'config' for config.yml (or OTARI_CONFIG_YAML), 'dashboard' for one stored through the deployment providers page.")
+    source: Optional[StrictStr] = Field(default='config', description="Where the instance is defined: 'config' for config.yml (or OTARI_CONFIG_YAML).")
     __properties: ClassVar[List[str]] = ["capabilities", "description", "doc_url", "env_key", "instance", "name", "pricing_urls", "provider_type", "source"]
 
     @field_validator('source')
@@ -45,8 +45,8 @@ class ProviderInfoSchema(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['config', 'dashboard']):
-            raise ValueError("must be one of enum values ('config', 'dashboard')")
+        if value not in set(['config']):
+            raise ValueError("must be one of enum values ('config')")
         return value
 
     model_config = ConfigDict(

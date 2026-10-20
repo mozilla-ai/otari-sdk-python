@@ -31,7 +31,7 @@ class TraceSummaryPublic(BaseModel):
     """ # noqa: E501
     api_key_id: Optional[StrictStr]
     cost: Union[StrictFloat, StrictInt] = Field(description="USD, a snapshot of the usage rows' cost. Usage stays the billing record.")
-    error_count: StrictInt = Field(description="Spans that ended in an error no fallback recovered.")
+    error_count: StrictInt = Field(description="Spans that ended in an error no fallback recovered, including tools' errors, which do not fail the session.")
     harness: Optional[StrictStr] = Field(description="The agent or client that sent the requests, from its User-Agent.")
     input_tokens: StrictInt
     last_activity_at: datetime

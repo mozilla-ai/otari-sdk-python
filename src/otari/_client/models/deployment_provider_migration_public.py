@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class DeploymentProviderMigrationPublic(BaseModel):
     """
-    The deployment providers stored through the dashboard, and how each moves onto a hosted provider.
+    The deployment providers the retired dashboard page stored, and how each moves onto a hosted provider.
     """ # noqa: E501
     rows: List[DeploymentProviderMigrationRowPublic]
     __properties: ClassVar[List[str]] = ["rows"]

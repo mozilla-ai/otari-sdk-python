@@ -17,22 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateStoredProviderRequest(BaseModel):
+class WorkspaceMcpServerCheckRequest(BaseModel):
     """
-    Update a stored provider. Omitted fields are unchanged; ``api_key`` rotates in place.
+    Connection details to check without storing them, for a form to test before it saves.  ``server_id`` names a stored server whose token stands in when ``authorization_token`` is omitted, so an edit form can test a new URL with a token it was never shown. ``\"\"`` checks with no token at all.
     """ # noqa: E501
-    api_base: Optional[StrictStr] = None
-    api_key: Optional[StrictStr] = Field(default=None, description="New API key. Omit to keep the existing one. Never returned.")
-    client_args: Optional[Dict[str, Any]] = None
-    expected_updated_at: Optional[StrictStr] = Field(default=None, description="Optimistic concurrency: if set, the update 412s unless it matches the stored updated_at.")
-    provider_type: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "expected_updated_at", "provider_type"]
+    allowed_tools: Optional[Annotated[List[Annotated[str, Field(strict=True, max_length=256)]], Field(max_length=200)]] = Field(default=None, description="The allow-list to report the catalog against")
+    authorization_token: Optional[Annotated[str, Field(strict=True, max_length=8192)]] = Field(default=None, description="Bearer token; omit to use the stored server's, if any")
+    server_id: Optional[UUID] = Field(default=None, description="A stored server whose token to use")
+    url: Annotated[str, Field(min_length=1, strict=True, max_length=2048)] = Field(description="Streamable HTTP MCP endpoint")
+    __properties: ClassVar[List[str]] = ["allowed_tools", "authorization_token", "server_id", "url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +53,7 @@ class UpdateStoredProviderRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateStoredProviderRequest from a JSON string"""
+        """Create an instance of WorkspaceMcpServerCheckRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,36 +74,26 @@ class UpdateStoredProviderRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if api_base (nullable) is None
+        # set to None if allowed_tools (nullable) is None
         # and model_fields_set contains the field
-        if self.api_base is None and "api_base" in self.model_fields_set:
-            _dict['api_base'] = None
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
 
-        # set to None if api_key (nullable) is None
+        # set to None if authorization_token (nullable) is None
         # and model_fields_set contains the field
-        if self.api_key is None and "api_key" in self.model_fields_set:
-            _dict['api_key'] = None
+        if self.authorization_token is None and "authorization_token" in self.model_fields_set:
+            _dict['authorization_token'] = None
 
-        # set to None if client_args (nullable) is None
+        # set to None if server_id (nullable) is None
         # and model_fields_set contains the field
-        if self.client_args is None and "client_args" in self.model_fields_set:
-            _dict['client_args'] = None
-
-        # set to None if expected_updated_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.expected_updated_at is None and "expected_updated_at" in self.model_fields_set:
-            _dict['expected_updated_at'] = None
-
-        # set to None if provider_type (nullable) is None
-        # and model_fields_set contains the field
-        if self.provider_type is None and "provider_type" in self.model_fields_set:
-            _dict['provider_type'] = None
+        if self.server_id is None and "server_id" in self.model_fields_set:
+            _dict['server_id'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateStoredProviderRequest from a dict"""
+        """Create an instance of WorkspaceMcpServerCheckRequest from a dict"""
         if obj is None:
             return None
 
@@ -110,11 +101,10 @@ class UpdateStoredProviderRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "api_base": obj.get("api_base"),
-            "api_key": obj.get("api_key"),
-            "client_args": obj.get("client_args"),
-            "expected_updated_at": obj.get("expected_updated_at"),
-            "provider_type": obj.get("provider_type")
+            "allowed_tools": obj.get("allowed_tools"),
+            "authorization_token": obj.get("authorization_token"),
+            "server_id": obj.get("server_id"),
+            "url": obj.get("url")
         })
         return _obj
 

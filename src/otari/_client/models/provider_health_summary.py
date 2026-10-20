@@ -17,22 +17,32 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.provider_history_point import ProviderHistoryPoint
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class TestProviderRequest(BaseModel):
+class ProviderHealthSummary(BaseModel):
     """
-    Credentials to test before saving (from the add-provider form).
+    One provider's offerings in the latest finished run.  ``down`` when none answered, ``degraded`` when some did not, ``ok`` when all did.
     """ # noqa: E501
-    api_base: Optional[StrictStr] = None
-    api_key: Optional[StrictStr] = None
-    client_args: Optional[Dict[str, Any]] = None
-    instance: Optional[StrictStr] = Field(default=None, description="Provider/instance name; the impl when no provider_type.")
-    provider_type: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "instance", "provider_type"]
+    answered: StrictInt
+    history: List[ProviderHistoryPoint] = Field(description="Every finished run in the last 24 hours, oldest first.")
+    provider: StrictStr
+    status: StrictStr
+    top_error: Optional[StrictStr] = Field(description="The most common failure, with the model id taken out.")
+    top_error_count: StrictInt
+    total: StrictInt
+    __properties: ClassVar[List[str]] = ["answered", "history", "provider", "status", "top_error", "top_error_count", "total"]
+
+    @field_validator('status')
+    def status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['ok', 'degraded', 'down']):
+            raise ValueError("must be one of enum values ('ok', 'degraded', 'down')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,7 +62,7 @@ class TestProviderRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of TestProviderRequest from a JSON string"""
+        """Create an instance of ProviderHealthSummary from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,36 +83,23 @@ class TestProviderRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if api_base (nullable) is None
+        # override the default output from pydantic by calling `to_dict()` of each item in history (list)
+        _items = []
+        if self.history:
+            for _item_history in self.history:
+                if _item_history:
+                    _items.append(_item_history.to_dict())
+            _dict['history'] = _items
+        # set to None if top_error (nullable) is None
         # and model_fields_set contains the field
-        if self.api_base is None and "api_base" in self.model_fields_set:
-            _dict['api_base'] = None
-
-        # set to None if api_key (nullable) is None
-        # and model_fields_set contains the field
-        if self.api_key is None and "api_key" in self.model_fields_set:
-            _dict['api_key'] = None
-
-        # set to None if client_args (nullable) is None
-        # and model_fields_set contains the field
-        if self.client_args is None and "client_args" in self.model_fields_set:
-            _dict['client_args'] = None
-
-        # set to None if instance (nullable) is None
-        # and model_fields_set contains the field
-        if self.instance is None and "instance" in self.model_fields_set:
-            _dict['instance'] = None
-
-        # set to None if provider_type (nullable) is None
-        # and model_fields_set contains the field
-        if self.provider_type is None and "provider_type" in self.model_fields_set:
-            _dict['provider_type'] = None
+        if self.top_error is None and "top_error" in self.model_fields_set:
+            _dict['top_error'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of TestProviderRequest from a dict"""
+        """Create an instance of ProviderHealthSummary from a dict"""
         if obj is None:
             return None
 
@@ -110,11 +107,13 @@ class TestProviderRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "api_base": obj.get("api_base"),
-            "api_key": obj.get("api_key"),
-            "client_args": obj.get("client_args"),
-            "instance": obj.get("instance"),
-            "provider_type": obj.get("provider_type")
+            "answered": obj.get("answered"),
+            "history": [ProviderHistoryPoint.from_dict(_item) for _item in obj["history"]] if obj.get("history") is not None else None,
+            "provider": obj.get("provider"),
+            "status": obj.get("status"),
+            "top_error": obj.get("top_error"),
+            "top_error_count": obj.get("top_error_count"),
+            "total": obj.get("total")
         })
         return _obj
 

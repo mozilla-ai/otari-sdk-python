@@ -134,6 +134,7 @@ from otari._client.models.chat_completion_chunk import ChatCompletionChunk
 from otari._client.models.chat_completion_request import ChatCompletionRequest
 from otari._client.models.chat_completion_request_tools_inner import ChatCompletionRequestToolsInner
 from otari._client.models.chat_message_input import ChatMessageInput
+from otari._client.models.check_failure import CheckFailure
 from otari._client.models.check_verdict_request import CheckVerdictRequest
 from otari._client.models.choice_question import ChoiceQuestion
 from otari._client.models.code_executor import CodeExecutor
@@ -171,7 +172,6 @@ from otari._client.models.create_own_key_request import CreateOwnKeyRequest
 from otari._client.models.create_scoped_budget_request import CreateScopedBudgetRequest
 from otari._client.models.create_search_tool_request import CreateSearchToolRequest
 from otari._client.models.create_session_request import CreateSessionRequest
-from otari._client.models.create_stored_provider_request import CreateStoredProviderRequest
 from otari._client.models.create_user_request import CreateUserRequest
 from otari._client.models.created_search_tool_schema import CreatedSearchToolSchema
 from otari._client.models.criteria_inner import CriteriaInner
@@ -230,6 +230,12 @@ from otari._client.models.guardrail_parameter_spec import GuardrailParameterSpec
 from otari._client.models.guardrail_profile_spec import GuardrailProfileSpec
 from otari._client.models.guardrail_stage import GuardrailStage
 from otari._client.models.http_validation_error import HTTPValidationError
+from otari._client.models.health_check_disabled import HealthCheckDisabled
+from otari._client.models.health_check_result_public import HealthCheckResultPublic
+from otari._client.models.health_check_run_public import HealthCheckRunPublic
+from otari._client.models.health_check_settings_public import HealthCheckSettingsPublic
+from otari._client.models.health_check_settings_update import HealthCheckSettingsUpdate
+from otari._client.models.health_check_status import HealthCheckStatus
 from otari._client.models.hosted_available_models_public import HostedAvailableModelsPublic
 from otari._client.models.hosted_catalog_kept_group_public import HostedCatalogKeptGroupPublic
 from otari._client.models.hosted_catalog_provider_refresh_public import HostedCatalogProviderRefreshPublic
@@ -538,6 +544,8 @@ from otari._client.models.provider_endpoint_update_request import ProviderEndpoi
 from otari._client.models.provider_endpoints_public import ProviderEndpointsPublic
 from otari._client.models.provider_health_response import ProviderHealthResponse
 from otari._client.models.provider_health_schema import ProviderHealthSchema
+from otari._client.models.provider_health_summary import ProviderHealthSummary
+from otari._client.models.provider_history_point import ProviderHistoryPoint
 from otari._client.models.provider_info_schema import ProviderInfoSchema
 from otari._client.models.providers_response import ProvidersResponse
 from otari._client.models.questions_value import QuestionsValue
@@ -551,7 +559,6 @@ from otari._client.models.rate_limit_rule_public import RateLimitRulePublic
 from otari._client.models.rate_limit_rule_update import RateLimitRuleUpdate
 from otari._client.models.rate_limit_rules_public import RateLimitRulesPublic
 from otari._client.models.recorded_pool import RecordedPool
-from otari._client.models.reencrypt_provider_credentials_response import ReencryptProviderCredentialsResponse
 from otari._client.models.reencrypt_search_tools_response import ReencryptSearchToolsResponse
 from otari._client.models.register_passkey_request import RegisterPasskeyRequest
 from otari._client.models.request_password_reset_request import RequestPasswordResetRequest
@@ -600,14 +607,11 @@ from otari._client.models.source1 import Source1
 from otari._client.models.span_public import SpanPublic
 from otari._client.models.state import State
 from otari._client.models.stop import Stop
-from otari._client.models.stored_provider_response import StoredProviderResponse
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
 from otari._client.models.stored_search_tool_test_request import StoredSearchToolTestRequest
 from otari._client.models.switch_active_organization_request import SwitchActiveOrganizationRequest
 from otari._client.models.system import System
 from otari._client.models.task_pool import TaskPool
-from otari._client.models.test_provider_request import TestProviderRequest
-from otari._client.models.test_provider_response import TestProviderResponse
 from otari._client.models.test_service_request import TestServiceRequest
 from otari._client.models.test_service_response import TestServiceResponse
 from otari._client.models.text_content import TextContent
@@ -639,7 +643,6 @@ from otari._client.models.update_profile_request import UpdateProfileRequest
 from otari._client.models.update_scoped_budget_request import UpdateScopedBudgetRequest
 from otari._client.models.update_search_tool_request import UpdateSearchToolRequest
 from otari._client.models.update_settings_request import UpdateSettingsRequest
-from otari._client.models.update_stored_provider_request import UpdateStoredProviderRequest
 from otari._client.models.update_tool_settings_request import UpdateToolSettingsRequest
 from otari._client.models.update_user_request import UpdateUserRequest
 from otari._client.models.usage_count import UsageCount
@@ -677,7 +680,9 @@ from otari._client.models.workspace_assignment_request import WorkspaceAssignmen
 from otari._client.models.workspace_code_execution_policy_public import WorkspaceCodeExecutionPolicyPublic
 from otari._client.models.workspace_code_execution_policy_update import WorkspaceCodeExecutionPolicyUpdate
 from otari._client.models.workspace_create import WorkspaceCreate
+from otari._client.models.workspace_mcp_server_check_request import WorkspaceMcpServerCheckRequest
 from otari._client.models.workspace_mcp_server_create import WorkspaceMcpServerCreate
+from otari._client.models.workspace_mcp_server_health import WorkspaceMcpServerHealth
 from otari._client.models.workspace_mcp_server_public import WorkspaceMcpServerPublic
 from otari._client.models.workspace_mcp_server_update import WorkspaceMcpServerUpdate
 from otari._client.models.workspace_mcp_servers_public import WorkspaceMcpServersPublic
