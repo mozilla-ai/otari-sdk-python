@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from datetime import datetime
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictStr, field_validator
 from typing import List, Optional
 from typing_extensions import Annotated
 from otari._client.models.accepted_snapshot_response import AcceptedSnapshotResponse
@@ -317,6 +317,7 @@ class PricingApi:
         self,
         model_key: StrictStr,
         effective_at: Annotated[Optional[datetime], Field(description="ISO datetime identifying a specific pricing row to delete")] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -332,12 +333,14 @@ class PricingApi:
     ) -> None:
         """Delete Pricing
 
-        Delete pricing entries for a model.
+        Delete pricing entries for a model, or for a search or fetch instance.
 
         :param model_key: (required)
         :type model_key: str
         :param effective_at: ISO datetime identifying a specific pricing row to delete
         :type effective_at: datetime
+        :param kind: What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -363,6 +366,7 @@ class PricingApi:
         _param = self._pricing_delete_pricing_serialize(
             model_key=model_key,
             effective_at=effective_at,
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -389,6 +393,7 @@ class PricingApi:
         self,
         model_key: StrictStr,
         effective_at: Annotated[Optional[datetime], Field(description="ISO datetime identifying a specific pricing row to delete")] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -404,12 +409,14 @@ class PricingApi:
     ) -> ApiResponse[None]:
         """Delete Pricing
 
-        Delete pricing entries for a model.
+        Delete pricing entries for a model, or for a search or fetch instance.
 
         :param model_key: (required)
         :type model_key: str
         :param effective_at: ISO datetime identifying a specific pricing row to delete
         :type effective_at: datetime
+        :param kind: What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -435,6 +442,7 @@ class PricingApi:
         _param = self._pricing_delete_pricing_serialize(
             model_key=model_key,
             effective_at=effective_at,
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -461,6 +469,7 @@ class PricingApi:
         self,
         model_key: StrictStr,
         effective_at: Annotated[Optional[datetime], Field(description="ISO datetime identifying a specific pricing row to delete")] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -476,12 +485,14 @@ class PricingApi:
     ) -> RESTResponseType:
         """Delete Pricing
 
-        Delete pricing entries for a model.
+        Delete pricing entries for a model, or for a search or fetch instance.
 
         :param model_key: (required)
         :type model_key: str
         :param effective_at: ISO datetime identifying a specific pricing row to delete
         :type effective_at: datetime
+        :param kind: What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -507,6 +518,7 @@ class PricingApi:
         _param = self._pricing_delete_pricing_serialize(
             model_key=model_key,
             effective_at=effective_at,
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -528,6 +540,7 @@ class PricingApi:
         self,
         model_key,
         effective_at,
+        kind,
         _request_auth,
         _content_type,
         _headers,
@@ -564,6 +577,10 @@ class PricingApi:
                 )
             else:
                 _query_params.append(('effective_at', effective_at))
+            
+        if kind is not None:
+            
+            _query_params.append(('kind', kind))
             
         # process the header parameters
         # process the form parameters
@@ -855,6 +872,7 @@ class PricingApi:
         self,
         model_key: StrictStr,
         as_of: Annotated[Optional[datetime], Field(description="ISO datetime for effective lookup")] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -870,12 +888,14 @@ class PricingApi:
     ) -> PricingResponse:
         """Get Pricing
 
-        Get pricing for a specific model as of a timestamp.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
+        Get pricing for a specific model, or a search or fetch instance, as of a timestamp.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
         :param as_of: ISO datetime for effective lookup
         :type as_of: datetime
+        :param kind: What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -901,6 +921,7 @@ class PricingApi:
         _param = self._pricing_get_pricing_serialize(
             model_key=model_key,
             as_of=as_of,
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -928,6 +949,7 @@ class PricingApi:
         self,
         model_key: StrictStr,
         as_of: Annotated[Optional[datetime], Field(description="ISO datetime for effective lookup")] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -943,12 +965,14 @@ class PricingApi:
     ) -> ApiResponse[PricingResponse]:
         """Get Pricing
 
-        Get pricing for a specific model as of a timestamp.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
+        Get pricing for a specific model, or a search or fetch instance, as of a timestamp.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
         :param as_of: ISO datetime for effective lookup
         :type as_of: datetime
+        :param kind: What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -974,6 +998,7 @@ class PricingApi:
         _param = self._pricing_get_pricing_serialize(
             model_key=model_key,
             as_of=as_of,
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1001,6 +1026,7 @@ class PricingApi:
         self,
         model_key: StrictStr,
         as_of: Annotated[Optional[datetime], Field(description="ISO datetime for effective lookup")] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1016,12 +1042,14 @@ class PricingApi:
     ) -> RESTResponseType:
         """Get Pricing
 
-        Get pricing for a specific model as of a timestamp.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
+        Get pricing for a specific model, or a search or fetch instance, as of a timestamp.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
         :param as_of: ISO datetime for effective lookup
         :type as_of: datetime
+        :param kind: What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1047,6 +1075,7 @@ class PricingApi:
         _param = self._pricing_get_pricing_serialize(
             model_key=model_key,
             as_of=as_of,
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1069,6 +1098,7 @@ class PricingApi:
         self,
         model_key,
         as_of,
+        kind,
         _request_auth,
         _content_type,
         _headers,
@@ -1105,6 +1135,10 @@ class PricingApi:
                 )
             else:
                 _query_params.append(('as_of', as_of))
+            
+        if kind is not None:
+            
+            _query_params.append(('kind', kind))
             
         # process the header parameters
         # process the form parameters
@@ -1148,6 +1182,7 @@ class PricingApi:
     def pricing_get_pricing_history(
         self,
         model_key: StrictStr,
+        kind: Annotated[Optional[StrictStr], Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1163,10 +1198,12 @@ class PricingApi:
     ) -> List[PricingResponse]:
         """Get Pricing History
 
-        Return the full pricing history for a model.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
+        Return the full pricing history for a model, or for a search or fetch instance.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
+        :param kind: What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1191,6 +1228,7 @@ class PricingApi:
 
         _param = self._pricing_get_pricing_history_serialize(
             model_key=model_key,
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1217,6 +1255,7 @@ class PricingApi:
     def pricing_get_pricing_history_with_http_info(
         self,
         model_key: StrictStr,
+        kind: Annotated[Optional[StrictStr], Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1232,10 +1271,12 @@ class PricingApi:
     ) -> ApiResponse[List[PricingResponse]]:
         """Get Pricing History
 
-        Return the full pricing history for a model.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
+        Return the full pricing history for a model, or for a search or fetch instance.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
+        :param kind: What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1260,6 +1301,7 @@ class PricingApi:
 
         _param = self._pricing_get_pricing_history_serialize(
             model_key=model_key,
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1286,6 +1328,7 @@ class PricingApi:
     def pricing_get_pricing_history_without_preload_content(
         self,
         model_key: StrictStr,
+        kind: Annotated[Optional[StrictStr], Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1301,10 +1344,12 @@ class PricingApi:
     ) -> RESTResponseType:
         """Get Pricing History
 
-        Return the full pricing history for a model.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
+        Return the full pricing history for a model, or for a search or fetch instance.  A 404 for a model of a hosted provider restricted to another organization than the caller's.
 
         :param model_key: (required)
         :type model_key: str
+        :param kind: What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.
+        :type kind: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1329,6 +1374,7 @@ class PricingApi:
 
         _param = self._pricing_get_pricing_history_serialize(
             model_key=model_key,
+            kind=kind,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1350,6 +1396,7 @@ class PricingApi:
     def _pricing_get_pricing_history_serialize(
         self,
         model_key,
+        kind,
         _request_auth,
         _content_type,
         _headers,
@@ -1374,6 +1421,10 @@ class PricingApi:
         if model_key is not None:
             _path_params['model_key'] = model_key
         # process the query parameters
+        if kind is not None:
+            
+            _query_params.append(('kind', kind))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1432,7 +1483,7 @@ class PricingApi:
     ) -> CurrentPricingPage:
         """List Current Pricing
 
-        List the rate each priced model is metered at, one row per model key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of models. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. ``count`` is the number of priced models, so a caller can page without reading the collection to learn how long it is. A hosted provider restricted to another organization than the caller's is left out of both.
+        List the rate each priced key is metered at, one row per kind and key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of keys. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. Every kind is returned, a row's ``kind`` telling a model's price from a search or fetch instance's, and ``count`` is the number of priced keys of any kind, so a caller can page without reading the collection to learn how long it is. A hosted provider restricted to another organization than the caller's is left out of both.
 
         :param skip:
         :type skip: int
@@ -1504,7 +1555,7 @@ class PricingApi:
     ) -> ApiResponse[CurrentPricingPage]:
         """List Current Pricing
 
-        List the rate each priced model is metered at, one row per model key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of models. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. ``count`` is the number of priced models, so a caller can page without reading the collection to learn how long it is. A hosted provider restricted to another organization than the caller's is left out of both.
+        List the rate each priced key is metered at, one row per kind and key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of keys. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. Every kind is returned, a row's ``kind`` telling a model's price from a search or fetch instance's, and ``count`` is the number of priced keys of any kind, so a caller can page without reading the collection to learn how long it is. A hosted provider restricted to another organization than the caller's is left out of both.
 
         :param skip:
         :type skip: int
@@ -1576,7 +1627,7 @@ class PricingApi:
     ) -> RESTResponseType:
         """List Current Pricing
 
-        List the rate each priced model is metered at, one row per model key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of models. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. ``count`` is the number of priced models, so a caller can page without reading the collection to learn how long it is. A hosted provider restricted to another organization than the caller's is left out of both.
+        List the rate each priced key is metered at, one row per kind and key.  Listing prices answers the stored history, one row per ``effective_at``, so a page of that is a page of revisions rather than a page of keys. This answers one row per key: the newest rate that has taken effect, or the earliest scheduled rate for a key that has none yet. Every kind is returned, a row's ``kind`` telling a model's price from a search or fetch instance's, and ``count`` is the number of priced keys of any kind, so a caller can page without reading the collection to learn how long it is. A hosted provider restricted to another organization than the caller's is left out of both.
 
         :param skip:
         :type skip: int
@@ -1716,7 +1767,7 @@ class PricingApi:
     ) -> List[PricingResponse]:
         """List Pricing
 
-        List all model pricing.  A hosted provider restricted to another organization than the caller's is left out, as it is from the catalog.
+        List every stored price version, of every kind.  A row's ``kind`` says whether it prices a model or a search or fetch instance. A hosted provider restricted to another organization than the caller's is left out, as it is from the catalog.
 
         :param skip:
         :type skip: int
@@ -1788,7 +1839,7 @@ class PricingApi:
     ) -> ApiResponse[List[PricingResponse]]:
         """List Pricing
 
-        List all model pricing.  A hosted provider restricted to another organization than the caller's is left out, as it is from the catalog.
+        List every stored price version, of every kind.  A row's ``kind`` says whether it prices a model or a search or fetch instance. A hosted provider restricted to another organization than the caller's is left out, as it is from the catalog.
 
         :param skip:
         :type skip: int
@@ -1860,7 +1911,7 @@ class PricingApi:
     ) -> RESTResponseType:
         """List Pricing
 
-        List all model pricing.  A hosted provider restricted to another organization than the caller's is left out, as it is from the catalog.
+        List every stored price version, of every kind.  A row's ``kind`` says whether it prices a model or a search or fetch instance. A hosted provider restricted to another organization than the caller's is left out, as it is from the catalog.
 
         :param skip:
         :type skip: int

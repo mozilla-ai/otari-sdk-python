@@ -28,27 +28,28 @@ from pydantic_core import to_jsonable_python
 
 class OrganizationModelPricingCreate(BaseModel):
     """
-    Create one rate override for a model, for a period.
+    Create one rate override for a model, or a search or fetch instance, for a period.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cached-input tokens")
     cache_write_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M cache-write (creation) tokens")
     effective_from: Optional[datetime] = Field(default=None, description="ISO 8601 datetime from which this rate applies, inclusive. Defaults to now.")
     effective_to: Optional[datetime] = Field(default=None, description="ISO 8601 datetime at which this rate stops applying, exclusive. Null leaves it open ended. Because the end is exclusive, the next period may begin at exactly this instant without overlapping.")
     input_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M of the rate's unit: input tokens, requests or images")
-    model_key: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="Model identifier in 'provider:model' form, matching the key the deployment price list uses. A provider instance name is valid here ('home_lab:llama-3'), because pricing keys on the instance a request resolves to.")
+    kind: Optional[StrictStr] = Field(default=None, description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")
+    model_key: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="For a model, 'provider:model', matching the key the deployment price list uses; a provider instance name is valid here ('home_lab:llama-3'), because pricing keys on the instance a request resolves to. For a search or fetch kind, the instance's name.")
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens; unused by a rate in requests or images")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
     unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint, each priced per million. A completion model priced per requests is charged one request per successful call.")
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "model_key", "output_price_per_million", "pricing_tiers", "unit"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "kind", "model_key", "output_price_per_million", "pricing_tiers", "unit"]
 
-    @field_validator('model_key')
-    def model_key_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
+    @field_validator('kind')
+    def kind_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
 
-        if not re.match(r"^[^\s:\/]+[:\/][^\s]+$", value):
-            raise ValueError(r"must validate the regular expression /^[^\s:\/]+[:\/][^\s]+$/")
+        if value not in set(['model', 'search', 'fetch']):
+            raise ValueError("must be one of enum values ('model', 'search', 'fetch')")
         return value
 
     @field_validator('unit')
@@ -127,6 +128,11 @@ class OrganizationModelPricingCreate(BaseModel):
         if self.effective_to is None and "effective_to" in self.model_fields_set:
             _dict['effective_to'] = None
 
+        # set to None if kind (nullable) is None
+        # and model_fields_set contains the field
+        if self.kind is None and "kind" in self.model_fields_set:
+            _dict['kind'] = None
+
         # set to None if pricing_tiers (nullable) is None
         # and model_fields_set contains the field
         if self.pricing_tiers is None and "pricing_tiers" in self.model_fields_set:
@@ -149,6 +155,7 @@ class OrganizationModelPricingCreate(BaseModel):
             "effective_from": obj.get("effective_from"),
             "effective_to": obj.get("effective_to"),
             "input_price_per_million": obj.get("input_price_per_million"),
+            "kind": obj.get("kind"),
             "model_key": obj.get("model_key"),
             "output_price_per_million": obj.get("output_price_per_million"),
             "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,

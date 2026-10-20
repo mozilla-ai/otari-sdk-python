@@ -33,13 +33,14 @@ class PricingResponse(BaseModel):
     created_at: StrictStr
     effective_at: StrictStr
     input_price_per_million: Union[StrictFloat, StrictInt]
+    kind: StrictStr = Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")
     model_key: StrictStr
     origin: Optional[StrictStr] = Field(description="Which writer set this row: config, api, or migration. Null when recorded before origins were.")
     output_price_per_million: Union[StrictFloat, StrictInt]
     pricing_tiers: List[PricingTier]
     unit: StrictStr = Field(description="What the rates are per: tokens, requests, or images.")
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_at", "input_price_per_million", "model_key", "origin", "output_price_per_million", "pricing_tiers", "unit", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_at", "input_price_per_million", "kind", "model_key", "origin", "output_price_per_million", "pricing_tiers", "unit", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -119,6 +120,7 @@ class PricingResponse(BaseModel):
             "created_at": obj.get("created_at"),
             "effective_at": obj.get("effective_at"),
             "input_price_per_million": obj.get("input_price_per_million"),
+            "kind": obj.get("kind"),
             "model_key": obj.get("model_key"),
             "origin": obj.get("origin"),
             "output_price_per_million": obj.get("output_price_per_million"),

@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
 from uuid import UUID
@@ -598,6 +598,7 @@ class OrganizationPricingApi:
     def organization_pricing_list_organization_pricing(
         self,
         model_key: Annotated[Optional[StrictStr], Field(description="Return only this model's periods, in the canonical 'provider:model' form.")] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="Return only overrides of this kind.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
         _request_timeout: Union[
@@ -619,6 +620,8 @@ class OrganizationPricingApi:
 
         :param model_key: Return only this model's periods, in the canonical 'provider:model' form.
         :type model_key: str
+        :param kind: Return only overrides of this kind.
+        :type kind: str
         :param skip: Number of records to skip
         :type skip: int
         :param limit: Maximum number of records to return
@@ -647,6 +650,7 @@ class OrganizationPricingApi:
 
         _param = self._organization_pricing_list_organization_pricing_serialize(
             model_key=model_key,
+            kind=kind,
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -674,6 +678,7 @@ class OrganizationPricingApi:
     def organization_pricing_list_organization_pricing_with_http_info(
         self,
         model_key: Annotated[Optional[StrictStr], Field(description="Return only this model's periods, in the canonical 'provider:model' form.")] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="Return only overrides of this kind.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
         _request_timeout: Union[
@@ -695,6 +700,8 @@ class OrganizationPricingApi:
 
         :param model_key: Return only this model's periods, in the canonical 'provider:model' form.
         :type model_key: str
+        :param kind: Return only overrides of this kind.
+        :type kind: str
         :param skip: Number of records to skip
         :type skip: int
         :param limit: Maximum number of records to return
@@ -723,6 +730,7 @@ class OrganizationPricingApi:
 
         _param = self._organization_pricing_list_organization_pricing_serialize(
             model_key=model_key,
+            kind=kind,
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -750,6 +758,7 @@ class OrganizationPricingApi:
     def organization_pricing_list_organization_pricing_without_preload_content(
         self,
         model_key: Annotated[Optional[StrictStr], Field(description="Return only this model's periods, in the canonical 'provider:model' form.")] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="Return only overrides of this kind.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
         _request_timeout: Union[
@@ -771,6 +780,8 @@ class OrganizationPricingApi:
 
         :param model_key: Return only this model's periods, in the canonical 'provider:model' form.
         :type model_key: str
+        :param kind: Return only overrides of this kind.
+        :type kind: str
         :param skip: Number of records to skip
         :type skip: int
         :param limit: Maximum number of records to return
@@ -799,6 +810,7 @@ class OrganizationPricingApi:
 
         _param = self._organization_pricing_list_organization_pricing_serialize(
             model_key=model_key,
+            kind=kind,
             skip=skip,
             limit=limit,
             _request_auth=_request_auth,
@@ -821,6 +833,7 @@ class OrganizationPricingApi:
     def _organization_pricing_list_organization_pricing_serialize(
         self,
         model_key,
+        kind,
         skip,
         limit,
         _request_auth,
@@ -848,6 +861,10 @@ class OrganizationPricingApi:
         if model_key is not None:
             
             _query_params.append(('model_key', model_key))
+            
+        if kind is not None:
+            
+            _query_params.append(('kind', kind))
             
         if skip is not None:
             
