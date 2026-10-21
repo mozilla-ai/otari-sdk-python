@@ -29,11 +29,12 @@ class CreateUserRequest(BaseModel):
     """ # noqa: E501
     alias: Optional[StrictStr] = Field(default=None, description="Optional admin-facing alias")
     allowed_models: Optional[List[StrictStr]] = Field(default=None, description="Default model access-list this user's keys inherit; null = unrestricted, [] = deny all")
+    allowed_tools: Optional[List[StrictStr]] = Field(default=None, description="Default search tool access-list this user's keys inherit: null = the tools allowed_models grants, [] = no tool, or search tool names ('*' for every search tool).")
     blocked: Optional[StrictBool] = Field(default=False, description="Whether user is blocked")
     budget_id: Optional[StrictStr] = Field(default=None, description="Optional budget ID")
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata")
     user_id: StrictStr = Field(description="Unique user identifier")
-    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "blocked", "budget_id", "metadata", "user_id"]
+    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "allowed_tools", "blocked", "budget_id", "metadata", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -84,6 +85,11 @@ class CreateUserRequest(BaseModel):
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
 
+        # set to None if allowed_tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
+
         # set to None if budget_id (nullable) is None
         # and model_fields_set contains the field
         if self.budget_id is None and "budget_id" in self.model_fields_set:
@@ -103,6 +109,7 @@ class CreateUserRequest(BaseModel):
         _obj = cls.model_validate({
             "alias": obj.get("alias"),
             "allowed_models": obj.get("allowed_models"),
+            "allowed_tools": obj.get("allowed_tools"),
             "blocked": obj.get("blocked") if obj.get("blocked") is not None else False,
             "budget_id": obj.get("budget_id"),
             "metadata": obj.get("metadata"),

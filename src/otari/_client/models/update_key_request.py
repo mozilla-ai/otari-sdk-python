@@ -30,6 +30,7 @@ class UpdateKeyRequest(BaseModel):
     Request model for updating a key.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = None
+    allowed_tools: Optional[List[StrictStr]] = None
     capture_agent_telemetry: Optional[StrictBool] = None
     end_user_budget_id: Optional[StrictStr] = None
     end_user_budget_ids: Optional[Annotated[List[StrictStr], Field(max_length=100)]] = None
@@ -41,7 +42,7 @@ class UpdateKeyRequest(BaseModel):
     max_end_users: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
     metadata: Optional[Dict[str, Any]] = None
     reject_user_mismatch: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "is_active", "is_service_key", "key_name", "max_end_users", "metadata", "reject_user_mismatch"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "is_active", "is_service_key", "key_name", "max_end_users", "metadata", "reject_user_mismatch"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,6 +87,11 @@ class UpdateKeyRequest(BaseModel):
         # and model_fields_set contains the field
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
+
+        # set to None if allowed_tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
 
         # set to None if capture_agent_telemetry (nullable) is None
         # and model_fields_set contains the field
@@ -155,6 +161,7 @@ class UpdateKeyRequest(BaseModel):
 
         _obj = cls.model_validate({
             "allowed_models": obj.get("allowed_models"),
+            "allowed_tools": obj.get("allowed_tools"),
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "end_user_budget_id": obj.get("end_user_budget_id"),
             "end_user_budget_ids": obj.get("end_user_budget_ids"),
