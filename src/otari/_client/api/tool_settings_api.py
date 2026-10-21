@@ -553,7 +553,7 @@ class ToolSettingsApi:
     ) -> GuardrailCatalog:
         """List Guardrail Profiles
 
-        List the guardrail profiles this deployment's guardrails service has built.  What an organization guardrail's ``profile`` may name, with the ``validate_kwargs`` each one accepts, so the dashboard offers a picker and typed fields instead of a free-text box beside an unrendered dict. The profiles come from the service itself and the parameter schemas from the ``any_guardrail`` registry; neither is a list kept in this repository. See `gateway.services.guardrail_catalog`.  Reports ``available: false`` with a reason rather than an error when the service is unconfigured, unreachable, or older than its ``/profiles`` endpoint, because a guardrails outage must not also break the page that configures guardrails.  Read against ``guardrails_url``, which is the deployment's own service. An entry that carries an endpoint of its own is not probed: that URL is caller-supplied and fetching it here would make this a way to have the gateway request an address of the caller's choosing.  Not on ``verify_catalog_reader``, despite being a catalog read: that plane is the three deployment-describing reads a data-plane key may also make, and admitting a key here would let any workspace credential dial the deployment's guardrails service. This is a management read, so it takes the router's own gate.
+        List the guardrail profiles this deployment's guardrails service has built.  What an organization guardrail's ``profile`` may name, with the ``validate_kwargs`` each one accepts, so the dashboard offers a picker and typed fields instead of a free-text box beside an unrendered dict. The profiles come from the service itself and the parameter schemas from the ``any_guardrail`` registry; neither is a list kept in this repository. See `gateway.services.guardrail_catalog`.  Reports ``available: false`` with a reason rather than an error when the service is unconfigured, unreachable, or older than its ``/profiles`` endpoint, because a guardrails outage must not also break the page that configures guardrails.  Read against ``guardrails_url``, which is the deployment's own service. An entry that carries an endpoint of its own is not probed: that URL is caller-supplied and fetching it here would make this a way to have the gateway request an address of the caller's choosing.  Not on ``verify_catalog_reader``, despite being a catalog read: that gate admits any API key to the deployment-describing reads, and admitting a key here would let any workspace credential dial the deployment's guardrails service. This is a management read, so it takes the router's own gate.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -616,7 +616,7 @@ class ToolSettingsApi:
     ) -> ApiResponse[GuardrailCatalog]:
         """List Guardrail Profiles
 
-        List the guardrail profiles this deployment's guardrails service has built.  What an organization guardrail's ``profile`` may name, with the ``validate_kwargs`` each one accepts, so the dashboard offers a picker and typed fields instead of a free-text box beside an unrendered dict. The profiles come from the service itself and the parameter schemas from the ``any_guardrail`` registry; neither is a list kept in this repository. See `gateway.services.guardrail_catalog`.  Reports ``available: false`` with a reason rather than an error when the service is unconfigured, unreachable, or older than its ``/profiles`` endpoint, because a guardrails outage must not also break the page that configures guardrails.  Read against ``guardrails_url``, which is the deployment's own service. An entry that carries an endpoint of its own is not probed: that URL is caller-supplied and fetching it here would make this a way to have the gateway request an address of the caller's choosing.  Not on ``verify_catalog_reader``, despite being a catalog read: that plane is the three deployment-describing reads a data-plane key may also make, and admitting a key here would let any workspace credential dial the deployment's guardrails service. This is a management read, so it takes the router's own gate.
+        List the guardrail profiles this deployment's guardrails service has built.  What an organization guardrail's ``profile`` may name, with the ``validate_kwargs`` each one accepts, so the dashboard offers a picker and typed fields instead of a free-text box beside an unrendered dict. The profiles come from the service itself and the parameter schemas from the ``any_guardrail`` registry; neither is a list kept in this repository. See `gateway.services.guardrail_catalog`.  Reports ``available: false`` with a reason rather than an error when the service is unconfigured, unreachable, or older than its ``/profiles`` endpoint, because a guardrails outage must not also break the page that configures guardrails.  Read against ``guardrails_url``, which is the deployment's own service. An entry that carries an endpoint of its own is not probed: that URL is caller-supplied and fetching it here would make this a way to have the gateway request an address of the caller's choosing.  Not on ``verify_catalog_reader``, despite being a catalog read: that gate admits any API key to the deployment-describing reads, and admitting a key here would let any workspace credential dial the deployment's guardrails service. This is a management read, so it takes the router's own gate.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -679,7 +679,7 @@ class ToolSettingsApi:
     ) -> RESTResponseType:
         """List Guardrail Profiles
 
-        List the guardrail profiles this deployment's guardrails service has built.  What an organization guardrail's ``profile`` may name, with the ``validate_kwargs`` each one accepts, so the dashboard offers a picker and typed fields instead of a free-text box beside an unrendered dict. The profiles come from the service itself and the parameter schemas from the ``any_guardrail`` registry; neither is a list kept in this repository. See `gateway.services.guardrail_catalog`.  Reports ``available: false`` with a reason rather than an error when the service is unconfigured, unreachable, or older than its ``/profiles`` endpoint, because a guardrails outage must not also break the page that configures guardrails.  Read against ``guardrails_url``, which is the deployment's own service. An entry that carries an endpoint of its own is not probed: that URL is caller-supplied and fetching it here would make this a way to have the gateway request an address of the caller's choosing.  Not on ``verify_catalog_reader``, despite being a catalog read: that plane is the three deployment-describing reads a data-plane key may also make, and admitting a key here would let any workspace credential dial the deployment's guardrails service. This is a management read, so it takes the router's own gate.
+        List the guardrail profiles this deployment's guardrails service has built.  What an organization guardrail's ``profile`` may name, with the ``validate_kwargs`` each one accepts, so the dashboard offers a picker and typed fields instead of a free-text box beside an unrendered dict. The profiles come from the service itself and the parameter schemas from the ``any_guardrail`` registry; neither is a list kept in this repository. See `gateway.services.guardrail_catalog`.  Reports ``available: false`` with a reason rather than an error when the service is unconfigured, unreachable, or older than its ``/profiles`` endpoint, because a guardrails outage must not also break the page that configures guardrails.  Read against ``guardrails_url``, which is the deployment's own service. An entry that carries an endpoint of its own is not probed: that URL is caller-supplied and fetching it here would make this a way to have the gateway request an address of the caller's choosing.  Not on ``verify_catalog_reader``, despite being a catalog read: that gate admits any API key to the deployment-describing reads, and admitting a key here would let any workspace credential dial the deployment's guardrails service. This is a management read, so it takes the router's own gate.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1094,7 +1094,7 @@ class ToolSettingsApi:
     ) -> ToolSettingsResponse:
         """Update Tool Settings
 
-        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Operator-gated and standalone-only.
+        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Operator-gated.
 
         :param update_tool_settings_request: (required)
         :type update_tool_settings_request: UpdateToolSettingsRequest
@@ -1162,7 +1162,7 @@ class ToolSettingsApi:
     ) -> ApiResponse[ToolSettingsResponse]:
         """Update Tool Settings
 
-        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Operator-gated and standalone-only.
+        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Operator-gated.
 
         :param update_tool_settings_request: (required)
         :type update_tool_settings_request: UpdateToolSettingsRequest
@@ -1230,7 +1230,7 @@ class ToolSettingsApi:
     ) -> RESTResponseType:
         """Update Tool Settings
 
-        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Operator-gated and standalone-only.
+        Persist and apply tool/guardrail setting changes.  Uses ``model_fields_set`` so an explicit ``null`` clears a field while an omitted field is left unchanged. Operator-gated.
 
         :param update_tool_settings_request: (required)
         :type update_tool_settings_request: UpdateToolSettingsRequest

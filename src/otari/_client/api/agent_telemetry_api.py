@@ -68,7 +68,7 @@ class AgentTelemetryApi:
     ) -> AgentTelemetryGroupedSeries:
         """Agent Telemetry Series
 
-        Row volume over time, split by user or API key (standalone).  Mirrors `/api/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
+        Row volume over time, split by user or API key.  Mirrors `/api/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
 
         :param group_by: Dimension to split the series by (required)
         :type group_by: str
@@ -160,7 +160,7 @@ class AgentTelemetryApi:
     ) -> ApiResponse[AgentTelemetryGroupedSeries]:
         """Agent Telemetry Series
 
-        Row volume over time, split by user or API key (standalone).  Mirrors `/api/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
+        Row volume over time, split by user or API key.  Mirrors `/api/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
 
         :param group_by: Dimension to split the series by (required)
         :type group_by: str
@@ -252,7 +252,7 @@ class AgentTelemetryApi:
     ) -> RESTResponseType:
         """Agent Telemetry Series
 
-        Row volume over time, split by user or API key (standalone).  Mirrors `/api/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
+        Row volume over time, split by user or API key.  Mirrors `/api/v1/usage/series`: same window bounds and bucket-grid cap, the top groups as their own series with the remainder folded into a reconciling ``other``, and sparse points (populated cells only). Counts rows, not spend, so it charts telemetry volume rather than cost. Master-key only.
 
         :param group_by: Dimension to split the series by (required)
         :type group_by: str
@@ -456,7 +456,7 @@ class AgentTelemetryApi:
     ) -> AgentTelemetrySummary:
         """Agent Telemetry Summary
 
-        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/api/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
+        What the coding agent produced in a window, and what it cost.  Range-bounded like `/api/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
 
         :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -544,7 +544,7 @@ class AgentTelemetryApi:
     ) -> ApiResponse[AgentTelemetrySummary]:
         """Agent Telemetry Summary
 
-        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/api/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
+        What the coding agent produced in a window, and what it cost.  Range-bounded like `/api/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
 
         :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -632,7 +632,7 @@ class AgentTelemetryApi:
     ) -> RESTResponseType:
         """Agent Telemetry Summary
 
-        What the coding agent produced in a window, and what it cost (standalone).  Range-bounded like `/api/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
+        What the coding agent produced in a window, and what it cost.  Range-bounded like `/api/v1/usage/summary` (default last 30 days, hard-capped), so the aggregates stay served by the timestamp index. Returns the outcome totals (commits, pull requests, lines changed, active time), the behavioral counts already captured from the logs signal (tool calls and their mix, tool accept/reject, turns, API errors), the recorded spend over the same scope, and the derived per-unit measures: cost per commit / pull request / line, spend per active hour, acceptance rate, turns per session, and error rate. Each measure is null rather than an error when its denominator is zero. Filterable by user, API key, and `session_label`, so cost per outcome can be read for one agent session as well as for a whole window.  The spend side is every usage row in scope, not only the agent's: unfiltered, that includes traffic from clients that never reported telemetry, so a per-outcome measure read over a whole deployment answers \"what did this deployment spend per commit\", not \"what did the agent spend per commit\". Filter by user, API key, or session to divide only the matching spend.  Outcome metrics are stored exactly as the agent reported them, so a cumulative counter is converted to a window increment here, at read time, diffed per series generation: a re-exported total adds nothing, and a counter reset never reads as negative work. Master-key only.
 
         :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -827,7 +827,7 @@ class AgentTelemetryApi:
     ) -> AgentTelemetryCount:
         """Count Agent Telemetry
 
-        Total agent_telemetry rows matching the given filters (standalone).  The filter set mirrors the purge endpoint's, so this sizes exactly what a \"delete all N matching\" would remove. Behavioral and metric rows are counted together: neither this nor the purge distinguishes them. Master-key only.
+        Total agent_telemetry rows matching the given filters.  The filter set mirrors the purge endpoint's, so this sizes exactly what a \"delete all N matching\" would remove. Behavioral and metric rows are counted together: neither this nor the purge distinguishes them. Master-key only.
 
         :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -911,7 +911,7 @@ class AgentTelemetryApi:
     ) -> ApiResponse[AgentTelemetryCount]:
         """Count Agent Telemetry
 
-        Total agent_telemetry rows matching the given filters (standalone).  The filter set mirrors the purge endpoint's, so this sizes exactly what a \"delete all N matching\" would remove. Behavioral and metric rows are counted together: neither this nor the purge distinguishes them. Master-key only.
+        Total agent_telemetry rows matching the given filters.  The filter set mirrors the purge endpoint's, so this sizes exactly what a \"delete all N matching\" would remove. Behavioral and metric rows are counted together: neither this nor the purge distinguishes them. Master-key only.
 
         :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -995,7 +995,7 @@ class AgentTelemetryApi:
     ) -> RESTResponseType:
         """Count Agent Telemetry
 
-        Total agent_telemetry rows matching the given filters (standalone).  The filter set mirrors the purge endpoint's, so this sizes exactly what a \"delete all N matching\" would remove. Behavioral and metric rows are counted together: neither this nor the purge distinguishes them. Master-key only.
+        Total agent_telemetry rows matching the given filters.  The filter set mirrors the purge endpoint's, so this sizes exactly what a \"delete all N matching\" would remove. Behavioral and metric rows are counted together: neither this nor the purge distinguishes them. Master-key only.
 
         :param start_date: Return rows with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
         :type start_date: datetime
@@ -1178,7 +1178,7 @@ class AgentTelemetryApi:
     ) -> AgentTelemetryDeleteResult:
         """Delete Agent Telemetry Rows
 
-        Delete agent_telemetry rows by explicit ids or by filter (standalone).  Target either an explicit selection (`ids`) or everything matching a filter (`by_filter: true` plus optional `user_id` / `api_key_id` / `name` / date range). A selection matching zero rows succeeds with `deleted: 0`. Master-key only.
+        Delete agent_telemetry rows by explicit ids or by filter.  Target either an explicit selection (`ids`) or everything matching a filter (`by_filter: true` plus optional `user_id` / `api_key_id` / `name` / date range). A selection matching zero rows succeeds with `deleted: 0`. Master-key only.
 
         :param agent_telemetry_delete_request: (required)
         :type agent_telemetry_delete_request: AgentTelemetryDeleteRequest
@@ -1246,7 +1246,7 @@ class AgentTelemetryApi:
     ) -> ApiResponse[AgentTelemetryDeleteResult]:
         """Delete Agent Telemetry Rows
 
-        Delete agent_telemetry rows by explicit ids or by filter (standalone).  Target either an explicit selection (`ids`) or everything matching a filter (`by_filter: true` plus optional `user_id` / `api_key_id` / `name` / date range). A selection matching zero rows succeeds with `deleted: 0`. Master-key only.
+        Delete agent_telemetry rows by explicit ids or by filter.  Target either an explicit selection (`ids`) or everything matching a filter (`by_filter: true` plus optional `user_id` / `api_key_id` / `name` / date range). A selection matching zero rows succeeds with `deleted: 0`. Master-key only.
 
         :param agent_telemetry_delete_request: (required)
         :type agent_telemetry_delete_request: AgentTelemetryDeleteRequest
@@ -1314,7 +1314,7 @@ class AgentTelemetryApi:
     ) -> RESTResponseType:
         """Delete Agent Telemetry Rows
 
-        Delete agent_telemetry rows by explicit ids or by filter (standalone).  Target either an explicit selection (`ids`) or everything matching a filter (`by_filter: true` plus optional `user_id` / `api_key_id` / `name` / date range). A selection matching zero rows succeeds with `deleted: 0`. Master-key only.
+        Delete agent_telemetry rows by explicit ids or by filter.  Target either an explicit selection (`ids`) or everything matching a filter (`by_filter: true` plus optional `user_id` / `api_key_id` / `name` / date range). A selection matching zero rows succeeds with `deleted: 0`. Master-key only.
 
         :param agent_telemetry_delete_request: (required)
         :type agent_telemetry_delete_request: AgentTelemetryDeleteRequest

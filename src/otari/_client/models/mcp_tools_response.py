@@ -32,7 +32,7 @@ class McpToolsResponse(BaseModel):
     The authorized catalog for one stored server.  Carries no server URL, no credential, and no allowlist entry that the live catalog did not return. ``server_revision`` is what an application persists with a proposed call and sends back to ``/api/v1/mcp/execute``, so a stored-configuration change between the two is refused rather than executed.
     """ # noqa: E501
     server_id: UUID
-    server_revision: StrictStr = Field(description="An opaque revision of the stored server's URL, credential, enabled state and allowlist. It detects Otari-side and platform-side configuration changes only: a remote server that changes its own catalog or a tool's behavior behind an unchanged URL will not move it.")
+    server_revision: StrictStr = Field(description="An opaque revision of the stored server's URL, credential, enabled state and allowlist. It detects Otari-side configuration changes only: a remote server that changes its own catalog or a tool's behavior behind an unchanged URL will not move it.")
     tools: Annotated[List[McpToolDefinition], Field(max_length=200)]
     warnings: List[McpToolWarning]
     __properties: ClassVar[List[str]] = ["server_id", "server_revision", "tools", "warnings"]

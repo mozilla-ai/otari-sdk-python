@@ -31,7 +31,6 @@ class OrganizationMembershipContextPublic(BaseModel):
     """
     An organization plus the caller's standing in it.  What every tenancy page reads first: which organization it is looking at, and what the caller may do there.
     """ # noqa: E501
-    byo_provider_keys_allowed: Optional[StrictBool] = False
     caller: Optional[CallerIdentityPublic] = None
     deployment_operator: Optional[StrictBool] = False
     organization: OrganizationPublic
@@ -40,7 +39,7 @@ class OrganizationMembershipContextPublic(BaseModel):
     role: StrictStr
     status: StrictStr
     workspace_memberships: Optional[List[CallerWorkspaceMembershipPublic]] = None
-    __properties: ClassVar[List[str]] = ["byo_provider_keys_allowed", "caller", "deployment_operator", "organization", "organization_member_id", "provider_key_encryption_available", "role", "status", "workspace_memberships"]
+    __properties: ClassVar[List[str]] = ["caller", "deployment_operator", "organization", "organization_member_id", "provider_key_encryption_available", "role", "status", "workspace_memberships"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -111,7 +110,6 @@ class OrganizationMembershipContextPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "byo_provider_keys_allowed": obj.get("byo_provider_keys_allowed") if obj.get("byo_provider_keys_allowed") is not None else False,
             "caller": CallerIdentityPublic.from_dict(obj["caller"]) if obj.get("caller") is not None else None,
             "deployment_operator": obj.get("deployment_operator") if obj.get("deployment_operator") is not None else False,
             "organization": OrganizationPublic.from_dict(obj["organization"]) if obj.get("organization") is not None else None,

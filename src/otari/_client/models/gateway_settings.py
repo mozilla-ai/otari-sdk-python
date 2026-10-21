@@ -31,12 +31,11 @@ class GatewaySettings(BaseModel):
     config: List[ConfigField]
     default_pricing: StrictBool
     master_key_source: StrictStr = Field(description="Whether the dashboard master key is configured at startup or generated and stored by Otari.")
-    mode: StrictStr
     model_discovery: StrictBool
     require_pricing: StrictBool
     secret_key_configured: StrictBool = Field(description="Whether OTARI_SECRET_KEY is set on the server. Provider credentials are encrypted at rest with it, so a deployment without it can store none. The dashboard reads the same fact from the membership context's provider_key_encryption_available, because this endpoint is operator-only and the provider-key pages are read by tenants.")
     version: StrictStr
-    __properties: ClassVar[List[str]] = ["config", "default_pricing", "master_key_source", "mode", "model_discovery", "require_pricing", "secret_key_configured", "version"]
+    __properties: ClassVar[List[str]] = ["config", "default_pricing", "master_key_source", "model_discovery", "require_pricing", "secret_key_configured", "version"]
 
     @field_validator('master_key_source')
     def master_key_source_validate_enum(cls, value):
@@ -106,7 +105,6 @@ class GatewaySettings(BaseModel):
             "config": [ConfigField.from_dict(_item) for _item in obj["config"]] if obj.get("config") is not None else None,
             "default_pricing": obj.get("default_pricing"),
             "master_key_source": obj.get("master_key_source"),
-            "mode": obj.get("mode"),
             "model_discovery": obj.get("model_discovery"),
             "require_pricing": obj.get("require_pricing"),
             "secret_key_configured": obj.get("secret_key_configured"),
