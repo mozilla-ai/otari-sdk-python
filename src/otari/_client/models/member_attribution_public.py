@@ -28,10 +28,11 @@ class MemberAttributionPublic(BaseModel):
     What the gateway identity behind a membership has spent, and may reach.  Deployment-wide facts, so they are withheld from a caller who does not operate the deployment rather than zeroed: ``/api/v1/users`` refuses them, and a zero here would read as a member who has spent nothing.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = None
+    allowed_tools: Optional[List[StrictStr]] = None
     blocked: StrictBool
     reserved: Union[StrictFloat, StrictInt]
     spend: Union[StrictFloat, StrictInt]
-    __properties: ClassVar[List[str]] = ["allowed_models", "blocked", "reserved", "spend"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "blocked", "reserved", "spend"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -77,6 +78,11 @@ class MemberAttributionPublic(BaseModel):
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
 
+        # set to None if allowed_tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
+
         return _dict
 
     @classmethod
@@ -90,6 +96,7 @@ class MemberAttributionPublic(BaseModel):
 
         _obj = cls.model_validate({
             "allowed_models": obj.get("allowed_models"),
+            "allowed_tools": obj.get("allowed_tools"),
             "blocked": obj.get("blocked"),
             "reserved": obj.get("reserved"),
             "spend": obj.get("spend")

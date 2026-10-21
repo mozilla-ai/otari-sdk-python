@@ -30,13 +30,14 @@ class CreateOwnKeyRequest(BaseModel):
     Create-key body for the member surface.  Deliberately not ``CreateKeyRequest``: it carries no ``user_id`` (the owner is always the caller) and no ``exclude_from_budget`` (a member must not exempt their own spend from enforcement).
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = Field(default=None, description="Model allow-list: null = any model your user default allows, [] = deny all, or canonical instance:model entries. A key can only narrow your own model access, never broaden it.")
+    allowed_tools: Optional[List[StrictStr]] = Field(default=None, description="Search tool allow-list for POST /api/v1/search: null = inherit your own, [] = no tool, or search tool names ('*' for every search tool). A key can only narrow your own tool access.")
     capture_agent_telemetry: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide capture_agent_telemetry setting: null (default) inherits it, true always stores this key's coding-agent telemetry, false always discards it.")
     expires_at: Optional[datetime] = Field(default=None, description="Optional expiration timestamp")
     key_name: Optional[StrictStr] = Field(default=None, description="Optional name for the key")
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata")
     reject_user_mismatch: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide reject_user_mismatch setting: null (default) inherits it, true always rejects a request naming a different 'user', false always accepts it. Spend binds to your own user either way.")
     workspace_id: Optional[UUID] = Field(default=None, description="Workspace this key belongs to, which must be one you may see in your active organization. Omitted means that organization's default workspace, refused when you are not a member of it.")
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "expires_at", "key_name", "metadata", "reject_user_mismatch", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "expires_at", "key_name", "metadata", "reject_user_mismatch", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -82,6 +83,11 @@ class CreateOwnKeyRequest(BaseModel):
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
 
+        # set to None if allowed_tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
+
         # set to None if capture_agent_telemetry (nullable) is None
         # and model_fields_set contains the field
         if self.capture_agent_telemetry is None and "capture_agent_telemetry" in self.model_fields_set:
@@ -120,6 +126,7 @@ class CreateOwnKeyRequest(BaseModel):
 
         _obj = cls.model_validate({
             "allowed_models": obj.get("allowed_models"),
+            "allowed_tools": obj.get("allowed_tools"),
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "expires_at": obj.get("expires_at"),
             "key_name": obj.get("key_name"),

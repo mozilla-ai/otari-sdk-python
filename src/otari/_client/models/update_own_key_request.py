@@ -29,13 +29,14 @@ class UpdateOwnKeyRequest(BaseModel):
     Update-key body for the member surface.  The operator's ``UpdateKeyRequest`` minus ``exclude_from_budget``, for the reason the create body gives. The tri-state fields follow the same ``model_fields_set`` idiom: absent = unchanged, null = clear to inherit, a value = pin it.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = None
+    allowed_tools: Optional[List[StrictStr]] = None
     capture_agent_telemetry: Optional[StrictBool] = None
     expires_at: Optional[datetime] = None
     is_active: Optional[StrictBool] = None
     key_name: Optional[StrictStr] = None
     metadata: Optional[Dict[str, Any]] = None
     reject_user_mismatch: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "expires_at", "is_active", "key_name", "metadata", "reject_user_mismatch"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "expires_at", "is_active", "key_name", "metadata", "reject_user_mismatch"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,6 +82,11 @@ class UpdateOwnKeyRequest(BaseModel):
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
 
+        # set to None if allowed_tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
+
         # set to None if capture_agent_telemetry (nullable) is None
         # and model_fields_set contains the field
         if self.capture_agent_telemetry is None and "capture_agent_telemetry" in self.model_fields_set:
@@ -124,6 +130,7 @@ class UpdateOwnKeyRequest(BaseModel):
 
         _obj = cls.model_validate({
             "allowed_models": obj.get("allowed_models"),
+            "allowed_tools": obj.get("allowed_tools"),
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "expires_at": obj.get("expires_at"),
             "is_active": obj.get("is_active"),

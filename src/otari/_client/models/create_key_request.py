@@ -31,6 +31,7 @@ class CreateKeyRequest(BaseModel):
     Request model for creating a new API key.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = Field(default=None, description="Model allow-list: null = any model, [] = deny all, or canonical instance:model entries (with instance:* / instance:prefix* wildcards).")
+    allowed_tools: Optional[List[StrictStr]] = Field(default=None, description="Search tool allow-list for POST /api/v1/search: null = inherit the user's, [] = no tool, or search tool names ('*' for every search tool). A model wildcard never grants a tool.")
     capture_agent_telemetry: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide capture_agent_telemetry setting: null (default) inherits it, true always stores this key's coding-agent telemetry, false always discards it. Covers both behavioral events (tool_result, tool_decision, user_prompt, api_error) from POST /otlp/v1/logs and outcome-metric data points (lines of code, commits, pull requests, active time) from POST /otlp/v1/metrics. Usage capture and billing are unaffected either way.")
     end_user_budget_id: Optional[StrictStr] = Field(default=None, description="Budget each end user this key creates is capped at, unless the request names another with Otari-End-User-Budget. Null leaves end users capped only by this key's own ceiling.")
     end_user_budget_ids: Optional[Annotated[List[StrictStr], Field(max_length=100)]] = Field(default=None, description="Budgets a request may start a new end user on by naming one in Otari-End-User-Budget. Null allows end_user_budget_id alone. When both are set, end_user_budget_id must be on the list.")
@@ -43,7 +44,7 @@ class CreateKeyRequest(BaseModel):
     reject_user_mismatch: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide reject_user_mismatch setting: null (default) inherits it, true always rejects a request naming a different 'user', false always accepts it. Spend binds to this key's own user either way.")
     user_id: Optional[StrictStr] = Field(default=None, description="Optional user ID to associate with this key")
     workspace_id: Optional[UUID] = Field(default=None, description="Workspace this key belongs to, which must be one in the caller's organization. Omitted means that organization's default workspace. A key belongs to exactly one workspace: requests on it are scoped and billed there, so the workspace is read off the key rather than off a request header.")
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "is_service_key", "key_name", "max_end_users", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "is_service_key", "key_name", "max_end_users", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -88,6 +89,11 @@ class CreateKeyRequest(BaseModel):
         # and model_fields_set contains the field
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
+
+        # set to None if allowed_tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
 
         # set to None if capture_agent_telemetry (nullable) is None
         # and model_fields_set contains the field
@@ -147,6 +153,7 @@ class CreateKeyRequest(BaseModel):
 
         _obj = cls.model_validate({
             "allowed_models": obj.get("allowed_models"),
+            "allowed_tools": obj.get("allowed_tools"),
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "end_user_budget_id": obj.get("end_user_budget_id"),
             "end_user_budget_ids": obj.get("end_user_budget_ids"),

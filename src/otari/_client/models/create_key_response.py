@@ -28,6 +28,7 @@ class CreateKeyResponse(BaseModel):
     Response model for creating a new API key.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]]
+    allowed_tools: Optional[List[StrictStr]]
     capture_agent_telemetry: Optional[StrictBool]
     created_at: StrictStr
     end_user_budget_id: Optional[StrictStr]
@@ -45,7 +46,7 @@ class CreateKeyResponse(BaseModel):
     metadata: Dict[str, Any]
     reject_user_mismatch: Optional[StrictBool]
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["allowed_models", "capture_agent_telemetry", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_service_key", "key", "key_name", "key_prefix", "key_suffix", "max_end_users", "metadata", "reject_user_mismatch", "user_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_service_key", "key", "key_name", "key_prefix", "key_suffix", "max_end_users", "metadata", "reject_user_mismatch", "user_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -90,6 +91,11 @@ class CreateKeyResponse(BaseModel):
         # and model_fields_set contains the field
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
+
+        # set to None if allowed_tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
 
         # set to None if capture_agent_telemetry (nullable) is None
         # and model_fields_set contains the field
@@ -149,6 +155,7 @@ class CreateKeyResponse(BaseModel):
 
         _obj = cls.model_validate({
             "allowed_models": obj.get("allowed_models"),
+            "allowed_tools": obj.get("allowed_tools"),
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "created_at": obj.get("created_at"),
             "end_user_budget_id": obj.get("end_user_budget_id"),

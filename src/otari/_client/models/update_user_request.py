@@ -29,10 +29,11 @@ class UpdateUserRequest(BaseModel):
     """ # noqa: E501
     alias: Optional[StrictStr] = None
     allowed_models: Optional[List[StrictStr]] = None
+    allowed_tools: Optional[List[StrictStr]] = None
     blocked: Optional[StrictBool] = None
     budget_id: Optional[StrictStr] = None
     metadata: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "blocked", "budget_id", "metadata"]
+    __properties: ClassVar[List[str]] = ["alias", "allowed_models", "allowed_tools", "blocked", "budget_id", "metadata"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,6 +84,11 @@ class UpdateUserRequest(BaseModel):
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
             _dict['allowed_models'] = None
 
+        # set to None if allowed_tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.allowed_tools is None and "allowed_tools" in self.model_fields_set:
+            _dict['allowed_tools'] = None
+
         # set to None if blocked (nullable) is None
         # and model_fields_set contains the field
         if self.blocked is None and "blocked" in self.model_fields_set:
@@ -112,6 +118,7 @@ class UpdateUserRequest(BaseModel):
         _obj = cls.model_validate({
             "alias": obj.get("alias"),
             "allowed_models": obj.get("allowed_models"),
+            "allowed_tools": obj.get("allowed_tools"),
             "blocked": obj.get("blocked"),
             "budget_id": obj.get("budget_id"),
             "metadata": obj.get("metadata")
