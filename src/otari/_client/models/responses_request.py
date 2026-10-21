@@ -57,7 +57,7 @@ class ResponsesRequest(BaseModel):
     response_format: Optional[Dict[str, Any]] = None
     safety_identifier: Optional[StrictStr] = None
     service_tier: Optional[StrictStr] = None
-    session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for cost attribution (per run, experiment, or conversation). In hybrid mode it is forwarded onto the platform usage report so spend can be sliced by session without standing up OpenTelemetry. Stripped before the request is forwarded upstream to the provider. Has no effect in standalone mode, where there is no platform to report it to.")
+    session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for a run, experiment or conversation, which names the session the request's trace is grouped under. Stripped before the request is forwarded upstream to the provider.")
     store: Optional[StrictBool] = None
     stream: Optional[StrictBool] = False
     stream_options: Optional[Dict[str, Any]] = None

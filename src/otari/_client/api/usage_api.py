@@ -632,7 +632,7 @@ class UsageApi:
     ) -> UsageDeleteResult:
         """Delete Usage Rows
 
-        Delete imported usage rows by explicit ids or by filter (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true`` plus optional ``source`` / ``model`` / ``user_id`` / ``status`` / date range / ``priced``). Only imported rows (``counts_toward_budget = false``) are ever removed: enforced gateway rows and the spend ledger (``users.spend``) are untouched, so a delete can never desync a budget. Master-key only.
+        Delete imported usage rows by explicit ids or by filter.  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true`` plus optional ``source`` / ``model`` / ``user_id`` / ``status`` / date range / ``priced``). Only imported rows (``counts_toward_budget = false``) are ever removed: enforced gateway rows and the spend ledger (``users.spend``) are untouched, so a delete can never desync a budget. Master-key only.
 
         :param usage_delete_request: (required)
         :type usage_delete_request: UsageDeleteRequest
@@ -700,7 +700,7 @@ class UsageApi:
     ) -> ApiResponse[UsageDeleteResult]:
         """Delete Usage Rows
 
-        Delete imported usage rows by explicit ids or by filter (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true`` plus optional ``source`` / ``model`` / ``user_id`` / ``status`` / date range / ``priced``). Only imported rows (``counts_toward_budget = false``) are ever removed: enforced gateway rows and the spend ledger (``users.spend``) are untouched, so a delete can never desync a budget. Master-key only.
+        Delete imported usage rows by explicit ids or by filter.  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true`` plus optional ``source`` / ``model`` / ``user_id`` / ``status`` / date range / ``priced``). Only imported rows (``counts_toward_budget = false``) are ever removed: enforced gateway rows and the spend ledger (``users.spend``) are untouched, so a delete can never desync a budget. Master-key only.
 
         :param usage_delete_request: (required)
         :type usage_delete_request: UsageDeleteRequest
@@ -768,7 +768,7 @@ class UsageApi:
     ) -> RESTResponseType:
         """Delete Usage Rows
 
-        Delete imported usage rows by explicit ids or by filter (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true`` plus optional ``source`` / ``model`` / ``user_id`` / ``status`` / date range / ``priced``). Only imported rows (``counts_toward_budget = false``) are ever removed: enforced gateway rows and the spend ledger (``users.spend``) are untouched, so a delete can never desync a budget. Master-key only.
+        Delete imported usage rows by explicit ids or by filter.  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true`` plus optional ``source`` / ``model`` / ``user_id`` / ``status`` / date range / ``priced``). Only imported rows (``counts_toward_budget = false``) are ever removed: enforced gateway rows and the spend ledger (``users.spend``) are untouched, so a delete can never desync a budget. Master-key only.
 
         :param usage_delete_request: (required)
         :type usage_delete_request: UsageDeleteRequest
@@ -910,7 +910,7 @@ class UsageApi:
     ) -> RequestSettlement:
         """Get Request Settlement
 
-        Look up a request's settled cost by the ``Otari-Request-ID`` it was sent (standalone).  This is how a caller recovers the cost of a request whose response never carried one: a stream that failed or was disconnected mid-response, or a request that errored. An API key sees only the requests it made; the master key sees any. Returns 404 until the request has settled (its rows are written by a background writer, so a lookup made the instant a stream closes can precede them), and for an id that is unknown or belongs to another key, with no way to tell those apart. A stream that ended before the provider reported usage, and ran no gateway tools, writes no row, so its id stays 404.
+        Look up a request's settled cost by the ``Otari-Request-ID`` it was sent.  This is how a caller recovers the cost of a request whose response never carried one: a stream that failed or was disconnected mid-response, or a request that errored. An API key sees only the requests it made; the master key sees any. Returns 404 until the request has settled (its rows are written by a background writer, so a lookup made the instant a stream closes can precede them), and for an id that is unknown or belongs to another key, with no way to tell those apart. A stream that ended before the provider reported usage, and ran no gateway tools, writes no row, so its id stays 404.
 
         :param request_id: (required)
         :type request_id: str
@@ -978,7 +978,7 @@ class UsageApi:
     ) -> ApiResponse[RequestSettlement]:
         """Get Request Settlement
 
-        Look up a request's settled cost by the ``Otari-Request-ID`` it was sent (standalone).  This is how a caller recovers the cost of a request whose response never carried one: a stream that failed or was disconnected mid-response, or a request that errored. An API key sees only the requests it made; the master key sees any. Returns 404 until the request has settled (its rows are written by a background writer, so a lookup made the instant a stream closes can precede them), and for an id that is unknown or belongs to another key, with no way to tell those apart. A stream that ended before the provider reported usage, and ran no gateway tools, writes no row, so its id stays 404.
+        Look up a request's settled cost by the ``Otari-Request-ID`` it was sent.  This is how a caller recovers the cost of a request whose response never carried one: a stream that failed or was disconnected mid-response, or a request that errored. An API key sees only the requests it made; the master key sees any. Returns 404 until the request has settled (its rows are written by a background writer, so a lookup made the instant a stream closes can precede them), and for an id that is unknown or belongs to another key, with no way to tell those apart. A stream that ended before the provider reported usage, and ran no gateway tools, writes no row, so its id stays 404.
 
         :param request_id: (required)
         :type request_id: str
@@ -1046,7 +1046,7 @@ class UsageApi:
     ) -> RESTResponseType:
         """Get Request Settlement
 
-        Look up a request's settled cost by the ``Otari-Request-ID`` it was sent (standalone).  This is how a caller recovers the cost of a request whose response never carried one: a stream that failed or was disconnected mid-response, or a request that errored. An API key sees only the requests it made; the master key sees any. Returns 404 until the request has settled (its rows are written by a background writer, so a lookup made the instant a stream closes can precede them), and for an id that is unknown or belongs to another key, with no way to tell those apart. A stream that ended before the provider reported usage, and ran no gateway tools, writes no row, so its id stays 404.
+        Look up a request's settled cost by the ``Otari-Request-ID`` it was sent.  This is how a caller recovers the cost of a request whose response never carried one: a stream that failed or was disconnected mid-response, or a request that errored. An API key sees only the requests it made; the master key sees any. Returns 404 until the request has settled (its rows are written by a background writer, so a lookup made the instant a stream closes can precede them), and for an id that is unknown or belongs to another key, with no way to tell those apart. A stream that ended before the provider reported usage, and ran no gateway tools, writes no row, so its id stays 404.
 
         :param request_id: (required)
         :type request_id: str
@@ -1175,7 +1175,7 @@ class UsageApi:
     ) -> ExternalIngestResult:
         """Ingest External Usage
 
-        Ingest a batch of externally-observed usage events (standalone).  Authenticated with either an API key or the master key. Usage binds to the authenticated principal: an API key attributes to its own user (and stamps its id on the rows); the master key may name any user via ``user_id``. Records subscription-backed usage (e.g. Claude Code) as usage-log rows tagged with their ``source``, priced at the effective API rate for each event's timestamp. Imported usage is real cost, but never counts toward budgets or mutates ``users.spend`` (it is retrospective, so it cannot be reserved). Idempotent by ``(source, source_event_id)``. The payload is content-free; any prompt/completion/tool field is rejected (422), not stored.
+        Ingest a batch of externally-observed usage events.  Authenticated with either an API key or the master key. Usage binds to the authenticated principal: an API key attributes to its own user (and stamps its id on the rows); the master key may name any user via ``user_id``. Records subscription-backed usage (e.g. Claude Code) as usage-log rows tagged with their ``source``, priced at the effective API rate for each event's timestamp. Imported usage is real cost, but never counts toward budgets or mutates ``users.spend`` (it is retrospective, so it cannot be reserved). Idempotent by ``(source, source_event_id)``. The payload is content-free; any prompt/completion/tool field is rejected (422), not stored.
 
         :param external_events_request: (required)
         :type external_events_request: ExternalEventsRequest
@@ -1243,7 +1243,7 @@ class UsageApi:
     ) -> ApiResponse[ExternalIngestResult]:
         """Ingest External Usage
 
-        Ingest a batch of externally-observed usage events (standalone).  Authenticated with either an API key or the master key. Usage binds to the authenticated principal: an API key attributes to its own user (and stamps its id on the rows); the master key may name any user via ``user_id``. Records subscription-backed usage (e.g. Claude Code) as usage-log rows tagged with their ``source``, priced at the effective API rate for each event's timestamp. Imported usage is real cost, but never counts toward budgets or mutates ``users.spend`` (it is retrospective, so it cannot be reserved). Idempotent by ``(source, source_event_id)``. The payload is content-free; any prompt/completion/tool field is rejected (422), not stored.
+        Ingest a batch of externally-observed usage events.  Authenticated with either an API key or the master key. Usage binds to the authenticated principal: an API key attributes to its own user (and stamps its id on the rows); the master key may name any user via ``user_id``. Records subscription-backed usage (e.g. Claude Code) as usage-log rows tagged with their ``source``, priced at the effective API rate for each event's timestamp. Imported usage is real cost, but never counts toward budgets or mutates ``users.spend`` (it is retrospective, so it cannot be reserved). Idempotent by ``(source, source_event_id)``. The payload is content-free; any prompt/completion/tool field is rejected (422), not stored.
 
         :param external_events_request: (required)
         :type external_events_request: ExternalEventsRequest
@@ -1311,7 +1311,7 @@ class UsageApi:
     ) -> RESTResponseType:
         """Ingest External Usage
 
-        Ingest a batch of externally-observed usage events (standalone).  Authenticated with either an API key or the master key. Usage binds to the authenticated principal: an API key attributes to its own user (and stamps its id on the rows); the master key may name any user via ``user_id``. Records subscription-backed usage (e.g. Claude Code) as usage-log rows tagged with their ``source``, priced at the effective API rate for each event's timestamp. Imported usage is real cost, but never counts toward budgets or mutates ``users.spend`` (it is retrospective, so it cannot be reserved). Idempotent by ``(source, source_event_id)``. The payload is content-free; any prompt/completion/tool field is rejected (422), not stored.
+        Ingest a batch of externally-observed usage events.  Authenticated with either an API key or the master key. Usage binds to the authenticated principal: an API key attributes to its own user (and stamps its id on the rows); the master key may name any user via ``user_id``. Records subscription-backed usage (e.g. Claude Code) as usage-log rows tagged with their ``source``, priced at the effective API rate for each event's timestamp. Imported usage is real cost, but never counts toward budgets or mutates ``users.spend`` (it is retrospective, so it cannot be reserved). Idempotent by ``(source, source_event_id)``. The payload is content-free; any prompt/completion/tool field is rejected (422), not stored.
 
         :param external_events_request: (required)
         :type external_events_request: ExternalEventsRequest
@@ -2296,7 +2296,7 @@ class UsageApi:
     ) -> UsageSetPriceResult:
         """Set Usage Price Rows
 
-        Set the cost of imported usage rows from manual per-1M rates (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true``). Cost / billing meters / pricing breakdown are recomputed from each row's own token counts at the supplied ``input`` / ``output`` / ``cache_read`` / ``cache_write`` per-1M rates (manual rates, not a recompute from configured pricing). Only imported rows (``counts_toward_budget = false``) are touched, so ``users.spend`` is never affected. Master-key only.
+        Set the cost of imported usage rows from manual per-1M rates.  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true``). Cost / billing meters / pricing breakdown are recomputed from each row's own token counts at the supplied ``input`` / ``output`` / ``cache_read`` / ``cache_write`` per-1M rates (manual rates, not a recompute from configured pricing). Only imported rows (``counts_toward_budget = false``) are touched, so ``users.spend`` is never affected. Master-key only.
 
         :param usage_set_price_request: (required)
         :type usage_set_price_request: UsageSetPriceRequest
@@ -2364,7 +2364,7 @@ class UsageApi:
     ) -> ApiResponse[UsageSetPriceResult]:
         """Set Usage Price Rows
 
-        Set the cost of imported usage rows from manual per-1M rates (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true``). Cost / billing meters / pricing breakdown are recomputed from each row's own token counts at the supplied ``input`` / ``output`` / ``cache_read`` / ``cache_write`` per-1M rates (manual rates, not a recompute from configured pricing). Only imported rows (``counts_toward_budget = false``) are touched, so ``users.spend`` is never affected. Master-key only.
+        Set the cost of imported usage rows from manual per-1M rates.  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true``). Cost / billing meters / pricing breakdown are recomputed from each row's own token counts at the supplied ``input`` / ``output`` / ``cache_read`` / ``cache_write`` per-1M rates (manual rates, not a recompute from configured pricing). Only imported rows (``counts_toward_budget = false``) are touched, so ``users.spend`` is never affected. Master-key only.
 
         :param usage_set_price_request: (required)
         :type usage_set_price_request: UsageSetPriceRequest
@@ -2432,7 +2432,7 @@ class UsageApi:
     ) -> RESTResponseType:
         """Set Usage Price Rows
 
-        Set the cost of imported usage rows from manual per-1M rates (standalone).  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true``). Cost / billing meters / pricing breakdown are recomputed from each row's own token counts at the supplied ``input`` / ``output`` / ``cache_read`` / ``cache_write`` per-1M rates (manual rates, not a recompute from configured pricing). Only imported rows (``counts_toward_budget = false``) are touched, so ``users.spend`` is never affected. Master-key only.
+        Set the cost of imported usage rows from manual per-1M rates.  Target either the current selection (``ids``) or everything matching a filter (``by_filter: true``). Cost / billing meters / pricing breakdown are recomputed from each row's own token counts at the supplied ``input`` / ``output`` / ``cache_read`` / ``cache_write`` per-1M rates (manual rates, not a recompute from configured pricing). Only imported rows (``counts_toward_budget = false``) are touched, so ``users.spend`` is never affected. Master-key only.
 
         :param usage_set_price_request: (required)
         :type usage_set_price_request: UsageSetPriceRequest
