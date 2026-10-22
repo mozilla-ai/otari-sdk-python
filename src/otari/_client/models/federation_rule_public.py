@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,8 +34,9 @@ class FederationRulePublic(BaseModel):
     email: Optional[StrictStr]
     id: StrictStr
     issuer: StrictStr
+    member_managed: StrictBool = Field(description="Whether a member gave the rule to their own key: it then matches only in the token exchange.")
     subject: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "audience", "created_at", "email", "id", "issuer", "subject"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "audience", "created_at", "email", "id", "issuer", "member_managed", "subject"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -104,6 +105,7 @@ class FederationRulePublic(BaseModel):
             "email": obj.get("email"),
             "id": obj.get("id"),
             "issuer": obj.get("issuer"),
+            "member_managed": obj.get("member_managed"),
             "subject": obj.get("subject")
         })
         return _obj

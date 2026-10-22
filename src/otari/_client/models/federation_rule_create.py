@@ -30,7 +30,7 @@ class FederationRuleCreate(BaseModel):
     """ # noqa: E501
     audience: Annotated[str, Field(min_length=1, strict=True, max_length=512)] = Field(description="A value the token's 'aud' must contain.")
     email: Optional[Annotated[str, Field(min_length=3, strict=True, max_length=320)]] = Field(default=None, description="The token's verified 'email', when the rule names one. Compared without regard to case.")
-    issuer: Annotated[str, Field(min_length=1, strict=True, max_length=512)] = Field(description="The token's 'iss', one of the deployment's federation_issuers.")
+    issuer: Annotated[str, Field(min_length=1, strict=True, max_length=512)] = Field(description="The token's 'iss'. On an operator's rule, one of the deployment's federation_issuers; on a member's own key, any https issuer, whose discovery document and signing keys are fetched only from a public host.")
     subject: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = Field(default=None, description="The token's 'sub', when the rule names one.")
     __properties: ClassVar[List[str]] = ["audience", "email", "issuer", "subject"]
 

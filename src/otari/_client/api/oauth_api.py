@@ -55,7 +55,7 @@ class OauthApi:
     ) -> FederationTokenResponse:
         """Exchange Token
 
-        Exchange an identity token for an access token (the RFC 7523 ``jwt-bearer`` grant).  The identity token must verify against an issuer on ``federation_issuers`` and match the federation rule ``federation_rule_id`` names. ``organization_id``, ``workspace_id`` and ``service_account_id``, where set, must be the UUIDs of the rule's key's organization and workspace and the key's id. The access token authenticates as that key until ``expires_in`` runs out, the rule is deleted or the key stops passing its checks.  Every refusal of the identity token answers 401 ``invalid_grant`` with the same description.
+        Exchange an identity token for an access token (the RFC 7523 ``jwt-bearer`` grant).  The identity token must match the federation rule ``federation_rule_id`` names and verify against its issuer: one on ``federation_issuers`` for an operator's rule, the one the rule names for a member's. ``organization_id``, ``workspace_id`` and ``service_account_id``, where set, must be the UUIDs of the rule's key's organization and workspace and the key's id. The access token authenticates as that key until ``expires_in`` runs out, the rule is deleted or the key stops passing its checks.  Every refusal of the identity token answers 401 ``invalid_grant`` with the same description.
 
         :param federation_token_request: (required)
         :type federation_token_request: FederationTokenRequest
@@ -126,7 +126,7 @@ class OauthApi:
     ) -> ApiResponse[FederationTokenResponse]:
         """Exchange Token
 
-        Exchange an identity token for an access token (the RFC 7523 ``jwt-bearer`` grant).  The identity token must verify against an issuer on ``federation_issuers`` and match the federation rule ``federation_rule_id`` names. ``organization_id``, ``workspace_id`` and ``service_account_id``, where set, must be the UUIDs of the rule's key's organization and workspace and the key's id. The access token authenticates as that key until ``expires_in`` runs out, the rule is deleted or the key stops passing its checks.  Every refusal of the identity token answers 401 ``invalid_grant`` with the same description.
+        Exchange an identity token for an access token (the RFC 7523 ``jwt-bearer`` grant).  The identity token must match the federation rule ``federation_rule_id`` names and verify against its issuer: one on ``federation_issuers`` for an operator's rule, the one the rule names for a member's. ``organization_id``, ``workspace_id`` and ``service_account_id``, where set, must be the UUIDs of the rule's key's organization and workspace and the key's id. The access token authenticates as that key until ``expires_in`` runs out, the rule is deleted or the key stops passing its checks.  Every refusal of the identity token answers 401 ``invalid_grant`` with the same description.
 
         :param federation_token_request: (required)
         :type federation_token_request: FederationTokenRequest
@@ -197,7 +197,7 @@ class OauthApi:
     ) -> RESTResponseType:
         """Exchange Token
 
-        Exchange an identity token for an access token (the RFC 7523 ``jwt-bearer`` grant).  The identity token must verify against an issuer on ``federation_issuers`` and match the federation rule ``federation_rule_id`` names. ``organization_id``, ``workspace_id`` and ``service_account_id``, where set, must be the UUIDs of the rule's key's organization and workspace and the key's id. The access token authenticates as that key until ``expires_in`` runs out, the rule is deleted or the key stops passing its checks.  Every refusal of the identity token answers 401 ``invalid_grant`` with the same description.
+        Exchange an identity token for an access token (the RFC 7523 ``jwt-bearer`` grant).  The identity token must match the federation rule ``federation_rule_id`` names and verify against its issuer: one on ``federation_issuers`` for an operator's rule, the one the rule names for a member's. ``organization_id``, ``workspace_id`` and ``service_account_id``, where set, must be the UUIDs of the rule's key's organization and workspace and the key's id. The access token authenticates as that key until ``expires_in`` runs out, the rule is deleted or the key stops passing its checks.  Every refusal of the identity token answers 401 ``invalid_grant`` with the same description.
 
         :param federation_token_request: (required)
         :type federation_token_request: FederationTokenRequest

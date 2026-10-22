@@ -223,11 +223,15 @@ from otari._client.models.federation_rule_public import FederationRulePublic
 from otari._client.models.federation_token_request import FederationTokenRequest
 from otari._client.models.federation_token_response import FederationTokenResponse
 from otari._client.models.feedback_submission import FeedbackSubmission
+from otari._client.models.gate_definition_request import GateDefinitionRequest
 from otari._client.models.gate_result_response import GateResultResponse
+from otari._client.models.gate_summary_public import GateSummaryPublic
 from otari._client.models.gateway_settings import GatewaySettings
 from otari._client.models.guardrail_catalog import GuardrailCatalog
 from otari._client.models.guardrail_category import GuardrailCategory
 from otari._client.models.guardrail_config import GuardrailConfig
+from otari._client.models.guardrail_definition_request import GuardrailDefinitionRequest
+from otari._client.models.guardrail_definition_response import GuardrailDefinitionResponse
 from otari._client.models.guardrail_parameter_spec import GuardrailParameterSpec
 from otari._client.models.guardrail_profile_spec import GuardrailProfileSpec
 from otari._client.models.guardrail_stage import GuardrailStage
@@ -437,6 +441,7 @@ from otari._client.models.message_response import MessageResponse
 from otari._client.models.messages_request import MessagesRequest
 from otari._client.models.model import Model
 from otari._client.models.model1 import Model1
+from otari._client.models.model_architecture import ModelArchitecture
 from otari._client.models.model_false import ModelFalse
 from otari._client.models.model_list_response import ModelListResponse
 from otari._client.models.model_metadata import ModelMetadata
