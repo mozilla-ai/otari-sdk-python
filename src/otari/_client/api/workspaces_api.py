@@ -66,7 +66,7 @@ class WorkspacesApi:
     ) -> WorkspaceMemberPublic:
         """Add Workspace Member
 
-        Add an existing organization member to a workspace.
+        Add an existing organization member to a workspace.  The 404 for a workspace deleted during the add describes PostgreSQL. SQLite does not name the foreign key it enforced, so it surfaces that race as a 500.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -108,6 +108,8 @@ class WorkspacesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "WorkspaceMemberPublic",
+            '404': "OrganizationRefusal",
+            '409': "OrganizationRefusal",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -142,7 +144,7 @@ class WorkspacesApi:
     ) -> ApiResponse[WorkspaceMemberPublic]:
         """Add Workspace Member
 
-        Add an existing organization member to a workspace.
+        Add an existing organization member to a workspace.  The 404 for a workspace deleted during the add describes PostgreSQL. SQLite does not name the foreign key it enforced, so it surfaces that race as a 500.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -184,6 +186,8 @@ class WorkspacesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "WorkspaceMemberPublic",
+            '404': "OrganizationRefusal",
+            '409': "OrganizationRefusal",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -218,7 +222,7 @@ class WorkspacesApi:
     ) -> RESTResponseType:
         """Add Workspace Member
 
-        Add an existing organization member to a workspace.
+        Add an existing organization member to a workspace.  The 404 for a workspace deleted during the add describes PostgreSQL. SQLite does not name the foreign key it enforced, so it surfaces that race as a 500.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -260,6 +264,8 @@ class WorkspacesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "WorkspaceMemberPublic",
+            '404': "OrganizationRefusal",
+            '409': "OrganizationRefusal",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
