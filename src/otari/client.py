@@ -54,6 +54,7 @@ from otari._client.models.rerank_request import RerankRequest
 from otari._streaming import iter_sse
 from otari.control_plane import ControlPlane
 from otari.errors import OtariError
+from otari.mcp import MCP
 from otari.response_metadata import OtariResponse, OtariStream
 
 if TYPE_CHECKING:
@@ -101,7 +102,7 @@ class OtariClient(_BaseOtariClient):
         admin_key: Master/admin key for the control-plane endpoints. Falls back
             to ``GATEWAY_ADMIN_KEY`` (or the platform token in platform mode).
         default_headers: Additional default headers sent with every request.
-        timeout: Per-request timeout (seconds) for the streaming shim.
+        timeout: Per-request timeout (seconds) for streaming and MCP requests.
     """
 
     def __init__(
@@ -128,8 +129,9 @@ class OtariClient(_BaseOtariClient):
         api_any = cast("Any", self._api)
         for name, value in self._default_headers.items():
             api_any.set_default_header(name, value)
-        # Raw httpx client used only for the SSE streaming shim (the generated
-        # core buffers and cannot stream).
+        # HTTPX defaults to retries=0 (including environment proxy transports).
+        # MCP tests count attempts below httpcore's retry loop. Keep the default
+        # transport: supplying a custom one disables environment proxy discovery.
         self._http = httpx.Client(timeout=timeout)
 
         self._chat = ChatApi(self._api)
@@ -141,6 +143,11 @@ class OtariClient(_BaseOtariClient):
         self._models = ModelsApi(self._api)
         self._images = ImagesApi(self._api)
         self._batches = BatchesApi(self._api)
+
+    @cached_property
+    def mcp(self) -> MCP:
+        """Stored-server tool discovery and single-attempt authorized execution."""
+        return MCP(self)
 
     @cached_property
     def control_plane(self) -> ControlPlane:

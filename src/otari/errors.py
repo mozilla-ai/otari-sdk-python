@@ -7,6 +7,8 @@ so callers can handle specific failure modes.
 
 from __future__ import annotations
 
+from typing import Literal
+
 
 class OtariError(Exception):
     """Base exception for all otari errors.
@@ -38,6 +40,37 @@ class OtariError(Exception):
         if self.provider_name:
             return f"[{self.provider_name}] {self.message}"
         return self.message
+
+
+class MCPError(OtariError):
+    """Caller-orchestrated MCP failure, distinct from inference/batch errors.
+
+    ``code`` is absent without a typed gateway response; ``request_id`` may
+    still be available from its response header.
+    ``execution_state`` is conservative: ``outcome_unknown`` means the remote
+    tool may already have run; ``completed`` preserves a known completed
+    execution. No state triggers an SDK retry.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        execution_state: Literal["not_started", "outcome_unknown", "completed"],
+        code: str | None = None,
+        request_id: str | None = None,
+        status_code: int | None = None,
+        retry_after: str | None = None,
+    ) -> None:
+        super().__init__(message, status_code=status_code, provider_name="gateway")
+        self.code = code
+        self.execution_state = execution_state
+        self.request_id = request_id
+        self.retry_after = retry_after
+
+
+class MCPOutcomeUnknownError(MCPError):
+    """Execution may have occurred. Do not retry or fall back to direct MCP."""
 
 
 class AuthenticationError(OtariError):
