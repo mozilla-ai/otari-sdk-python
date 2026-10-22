@@ -53,6 +53,7 @@ class ChatCompletionRequest(BaseModel):
     prompt_cache_key: Optional[StrictStr] = None
     reasoning_effort: Optional[StrictStr] = None
     response_format: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
+    safety_identifier: Optional[StrictStr] = Field(default=None, description="A stable identifier for the end user behind the request, used as the tag the provider's end-user identifier is derived from. Wins over `user` for that, and is never sent upstream. The dashboard's Playground ignores it.")
     seed: Optional[StrictInt] = None
     service_tier: Optional[StrictStr] = None
     session_label: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Optional caller-supplied label for a run, experiment or conversation, which names the session the request's trace is grouped under. Stripped before the request is forwarded upstream to the provider.")
@@ -66,7 +67,7 @@ class ChatCompletionRequest(BaseModel):
     top_logprobs: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     user: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "n", "parallel_tool_calls", "presence_penalty", "prompt_cache_key", "reasoning_effort", "response_format", "seed", "service_tier", "session_label", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
+    __properties: ClassVar[List[str]] = ["frequency_penalty", "guardrails", "logit_bias", "logprobs", "max_completion_tokens", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "n", "parallel_tool_calls", "presence_penalty", "prompt_cache_key", "reasoning_effort", "response_format", "safety_identifier", "seed", "service_tier", "session_label", "stop", "stream", "stream_options", "temperature", "tool_choice", "tools", "tools_header", "top_logprobs", "top_p", "user"]
 
     @field_validator('reasoning_effort')
     def reasoning_effort_validate_enum(cls, value):
@@ -231,6 +232,11 @@ class ChatCompletionRequest(BaseModel):
         if self.response_format is None and "response_format" in self.model_fields_set:
             _dict['response_format'] = None
 
+        # set to None if safety_identifier (nullable) is None
+        # and model_fields_set contains the field
+        if self.safety_identifier is None and "safety_identifier" in self.model_fields_set:
+            _dict['safety_identifier'] = None
+
         # set to None if seed (nullable) is None
         # and model_fields_set contains the field
         if self.seed is None and "seed" in self.model_fields_set:
@@ -321,6 +327,7 @@ class ChatCompletionRequest(BaseModel):
             "prompt_cache_key": obj.get("prompt_cache_key"),
             "reasoning_effort": obj.get("reasoning_effort"),
             "response_format": obj.get("response_format"),
+            "safety_identifier": obj.get("safety_identifier"),
             "seed": obj.get("seed"),
             "service_tier": obj.get("service_tier"),
             "session_label": obj.get("session_label"),
