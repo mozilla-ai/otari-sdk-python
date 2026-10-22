@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
+from otari._client.models.gate_summary_public import GateSummaryPublic
 from otari._client.models.span_public import SpanPublic
 from otari._client.models.trace_summary_public import TraceSummaryPublic
 from otari._client.models.turn_public import TurnPublic
@@ -30,12 +31,13 @@ class TraceDetailPublic(BaseModel):
     """
     TraceDetailPublic
     """ # noqa: E501
+    gates: List[GateSummaryPublic] = Field(description="Each agent guardrail gate a coding agent's hook reported, the ones that did something first.")
     spans: List[SpanPublic]
     state: StrictStr
     summary: TraceSummaryPublic
     truncated: StrictBool = Field(description="True when the session holds more spans than one read returns.")
     turns: List[TurnPublic]
-    __properties: ClassVar[List[str]] = ["spans", "state", "summary", "truncated", "turns"]
+    __properties: ClassVar[List[str]] = ["gates", "spans", "state", "summary", "truncated", "turns"]
 
     @field_validator('state')
     def state_validate_enum(cls, value):
@@ -83,6 +85,13 @@ class TraceDetailPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in gates (list)
+        _items = []
+        if self.gates:
+            for _item_gates in self.gates:
+                if _item_gates:
+                    _items.append(_item_gates.to_dict())
+            _dict['gates'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in spans (list)
         _items = []
         if self.spans:
@@ -112,6 +121,7 @@ class TraceDetailPublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "gates": [GateSummaryPublic.from_dict(_item) for _item in obj["gates"]] if obj.get("gates") is not None else None,
             "spans": [SpanPublic.from_dict(_item) for _item in obj["spans"]] if obj.get("spans") is not None else None,
             "state": obj.get("state"),
             "summary": TraceSummaryPublic.from_dict(obj["summary"]) if obj.get("summary") is not None else None,

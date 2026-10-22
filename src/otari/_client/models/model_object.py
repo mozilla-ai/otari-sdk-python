@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.model_architecture import ModelArchitecture
 from otari._client.models.model_pricing_info import ModelPricingInfo
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,16 +29,19 @@ class ModelObject(BaseModel):
     """
     OpenAI-compatible model object.
     """ # noqa: E501
+    architecture: Optional[ModelArchitecture] = None
     context_window: Optional[StrictInt] = None
     created: StrictInt
     deployment_managed: Optional[StrictBool] = False
     id: StrictStr
     max_output_tokens: Optional[StrictInt] = None
+    name: Optional[StrictStr] = None
     object: Optional[StrictStr] = 'model'
     owned_by: StrictStr
     pricing: Optional[ModelPricingInfo] = None
     pricing_source: Optional[StrictStr] = 'none'
-    __properties: ClassVar[List[str]] = ["context_window", "created", "deployment_managed", "id", "max_output_tokens", "object", "owned_by", "pricing", "pricing_source"]
+    supported_parameters: Optional[List[StrictStr]] = None
+    __properties: ClassVar[List[str]] = ["architecture", "context_window", "created", "deployment_managed", "id", "max_output_tokens", "name", "object", "owned_by", "pricing", "pricing_source", "supported_parameters"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -78,9 +82,17 @@ class ModelObject(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of architecture
+        if self.architecture:
+            _dict['architecture'] = self.architecture.to_dict()
         # override the default output from pydantic by calling `to_dict()` of pricing
         if self.pricing:
             _dict['pricing'] = self.pricing.to_dict()
+        # set to None if architecture (nullable) is None
+        # and model_fields_set contains the field
+        if self.architecture is None and "architecture" in self.model_fields_set:
+            _dict['architecture'] = None
+
         # set to None if context_window (nullable) is None
         # and model_fields_set contains the field
         if self.context_window is None and "context_window" in self.model_fields_set:
@@ -91,10 +103,20 @@ class ModelObject(BaseModel):
         if self.max_output_tokens is None and "max_output_tokens" in self.model_fields_set:
             _dict['max_output_tokens'] = None
 
+        # set to None if name (nullable) is None
+        # and model_fields_set contains the field
+        if self.name is None and "name" in self.model_fields_set:
+            _dict['name'] = None
+
         # set to None if pricing (nullable) is None
         # and model_fields_set contains the field
         if self.pricing is None and "pricing" in self.model_fields_set:
             _dict['pricing'] = None
+
+        # set to None if supported_parameters (nullable) is None
+        # and model_fields_set contains the field
+        if self.supported_parameters is None and "supported_parameters" in self.model_fields_set:
+            _dict['supported_parameters'] = None
 
         return _dict
 
@@ -108,15 +130,18 @@ class ModelObject(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "architecture": ModelArchitecture.from_dict(obj["architecture"]) if obj.get("architecture") is not None else None,
             "context_window": obj.get("context_window"),
             "created": obj.get("created"),
             "deployment_managed": obj.get("deployment_managed") if obj.get("deployment_managed") is not None else False,
             "id": obj.get("id"),
             "max_output_tokens": obj.get("max_output_tokens"),
+            "name": obj.get("name"),
             "object": obj.get("object") if obj.get("object") is not None else 'model',
             "owned_by": obj.get("owned_by"),
             "pricing": ModelPricingInfo.from_dict(obj["pricing"]) if obj.get("pricing") is not None else None,
-            "pricing_source": obj.get("pricing_source") if obj.get("pricing_source") is not None else 'none'
+            "pricing_source": obj.get("pricing_source") if obj.get("pricing_source") is not None else 'none',
+            "supported_parameters": obj.get("supported_parameters")
         })
         return _obj
 

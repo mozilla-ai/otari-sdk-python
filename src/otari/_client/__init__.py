@@ -299,11 +299,15 @@ __all__ = [
     "FederationTokenRequest",
     "FederationTokenResponse",
     "FeedbackSubmission",
+    "GateDefinitionRequest",
     "GateResultResponse",
+    "GateSummaryPublic",
     "GatewaySettings",
     "GuardrailCatalog",
     "GuardrailCategory",
     "GuardrailConfig",
+    "GuardrailDefinitionRequest",
+    "GuardrailDefinitionResponse",
     "GuardrailParameterSpec",
     "GuardrailProfileSpec",
     "GuardrailStage",
@@ -513,6 +517,7 @@ __all__ = [
     "MessagesRequest",
     "Model",
     "Model1",
+    "ModelArchitecture",
     "ModelFalse",
     "ModelListResponse",
     "ModelMetadata",
@@ -1070,11 +1075,15 @@ from otari._client.models.federation_rule_public import FederationRulePublic as 
 from otari._client.models.federation_token_request import FederationTokenRequest as FederationTokenRequest
 from otari._client.models.federation_token_response import FederationTokenResponse as FederationTokenResponse
 from otari._client.models.feedback_submission import FeedbackSubmission as FeedbackSubmission
+from otari._client.models.gate_definition_request import GateDefinitionRequest as GateDefinitionRequest
 from otari._client.models.gate_result_response import GateResultResponse as GateResultResponse
+from otari._client.models.gate_summary_public import GateSummaryPublic as GateSummaryPublic
 from otari._client.models.gateway_settings import GatewaySettings as GatewaySettings
 from otari._client.models.guardrail_catalog import GuardrailCatalog as GuardrailCatalog
 from otari._client.models.guardrail_category import GuardrailCategory as GuardrailCategory
 from otari._client.models.guardrail_config import GuardrailConfig as GuardrailConfig
+from otari._client.models.guardrail_definition_request import GuardrailDefinitionRequest as GuardrailDefinitionRequest
+from otari._client.models.guardrail_definition_response import GuardrailDefinitionResponse as GuardrailDefinitionResponse
 from otari._client.models.guardrail_parameter_spec import GuardrailParameterSpec as GuardrailParameterSpec
 from otari._client.models.guardrail_profile_spec import GuardrailProfileSpec as GuardrailProfileSpec
 from otari._client.models.guardrail_stage import GuardrailStage as GuardrailStage
@@ -1284,6 +1293,7 @@ from otari._client.models.message_response import MessageResponse as MessageResp
 from otari._client.models.messages_request import MessagesRequest as MessagesRequest
 from otari._client.models.model import Model as Model
 from otari._client.models.model1 import Model1 as Model1
+from otari._client.models.model_architecture import ModelArchitecture as ModelArchitecture
 from otari._client.models.model_false import ModelFalse as ModelFalse
 from otari._client.models.model_list_response import ModelListResponse as ModelListResponse
 from otari._client.models.model_metadata import ModelMetadata as ModelMetadata

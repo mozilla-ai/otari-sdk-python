@@ -28,6 +28,7 @@ class DeploymentBootstrap(BaseModel):
     What the dashboard shell needs before it can render anything.
     """ # noqa: E501
     docs_url: Optional[StrictStr] = Field(description="Where this deployment's documentation lives, when it is not docs.otari.ai. Set, the dashboard's Documentation links open it in a new tab; null, they open https://docs.otari.ai/. A link target an operator configured, validated at startup as an absolute http(s) URL carrying no credential, since this response is unauthenticated.")
+    federation_member_rules: StrictBool = Field(description="Whether an organization's owners and admins may give their own API keys federation rules (the federation_member_rules setting), so the dashboard offers workload identity on their keys.")
     feedback_enabled: StrictBool = Field(description="Whether this deployment accepts deliberate feedback submissions.")
     mail_ready: StrictBool = Field(description="Whether this deployment can deliver a message carrying a link back to itself (an invitation's accept link, and the verification and reset links to come), not merely whether a transport is configured: it also needs to know its own public URL to put in one. Lets the dashboard disable or hide a mail-dependent affordance instead of offering one that would fail at send time. Every message this deployment sends carries such a link, which is why this is one flag and not one per feature.")
     maintenance_mode: StrictBool = Field(description="Whether this deployment is refusing new dashboard sign-ins while an operator redeploys it. The sign-in screen says so rather than presenting a form whose only outcome is a 503. Sessions already issued keep working, and the API is unaffected.")
@@ -41,7 +42,7 @@ class DeploymentBootstrap(BaseModel):
     site_url: Optional[StrictStr] = Field(description="Where this deployment's public website lives. Set, the logo on the pages a visitor reaches without an account links to it; null, it links to the public catalog where public_catalog is true, and is not a link otherwise. A link target an operator configured, validated at startup as an absolute http(s) URL carrying no credential, since this response is unauthenticated.")
     surfaces: List[StrictStr] = Field(description="Management API groups this deployment serves, sorted, which is what its dashboard pages gate on: a fixed set plus one for each enabled feature. Named surfaces, not capabilities: capability is otari.ai's word for the entitlement (licensing) axis.")
     terms_url: Optional[StrictStr] = Field(description="Where this deployment's terms of service live. Set, the account menu carries a Terms of service row pointing at them; null, no address is configured and the menu carries no such row. A link target an operator configured, validated at startup as an absolute http(s) URL carrying no credential, since this response is unauthenticated.")
-    __properties: ClassVar[List[str]] = ["docs_url", "feedback_enabled", "mail_ready", "maintenance_mode", "oauth_providers", "open_signup", "passkeys_enabled", "passkeys_ready", "privacy_url", "public_catalog", "sign_in_methods", "site_url", "surfaces", "terms_url"]
+    __properties: ClassVar[List[str]] = ["docs_url", "federation_member_rules", "feedback_enabled", "mail_ready", "maintenance_mode", "oauth_providers", "open_signup", "passkeys_enabled", "passkeys_ready", "privacy_url", "public_catalog", "sign_in_methods", "site_url", "surfaces", "terms_url"]
 
     @field_validator('sign_in_methods')
     def sign_in_methods_validate_enum(cls, value):
@@ -123,6 +124,7 @@ class DeploymentBootstrap(BaseModel):
 
         _obj = cls.model_validate({
             "docs_url": obj.get("docs_url"),
+            "federation_member_rules": obj.get("federation_member_rules"),
             "feedback_enabled": obj.get("feedback_enabled"),
             "mail_ready": obj.get("mail_ready"),
             "maintenance_mode": obj.get("maintenance_mode"),
