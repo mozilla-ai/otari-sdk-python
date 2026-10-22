@@ -70,8 +70,8 @@ class SpanPublic(BaseModel):
     @field_validator('outcome')
     def outcome_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['ok', 'error', 'unknown']):
-            raise ValueError("must be one of enum values ('ok', 'error', 'unknown')")
+        if value not in set(['ok', 'error', 'unknown', 'blocked']):
+            raise ValueError("must be one of enum values ('ok', 'error', 'unknown', 'blocked')")
         return value
 
     model_config = ConfigDict(
