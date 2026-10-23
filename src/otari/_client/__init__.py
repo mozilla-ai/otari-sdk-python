@@ -665,6 +665,8 @@ __all__ = [
     "ResponsesRequest",
     "RotateMasterKeyResponse",
     "RouterStatus",
+    "SandboxCredentialPublic",
+    "SandboxCredentialRequest",
     "SandboxProvider",
     "ScopedBudgetResponse",
     "ScoreQuestion",
@@ -1441,6 +1443,8 @@ from otari._client.models.response_files_list_files import ResponseFilesListFile
 from otari._client.models.responses_request import ResponsesRequest as ResponsesRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse as RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus as RouterStatus
+from otari._client.models.sandbox_credential_public import SandboxCredentialPublic as SandboxCredentialPublic
+from otari._client.models.sandbox_credential_request import SandboxCredentialRequest as SandboxCredentialRequest
 from otari._client.models.sandbox_provider import SandboxProvider as SandboxProvider
 from otari._client.models.scoped_budget_response import ScopedBudgetResponse as ScopedBudgetResponse
 from otari._client.models.score_question import ScoreQuestion as ScoreQuestion

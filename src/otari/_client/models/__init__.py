@@ -589,6 +589,8 @@ from otari._client.models.response_files_list_files import ResponseFilesListFile
 from otari._client.models.responses_request import ResponsesRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus
+from otari._client.models.sandbox_credential_public import SandboxCredentialPublic
+from otari._client.models.sandbox_credential_request import SandboxCredentialRequest
 from otari._client.models.sandbox_provider import SandboxProvider
 from otari._client.models.scoped_budget_response import ScopedBudgetResponse
 from otari._client.models.score_question import ScoreQuestion
