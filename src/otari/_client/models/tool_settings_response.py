@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.sandbox_credential_public import SandboxCredentialPublic
 from otari._client.models.sandbox_provider import SandboxProvider
 from otari._client.models.tool_setting_field import ToolSettingField
 from typing import Optional, Set
@@ -30,8 +31,9 @@ class ToolSettingsResponse(BaseModel):
     The effective value of every editable tool/guardrail field.
     """ # noqa: E501
     fields: List[ToolSettingField]
+    sandbox_credential: Optional[SandboxCredentialPublic] = Field(default=None, description="The key a hosted sandbox_provider leases with. Null for the protocol provider, which takes none, and for a reader who does not operate the deployment.")
     sandbox_provider: Optional[SandboxProvider] = Field(default=None, description="What runs generated code: 'protocol' (a sandbox at sandbox_url) or 'e2b'. Set at startup, not editable here. Null for a reader who does not operate the deployment.")
-    __properties: ClassVar[List[str]] = ["fields", "sandbox_provider"]
+    __properties: ClassVar[List[str]] = ["fields", "sandbox_credential", "sandbox_provider"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -79,6 +81,14 @@ class ToolSettingsResponse(BaseModel):
                 if _item_fields:
                     _items.append(_item_fields.to_dict())
             _dict['fields'] = _items
+        # override the default output from pydantic by calling `to_dict()` of sandbox_credential
+        if self.sandbox_credential:
+            _dict['sandbox_credential'] = self.sandbox_credential.to_dict()
+        # set to None if sandbox_credential (nullable) is None
+        # and model_fields_set contains the field
+        if self.sandbox_credential is None and "sandbox_credential" in self.model_fields_set:
+            _dict['sandbox_credential'] = None
+
         # set to None if sandbox_provider (nullable) is None
         # and model_fields_set contains the field
         if self.sandbox_provider is None and "sandbox_provider" in self.model_fields_set:
@@ -97,6 +107,7 @@ class ToolSettingsResponse(BaseModel):
 
         _obj = cls.model_validate({
             "fields": [ToolSettingField.from_dict(_item) for _item in obj["fields"]] if obj.get("fields") is not None else None,
+            "sandbox_credential": SandboxCredentialPublic.from_dict(obj["sandbox_credential"]) if obj.get("sandbox_credential") is not None else None,
             "sandbox_provider": obj.get("sandbox_provider")
         })
         return _obj
