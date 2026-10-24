@@ -48,8 +48,8 @@ class TracesApi:
     def traces_count_traces(
         self,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
-        start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
-        end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
+        start: Annotated[Optional[datetime], Field(description="Sessions active at or after this instant (ISO 8601).")] = None,
+        end: Annotated[Optional[datetime], Field(description="Sessions started before this instant (ISO 8601).")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Owning users.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="API keys.")] = None,
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
@@ -75,9 +75,9 @@ class TracesApi:
 
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
-        :param start: Last activity at or after this instant (ISO 8601).
+        :param start: Sessions active at or after this instant (ISO 8601).
         :type start: datetime
-        :param end: Last activity before this instant (ISO 8601).
+        :param end: Sessions started before this instant (ISO 8601).
         :type end: datetime
         :param user_id: Owning users.
         :type user_id: List[str]
@@ -148,8 +148,8 @@ class TracesApi:
     def traces_count_traces_with_http_info(
         self,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
-        start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
-        end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
+        start: Annotated[Optional[datetime], Field(description="Sessions active at or after this instant (ISO 8601).")] = None,
+        end: Annotated[Optional[datetime], Field(description="Sessions started before this instant (ISO 8601).")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Owning users.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="API keys.")] = None,
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
@@ -175,9 +175,9 @@ class TracesApi:
 
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
-        :param start: Last activity at or after this instant (ISO 8601).
+        :param start: Sessions active at or after this instant (ISO 8601).
         :type start: datetime
-        :param end: Last activity before this instant (ISO 8601).
+        :param end: Sessions started before this instant (ISO 8601).
         :type end: datetime
         :param user_id: Owning users.
         :type user_id: List[str]
@@ -248,8 +248,8 @@ class TracesApi:
     def traces_count_traces_without_preload_content(
         self,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
-        start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
-        end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
+        start: Annotated[Optional[datetime], Field(description="Sessions active at or after this instant (ISO 8601).")] = None,
+        end: Annotated[Optional[datetime], Field(description="Sessions started before this instant (ISO 8601).")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Owning users.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="API keys.")] = None,
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
@@ -275,9 +275,9 @@ class TracesApi:
 
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
-        :param start: Last activity at or after this instant (ISO 8601).
+        :param start: Sessions active at or after this instant (ISO 8601).
         :type start: datetime
-        :param end: Last activity before this instant (ISO 8601).
+        :param end: Sessions started before this instant (ISO 8601).
         :type end: datetime
         :param user_id: Owning users.
         :type user_id: List[str]
@@ -759,8 +759,8 @@ class TracesApi:
         sort: Annotated[Optional[StrictStr], Field(description="What to order by. Latency runs from a session's start to its last activity.")] = None,
         order: Annotated[Optional[StrictStr], Field(description="The direction of `sort`.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
-        start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
-        end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
+        start: Annotated[Optional[datetime], Field(description="Sessions active at or after this instant (ISO 8601).")] = None,
+        end: Annotated[Optional[datetime], Field(description="Sessions started before this instant (ISO 8601).")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Owning users.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="API keys.")] = None,
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
@@ -794,9 +794,9 @@ class TracesApi:
         :type order: str
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
-        :param start: Last activity at or after this instant (ISO 8601).
+        :param start: Sessions active at or after this instant (ISO 8601).
         :type start: datetime
-        :param end: Last activity before this instant (ISO 8601).
+        :param end: Sessions started before this instant (ISO 8601).
         :type end: datetime
         :param user_id: Owning users.
         :type user_id: List[str]
@@ -875,8 +875,8 @@ class TracesApi:
         sort: Annotated[Optional[StrictStr], Field(description="What to order by. Latency runs from a session's start to its last activity.")] = None,
         order: Annotated[Optional[StrictStr], Field(description="The direction of `sort`.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
-        start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
-        end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
+        start: Annotated[Optional[datetime], Field(description="Sessions active at or after this instant (ISO 8601).")] = None,
+        end: Annotated[Optional[datetime], Field(description="Sessions started before this instant (ISO 8601).")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Owning users.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="API keys.")] = None,
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
@@ -910,9 +910,9 @@ class TracesApi:
         :type order: str
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
-        :param start: Last activity at or after this instant (ISO 8601).
+        :param start: Sessions active at or after this instant (ISO 8601).
         :type start: datetime
-        :param end: Last activity before this instant (ISO 8601).
+        :param end: Sessions started before this instant (ISO 8601).
         :type end: datetime
         :param user_id: Owning users.
         :type user_id: List[str]
@@ -991,8 +991,8 @@ class TracesApi:
         sort: Annotated[Optional[StrictStr], Field(description="What to order by. Latency runs from a session's start to its last activity.")] = None,
         order: Annotated[Optional[StrictStr], Field(description="The direction of `sort`.")] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
-        start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
-        end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
+        start: Annotated[Optional[datetime], Field(description="Sessions active at or after this instant (ISO 8601).")] = None,
+        end: Annotated[Optional[datetime], Field(description="Sessions started before this instant (ISO 8601).")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Owning users.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="API keys.")] = None,
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
@@ -1026,9 +1026,9 @@ class TracesApi:
         :type order: str
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
-        :param start: Last activity at or after this instant (ISO 8601).
+        :param start: Sessions active at or after this instant (ISO 8601).
         :type start: datetime
-        :param end: Last activity before this instant (ISO 8601).
+        :param end: Sessions started before this instant (ISO 8601).
         :type end: datetime
         :param user_id: Owning users.
         :type user_id: List[str]
@@ -1514,8 +1514,8 @@ class TracesApi:
         self,
         bucket: Optional[StrictStr] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
-        start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
-        end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
+        start: Annotated[Optional[datetime], Field(description="Sessions active at or after this instant (ISO 8601).")] = None,
+        end: Annotated[Optional[datetime], Field(description="Sessions started before this instant (ISO 8601).")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Owning users.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="API keys.")] = None,
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
@@ -1537,15 +1537,15 @@ class TracesApi:
     ) -> TraceSeriesPublic:
         """Trace Series
 
-        Count sessions per bucket of their start, split by whether they failed.  A session failed when it holds an unrecovered error other than a tool's. A tool's error goes back to the model, an MCP tool's included, so a session whose only errors are tools' counts as succeeded.
+        Count the sessions active in each bucket, split by whether they failed.  A session is active from its start to its last activity, so a long one counts in every bucket it ran through. Here ``start`` and ``end`` bound the buckets: a session that began before ``start`` or was still active at ``end`` counts in the buckets between them it overlaps. Buckets are aligned to their size in UTC and only the populated ones are returned. A session failed when it holds an unrecovered error other than a tool's. A tool's error goes back to the model, an MCP tool's included, so a session whose only errors are tools' counts as succeeded.
 
         :param bucket:
         :type bucket: str
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
-        :param start: Last activity at or after this instant (ISO 8601).
+        :param start: Sessions active at or after this instant (ISO 8601).
         :type start: datetime
-        :param end: Last activity before this instant (ISO 8601).
+        :param end: Sessions started before this instant (ISO 8601).
         :type end: datetime
         :param user_id: Owning users.
         :type user_id: List[str]
@@ -1618,8 +1618,8 @@ class TracesApi:
         self,
         bucket: Optional[StrictStr] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
-        start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
-        end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
+        start: Annotated[Optional[datetime], Field(description="Sessions active at or after this instant (ISO 8601).")] = None,
+        end: Annotated[Optional[datetime], Field(description="Sessions started before this instant (ISO 8601).")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Owning users.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="API keys.")] = None,
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
@@ -1641,15 +1641,15 @@ class TracesApi:
     ) -> ApiResponse[TraceSeriesPublic]:
         """Trace Series
 
-        Count sessions per bucket of their start, split by whether they failed.  A session failed when it holds an unrecovered error other than a tool's. A tool's error goes back to the model, an MCP tool's included, so a session whose only errors are tools' counts as succeeded.
+        Count the sessions active in each bucket, split by whether they failed.  A session is active from its start to its last activity, so a long one counts in every bucket it ran through. Here ``start`` and ``end`` bound the buckets: a session that began before ``start`` or was still active at ``end`` counts in the buckets between them it overlaps. Buckets are aligned to their size in UTC and only the populated ones are returned. A session failed when it holds an unrecovered error other than a tool's. A tool's error goes back to the model, an MCP tool's included, so a session whose only errors are tools' counts as succeeded.
 
         :param bucket:
         :type bucket: str
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
-        :param start: Last activity at or after this instant (ISO 8601).
+        :param start: Sessions active at or after this instant (ISO 8601).
         :type start: datetime
-        :param end: Last activity before this instant (ISO 8601).
+        :param end: Sessions started before this instant (ISO 8601).
         :type end: datetime
         :param user_id: Owning users.
         :type user_id: List[str]
@@ -1722,8 +1722,8 @@ class TracesApi:
         self,
         bucket: Optional[StrictStr] = None,
         workspace_id: Annotated[Optional[UUID], Field(description="Only sessions in this workspace. Narrows the caller's scope; never widens it.")] = None,
-        start: Annotated[Optional[datetime], Field(description="Last activity at or after this instant (ISO 8601).")] = None,
-        end: Annotated[Optional[datetime], Field(description="Last activity before this instant (ISO 8601).")] = None,
+        start: Annotated[Optional[datetime], Field(description="Sessions active at or after this instant (ISO 8601).")] = None,
+        end: Annotated[Optional[datetime], Field(description="Sessions started before this instant (ISO 8601).")] = None,
         user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Owning users.")] = None,
         api_key_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="API keys.")] = None,
         harness: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Agent harnesses.")] = None,
@@ -1745,15 +1745,15 @@ class TracesApi:
     ) -> RESTResponseType:
         """Trace Series
 
-        Count sessions per bucket of their start, split by whether they failed.  A session failed when it holds an unrecovered error other than a tool's. A tool's error goes back to the model, an MCP tool's included, so a session whose only errors are tools' counts as succeeded.
+        Count the sessions active in each bucket, split by whether they failed.  A session is active from its start to its last activity, so a long one counts in every bucket it ran through. Here ``start`` and ``end`` bound the buckets: a session that began before ``start`` or was still active at ``end`` counts in the buckets between them it overlaps. Buckets are aligned to their size in UTC and only the populated ones are returned. A session failed when it holds an unrecovered error other than a tool's. A tool's error goes back to the model, an MCP tool's included, so a session whose only errors are tools' counts as succeeded.
 
         :param bucket:
         :type bucket: str
         :param workspace_id: Only sessions in this workspace. Narrows the caller's scope; never widens it.
         :type workspace_id: UUID
-        :param start: Last activity at or after this instant (ISO 8601).
+        :param start: Sessions active at or after this instant (ISO 8601).
         :type start: datetime
-        :param end: Last activity before this instant (ISO 8601).
+        :param end: Sessions started before this instant (ISO 8601).
         :type end: datetime
         :param user_id: Owning users.
         :type user_id: List[str]

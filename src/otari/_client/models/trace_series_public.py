@@ -35,8 +35,8 @@ class TraceSeriesPublic(BaseModel):
     @field_validator('bucket')
     def bucket_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['hour', 'day']):
-            raise ValueError("must be one of enum values ('hour', 'day')")
+        if value not in set(['1m', '5m', '30m', 'hour', '6h', 'day']):
+            raise ValueError("must be one of enum values ('1m', '5m', '30m', 'hour', '6h', 'day')")
         return value
 
     model_config = ConfigDict(
