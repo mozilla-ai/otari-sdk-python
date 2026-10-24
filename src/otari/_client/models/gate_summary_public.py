@@ -33,11 +33,13 @@ class GateSummaryPublic(BaseModel):
     gate_id: StrictStr
     gate_type: Optional[StrictStr] = Field(description="From the guardrail's definition, when it was sent.")
     message: Optional[StrictStr] = Field(description="What the gate says when it fails, from the guardrail's definition.")
+    origin: Optional[StrictStr] = Field(description="Whether the gate is the repository's (.otari/) or the user's own (~/.otari/).")
     passed: StrictInt
     refused: StrictInt = Field(description="Checks where the gate could not decide and held the agent anyway.")
+    runs: List[StrictStr] = Field(description="The moments the gate runs at (pre_tool_use.edit_target, stop.session, ...).")
     span_id: Optional[StrictStr] = Field(description="The check to open first: the earliest that did anything but pass. Null for a gate that never ran.")
     undecided: StrictInt = Field(description="Checks where the gate could not decide; the agent went ahead unchecked.")
-    __properties: ClassVar[List[str]] = ["blocked", "enforcement", "flagged", "gate_id", "gate_type", "message", "passed", "refused", "span_id", "undecided"]
+    __properties: ClassVar[List[str]] = ["blocked", "enforcement", "flagged", "gate_id", "gate_type", "message", "origin", "passed", "refused", "runs", "span_id", "undecided"]
 
     @field_validator('enforcement')
     def enforcement_validate_enum(cls, value):
@@ -47,6 +49,16 @@ class GateSummaryPublic(BaseModel):
 
         if value not in set(['required', 'advisory']):
             raise ValueError("must be one of enum values ('required', 'advisory')")
+        return value
+
+    @field_validator('origin')
+    def origin_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['repo', 'user']):
+            raise ValueError("must be one of enum values ('repo', 'user')")
         return value
 
     model_config = ConfigDict(
@@ -103,6 +115,11 @@ class GateSummaryPublic(BaseModel):
         if self.message is None and "message" in self.model_fields_set:
             _dict['message'] = None
 
+        # set to None if origin (nullable) is None
+        # and model_fields_set contains the field
+        if self.origin is None and "origin" in self.model_fields_set:
+            _dict['origin'] = None
+
         # set to None if span_id (nullable) is None
         # and model_fields_set contains the field
         if self.span_id is None and "span_id" in self.model_fields_set:
@@ -126,8 +143,10 @@ class GateSummaryPublic(BaseModel):
             "gate_id": obj.get("gate_id"),
             "gate_type": obj.get("gate_type"),
             "message": obj.get("message"),
+            "origin": obj.get("origin"),
             "passed": obj.get("passed"),
             "refused": obj.get("refused"),
+            "runs": obj.get("runs"),
             "span_id": obj.get("span_id"),
             "undecided": obj.get("undecided")
         })

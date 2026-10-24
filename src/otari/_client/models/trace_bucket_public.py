@@ -28,8 +28,8 @@ class TraceBucketPublic(BaseModel):
     TraceBucketPublic
     """ # noqa: E501
     bucket: StrictStr = Field(description="Bucket start, ISO 8601 UTC.")
-    failed: StrictInt = Field(description="Sessions that started in the bucket and hold an unrecovered error other than a tool's. A tool's error, an MCP tool's included, goes back to the model, so it alone does not fail a session.")
-    succeeded: StrictInt = Field(description="Sessions that started in the bucket and did not fail.")
+    failed: StrictInt = Field(description="Sessions active in the bucket that hold an unrecovered error other than a tool's. A tool's error, an MCP tool's included, goes back to the model, so it alone does not fail a session.")
+    succeeded: StrictInt = Field(description="Sessions active in the bucket that did not fail.")
     __properties: ClassVar[List[str]] = ["bucket", "failed", "succeeded"]
 
     model_config = ConfigDict(
