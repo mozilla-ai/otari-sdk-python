@@ -5689,7 +5689,7 @@ class ProviderKeysApi:
     ) -> OrgProviderKeyPublic:
         """Update Org Provider Key
 
-        Change a key's name, credential, base URL, or client args. Organization owners and admins only.
+        Change a key's name, credential, base URL, or client args. Organization owners and admins only.  A new base URL on a key that holds a credential needs that credential in the same request, `api_key` and any masked `client_args` entry, since the next call sends it to the new host. Clearing the base URL needs neither.
 
         :param key_id: (required)
         :type key_id: UUID
@@ -5761,7 +5761,7 @@ class ProviderKeysApi:
     ) -> ApiResponse[OrgProviderKeyPublic]:
         """Update Org Provider Key
 
-        Change a key's name, credential, base URL, or client args. Organization owners and admins only.
+        Change a key's name, credential, base URL, or client args. Organization owners and admins only.  A new base URL on a key that holds a credential needs that credential in the same request, `api_key` and any masked `client_args` entry, since the next call sends it to the new host. Clearing the base URL needs neither.
 
         :param key_id: (required)
         :type key_id: UUID
@@ -5833,7 +5833,7 @@ class ProviderKeysApi:
     ) -> RESTResponseType:
         """Update Org Provider Key
 
-        Change a key's name, credential, base URL, or client args. Organization owners and admins only.
+        Change a key's name, credential, base URL, or client args. Organization owners and admins only.  A new base URL on a key that holds a credential needs that credential in the same request, `api_key` and any masked `client_args` entry, since the next call sends it to the new host. Clearing the base URL needs neither.
 
         :param key_id: (required)
         :type key_id: UUID

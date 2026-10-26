@@ -2590,7 +2590,7 @@ class WebSearchKeysApi:
     ) -> OrgWebSearchKeyPublic:
         """Update Org Web Search Key
 
-        Rename a key, replace its secret, or change its api_base or options. Organization owners and admins only.  Its kind and provider are fixed.
+        Rename a key, replace its secret, or change its api_base or options. Organization owners and admins only.  Its kind and provider are fixed. A new api_base on a key that holds a secret needs that secret in the same request, `api_key` and any masked `options` entry, since the next call sends it to the new host. Clearing api_base needs neither.
 
         :param key_id: (required)
         :type key_id: UUID
@@ -2662,7 +2662,7 @@ class WebSearchKeysApi:
     ) -> ApiResponse[OrgWebSearchKeyPublic]:
         """Update Org Web Search Key
 
-        Rename a key, replace its secret, or change its api_base or options. Organization owners and admins only.  Its kind and provider are fixed.
+        Rename a key, replace its secret, or change its api_base or options. Organization owners and admins only.  Its kind and provider are fixed. A new api_base on a key that holds a secret needs that secret in the same request, `api_key` and any masked `options` entry, since the next call sends it to the new host. Clearing api_base needs neither.
 
         :param key_id: (required)
         :type key_id: UUID
@@ -2734,7 +2734,7 @@ class WebSearchKeysApi:
     ) -> RESTResponseType:
         """Update Org Web Search Key
 
-        Rename a key, replace its secret, or change its api_base or options. Organization owners and admins only.  Its kind and provider are fixed.
+        Rename a key, replace its secret, or change its api_base or options. Organization owners and admins only.  Its kind and provider are fixed. A new api_base on a key that holds a secret needs that secret in the same request, `api_key` and any masked `options` entry, since the next call sends it to the new host. Clearing api_base needs neither.
 
         :param key_id: (required)
         :type key_id: UUID
