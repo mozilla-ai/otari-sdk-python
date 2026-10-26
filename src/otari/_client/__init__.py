@@ -320,8 +320,14 @@ __all__ = [
     "HealthCheckStatus",
     "HostedAvailableModelsPublic",
     "HostedCatalogKeptGroupPublic",
+    "HostedCatalogPriceChangePublic",
+    "HostedCatalogPriceUpdatePublic",
     "HostedCatalogProviderRefreshPublic",
     "HostedCatalogRefreshPublic",
+    "HostedCatalogUpdatePreviewPublic",
+    "HostedCatalogUpdatePreviewRequest",
+    "HostedCatalogUpdatePublic",
+    "HostedCatalogUpdateRequest",
     "HostedModelCreateRequest",
     "HostedModelPublic",
     "HostedModelUpdateRequest",
@@ -614,7 +620,6 @@ __all__ = [
     "PoolStatus",
     "PricingDriftRow",
     "PricingRefreshChangeResponse",
-    "PricingRefreshConfirmationResponse",
     "PricingRefreshPreviewResponse",
     "PricingResponse",
     "PricingTier",
@@ -706,6 +711,7 @@ __all__ = [
     "ToolChargeLine",
     "ToolChoice",
     "ToolChoice1",
+    "ToolCostPublic",
     "ToolMeter",
     "ToolSettingField",
     "ToolSettingsResponse",
@@ -1098,8 +1104,14 @@ from otari._client.models.health_check_settings_update import HealthCheckSetting
 from otari._client.models.health_check_status import HealthCheckStatus as HealthCheckStatus
 from otari._client.models.hosted_available_models_public import HostedAvailableModelsPublic as HostedAvailableModelsPublic
 from otari._client.models.hosted_catalog_kept_group_public import HostedCatalogKeptGroupPublic as HostedCatalogKeptGroupPublic
+from otari._client.models.hosted_catalog_price_change_public import HostedCatalogPriceChangePublic as HostedCatalogPriceChangePublic
+from otari._client.models.hosted_catalog_price_update_public import HostedCatalogPriceUpdatePublic as HostedCatalogPriceUpdatePublic
 from otari._client.models.hosted_catalog_provider_refresh_public import HostedCatalogProviderRefreshPublic as HostedCatalogProviderRefreshPublic
 from otari._client.models.hosted_catalog_refresh_public import HostedCatalogRefreshPublic as HostedCatalogRefreshPublic
+from otari._client.models.hosted_catalog_update_preview_public import HostedCatalogUpdatePreviewPublic as HostedCatalogUpdatePreviewPublic
+from otari._client.models.hosted_catalog_update_preview_request import HostedCatalogUpdatePreviewRequest as HostedCatalogUpdatePreviewRequest
+from otari._client.models.hosted_catalog_update_public import HostedCatalogUpdatePublic as HostedCatalogUpdatePublic
+from otari._client.models.hosted_catalog_update_request import HostedCatalogUpdateRequest as HostedCatalogUpdateRequest
 from otari._client.models.hosted_model_create_request import HostedModelCreateRequest as HostedModelCreateRequest
 from otari._client.models.hosted_model_public import HostedModelPublic as HostedModelPublic
 from otari._client.models.hosted_model_update_request import HostedModelUpdateRequest as HostedModelUpdateRequest
@@ -1392,7 +1404,6 @@ from otari._client.models.policy_response import PolicyResponse as PolicyRespons
 from otari._client.models.pool_status import PoolStatus as PoolStatus
 from otari._client.models.pricing_drift_row import PricingDriftRow as PricingDriftRow
 from otari._client.models.pricing_refresh_change_response import PricingRefreshChangeResponse as PricingRefreshChangeResponse
-from otari._client.models.pricing_refresh_confirmation_response import PricingRefreshConfirmationResponse as PricingRefreshConfirmationResponse
 from otari._client.models.pricing_refresh_preview_response import PricingRefreshPreviewResponse as PricingRefreshPreviewResponse
 from otari._client.models.pricing_response import PricingResponse as PricingResponse
 from otari._client.models.pricing_tier import PricingTier as PricingTier
@@ -1484,6 +1495,7 @@ from otari._client.models.tool_calls_inner import ToolCallsInner as ToolCallsInn
 from otari._client.models.tool_charge_line import ToolChargeLine as ToolChargeLine
 from otari._client.models.tool_choice import ToolChoice as ToolChoice
 from otari._client.models.tool_choice1 import ToolChoice1 as ToolChoice1
+from otari._client.models.tool_cost_public import ToolCostPublic as ToolCostPublic
 from otari._client.models.tool_meter import ToolMeter as ToolMeter
 from otari._client.models.tool_setting_field import ToolSettingField as ToolSettingField
 from otari._client.models.tool_settings_response import ToolSettingsResponse as ToolSettingsResponse

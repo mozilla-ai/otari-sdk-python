@@ -28,14 +28,26 @@ class RateLimitRuleUpdate(BaseModel):
     """
     Fields to change on a stored rule. An omitted field keeps its value; ``null`` clears a limit.  The merged rule must still set at least one of rpm, tpm or max_concurrent.
     """ # noqa: E501
+    budgets: Optional[List[StrictStr]] = Field(default=None, description="The budget IDs a per: budget rule counts; null for every budget, and on any other rule.")
     lease_sec: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = Field(default=None, description="How long a max_concurrent slot is held at most.")
     max_concurrent: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests in flight at once.")
+    mode: Optional[StrictStr] = Field(default=None, description="'enforce' refuses a request over the rule; 'report' serves it and names the rule.")
     models: Optional[List[StrictStr]] = Field(default=None, description="The instance:model names a per: model rule limits; null for any other rule.")
     per: Optional[StrictStr] = Field(default=None, description="What one count is shared by.")
     rpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests per minute.")
     tpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Tokens per minute.")
     tpm_admission: Optional[StrictStr] = Field(default=None, description="'used' counts only what a request used; 'estimate' holds its estimate.")
-    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "per", "rpm", "tpm", "tpm_admission"]
+    __properties: ClassVar[List[str]] = ["budgets", "lease_sec", "max_concurrent", "mode", "models", "per", "rpm", "tpm", "tpm_admission"]
+
+    @field_validator('mode')
+    def mode_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['enforce', 'report']):
+            raise ValueError("must be one of enum values ('enforce', 'report')")
+        return value
 
     @field_validator('per')
     def per_validate_enum(cls, value):
@@ -43,8 +55,8 @@ class RateLimitRuleUpdate(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['deployment', 'key', 'user', 'model']):
-            raise ValueError("must be one of enum values ('deployment', 'key', 'user', 'model')")
+        if value not in set(['deployment', 'key', 'user', 'model', 'budget']):
+            raise ValueError("must be one of enum values ('deployment', 'key', 'user', 'model', 'budget')")
         return value
 
     @field_validator('tpm_admission')
@@ -96,6 +108,11 @@ class RateLimitRuleUpdate(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if budgets (nullable) is None
+        # and model_fields_set contains the field
+        if self.budgets is None and "budgets" in self.model_fields_set:
+            _dict['budgets'] = None
+
         # set to None if lease_sec (nullable) is None
         # and model_fields_set contains the field
         if self.lease_sec is None and "lease_sec" in self.model_fields_set:
@@ -105,6 +122,11 @@ class RateLimitRuleUpdate(BaseModel):
         # and model_fields_set contains the field
         if self.max_concurrent is None and "max_concurrent" in self.model_fields_set:
             _dict['max_concurrent'] = None
+
+        # set to None if mode (nullable) is None
+        # and model_fields_set contains the field
+        if self.mode is None and "mode" in self.model_fields_set:
+            _dict['mode'] = None
 
         # set to None if models (nullable) is None
         # and model_fields_set contains the field
@@ -143,8 +165,10 @@ class RateLimitRuleUpdate(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "budgets": obj.get("budgets"),
             "lease_sec": obj.get("lease_sec"),
             "max_concurrent": obj.get("max_concurrent"),
+            "mode": obj.get("mode"),
             "models": obj.get("models"),
             "per": obj.get("per"),
             "rpm": obj.get("rpm"),

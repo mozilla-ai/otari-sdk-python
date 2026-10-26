@@ -33,7 +33,7 @@ class PricingRefreshPreviewResponse(BaseModel):
     changed_count: StrictInt
     changes: List[PricingRefreshChangeResponse]
     changes_truncated: StrictBool
-    digest: Optional[StrictStr] = Field(default='', description="Identity of the pending snapshot; send it to confirm or reject to act on exactly this one.")
+    digest: Optional[StrictStr] = Field(default='', description="Identity of the pending snapshot, to act on exactly this one: send it as `digest` to `POST /hosted-providers/catalog-update` to apply it, or to `POST /pricing/refresh/reject` to discard it.")
     fetched_at: datetime
     needs_review: Optional[StrictBool] = Field(default=False, description="True when the update is implausibly large; the scheduled `auto` policy leaves it pending.")
     protected_model_count: StrictInt

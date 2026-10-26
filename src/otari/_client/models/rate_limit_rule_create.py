@@ -28,15 +28,27 @@ class RateLimitRuleCreate(BaseModel):
     """
     A rule to add. The same fields, limits and validation as a ``rate_limits`` entry in config.yml.
     """ # noqa: E501
+    budgets: Optional[List[StrictStr]] = Field(default=None, description="The budget IDs a `per: budget` rule counts, each on its own; unset counts every budget. Refused on any other rule.")
     lease_sec: Optional[Union[Annotated[float, Field(strict=True, gt=0.0)], Annotated[int, Field(strict=True, gt=0)]]] = Field(default=900.0, description="How long a max_concurrent slot is held at most. A slot is given back when its response ends; this bounds what a process that dies mid-request keeps.")
     max_concurrent: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests in flight at once.")
+    mode: Optional[StrictStr] = Field(default='enforce', description="'enforce' (the default) refuses a request over the limit with 429. 'report' counts the same way but serves the request, naming the rule in the Otari-Rate-Limit-Exceeded response header, so a limit can be watched before it is enforced.")
     models: Optional[List[StrictStr]] = Field(default=None, description="The models a `per: model` rule limits, each as instance:model (the provider instance the model is called through, then the model), each counted on its own. Required there and refused on any other rule.")
     name: Annotated[str, Field(strict=True)] = Field(description="Names the rule in a 429's detail and in the counter's key. Unique across rate_limits.")
     per: StrictStr = Field(description="What one count is shared by.")
     rpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Requests per minute.")
     tpm: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="Tokens per minute, counted on what each request used; see tpm_admission for how a request is admitted.")
     tpm_admission: Optional[StrictStr] = Field(default='used', description="How a tpm limit admits a request. 'used' (the default) admits a request while the minute's tokens are under the limit and counts what it used once it completes, as LiteLLM does. 'estimate' holds the request's estimate (prompt plus max output, or budget_estimate_default_output_tokens) while it runs and refuses it when that does not fit, which is how providers count their own quotas: use it for a limit meant to stay under one.")
-    __properties: ClassVar[List[str]] = ["lease_sec", "max_concurrent", "models", "name", "per", "rpm", "tpm", "tpm_admission"]
+    __properties: ClassVar[List[str]] = ["budgets", "lease_sec", "max_concurrent", "mode", "models", "name", "per", "rpm", "tpm", "tpm_admission"]
+
+    @field_validator('mode')
+    def mode_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['enforce', 'report']):
+            raise ValueError("must be one of enum values ('enforce', 'report')")
+        return value
 
     @field_validator('name')
     def name_validate_regular_expression(cls, value):
@@ -51,8 +63,8 @@ class RateLimitRuleCreate(BaseModel):
     @field_validator('per')
     def per_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['deployment', 'key', 'user', 'model']):
-            raise ValueError("must be one of enum values ('deployment', 'key', 'user', 'model')")
+        if value not in set(['deployment', 'key', 'user', 'model', 'budget']):
+            raise ValueError("must be one of enum values ('deployment', 'key', 'user', 'model', 'budget')")
         return value
 
     @field_validator('tpm_admission')
@@ -104,6 +116,11 @@ class RateLimitRuleCreate(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if budgets (nullable) is None
+        # and model_fields_set contains the field
+        if self.budgets is None and "budgets" in self.model_fields_set:
+            _dict['budgets'] = None
+
         # set to None if max_concurrent (nullable) is None
         # and model_fields_set contains the field
         if self.max_concurrent is None and "max_concurrent" in self.model_fields_set:
@@ -136,8 +153,10 @@ class RateLimitRuleCreate(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "budgets": obj.get("budgets"),
             "lease_sec": obj.get("lease_sec") if obj.get("lease_sec") is not None else 900.0,
             "max_concurrent": obj.get("max_concurrent"),
+            "mode": obj.get("mode") if obj.get("mode") is not None else 'enforce',
             "models": obj.get("models"),
             "name": obj.get("name"),
             "per": obj.get("per"),

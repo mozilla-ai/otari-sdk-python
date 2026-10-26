@@ -244,8 +244,14 @@ from otari._client.models.health_check_settings_update import HealthCheckSetting
 from otari._client.models.health_check_status import HealthCheckStatus
 from otari._client.models.hosted_available_models_public import HostedAvailableModelsPublic
 from otari._client.models.hosted_catalog_kept_group_public import HostedCatalogKeptGroupPublic
+from otari._client.models.hosted_catalog_price_change_public import HostedCatalogPriceChangePublic
+from otari._client.models.hosted_catalog_price_update_public import HostedCatalogPriceUpdatePublic
 from otari._client.models.hosted_catalog_provider_refresh_public import HostedCatalogProviderRefreshPublic
 from otari._client.models.hosted_catalog_refresh_public import HostedCatalogRefreshPublic
+from otari._client.models.hosted_catalog_update_preview_public import HostedCatalogUpdatePreviewPublic
+from otari._client.models.hosted_catalog_update_preview_request import HostedCatalogUpdatePreviewRequest
+from otari._client.models.hosted_catalog_update_public import HostedCatalogUpdatePublic
+from otari._client.models.hosted_catalog_update_request import HostedCatalogUpdateRequest
 from otari._client.models.hosted_model_create_request import HostedModelCreateRequest
 from otari._client.models.hosted_model_public import HostedModelPublic
 from otari._client.models.hosted_model_update_request import HostedModelUpdateRequest
@@ -538,7 +544,6 @@ from otari._client.models.policy_response import PolicyResponse
 from otari._client.models.pool_status import PoolStatus
 from otari._client.models.pricing_drift_row import PricingDriftRow
 from otari._client.models.pricing_refresh_change_response import PricingRefreshChangeResponse
-from otari._client.models.pricing_refresh_confirmation_response import PricingRefreshConfirmationResponse
 from otari._client.models.pricing_refresh_preview_response import PricingRefreshPreviewResponse
 from otari._client.models.pricing_response import PricingResponse
 from otari._client.models.pricing_tier import PricingTier
@@ -630,6 +635,7 @@ from otari._client.models.tool_calls_inner import ToolCallsInner
 from otari._client.models.tool_charge_line import ToolChargeLine
 from otari._client.models.tool_choice import ToolChoice
 from otari._client.models.tool_choice1 import ToolChoice1
+from otari._client.models.tool_cost_public import ToolCostPublic
 from otari._client.models.tool_meter import ToolMeter
 from otari._client.models.tool_setting_field import ToolSettingField
 from otari._client.models.tool_settings_response import ToolSettingsResponse
