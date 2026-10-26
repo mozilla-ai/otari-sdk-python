@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_
 from typing import Any, ClassVar, Dict, List
 from otari._client.models.gate_summary_public import GateSummaryPublic
 from otari._client.models.span_public import SpanPublic
+from otari._client.models.tool_cost_public import ToolCostPublic
 from otari._client.models.trace_summary_public import TraceSummaryPublic
 from otari._client.models.turn_public import TurnPublic
 from typing import Optional, Set
@@ -35,9 +36,10 @@ class TraceDetailPublic(BaseModel):
     spans: List[SpanPublic]
     state: StrictStr
     summary: TraceSummaryPublic
+    tool_costs: List[ToolCostPublic] = Field(description="An estimate for each tool call between two priced model requests, in the order they were made.")
     truncated: StrictBool = Field(description="True when the session holds more spans than one read returns.")
     turns: List[TurnPublic]
-    __properties: ClassVar[List[str]] = ["gates", "spans", "state", "summary", "truncated", "turns"]
+    __properties: ClassVar[List[str]] = ["gates", "spans", "state", "summary", "tool_costs", "truncated", "turns"]
 
     @field_validator('state')
     def state_validate_enum(cls, value):
@@ -102,6 +104,13 @@ class TraceDetailPublic(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of summary
         if self.summary:
             _dict['summary'] = self.summary.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in tool_costs (list)
+        _items = []
+        if self.tool_costs:
+            for _item_tool_costs in self.tool_costs:
+                if _item_tool_costs:
+                    _items.append(_item_tool_costs.to_dict())
+            _dict['tool_costs'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in turns (list)
         _items = []
         if self.turns:
@@ -125,6 +134,7 @@ class TraceDetailPublic(BaseModel):
             "spans": [SpanPublic.from_dict(_item) for _item in obj["spans"]] if obj.get("spans") is not None else None,
             "state": obj.get("state"),
             "summary": TraceSummaryPublic.from_dict(obj["summary"]) if obj.get("summary") is not None else None,
+            "tool_costs": [ToolCostPublic.from_dict(_item) for _item in obj["tool_costs"]] if obj.get("tool_costs") is not None else None,
             "truncated": obj.get("truncated"),
             "turns": [TurnPublic.from_dict(_item) for _item in obj["turns"]] if obj.get("turns") is not None else None
         })

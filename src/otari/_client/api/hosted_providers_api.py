@@ -22,7 +22,10 @@ from uuid import UUID
 from otari._client.models.deployment_provider_migration_public import DeploymentProviderMigrationPublic
 from otari._client.models.deployment_provider_migration_request import DeploymentProviderMigrationRequest
 from otari._client.models.hosted_available_models_public import HostedAvailableModelsPublic
-from otari._client.models.hosted_catalog_refresh_public import HostedCatalogRefreshPublic
+from otari._client.models.hosted_catalog_update_preview_public import HostedCatalogUpdatePreviewPublic
+from otari._client.models.hosted_catalog_update_preview_request import HostedCatalogUpdatePreviewRequest
+from otari._client.models.hosted_catalog_update_public import HostedCatalogUpdatePublic
+from otari._client.models.hosted_catalog_update_request import HostedCatalogUpdateRequest
 from otari._client.models.hosted_model_create_request import HostedModelCreateRequest
 from otari._client.models.hosted_model_public import HostedModelPublic
 from otari._client.models.hosted_model_update_request import HostedModelUpdateRequest
@@ -2283,8 +2286,9 @@ class HostedProvidersApi:
 
 
     @validate_call
-    def hosted_providers_preview_catalog_refresh(
+    def hosted_providers_preview_catalog_update(
         self,
+        hosted_catalog_update_preview_request: HostedCatalogUpdatePreviewRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2297,11 +2301,13 @@ class HostedProvidersApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> HostedCatalogRefreshPublic:
-        """Preview Catalog Refresh
+    ) -> HostedCatalogUpdatePreviewPublic:
+        """Preview Catalog Update
 
-        What a catalog sweep would remove, without removing it.  A GET, and a truthful one: it writes nothing. It does dial every enabled provider, as ``available-models`` does, because a model the provider still lists would survive the sweep and previewing it as doomed would be a lie.
+        What updating the catalog would do: the models.dev price changes, then what each provider newly lists.  A POST, because it holds the fetched prices as pending for the apply to name by their ``digest``; nothing else is written. It dials every enabled provider. A price fetch that fails is reported in ``price_error`` and the model lists are still previewed. With ``cleanup``, it also previews which prices of models no provider serves would be removed.
 
+        :param hosted_catalog_update_preview_request: (required)
+        :type hosted_catalog_update_preview_request: HostedCatalogUpdatePreviewRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2324,7 +2330,8 @@ class HostedProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._hosted_providers_preview_catalog_refresh_serialize(
+        _param = self._hosted_providers_preview_catalog_update_serialize(
+            hosted_catalog_update_preview_request=hosted_catalog_update_preview_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2332,7 +2339,8 @@ class HostedProvidersApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "HostedCatalogRefreshPublic",
+            '200': "HostedCatalogUpdatePreviewPublic",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -2346,8 +2354,9 @@ class HostedProvidersApi:
 
 
     @validate_call
-    def hosted_providers_preview_catalog_refresh_with_http_info(
+    def hosted_providers_preview_catalog_update_with_http_info(
         self,
+        hosted_catalog_update_preview_request: HostedCatalogUpdatePreviewRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2360,11 +2369,13 @@ class HostedProvidersApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[HostedCatalogRefreshPublic]:
-        """Preview Catalog Refresh
+    ) -> ApiResponse[HostedCatalogUpdatePreviewPublic]:
+        """Preview Catalog Update
 
-        What a catalog sweep would remove, without removing it.  A GET, and a truthful one: it writes nothing. It does dial every enabled provider, as ``available-models`` does, because a model the provider still lists would survive the sweep and previewing it as doomed would be a lie.
+        What updating the catalog would do: the models.dev price changes, then what each provider newly lists.  A POST, because it holds the fetched prices as pending for the apply to name by their ``digest``; nothing else is written. It dials every enabled provider. A price fetch that fails is reported in ``price_error`` and the model lists are still previewed. With ``cleanup``, it also previews which prices of models no provider serves would be removed.
 
+        :param hosted_catalog_update_preview_request: (required)
+        :type hosted_catalog_update_preview_request: HostedCatalogUpdatePreviewRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2387,7 +2398,8 @@ class HostedProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._hosted_providers_preview_catalog_refresh_serialize(
+        _param = self._hosted_providers_preview_catalog_update_serialize(
+            hosted_catalog_update_preview_request=hosted_catalog_update_preview_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2395,7 +2407,8 @@ class HostedProvidersApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "HostedCatalogRefreshPublic",
+            '200': "HostedCatalogUpdatePreviewPublic",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -2409,8 +2422,9 @@ class HostedProvidersApi:
 
 
     @validate_call
-    def hosted_providers_preview_catalog_refresh_without_preload_content(
+    def hosted_providers_preview_catalog_update_without_preload_content(
         self,
+        hosted_catalog_update_preview_request: HostedCatalogUpdatePreviewRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2424,10 +2438,12 @@ class HostedProvidersApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Preview Catalog Refresh
+        """Preview Catalog Update
 
-        What a catalog sweep would remove, without removing it.  A GET, and a truthful one: it writes nothing. It does dial every enabled provider, as ``available-models`` does, because a model the provider still lists would survive the sweep and previewing it as doomed would be a lie.
+        What updating the catalog would do: the models.dev price changes, then what each provider newly lists.  A POST, because it holds the fetched prices as pending for the apply to name by their ``digest``; nothing else is written. It dials every enabled provider. A price fetch that fails is reported in ``price_error`` and the model lists are still previewed. With ``cleanup``, it also previews which prices of models no provider serves would be removed.
 
+        :param hosted_catalog_update_preview_request: (required)
+        :type hosted_catalog_update_preview_request: HostedCatalogUpdatePreviewRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2450,7 +2466,8 @@ class HostedProvidersApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._hosted_providers_preview_catalog_refresh_serialize(
+        _param = self._hosted_providers_preview_catalog_update_serialize(
+            hosted_catalog_update_preview_request=hosted_catalog_update_preview_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2458,7 +2475,8 @@ class HostedProvidersApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "HostedCatalogRefreshPublic",
+            '200': "HostedCatalogUpdatePreviewPublic",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -2467,8 +2485,9 @@ class HostedProvidersApi:
         return response_data.response
 
 
-    def _hosted_providers_preview_catalog_refresh_serialize(
+    def _hosted_providers_preview_catalog_update_serialize(
         self,
+        hosted_catalog_update_preview_request,
         _request_auth,
         _content_type,
         _headers,
@@ -2494,6 +2513,8 @@ class HostedProvidersApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
+        if hosted_catalog_update_preview_request is not None:
+            _body_params = hosted_catalog_update_preview_request
 
 
         # set the HTTP header `Accept`
@@ -2504,6 +2525,19 @@ class HostedProvidersApi:
                 ]
             )
 
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = [
@@ -2512,8 +2546,8 @@ class HostedProvidersApi:
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/api/v1/hosted-providers/refresh/preview',
+            method='POST',
+            resource_path='/api/v1/hosted-providers/catalog-update/preview',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3008,253 +3042,6 @@ class HostedProvidersApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/api/v1/hosted-providers/reencrypt',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def hosted_providers_refresh_catalog(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> HostedCatalogRefreshPublic:
-        """Refresh Catalog
-
-        Re-ask every enabled provider what it lists, then take the rest off the catalog.  The whole deployment rather than one provider: a stored price is what puts a model on a tenant's Models page, and a price under a provider nothing here serves cannot be reached by a per-provider refresh. A model list whose provider nothing defines any more, such as a removed ``config.yml`` entry, goes too, and is named in ``orphaned_rosters``. Where no provider offers a model, only those lists go and every price stays; with none of them either, the sweep answers 409. Declared before the ``/{provider}`` paths to read in the order the surface is used; no method collides in any case.
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._hosted_providers_refresh_catalog_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "HostedCatalogRefreshPublic",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def hosted_providers_refresh_catalog_with_http_info(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[HostedCatalogRefreshPublic]:
-        """Refresh Catalog
-
-        Re-ask every enabled provider what it lists, then take the rest off the catalog.  The whole deployment rather than one provider: a stored price is what puts a model on a tenant's Models page, and a price under a provider nothing here serves cannot be reached by a per-provider refresh. A model list whose provider nothing defines any more, such as a removed ``config.yml`` entry, goes too, and is named in ``orphaned_rosters``. Where no provider offers a model, only those lists go and every price stays; with none of them either, the sweep answers 409. Declared before the ``/{provider}`` paths to read in the order the surface is used; no method collides in any case.
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._hosted_providers_refresh_catalog_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "HostedCatalogRefreshPublic",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def hosted_providers_refresh_catalog_without_preload_content(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Refresh Catalog
-
-        Re-ask every enabled provider what it lists, then take the rest off the catalog.  The whole deployment rather than one provider: a stored price is what puts a model on a tenant's Models page, and a price under a provider nothing here serves cannot be reached by a per-provider refresh. A model list whose provider nothing defines any more, such as a removed ``config.yml`` entry, goes too, and is named in ``orphaned_rosters``. Where no provider offers a model, only those lists go and every price stays; with none of them either, the sweep answers 409. Declared before the ``/{provider}`` paths to read in the order the surface is used; no method collides in any case.
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._hosted_providers_refresh_catalog_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "HostedCatalogRefreshPublic",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _hosted_providers_refresh_catalog_serialize(
-        self,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'XApiKeyAuth', 
-            'ApiKeyAuth'
-        ]
-
-        return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/api/v1/hosted-providers/refresh',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4078,6 +3865,284 @@ class HostedProvidersApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/api/v1/hosted-providers/test',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def hosted_providers_update_catalog(
+        self,
+        hosted_catalog_update_request: HostedCatalogUpdateRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> HostedCatalogUpdatePublic:
+        """Update Catalog
+
+        Apply the reviewed prices, then refresh every provider's models, then the cleanup if asked.  The price step comes first, so the model step prices new models at the prices it applied, and a model held for want of a price is served once it has one. Without a ``digest`` no price changes. A ``digest`` that no longer names the pending prices answers 409 and changes nothing. ``cleanup`` removes the prices of models no provider serves, with their history.
+
+        :param hosted_catalog_update_request: (required)
+        :type hosted_catalog_update_request: HostedCatalogUpdateRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._hosted_providers_update_catalog_serialize(
+            hosted_catalog_update_request=hosted_catalog_update_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "HostedCatalogUpdatePublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def hosted_providers_update_catalog_with_http_info(
+        self,
+        hosted_catalog_update_request: HostedCatalogUpdateRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[HostedCatalogUpdatePublic]:
+        """Update Catalog
+
+        Apply the reviewed prices, then refresh every provider's models, then the cleanup if asked.  The price step comes first, so the model step prices new models at the prices it applied, and a model held for want of a price is served once it has one. Without a ``digest`` no price changes. A ``digest`` that no longer names the pending prices answers 409 and changes nothing. ``cleanup`` removes the prices of models no provider serves, with their history.
+
+        :param hosted_catalog_update_request: (required)
+        :type hosted_catalog_update_request: HostedCatalogUpdateRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._hosted_providers_update_catalog_serialize(
+            hosted_catalog_update_request=hosted_catalog_update_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "HostedCatalogUpdatePublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def hosted_providers_update_catalog_without_preload_content(
+        self,
+        hosted_catalog_update_request: HostedCatalogUpdateRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Update Catalog
+
+        Apply the reviewed prices, then refresh every provider's models, then the cleanup if asked.  The price step comes first, so the model step prices new models at the prices it applied, and a model held for want of a price is served once it has one. Without a ``digest`` no price changes. A ``digest`` that no longer names the pending prices answers 409 and changes nothing. ``cleanup`` removes the prices of models no provider serves, with their history.
+
+        :param hosted_catalog_update_request: (required)
+        :type hosted_catalog_update_request: HostedCatalogUpdateRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._hosted_providers_update_catalog_serialize(
+            hosted_catalog_update_request=hosted_catalog_update_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "HostedCatalogUpdatePublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _hosted_providers_update_catalog_serialize(
+        self,
+        hosted_catalog_update_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if hosted_catalog_update_request is not None:
+            _body_params = hosted_catalog_update_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/hosted-providers/catalog-update',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

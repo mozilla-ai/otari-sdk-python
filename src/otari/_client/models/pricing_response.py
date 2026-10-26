@@ -37,10 +37,11 @@ class PricingResponse(BaseModel):
     model_key: StrictStr
     origin: Optional[StrictStr] = Field(description="Which writer set this row: config, api, or migration. Null when recorded before origins were.")
     output_price_per_million: Union[StrictFloat, StrictInt]
+    price_per_request: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="USD for each request, for a rate in requests; null for any other unit.")
     pricing_tiers: List[PricingTier]
     unit: StrictStr = Field(description="What the rates are per: tokens, requests, or images.")
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_at", "input_price_per_million", "kind", "model_key", "origin", "output_price_per_million", "pricing_tiers", "unit", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_at", "input_price_per_million", "kind", "model_key", "origin", "output_price_per_million", "price_per_request", "pricing_tiers", "unit", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -103,6 +104,11 @@ class PricingResponse(BaseModel):
         if self.origin is None and "origin" in self.model_fields_set:
             _dict['origin'] = None
 
+        # set to None if price_per_request (nullable) is None
+        # and model_fields_set contains the field
+        if self.price_per_request is None and "price_per_request" in self.model_fields_set:
+            _dict['price_per_request'] = None
+
         return _dict
 
     @classmethod
@@ -124,6 +130,7 @@ class PricingResponse(BaseModel):
             "model_key": obj.get("model_key"),
             "origin": obj.get("origin"),
             "output_price_per_million": obj.get("output_price_per_million"),
+            "price_per_request": obj.get("price_per_request"),
             "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
             "unit": obj.get("unit"),
             "updated_at": obj.get("updated_at")

@@ -18,17 +18,19 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
+from otari._client.models.hosted_catalog_refresh_public import HostedCatalogRefreshPublic
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PricingRefreshConfirmationResponse(BaseModel):
+class HostedCatalogUpdatePublic(BaseModel):
     """
-    Result of activating a reviewed models.dev refresh.
+    What a catalog update did.
     """ # noqa: E501
-    applied: Optional[StrictBool] = True
-    __properties: ClassVar[List[str]] = ["applied"]
+    catalog: HostedCatalogRefreshPublic
+    prices_applied: StrictBool
+    __properties: ClassVar[List[str]] = ["catalog", "prices_applied"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -48,7 +50,7 @@ class PricingRefreshConfirmationResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PricingRefreshConfirmationResponse from a JSON string"""
+        """Create an instance of HostedCatalogUpdatePublic from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +71,14 @@ class PricingRefreshConfirmationResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of catalog
+        if self.catalog:
+            _dict['catalog'] = self.catalog.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PricingRefreshConfirmationResponse from a dict"""
+        """Create an instance of HostedCatalogUpdatePublic from a dict"""
         if obj is None:
             return None
 
@@ -81,7 +86,8 @@ class PricingRefreshConfirmationResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "applied": obj.get("applied") if obj.get("applied") is not None else True
+            "catalog": HostedCatalogRefreshPublic.from_dict(obj["catalog"]) if obj.get("catalog") is not None else None,
+            "prices_applied": obj.get("prices_applied")
         })
         return _obj
 

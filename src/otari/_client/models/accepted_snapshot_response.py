@@ -29,7 +29,7 @@ class AcceptedSnapshotResponse(BaseModel):
     One accepted models.dev snapshot in the history.
     """ # noqa: E501
     accepted_at: datetime
-    accepted_by: StrictStr = Field(description="`operator` for a dashboard confirm, `schedule` for the auto policy.")
+    accepted_by: StrictStr = Field(description="`operator` for a catalog update an operator ran, `schedule` for the auto policy.")
     id: StrictStr
     model_count: StrictInt
     __properties: ClassVar[List[str]] = ["accepted_at", "accepted_by", "id", "model_count"]

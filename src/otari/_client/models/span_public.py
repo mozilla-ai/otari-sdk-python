@@ -27,12 +27,13 @@ from pydantic_core import to_jsonable_python
 
 class SpanPublic(BaseModel):
     """
-    One span of a session. Content is never part of a span.
+    One span of a session. Its content is empty unless the deployment keeps content.
     """ # noqa: E501
     approximate: StrictBool = Field(description="True when the start was inferred rather than measured.")
     attributes: Dict[str, AttributesValue]
     cache_read_tokens: Optional[StrictInt] = Field(description="Input tokens read from the prompt cache.")
     cache_write_tokens: Optional[StrictInt] = Field(description="Input tokens written to the prompt cache.")
+    content: Dict[str, StrictStr] = Field(description="What the span was about (prompt, command, file_path, gate.evidence, gate.detail), only where the deployment keeps content and the agent sent it. Empty otherwise.")
     cost: Optional[Union[StrictFloat, StrictInt]]
     duration_ms: Optional[StrictInt]
     end_time: Optional[datetime]
@@ -58,7 +59,7 @@ class SpanPublic(BaseModel):
     tool_call_id: Optional[StrictStr]
     tool_name: Optional[StrictStr]
     tool_type: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["approximate", "attributes", "cache_read_tokens", "cache_write_tokens", "cost", "duration_ms", "end_time", "error_class", "input_tokens", "kind", "model", "name", "opens_turn", "operation", "origin", "otel_span_id", "otel_trace_id", "outcome", "output_tokens", "parent_span_id", "provider", "reasoning_tokens", "recovered", "request_id", "span_id", "start_time", "tool_call_id", "tool_name", "tool_type"]
+    __properties: ClassVar[List[str]] = ["approximate", "attributes", "cache_read_tokens", "cache_write_tokens", "content", "cost", "duration_ms", "end_time", "error_class", "input_tokens", "kind", "model", "name", "opens_turn", "operation", "origin", "otel_span_id", "otel_trace_id", "outcome", "output_tokens", "parent_span_id", "provider", "reasoning_tokens", "recovered", "request_id", "span_id", "start_time", "tool_call_id", "tool_name", "tool_type"]
 
     @field_validator('origin')
     def origin_validate_enum(cls, value):
@@ -241,6 +242,7 @@ class SpanPublic(BaseModel):
             else None,
             "cache_read_tokens": obj.get("cache_read_tokens"),
             "cache_write_tokens": obj.get("cache_write_tokens"),
+            "content": obj.get("content"),
             "cost": obj.get("cost"),
             "duration_ms": obj.get("duration_ms"),
             "end_time": obj.get("end_time"),

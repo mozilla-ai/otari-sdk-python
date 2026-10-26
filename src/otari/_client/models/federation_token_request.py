@@ -31,8 +31,8 @@ class FederationTokenRequest(BaseModel):
     federation_rule_id: Optional[StrictStr] = Field(default=None, description="The id of the federation rule the identity token must match.")
     grant_type: Optional[StrictStr] = Field(default=None, description="urn:ietf:params:oauth:grant-type:jwt-bearer")
     organization_id: Optional[StrictStr] = Field(default=None, description="When set, the UUID of the organization of the rule's key.")
-    service_account_id: Optional[StrictStr] = Field(default=None, description="When set, the id of the rule's key.")
-    workspace_id: Optional[StrictStr] = Field(default=None, description="When set, the UUID of the rule's key's workspace.")
+    service_account_id: Optional[StrictStr] = Field(default=None, description="Ignored. Accepted so that a client configured for Anthropic's service account id is not refused.")
+    workspace_id: Optional[StrictStr] = Field(default=None, description="Ignored. Accepted so that a client configured for Anthropic's workspace id is not refused.")
     __properties: ClassVar[List[str]] = ["assertion", "federation_rule_id", "grant_type", "organization_id", "service_account_id", "workspace_id"]
 
     model_config = ConfigDict(
