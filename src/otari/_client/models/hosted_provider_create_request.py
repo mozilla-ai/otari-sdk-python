@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from uuid import UUID
@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class HostedProviderCreateRequest(BaseModel):
     """
-    Configure a provider this deployment will serve hosted inference on.  ``provider`` is the any-llm implementation. ``name`` is what requests address it by (``name:model``), defaulting to ``provider``; a name of its own lets two endpoints of one implementation coexist. ``api_key`` may be left out for a backend that needs none, or for an endpoint of its own (``api_base``), which is called with a placeholder key.  ``client_args`` is whatever the provider's SDK client needs beyond the key (Bedrock's region and IAM pair), the same shape an organization provider key takes. Values under credential-shaped names come back masked. ``restricted_to_organization_id`` keeps the provider to one organization; every other one is served as if it were not configured. ``serves_unlisted_models`` serves a model the roster does not list, as a ``config.yml`` instance does, and switches on every model it offers whether or not something prices it.
+    Configure a provider this deployment will serve hosted inference on.  ``provider`` is the any-llm implementation. ``name`` is what requests address it by (``name:model``), defaulting to ``provider``; a name of its own lets two endpoints of one implementation coexist. ``api_key`` may be left out for a backend that needs none, or for an endpoint of its own (``api_base``), which is called with a placeholder key.  ``client_args`` is whatever the provider's SDK client needs beyond the key (Bedrock's region and IAM pair), the same shape an organization provider key takes. Values under credential-shaped names come back masked. ``restricted_to_organization_id`` keeps the provider to one organization; every other one is served as if it were not configured. ``serves_unlisted_models`` serves a model the roster does not list, as a ``config.yml`` instance does, and switches on every model it offers whether or not something prices it. ``supported_countries`` keeps the provider to requests from those ISO country codes, checked as well as ``provider_supported_countries``; null serves every country.
     """ # noqa: E501
     api_base: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
     api_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=1024)]] = None
@@ -37,7 +37,8 @@ class HostedProviderCreateRequest(BaseModel):
     provider: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
     restricted_to_organization_id: Optional[UUID] = None
     serves_unlisted_models: Optional[StrictBool] = False
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "enabled", "name", "provider", "restricted_to_organization_id", "serves_unlisted_models"]
+    supported_countries: Optional[Annotated[List[StrictStr], Field(max_length=300)]] = None
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "enabled", "name", "provider", "restricted_to_organization_id", "serves_unlisted_models", "supported_countries"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -103,6 +104,11 @@ class HostedProviderCreateRequest(BaseModel):
         if self.restricted_to_organization_id is None and "restricted_to_organization_id" in self.model_fields_set:
             _dict['restricted_to_organization_id'] = None
 
+        # set to None if supported_countries (nullable) is None
+        # and model_fields_set contains the field
+        if self.supported_countries is None and "supported_countries" in self.model_fields_set:
+            _dict['supported_countries'] = None
+
         return _dict
 
     @classmethod
@@ -122,7 +128,8 @@ class HostedProviderCreateRequest(BaseModel):
             "name": obj.get("name"),
             "provider": obj.get("provider"),
             "restricted_to_organization_id": obj.get("restricted_to_organization_id"),
-            "serves_unlisted_models": obj.get("serves_unlisted_models") if obj.get("serves_unlisted_models") is not None else False
+            "serves_unlisted_models": obj.get("serves_unlisted_models") if obj.get("serves_unlisted_models") is not None else False,
+            "supported_countries": obj.get("supported_countries")
         })
         return _obj
 

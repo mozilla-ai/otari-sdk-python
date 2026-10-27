@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class HostedProviderPublic(BaseModel):
     """
-    One hosted provider, known by its name, its implementation and the tail of its key.  No shape in this section carries key material: a stored credential is known by its last four characters and nothing else, ``client_args`` goes out with credential-shaped values masked, and ``api_base`` with the password in its userinfo and its query values masked.  ``name`` is what requests address and every route takes; ``provider`` is the any-llm implementation. ``source`` says where the provider is defined. A ``config`` provider comes from the ``hosted_providers:`` block, has no row and so no ``id`` or timestamps, and is changed by editing the configuration rather than through this API; its models are administered as a stored provider's are. ``shadows_config`` marks a stored provider that wins over a configuration entry of the same name, which serves again once the row is deleted. ``has_api_key`` is false for one stored without a key, and ``decryptable`` false for one whose key or extras no configured ``OTARI_SECRET_KEY`` reads, which serves nothing until re-entered. ``serves_unlisted_models`` is true for one that serves a model its roster does not list.
+    One hosted provider, known by its name, its implementation and the tail of its key.  No shape in this section carries key material: a stored credential is known by its last four characters and nothing else, ``client_args`` goes out with credential-shaped values masked, and ``api_base`` with the password in its userinfo and its query values masked.  ``name`` is what requests address and every route takes; ``provider`` is the any-llm implementation. ``source`` says where the provider is defined. A ``config`` provider comes from the ``hosted_providers:`` block, has no row and so no ``id`` or timestamps, and is changed by editing the configuration rather than through this API; its models are administered as a stored provider's are. ``shadows_config`` marks a stored provider that wins over a configuration entry of the same name, which serves again once the row is deleted. ``has_api_key`` is false for one stored without a key, and ``decryptable`` false for one whose key or extras no configured ``OTARI_SECRET_KEY`` reads, which serves nothing until re-entered. ``serves_unlisted_models`` is true for one that serves a model its roster does not list. ``supported_countries`` is null for one that serves every country.
     """ # noqa: E501
     api_base: Optional[StrictStr] = None
     api_key_last4: Optional[StrictStr] = None
@@ -43,8 +43,9 @@ class HostedProviderPublic(BaseModel):
     serves_unlisted_models: Optional[StrictBool] = False
     shadows_config: Optional[StrictBool] = False
     source: Optional[StrictStr] = 'database'
+    supported_countries: Optional[List[StrictStr]] = None
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key_last4", "client_args", "created_at", "decryptable", "enabled", "has_api_key", "id", "name", "provider", "restricted_to_organization_id", "serves_unlisted_models", "shadows_config", "source", "updated_at"]
+    __properties: ClassVar[List[str]] = ["api_base", "api_key_last4", "client_args", "created_at", "decryptable", "enabled", "has_api_key", "id", "name", "provider", "restricted_to_organization_id", "serves_unlisted_models", "shadows_config", "source", "supported_countries", "updated_at"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -125,6 +126,11 @@ class HostedProviderPublic(BaseModel):
         if self.restricted_to_organization_id is None and "restricted_to_organization_id" in self.model_fields_set:
             _dict['restricted_to_organization_id'] = None
 
+        # set to None if supported_countries (nullable) is None
+        # and model_fields_set contains the field
+        if self.supported_countries is None and "supported_countries" in self.model_fields_set:
+            _dict['supported_countries'] = None
+
         # set to None if updated_at (nullable) is None
         # and model_fields_set contains the field
         if self.updated_at is None and "updated_at" in self.model_fields_set:
@@ -156,6 +162,7 @@ class HostedProviderPublic(BaseModel):
             "serves_unlisted_models": obj.get("serves_unlisted_models") if obj.get("serves_unlisted_models") is not None else False,
             "shadows_config": obj.get("shadows_config") if obj.get("shadows_config") is not None else False,
             "source": obj.get("source") if obj.get("source") is not None else 'database',
+            "supported_countries": obj.get("supported_countries"),
             "updated_at": obj.get("updated_at")
         })
         return _obj

@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from uuid import UUID
@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class HostedProviderUpdateRequest(BaseModel):
     """
-    Rotate the key, repoint the base, or turn a provider off.  ``provider`` and ``name`` are immutable: changing either is a delete plus a create, because the key belongs to the provider it was issued by and requests address the name. Omitting ``api_key`` leaves the stored credential untouched, so a toggle never re-sends a secret the caller does not have; an explicit null removes it, where the provider can be served without one. ``client_args`` omitted is left alone; an explicit null clears it, and an entry echoed back as the mask keeps the stored value. ``restricted_to_organization_id`` reads the same way: omitted keeps the restriction, null lifts it.
+    Rotate the key, repoint the base, or turn a provider off.  ``provider`` and ``name`` are immutable: changing either is a delete plus a create, because the key belongs to the provider it was issued by and requests address the name. Omitting ``api_key`` leaves the stored credential untouched, so a toggle never re-sends a secret the caller does not have; an explicit null removes it, where the provider can be served without one. ``client_args`` omitted is left alone; an explicit null clears it, and an entry echoed back as the mask keeps the stored value. ``restricted_to_organization_id`` reads the same way: omitted keeps the restriction, null lifts it, and so does ``supported_countries``, where an empty list closes the provider to every country.
     """ # noqa: E501
     api_base: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
     api_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=1024)]] = None
@@ -35,7 +35,8 @@ class HostedProviderUpdateRequest(BaseModel):
     enabled: Optional[StrictBool] = None
     restricted_to_organization_id: Optional[UUID] = None
     serves_unlisted_models: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "enabled", "restricted_to_organization_id", "serves_unlisted_models"]
+    supported_countries: Optional[Annotated[List[StrictStr], Field(max_length=300)]] = None
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "enabled", "restricted_to_organization_id", "serves_unlisted_models", "supported_countries"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -106,6 +107,11 @@ class HostedProviderUpdateRequest(BaseModel):
         if self.serves_unlisted_models is None and "serves_unlisted_models" in self.model_fields_set:
             _dict['serves_unlisted_models'] = None
 
+        # set to None if supported_countries (nullable) is None
+        # and model_fields_set contains the field
+        if self.supported_countries is None and "supported_countries" in self.model_fields_set:
+            _dict['supported_countries'] = None
+
         return _dict
 
     @classmethod
@@ -123,7 +129,8 @@ class HostedProviderUpdateRequest(BaseModel):
             "client_args": obj.get("client_args"),
             "enabled": obj.get("enabled"),
             "restricted_to_organization_id": obj.get("restricted_to_organization_id"),
-            "serves_unlisted_models": obj.get("serves_unlisted_models")
+            "serves_unlisted_models": obj.get("serves_unlisted_models"),
+            "supported_countries": obj.get("supported_countries")
         })
         return _obj
 
