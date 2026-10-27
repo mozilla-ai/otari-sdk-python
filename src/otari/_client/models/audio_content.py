@@ -26,19 +26,21 @@ from pydantic_core import to_jsonable_python
 
 class AudioContent(BaseModel):
     """
-    Audio content for a message.
+    Audio provided to or from an LLM.
     """ # noqa: E501
     meta: Optional[Dict[str, Any]] = Field(default=None, alias="_meta")
     annotations: Optional[Annotations] = None
     data: StrictStr
     mime_type: StrictStr = Field(alias="mimeType")
-    type: StrictStr
-    additional_properties: Dict[str, Any] = {}
+    type: Optional[StrictStr] = 'audio'
     __properties: ClassVar[List[str]] = ["_meta", "annotations", "data", "mimeType", "type"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         if value not in set(['audio']):
             raise ValueError("must be one of enum values ('audio')")
         return value
@@ -73,10 +75,8 @@ class AudioContent(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
-            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -87,11 +87,6 @@ class AudioContent(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of annotations
         if self.annotations:
             _dict['annotations'] = self.annotations.to_dict()
-        # puts key-value pairs in additional_properties in the top level
-        if self.additional_properties is not None:
-            for _key, _value in self.additional_properties.items():
-                _dict[_key] = _value
-
         # set to None if meta (nullable) is None
         # and model_fields_set contains the field
         if self.meta is None and "meta" in self.model_fields_set:
@@ -118,13 +113,8 @@ class AudioContent(BaseModel):
             "annotations": Annotations.from_dict(obj["annotations"]) if obj.get("annotations") is not None else None,
             "data": obj.get("data"),
             "mimeType": obj.get("mimeType"),
-            "type": obj.get("type")
+            "type": obj.get("type") if obj.get("type") is not None else 'audio'
         })
-        # store additional fields in additional_properties
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                _obj.additional_properties[_key] = obj.get(_key)
-
         return _obj
 
 

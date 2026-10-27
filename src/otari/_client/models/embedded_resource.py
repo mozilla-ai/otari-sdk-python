@@ -32,13 +32,15 @@ class EmbeddedResource(BaseModel):
     meta: Optional[Dict[str, Any]] = Field(default=None, alias="_meta")
     annotations: Optional[Annotations] = None
     resource: Resource
-    type: StrictStr
-    additional_properties: Dict[str, Any] = {}
+    type: Optional[StrictStr] = 'resource'
     __properties: ClassVar[List[str]] = ["_meta", "annotations", "resource", "type"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         if value not in set(['resource']):
             raise ValueError("must be one of enum values ('resource')")
         return value
@@ -73,10 +75,8 @@ class EmbeddedResource(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
-            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -90,11 +90,6 @@ class EmbeddedResource(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of resource
         if self.resource:
             _dict['resource'] = self.resource.to_dict()
-        # puts key-value pairs in additional_properties in the top level
-        if self.additional_properties is not None:
-            for _key, _value in self.additional_properties.items():
-                _dict[_key] = _value
-
         # set to None if meta (nullable) is None
         # and model_fields_set contains the field
         if self.meta is None and "meta" in self.model_fields_set:
@@ -120,13 +115,8 @@ class EmbeddedResource(BaseModel):
             "_meta": obj.get("_meta"),
             "annotations": Annotations.from_dict(obj["annotations"]) if obj.get("annotations") is not None else None,
             "resource": Resource.from_dict(obj["resource"]) if obj.get("resource") is not None else None,
-            "type": obj.get("type")
+            "type": obj.get("type") if obj.get("type") is not None else 'resource'
         })
-        # store additional fields in additional_properties
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                _obj.additional_properties[_key] = obj.get(_key)
-
         return _obj
 
 
