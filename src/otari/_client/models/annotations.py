@@ -26,12 +26,12 @@ from pydantic_core import to_jsonable_python
 
 class Annotations(BaseModel):
     """
-    Annotations
+    Optional annotations the client can use to inform how objects are used or displayed.
     """ # noqa: E501
     audience: Optional[List[StrictStr]] = None
+    last_modified: Optional[StrictStr] = Field(default=None, alias="lastModified")
     priority: Optional[Union[Annotated[float, Field(le=1.0, strict=True, ge=0.0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = None
-    additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["audience", "priority"]
+    __properties: ClassVar[List[str]] = ["audience", "lastModified", "priority"]
 
     @field_validator('audience')
     def audience_validate_enum(cls, value):
@@ -74,10 +74,8 @@ class Annotations(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
-            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -85,15 +83,15 @@ class Annotations(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # puts key-value pairs in additional_properties in the top level
-        if self.additional_properties is not None:
-            for _key, _value in self.additional_properties.items():
-                _dict[_key] = _value
-
         # set to None if audience (nullable) is None
         # and model_fields_set contains the field
         if self.audience is None and "audience" in self.model_fields_set:
             _dict['audience'] = None
+
+        # set to None if last_modified (nullable) is None
+        # and model_fields_set contains the field
+        if self.last_modified is None and "last_modified" in self.model_fields_set:
+            _dict['lastModified'] = None
 
         # set to None if priority (nullable) is None
         # and model_fields_set contains the field
@@ -113,13 +111,9 @@ class Annotations(BaseModel):
 
         _obj = cls.model_validate({
             "audience": obj.get("audience"),
+            "lastModified": obj.get("lastModified"),
             "priority": obj.get("priority")
         })
-        # store additional fields in additional_properties
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                _obj.additional_properties[_key] = obj.get(_key)
-
         return _obj
 
 

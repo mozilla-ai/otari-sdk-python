@@ -335,7 +335,7 @@ class HooksApi:
     ) -> GuardrailDefinitionResponse:
         """Record Guardrail Definition
 
-        Keep one version of an agent guardrail, so the gate spans that name it can say what each gate is for.  `otari hook` sends this once per version, the first time it reports a check against it. The fingerprint is recomputed from the gates, and one that does not match the one sent is refused, so a version cannot be stored under another's name. Sending a version again changes nothing. It is stored in the API key's workspace, beside that key's traces, and takes the same key a trace export does: a budget-exempt API key, never the master key.
+        Keep one version of an agent guardrail, so the gate spans that name it can say what each gate is for.  `otari hook` sends this once per version, the first time it reports a check against it. The fingerprint is recomputed from the gates, and one that does not match the one sent is refused, so a version cannot be stored under another's name. Sending a version again changes nothing. A workspace keeps at most 1,000 versions, and a new one past that is refused with a 409. It is stored in the API key's workspace, beside that key's traces, and takes the same key a trace export does: a budget-exempt API key, never the master key.
 
         :param guardrail_definition_request: (required)
         :type guardrail_definition_request: GuardrailDefinitionRequest
@@ -371,6 +371,7 @@ class HooksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GuardrailDefinitionResponse",
+            '409': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -403,7 +404,7 @@ class HooksApi:
     ) -> ApiResponse[GuardrailDefinitionResponse]:
         """Record Guardrail Definition
 
-        Keep one version of an agent guardrail, so the gate spans that name it can say what each gate is for.  `otari hook` sends this once per version, the first time it reports a check against it. The fingerprint is recomputed from the gates, and one that does not match the one sent is refused, so a version cannot be stored under another's name. Sending a version again changes nothing. It is stored in the API key's workspace, beside that key's traces, and takes the same key a trace export does: a budget-exempt API key, never the master key.
+        Keep one version of an agent guardrail, so the gate spans that name it can say what each gate is for.  `otari hook` sends this once per version, the first time it reports a check against it. The fingerprint is recomputed from the gates, and one that does not match the one sent is refused, so a version cannot be stored under another's name. Sending a version again changes nothing. A workspace keeps at most 1,000 versions, and a new one past that is refused with a 409. It is stored in the API key's workspace, beside that key's traces, and takes the same key a trace export does: a budget-exempt API key, never the master key.
 
         :param guardrail_definition_request: (required)
         :type guardrail_definition_request: GuardrailDefinitionRequest
@@ -439,6 +440,7 @@ class HooksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GuardrailDefinitionResponse",
+            '409': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -471,7 +473,7 @@ class HooksApi:
     ) -> RESTResponseType:
         """Record Guardrail Definition
 
-        Keep one version of an agent guardrail, so the gate spans that name it can say what each gate is for.  `otari hook` sends this once per version, the first time it reports a check against it. The fingerprint is recomputed from the gates, and one that does not match the one sent is refused, so a version cannot be stored under another's name. Sending a version again changes nothing. It is stored in the API key's workspace, beside that key's traces, and takes the same key a trace export does: a budget-exempt API key, never the master key.
+        Keep one version of an agent guardrail, so the gate spans that name it can say what each gate is for.  `otari hook` sends this once per version, the first time it reports a check against it. The fingerprint is recomputed from the gates, and one that does not match the one sent is refused, so a version cannot be stored under another's name. Sending a version again changes nothing. A workspace keeps at most 1,000 versions, and a new one past that is refused with a 409. It is stored in the API key's workspace, beside that key's traces, and takes the same key a trace export does: a budget-exempt API key, never the master key.
 
         :param guardrail_definition_request: (required)
         :type guardrail_definition_request: GuardrailDefinitionRequest
@@ -507,6 +509,7 @@ class HooksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GuardrailDefinitionResponse",
+            '409': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(

@@ -20,20 +20,21 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.content_inner import ContentInner
+from otari._client.models.resulttype import Resulttype
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class CallToolResult(BaseModel):
     """
-    The server's response to a tool call.
+    The server's response to a tool call.  Errors that originate from the tool SHOULD be reported inside the result with `is_error` set to true, not as an MCP protocol-level error, so the LLM can see and self-correct. Errors in finding the tool, or any other exceptional condition, should be reported as an MCP error response.
     """ # noqa: E501
     meta: Optional[Dict[str, Any]] = Field(default=None, alias="_meta")
     content: List[ContentInner]
     is_error: Optional[StrictBool] = Field(default=False, alias="isError")
-    structured_content: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.", alias="structuredContent")
-    additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["_meta", "content", "isError", "structuredContent"]
+    result_type: Optional[Resulttype] = Field(default=None, alias="resultType")
+    structured_content: Optional[Any] = Field(default=None, alias="structuredContent")
+    __properties: ClassVar[List[str]] = ["_meta", "content", "isError", "resultType", "structuredContent"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -65,10 +66,8 @@ class CallToolResult(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
-            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -83,11 +82,9 @@ class CallToolResult(BaseModel):
                 if _item_content:
                     _items.append(_item_content.to_dict())
             _dict['content'] = _items
-        # puts key-value pairs in additional_properties in the top level
-        if self.additional_properties is not None:
-            for _key, _value in self.additional_properties.items():
-                _dict[_key] = _value
-
+        # override the default output from pydantic by calling `to_dict()` of result_type
+        if self.result_type:
+            _dict['resultType'] = self.result_type.to_dict()
         # set to None if meta (nullable) is None
         # and model_fields_set contains the field
         if self.meta is None and "meta" in self.model_fields_set:
@@ -113,13 +110,9 @@ class CallToolResult(BaseModel):
             "_meta": obj.get("_meta"),
             "content": [ContentInner.from_dict(_item) for _item in obj["content"]] if obj.get("content") is not None else None,
             "isError": obj.get("isError") if obj.get("isError") is not None else False,
+            "resultType": Resulttype.from_dict(obj["resultType"]) if obj.get("resultType") is not None else None,
             "structuredContent": obj.get("structuredContent")
         })
-        # store additional fields in additional_properties
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                _obj.additional_properties[_key] = obj.get(_key)
-
         return _obj
 
 

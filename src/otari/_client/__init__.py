@@ -668,6 +668,7 @@ __all__ = [
     "ResponseFilesGetFile",
     "ResponseFilesListFiles",
     "ResponsesRequest",
+    "Resulttype",
     "RotateMasterKeyResponse",
     "RouterStatus",
     "SandboxCredentialPublic",
@@ -1452,6 +1453,7 @@ from otari._client.models.response_files_delete_file import ResponseFilesDeleteF
 from otari._client.models.response_files_get_file import ResponseFilesGetFile as ResponseFilesGetFile
 from otari._client.models.response_files_list_files import ResponseFilesListFiles as ResponseFilesListFiles
 from otari._client.models.responses_request import ResponsesRequest as ResponsesRequest
+from otari._client.models.resulttype import Resulttype as Resulttype
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse as RotateMasterKeyResponse
 from otari._client.models.router_status import RouterStatus as RouterStatus
 from otari._client.models.sandbox_credential_public import SandboxCredentialPublic as SandboxCredentialPublic
