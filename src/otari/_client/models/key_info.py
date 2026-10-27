@@ -46,10 +46,11 @@ class KeyInfo(BaseModel):
     last_used_at: Optional[StrictStr]
     max_end_users: Optional[StrictInt] = None
     metadata: Dict[str, Any]
+    operator_disabled: Optional[StrictBool] = False
     reject_user_mismatch: Optional[StrictBool]
     user_id: Optional[StrictStr]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "config_name", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_service_key", "key_name", "key_prefix", "key_suffix", "last_used_at", "max_end_users", "metadata", "reject_user_mismatch", "user_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "config_name", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_service_key", "key_name", "key_prefix", "key_suffix", "last_used_at", "max_end_users", "metadata", "operator_disabled", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -185,6 +186,7 @@ class KeyInfo(BaseModel):
             "last_used_at": obj.get("last_used_at"),
             "max_end_users": obj.get("max_end_users"),
             "metadata": obj.get("metadata"),
+            "operator_disabled": obj.get("operator_disabled") if obj.get("operator_disabled") is not None else False,
             "reject_user_mismatch": obj.get("reject_user_mismatch"),
             "user_id": obj.get("user_id"),
             "workspace_id": obj.get("workspace_id")
