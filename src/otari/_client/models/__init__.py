@@ -165,6 +165,7 @@ from otari._client.models.content_inner import ContentInner
 from otari._client.models.conversation import Conversation
 from otari._client.models.count_tokens_request import CountTokensRequest
 from otari._client.models.count_tokens_response import CountTokensResponse
+from otari._client.models.country_database_status import CountryDatabaseStatus
 from otari._client.models.create_batch_request import CreateBatchRequest
 from otari._client.models.create_budget_request import CreateBudgetRequest
 from otari._client.models.create_embedding_response import CreateEmbeddingResponse
@@ -622,6 +623,7 @@ from otari._client.models.source1 import Source1
 from otari._client.models.span_public import SpanPublic
 from otari._client.models.state import State
 from otari._client.models.stop import Stop
+from otari._client.models.stored_country_database_public import StoredCountryDatabasePublic
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
 from otari._client.models.stored_search_tool_test_request import StoredSearchToolTestRequest
 from otari._client.models.switch_active_organization_request import SwitchActiveOrganizationRequest
