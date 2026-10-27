@@ -356,7 +356,7 @@ class OrganizationKeysApi:
     ) -> CreateKeyResponse:
         """Create Own Key
 
-        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). The secret is returned once.
+        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). A viewer of the workspace is refused with 403. The secret is returned once.
 
         :param create_own_key_request: (required)
         :type create_own_key_request: CreateOwnKeyRequest
@@ -424,7 +424,7 @@ class OrganizationKeysApi:
     ) -> ApiResponse[CreateKeyResponse]:
         """Create Own Key
 
-        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). The secret is returned once.
+        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). A viewer of the workspace is refused with 403. The secret is returned once.
 
         :param create_own_key_request: (required)
         :type create_own_key_request: CreateOwnKeyRequest
@@ -492,7 +492,7 @@ class OrganizationKeysApi:
     ) -> RESTResponseType:
         """Create Own Key
 
-        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). The secret is returned once.
+        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). A viewer of the workspace is refused with 403. The secret is returned once.
 
         :param create_own_key_request: (required)
         :type create_own_key_request: CreateOwnKeyRequest
