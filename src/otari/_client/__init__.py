@@ -19,6 +19,7 @@ __version__ = "1.0.0"
 # Define package exports
 __all__ = [
     "AdminApi",
+    "AgentRecommendersApi",
     "AgentTelemetryApi",
     "AliasesApi",
     "AudioApi",
@@ -102,6 +103,10 @@ __all__ = [
     "ActiveOrganizationUpdateRequest",
     "AgentModelRecommendation",
     "AgentModelRecommendationRequest",
+    "AgentRecommenderCreate",
+    "AgentRecommenderPublic",
+    "AgentRecommenderUpdate",
+    "AgentRecommendersPublic",
     "AgentTelemetryBehavior",
     "AgentTelemetryCount",
     "AgentTelemetryDeleteRequest",
@@ -656,6 +661,7 @@ __all__ = [
     "RateLimitRulePublic",
     "RateLimitRuleUpdate",
     "RateLimitRulesPublic",
+    "RecommendationRefusal",
     "RecordedPool",
     "ReencryptSearchToolsResponse",
     "RegisterPasskeyRequest",
@@ -812,6 +818,7 @@ __all__ = [
 
 # import apis into sdk package
 from otari._client.api.admin_api import AdminApi as AdminApi
+from otari._client.api.agent_recommenders_api import AgentRecommendersApi as AgentRecommendersApi
 from otari._client.api.agent_telemetry_api import AgentTelemetryApi as AgentTelemetryApi
 from otari._client.api.aliases_api import AliasesApi as AliasesApi
 from otari._client.api.audio_api import AudioApi as AudioApi
@@ -899,6 +906,10 @@ from otari._client.models.active_organization_members_public import ActiveOrgani
 from otari._client.models.active_organization_update_request import ActiveOrganizationUpdateRequest as ActiveOrganizationUpdateRequest
 from otari._client.models.agent_model_recommendation import AgentModelRecommendation as AgentModelRecommendation
 from otari._client.models.agent_model_recommendation_request import AgentModelRecommendationRequest as AgentModelRecommendationRequest
+from otari._client.models.agent_recommender_create import AgentRecommenderCreate as AgentRecommenderCreate
+from otari._client.models.agent_recommender_public import AgentRecommenderPublic as AgentRecommenderPublic
+from otari._client.models.agent_recommender_update import AgentRecommenderUpdate as AgentRecommenderUpdate
+from otari._client.models.agent_recommenders_public import AgentRecommendersPublic as AgentRecommendersPublic
 from otari._client.models.agent_telemetry_behavior import AgentTelemetryBehavior as AgentTelemetryBehavior
 from otari._client.models.agent_telemetry_count import AgentTelemetryCount as AgentTelemetryCount
 from otari._client.models.agent_telemetry_delete_request import AgentTelemetryDeleteRequest as AgentTelemetryDeleteRequest
@@ -1453,6 +1464,7 @@ from otari._client.models.rate_limit_rule_create import RateLimitRuleCreate as R
 from otari._client.models.rate_limit_rule_public import RateLimitRulePublic as RateLimitRulePublic
 from otari._client.models.rate_limit_rule_update import RateLimitRuleUpdate as RateLimitRuleUpdate
 from otari._client.models.rate_limit_rules_public import RateLimitRulesPublic as RateLimitRulesPublic
+from otari._client.models.recommendation_refusal import RecommendationRefusal as RecommendationRefusal
 from otari._client.models.recorded_pool import RecordedPool as RecordedPool
 from otari._client.models.reencrypt_search_tools_response import ReencryptSearchToolsResponse as ReencryptSearchToolsResponse
 from otari._client.models.register_passkey_request import RegisterPasskeyRequest as RegisterPasskeyRequest

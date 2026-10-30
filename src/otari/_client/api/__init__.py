@@ -2,6 +2,7 @@
 
 # import apis into api package
 from otari._client.api.admin_api import AdminApi
+from otari._client.api.agent_recommenders_api import AgentRecommendersApi
 from otari._client.api.agent_telemetry_api import AgentTelemetryApi
 from otari._client.api.aliases_api import AliasesApi
 from otari._client.api.audio_api import AudioApi

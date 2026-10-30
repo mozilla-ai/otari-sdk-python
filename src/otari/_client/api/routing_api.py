@@ -2002,7 +2002,7 @@ class RoutingApi:
     ) -> AgentModelRecommendation:
         """Recommend Model For Agent
 
-        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the decision model `agent_recommender_model` names to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
+        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the subagent router an operator switched on in the dashboard to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
 
         :param agent_model_recommendation_request: (required)
         :type agent_model_recommendation_request: AgentModelRecommendationRequest
@@ -2038,6 +2038,7 @@ class RoutingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AgentModelRecommendation",
+            '400': "RecommendationRefusal",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -2070,7 +2071,7 @@ class RoutingApi:
     ) -> ApiResponse[AgentModelRecommendation]:
         """Recommend Model For Agent
 
-        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the decision model `agent_recommender_model` names to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
+        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the subagent router an operator switched on in the dashboard to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
 
         :param agent_model_recommendation_request: (required)
         :type agent_model_recommendation_request: AgentModelRecommendationRequest
@@ -2106,6 +2107,7 @@ class RoutingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AgentModelRecommendation",
+            '400': "RecommendationRefusal",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -2138,7 +2140,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Recommend Model For Agent
 
-        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the decision model `agent_recommender_model` names to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
+        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the subagent router an operator switched on in the dashboard to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
 
         :param agent_model_recommendation_request: (required)
         :type agent_model_recommendation_request: AgentModelRecommendationRequest
@@ -2174,6 +2176,7 @@ class RoutingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AgentModelRecommendation",
+            '400': "RecommendationRefusal",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(

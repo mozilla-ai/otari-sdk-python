@@ -60,7 +60,7 @@ class ModelsApi:
     ) -> ModelObject:
         """Get Model
 
-        Get details for a specific model.
+        Get details for a specific model, by catalog id, alias or `instance:model` selector.  A value the gateway does not know is omitted rather than sent as null.
 
         :param model_id: (required)
         :type model_id: str
@@ -128,7 +128,7 @@ class ModelsApi:
     ) -> ApiResponse[ModelObject]:
         """Get Model
 
-        Get details for a specific model.
+        Get details for a specific model, by catalog id, alias or `instance:model` selector.  A value the gateway does not know is omitted rather than sent as null.
 
         :param model_id: (required)
         :type model_id: str
@@ -196,7 +196,7 @@ class ModelsApi:
     ) -> RESTResponseType:
         """Get Model
 
-        Get details for a specific model.
+        Get details for a specific model, by catalog id, alias or `instance:model` selector.  A value the gateway does not know is omitted rather than sent as null.
 
         :param model_id: (required)
         :type model_id: str
@@ -823,7 +823,7 @@ class ModelsApi:
     @validate_call
     def models_list_models(
         self,
-        provider: Annotated[Optional[StrictStr], Field(description="Filter models by provider name")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Only the models this provider instance serves, described as served there.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -839,9 +839,9 @@ class ModelsApi:
     ) -> ModelListResponse:
         """List Models
 
-        List all available models.  Returns models auto-discovered from configured providers, enriched with pricing data from the model_pricing table when available, and with each model's token limits: the context window from the live models.dev catalog, or from the pricing snapshot where it has none, and the output limit from the live catalog alone. A limit neither knows is null. Models that only exist in the pricing table are also included for backward compatibility.
+        List all available models, one entry per model however many providers serve it.  Each `id` is the model's catalog id (`deepseek/deepseek-v4.1-flash`), which a request sends as `model` to let the gateway choose the provider: it tries the model's offerings best first and falls back down the list. An entry's price, token limits and capabilities are those of the offering tried first, at the caller's own rate. A value nobody knows is omitted rather than sent as null.  Aliases and routing policies are listed beside the models. An `instance:model` selector still pins a request to one provider, and GET /api/v1/catalog/models/{model_id} lists the offerings of a model.
 
-        :param provider: Filter models by provider name
+        :param provider: Only the models this provider instance serves, described as served there.
         :type provider: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -891,7 +891,7 @@ class ModelsApi:
     @validate_call
     def models_list_models_with_http_info(
         self,
-        provider: Annotated[Optional[StrictStr], Field(description="Filter models by provider name")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Only the models this provider instance serves, described as served there.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -907,9 +907,9 @@ class ModelsApi:
     ) -> ApiResponse[ModelListResponse]:
         """List Models
 
-        List all available models.  Returns models auto-discovered from configured providers, enriched with pricing data from the model_pricing table when available, and with each model's token limits: the context window from the live models.dev catalog, or from the pricing snapshot where it has none, and the output limit from the live catalog alone. A limit neither knows is null. Models that only exist in the pricing table are also included for backward compatibility.
+        List all available models, one entry per model however many providers serve it.  Each `id` is the model's catalog id (`deepseek/deepseek-v4.1-flash`), which a request sends as `model` to let the gateway choose the provider: it tries the model's offerings best first and falls back down the list. An entry's price, token limits and capabilities are those of the offering tried first, at the caller's own rate. A value nobody knows is omitted rather than sent as null.  Aliases and routing policies are listed beside the models. An `instance:model` selector still pins a request to one provider, and GET /api/v1/catalog/models/{model_id} lists the offerings of a model.
 
-        :param provider: Filter models by provider name
+        :param provider: Only the models this provider instance serves, described as served there.
         :type provider: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -959,7 +959,7 @@ class ModelsApi:
     @validate_call
     def models_list_models_without_preload_content(
         self,
-        provider: Annotated[Optional[StrictStr], Field(description="Filter models by provider name")] = None,
+        provider: Annotated[Optional[StrictStr], Field(description="Only the models this provider instance serves, described as served there.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -975,9 +975,9 @@ class ModelsApi:
     ) -> RESTResponseType:
         """List Models
 
-        List all available models.  Returns models auto-discovered from configured providers, enriched with pricing data from the model_pricing table when available, and with each model's token limits: the context window from the live models.dev catalog, or from the pricing snapshot where it has none, and the output limit from the live catalog alone. A limit neither knows is null. Models that only exist in the pricing table are also included for backward compatibility.
+        List all available models, one entry per model however many providers serve it.  Each `id` is the model's catalog id (`deepseek/deepseek-v4.1-flash`), which a request sends as `model` to let the gateway choose the provider: it tries the model's offerings best first and falls back down the list. An entry's price, token limits and capabilities are those of the offering tried first, at the caller's own rate. A value nobody knows is omitted rather than sent as null.  Aliases and routing policies are listed beside the models. An `instance:model` selector still pins a request to one provider, and GET /api/v1/catalog/models/{model_id} lists the offerings of a model.
 
-        :param provider: Filter models by provider name
+        :param provider: Only the models this provider instance serves, described as served there.
         :type provider: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
