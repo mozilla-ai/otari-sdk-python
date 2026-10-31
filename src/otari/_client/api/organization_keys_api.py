@@ -356,7 +356,7 @@ class OrganizationKeysApi:
     ) -> CreateKeyResponse:
         """Create Own Key
 
-        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). A viewer of the workspace is refused with 403. The secret is returned once.
+        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). A viewer of the workspace is refused with 403. The secret is returned once.  A service key is the organization's rather than the caller's: only an organization owner or admin may create one, its end-user budgets must be this organization's, and it is owned by a user minted for it alone.
 
         :param create_own_key_request: (required)
         :type create_own_key_request: CreateOwnKeyRequest
@@ -424,7 +424,7 @@ class OrganizationKeysApi:
     ) -> ApiResponse[CreateKeyResponse]:
         """Create Own Key
 
-        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). A viewer of the workspace is refused with 403. The secret is returned once.
+        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). A viewer of the workspace is refused with 403. The secret is returned once.  A service key is the organization's rather than the caller's: only an organization owner or admin may create one, its end-user budgets must be this organization's, and it is owned by a user minted for it alone.
 
         :param create_own_key_request: (required)
         :type create_own_key_request: CreateOwnKeyRequest
@@ -492,7 +492,7 @@ class OrganizationKeysApi:
     ) -> RESTResponseType:
         """Create Own Key
 
-        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). A viewer of the workspace is refused with 403. The secret is returned once.
+        Create an API key owned by the caller, in a workspace they may see.  The member-scoped counterpart of ``POST /api/v1/keys``: the owner is always the caller's own attribution user, the key is always budget-enforced, and the workspace must be visible to the caller (a member of it, or an organization owner/admin, who see every workspace). A viewer of the workspace is refused with 403. The secret is returned once.  A service key is the organization's rather than the caller's: only an organization owner or admin may create one, its end-user budgets must be this organization's, and it is owned by a user minted for it alone.
 
         :param create_own_key_request: (required)
         :type create_own_key_request: CreateOwnKeyRequest
@@ -1446,7 +1446,7 @@ class OrganizationKeysApi:
     ) -> List[KeyInfo]:
         """List Own Keys
 
-        List the caller's own API keys in their active organization, newest first.  Only keys billed to the caller's own user: an operator-minted key assigned to them is theirs to see here, and nobody else's key ever is. Naming a workspace outside their organization lists nothing rather than refusing, so the filter reports no more than the unfiltered read does.
+        List the caller's own API keys in their active organization, newest first.  Only keys billed to the caller's own user: an operator-minted key assigned to them is theirs to see here, and nobody else's key ever is. Naming a workspace outside their organization lists nothing rather than refusing, so the filter reports no more than the unfiltered read does. An owner or admin also sees the organization's service keys, which they manage.
 
         :param skip:
         :type skip: int
@@ -1522,7 +1522,7 @@ class OrganizationKeysApi:
     ) -> ApiResponse[List[KeyInfo]]:
         """List Own Keys
 
-        List the caller's own API keys in their active organization, newest first.  Only keys billed to the caller's own user: an operator-minted key assigned to them is theirs to see here, and nobody else's key ever is. Naming a workspace outside their organization lists nothing rather than refusing, so the filter reports no more than the unfiltered read does.
+        List the caller's own API keys in their active organization, newest first.  Only keys billed to the caller's own user: an operator-minted key assigned to them is theirs to see here, and nobody else's key ever is. Naming a workspace outside their organization lists nothing rather than refusing, so the filter reports no more than the unfiltered read does. An owner or admin also sees the organization's service keys, which they manage.
 
         :param skip:
         :type skip: int
@@ -1598,7 +1598,7 @@ class OrganizationKeysApi:
     ) -> RESTResponseType:
         """List Own Keys
 
-        List the caller's own API keys in their active organization, newest first.  Only keys billed to the caller's own user: an operator-minted key assigned to them is theirs to see here, and nobody else's key ever is. Naming a workspace outside their organization lists nothing rather than refusing, so the filter reports no more than the unfiltered read does.
+        List the caller's own API keys in their active organization, newest first.  Only keys billed to the caller's own user: an operator-minted key assigned to them is theirs to see here, and nobody else's key ever is. Naming a workspace outside their organization lists nothing rather than refusing, so the filter reports no more than the unfiltered read does. An owner or admin also sees the organization's service keys, which they manage.
 
         :param skip:
         :type skip: int
@@ -2011,7 +2011,7 @@ class OrganizationKeysApi:
     ) -> KeyInfo:
         """Update Own Key
 
-        Update one of the caller's own API keys.
+        Update one of the caller's own API keys, or one of the organization's service keys for an owner or admin.
 
         :param key_id: (required)
         :type key_id: str
@@ -2083,7 +2083,7 @@ class OrganizationKeysApi:
     ) -> ApiResponse[KeyInfo]:
         """Update Own Key
 
-        Update one of the caller's own API keys.
+        Update one of the caller's own API keys, or one of the organization's service keys for an owner or admin.
 
         :param key_id: (required)
         :type key_id: str
@@ -2155,7 +2155,7 @@ class OrganizationKeysApi:
     ) -> RESTResponseType:
         """Update Own Key
 
-        Update one of the caller's own API keys.
+        Update one of the caller's own API keys, or one of the organization's service keys for an owner or admin.
 
         :param key_id: (required)
         :type key_id: str

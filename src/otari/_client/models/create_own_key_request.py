@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,17 +28,22 @@ from pydantic_core import to_jsonable_python
 
 class CreateOwnKeyRequest(BaseModel):
     """
-    Create-key body for the member surface.  Deliberately not ``CreateKeyRequest``: it carries no ``user_id`` (the owner is always the caller) and no ``exclude_from_budget`` (a member must not exempt their own spend from enforcement).
+    Create-key body for the member surface.  Deliberately not ``CreateKeyRequest``: it carries no ``user_id`` (the owner is the caller, or one of the key's own for a service key) and no ``exclude_from_budget`` (a member must not exempt their own spend from enforcement). A field it does not take is refused rather than dropped.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = Field(default=None, description="Model allow-list: null = any model your user default allows, [] = deny all, or canonical instance:model entries. A key can only narrow your own model access, never broaden it.")
     allowed_tools: Optional[List[StrictStr]] = Field(default=None, description="Search tool allow-list for POST /api/v1/search: null = inherit your own, [] = no tool, or search tool names ('*' for every search tool). A key can only narrow your own tool access.")
     capture_agent_telemetry: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide capture_agent_telemetry setting: null (default) inherits it, true always stores this key's coding-agent telemetry, false always discards it.")
+    end_user_budget_id: Optional[StrictStr] = Field(default=None, description="Budget of this organization each end user this key creates is capped at, unless the request names another with Otari-End-User-Budget. Null leaves end users capped only by this key's own ceiling.")
+    end_user_budget_ids: Optional[Annotated[List[StrictStr], Field(max_length=100)]] = Field(default=None, description="Budgets of this organization a request may start a new end user on by naming one in Otari-End-User-Budget. Null allows end_user_budget_id alone. When both are set, end_user_budget_id must be on the list.")
     expires_at: Optional[datetime] = Field(default=None, description="Optional expiration timestamp")
+    is_service_key: Optional[StrictBool] = Field(default=False, description="When true, a request may name an end user in its 'user' field. Each end user is created on first use and billed to its own budget, while this key's own ceiling caps all of them together. Only an organization owner or admin may create one. It belongs to the organization rather than to you: every owner or admin manages it, and its end users are reachable from no other key. Fixed once the key exists.")
     key_name: Optional[StrictStr] = Field(default=None, description="Optional name for the key")
+    max_end_users: Optional[Annotated[int, Field(strict=True, ge=0)]] = Field(default=None, description="Most live end users this service key may have. A request that would create one more is refused with 403 and end_user_limit_reached; deleting end users frees room. Null is 10000: an organization's service key always has a cap.")
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata")
     reject_user_mismatch: Optional[StrictBool] = Field(default=None, description="Per-key override of the deployment-wide reject_user_mismatch setting: null (default) inherits it, true always rejects a request naming a different 'user', false always accepts it. Spend binds to your own user either way.")
     workspace_id: Optional[UUID] = Field(default=None, description="Workspace this key belongs to, which must be one you may see in your active organization. Omitted means that organization's default workspace, refused when you are not a member of it.")
-    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "expires_at", "key_name", "metadata", "reject_user_mismatch", "workspace_id"]
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "expires_at", "is_service_key", "key_name", "max_end_users", "metadata", "reject_user_mismatch", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -69,8 +75,10 @@ class CreateOwnKeyRequest(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -78,6 +86,11 @@ class CreateOwnKeyRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         # set to None if allowed_models (nullable) is None
         # and model_fields_set contains the field
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
@@ -93,6 +106,16 @@ class CreateOwnKeyRequest(BaseModel):
         if self.capture_agent_telemetry is None and "capture_agent_telemetry" in self.model_fields_set:
             _dict['capture_agent_telemetry'] = None
 
+        # set to None if end_user_budget_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.end_user_budget_id is None and "end_user_budget_id" in self.model_fields_set:
+            _dict['end_user_budget_id'] = None
+
+        # set to None if end_user_budget_ids (nullable) is None
+        # and model_fields_set contains the field
+        if self.end_user_budget_ids is None and "end_user_budget_ids" in self.model_fields_set:
+            _dict['end_user_budget_ids'] = None
+
         # set to None if expires_at (nullable) is None
         # and model_fields_set contains the field
         if self.expires_at is None and "expires_at" in self.model_fields_set:
@@ -102,6 +125,11 @@ class CreateOwnKeyRequest(BaseModel):
         # and model_fields_set contains the field
         if self.key_name is None and "key_name" in self.model_fields_set:
             _dict['key_name'] = None
+
+        # set to None if max_end_users (nullable) is None
+        # and model_fields_set contains the field
+        if self.max_end_users is None and "max_end_users" in self.model_fields_set:
+            _dict['max_end_users'] = None
 
         # set to None if reject_user_mismatch (nullable) is None
         # and model_fields_set contains the field
@@ -128,12 +156,21 @@ class CreateOwnKeyRequest(BaseModel):
             "allowed_models": obj.get("allowed_models"),
             "allowed_tools": obj.get("allowed_tools"),
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
+            "end_user_budget_id": obj.get("end_user_budget_id"),
+            "end_user_budget_ids": obj.get("end_user_budget_ids"),
             "expires_at": obj.get("expires_at"),
+            "is_service_key": obj.get("is_service_key") if obj.get("is_service_key") is not None else False,
             "key_name": obj.get("key_name"),
+            "max_end_users": obj.get("max_end_users"),
             "metadata": obj.get("metadata"),
             "reject_user_mismatch": obj.get("reject_user_mismatch"),
             "workspace_id": obj.get("workspace_id")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 
