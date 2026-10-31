@@ -26,6 +26,10 @@ from otari._client.models.active_organization_members_public import ActiveOrgani
 from otari._client.models.active_organization_update_request import ActiveOrganizationUpdateRequest
 from otari._client.models.agent_model_recommendation import AgentModelRecommendation
 from otari._client.models.agent_model_recommendation_request import AgentModelRecommendationRequest
+from otari._client.models.agent_recommender_create import AgentRecommenderCreate
+from otari._client.models.agent_recommender_public import AgentRecommenderPublic
+from otari._client.models.agent_recommender_update import AgentRecommenderUpdate
+from otari._client.models.agent_recommenders_public import AgentRecommendersPublic
 from otari._client.models.agent_telemetry_behavior import AgentTelemetryBehavior
 from otari._client.models.agent_telemetry_count import AgentTelemetryCount
 from otari._client.models.agent_telemetry_delete_request import AgentTelemetryDeleteRequest
@@ -580,6 +584,7 @@ from otari._client.models.rate_limit_rule_create import RateLimitRuleCreate
 from otari._client.models.rate_limit_rule_public import RateLimitRulePublic
 from otari._client.models.rate_limit_rule_update import RateLimitRuleUpdate
 from otari._client.models.rate_limit_rules_public import RateLimitRulesPublic
+from otari._client.models.recommendation_refusal import RecommendationRefusal
 from otari._client.models.recorded_pool import RecordedPool
 from otari._client.models.reencrypt_search_tools_response import ReencryptSearchToolsResponse
 from otari._client.models.register_passkey_request import RegisterPasskeyRequest

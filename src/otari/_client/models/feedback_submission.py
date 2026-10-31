@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,8 +29,9 @@ class FeedbackSubmission(BaseModel):
     FeedbackSubmission
     """ # noqa: E501
     message: Annotated[str, Field(min_length=1, strict=True, max_length=4000)]
+    share_email: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="The signed-in account's email as the form showed it, to send with the message so the Otari team can reply. Refused when the caller has no email the team can reply to, or when it is not this one.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["message"]
+    __properties: ClassVar[List[str]] = ["message", "share_email"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -78,6 +79,11 @@ class FeedbackSubmission(BaseModel):
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
+        # set to None if share_email (nullable) is None
+        # and model_fields_set contains the field
+        if self.share_email is None and "share_email" in self.model_fields_set:
+            _dict['share_email'] = None
+
         return _dict
 
     @classmethod
@@ -90,7 +96,8 @@ class FeedbackSubmission(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "message": obj.get("message")
+            "message": obj.get("message"),
+            "share_email": obj.get("share_email")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
