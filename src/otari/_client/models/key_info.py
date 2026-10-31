@@ -39,6 +39,7 @@ class KeyInfo(BaseModel):
     expires_at: Optional[StrictStr]
     id: StrictStr
     is_active: StrictBool
+    is_organization_service_key: Optional[StrictBool] = False
     is_service_key: StrictBool
     key_name: Optional[StrictStr]
     key_prefix: Optional[StrictStr]
@@ -50,7 +51,7 @@ class KeyInfo(BaseModel):
     reject_user_mismatch: Optional[StrictBool]
     user_id: Optional[StrictStr]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "config_name", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_service_key", "key_name", "key_prefix", "key_suffix", "last_used_at", "max_end_users", "metadata", "operator_disabled", "reject_user_mismatch", "user_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "config_name", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_organization_service_key", "is_service_key", "key_name", "key_prefix", "key_suffix", "last_used_at", "max_end_users", "metadata", "operator_disabled", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -179,6 +180,7 @@ class KeyInfo(BaseModel):
             "expires_at": obj.get("expires_at"),
             "id": obj.get("id"),
             "is_active": obj.get("is_active"),
+            "is_organization_service_key": obj.get("is_organization_service_key") if obj.get("is_organization_service_key") is not None else False,
             "is_service_key": obj.get("is_service_key"),
             "key_name": obj.get("key_name"),
             "key_prefix": obj.get("key_prefix"),

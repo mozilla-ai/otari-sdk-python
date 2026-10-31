@@ -18,25 +18,31 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class UpdateOwnKeyRequest(BaseModel):
     """
-    Update-key body for the member surface.  The operator's ``UpdateKeyRequest`` minus ``exclude_from_budget``, for the reason the create body gives. The tri-state fields follow the same ``model_fields_set`` idiom: absent = unchanged, null = clear to inherit, a value = pin it.
+    Update-key body for the member surface.  The operator's ``UpdateKeyRequest`` minus ``exclude_from_budget``, for the reason the create body gives. The tri-state fields follow the same ``model_fields_set`` idiom: absent = unchanged, null = clear to inherit, a value = pin it. ``is_service_key`` is accepted only unchanged, and ``max_end_users`` takes no null: an organization's service key always has a cap, so null is refused with 400.
     """ # noqa: E501
     allowed_models: Optional[List[StrictStr]] = None
     allowed_tools: Optional[List[StrictStr]] = None
     capture_agent_telemetry: Optional[StrictBool] = None
+    end_user_budget_id: Optional[StrictStr] = None
+    end_user_budget_ids: Optional[Annotated[List[StrictStr], Field(max_length=100)]] = None
     expires_at: Optional[datetime] = None
     is_active: Optional[StrictBool] = None
+    is_service_key: Optional[StrictBool] = None
     key_name: Optional[StrictStr] = None
+    max_end_users: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
     metadata: Optional[Dict[str, Any]] = None
     reject_user_mismatch: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "expires_at", "is_active", "key_name", "metadata", "reject_user_mismatch"]
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "end_user_budget_id", "end_user_budget_ids", "expires_at", "is_active", "is_service_key", "key_name", "max_end_users", "metadata", "reject_user_mismatch"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -68,8 +74,10 @@ class UpdateOwnKeyRequest(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -77,6 +85,11 @@ class UpdateOwnKeyRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         # set to None if allowed_models (nullable) is None
         # and model_fields_set contains the field
         if self.allowed_models is None and "allowed_models" in self.model_fields_set:
@@ -92,6 +105,16 @@ class UpdateOwnKeyRequest(BaseModel):
         if self.capture_agent_telemetry is None and "capture_agent_telemetry" in self.model_fields_set:
             _dict['capture_agent_telemetry'] = None
 
+        # set to None if end_user_budget_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.end_user_budget_id is None and "end_user_budget_id" in self.model_fields_set:
+            _dict['end_user_budget_id'] = None
+
+        # set to None if end_user_budget_ids (nullable) is None
+        # and model_fields_set contains the field
+        if self.end_user_budget_ids is None and "end_user_budget_ids" in self.model_fields_set:
+            _dict['end_user_budget_ids'] = None
+
         # set to None if expires_at (nullable) is None
         # and model_fields_set contains the field
         if self.expires_at is None and "expires_at" in self.model_fields_set:
@@ -102,10 +125,20 @@ class UpdateOwnKeyRequest(BaseModel):
         if self.is_active is None and "is_active" in self.model_fields_set:
             _dict['is_active'] = None
 
+        # set to None if is_service_key (nullable) is None
+        # and model_fields_set contains the field
+        if self.is_service_key is None and "is_service_key" in self.model_fields_set:
+            _dict['is_service_key'] = None
+
         # set to None if key_name (nullable) is None
         # and model_fields_set contains the field
         if self.key_name is None and "key_name" in self.model_fields_set:
             _dict['key_name'] = None
+
+        # set to None if max_end_users (nullable) is None
+        # and model_fields_set contains the field
+        if self.max_end_users is None and "max_end_users" in self.model_fields_set:
+            _dict['max_end_users'] = None
 
         # set to None if metadata (nullable) is None
         # and model_fields_set contains the field
@@ -132,12 +165,21 @@ class UpdateOwnKeyRequest(BaseModel):
             "allowed_models": obj.get("allowed_models"),
             "allowed_tools": obj.get("allowed_tools"),
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
+            "end_user_budget_id": obj.get("end_user_budget_id"),
+            "end_user_budget_ids": obj.get("end_user_budget_ids"),
             "expires_at": obj.get("expires_at"),
             "is_active": obj.get("is_active"),
+            "is_service_key": obj.get("is_service_key"),
             "key_name": obj.get("key_name"),
+            "max_end_users": obj.get("max_end_users"),
             "metadata": obj.get("metadata"),
             "reject_user_mismatch": obj.get("reject_user_mismatch")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 
