@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.model_architecture import ModelArchitecture
 from otari._client.models.model_pricing_info import ModelPricingInfo
@@ -41,7 +41,18 @@ class ModelObject(BaseModel):
     pricing: Optional[ModelPricingInfo] = None
     pricing_source: Optional[StrictStr] = 'none'
     supported_parameters: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["architecture", "context_window", "created", "deployment_managed", "id", "max_output_tokens", "name", "object", "owned_by", "pricing", "pricing_source", "supported_parameters"]
+    type: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["architecture", "context_window", "created", "deployment_managed", "id", "max_output_tokens", "name", "object", "owned_by", "pricing", "pricing_source", "supported_parameters", "type"]
+
+    @field_validator('type')
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'other']):
+            raise ValueError("must be one of enum values ('chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'other')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -118,6 +129,11 @@ class ModelObject(BaseModel):
         if self.supported_parameters is None and "supported_parameters" in self.model_fields_set:
             _dict['supported_parameters'] = None
 
+        # set to None if type (nullable) is None
+        # and model_fields_set contains the field
+        if self.type is None and "type" in self.model_fields_set:
+            _dict['type'] = None
+
         return _dict
 
     @classmethod
@@ -141,7 +157,8 @@ class ModelObject(BaseModel):
             "owned_by": obj.get("owned_by"),
             "pricing": ModelPricingInfo.from_dict(obj["pricing"]) if obj.get("pricing") is not None else None,
             "pricing_source": obj.get("pricing_source") if obj.get("pricing_source") is not None else 'none',
-            "supported_parameters": obj.get("supported_parameters")
+            "supported_parameters": obj.get("supported_parameters"),
+            "type": obj.get("type")
         })
         return _obj
 
