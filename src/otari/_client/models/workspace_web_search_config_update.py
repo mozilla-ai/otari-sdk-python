@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from otari._client.models.code_executor import CodeExecutor
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,10 +32,12 @@ class WorkspaceWebSearchConfigUpdate(BaseModel):
     allowed_domains: Optional[List[StrictStr]] = Field(default=None, description="Filters Search results and constrains initial and redirected Fetch destinations; intersected with any list the request sends")
     blocked_domains: Optional[List[StrictStr]] = Field(default=None, description="Filters Search results and blocks initial and redirected Fetch destinations; added to any list the request sends")
     enabled: StrictBool = Field(description="False refuses web access for this workspace through otari_web_search, otari_web_fetch, and POST /api/v1/search.")
+    fetch_executor: Optional[CodeExecutor] = Field(default=None, description="Who runs a provider-native web-fetch declaration (Anthropic's web_fetch_<date>) for this workspace, in search_executor's vocabulary. Pins over the request's Otari-Web-Fetch header; null leaves the header in charge")
     max_results: Optional[Annotated[int, Field(le=2147483647, strict=True, gt=0)]] = Field(default=None, description="Search only: ceiling on results one search returns, through otari_web_search and POST /api/v1/search; it only ever lowers the count a request asks for. Unset, the provider's own maximum is the only limit.")
     provider_options: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     purpose_hint: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = Field(default=None, description="Search only: hint used when a request declares otari_web_search without one of its own")
-    __properties: ClassVar[List[str]] = ["allowed_domains", "blocked_domains", "enabled", "max_results", "provider_options", "purpose_hint"]
+    search_executor: Optional[CodeExecutor] = Field(default=None, description="Who runs a provider-native web-search declaration (Anthropic's web_search_<date>, OpenAI's web_search) for this workspace: 'auto' (the provider when it runs the tool natively for the model, else this gateway's search), 'otari' or 'provider'. Pins over the request's Otari-Web-Search header; null leaves the header in charge. The deployment's web_search_intercept still claims every search")
+    __properties: ClassVar[List[str]] = ["allowed_domains", "blocked_domains", "enabled", "fetch_executor", "max_results", "provider_options", "purpose_hint", "search_executor"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,6 +88,11 @@ class WorkspaceWebSearchConfigUpdate(BaseModel):
         if self.blocked_domains is None and "blocked_domains" in self.model_fields_set:
             _dict['blocked_domains'] = None
 
+        # set to None if fetch_executor (nullable) is None
+        # and model_fields_set contains the field
+        if self.fetch_executor is None and "fetch_executor" in self.model_fields_set:
+            _dict['fetch_executor'] = None
+
         # set to None if max_results (nullable) is None
         # and model_fields_set contains the field
         if self.max_results is None and "max_results" in self.model_fields_set:
@@ -99,6 +107,11 @@ class WorkspaceWebSearchConfigUpdate(BaseModel):
         # and model_fields_set contains the field
         if self.purpose_hint is None and "purpose_hint" in self.model_fields_set:
             _dict['purpose_hint'] = None
+
+        # set to None if search_executor (nullable) is None
+        # and model_fields_set contains the field
+        if self.search_executor is None and "search_executor" in self.model_fields_set:
+            _dict['search_executor'] = None
 
         return _dict
 
@@ -115,9 +128,11 @@ class WorkspaceWebSearchConfigUpdate(BaseModel):
             "allowed_domains": obj.get("allowed_domains"),
             "blocked_domains": obj.get("blocked_domains"),
             "enabled": obj.get("enabled"),
+            "fetch_executor": obj.get("fetch_executor"),
             "max_results": obj.get("max_results"),
             "provider_options": obj.get("provider_options"),
-            "purpose_hint": obj.get("purpose_hint")
+            "purpose_hint": obj.get("purpose_hint"),
+            "search_executor": obj.get("search_executor")
         })
         return _obj
 
