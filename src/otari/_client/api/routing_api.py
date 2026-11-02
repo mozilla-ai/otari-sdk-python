@@ -925,7 +925,7 @@ class RoutingApi:
     ) -> AutomaticFallbacksResponse:
         """List Automatic Fallbacks
 
-        The models the caller's organization sent requests to in the last 30 days, and the fallback each gets.  A request that sends a model's catalog ID moves to the model's next offering when one fails, with no policy. Each model lists its offerings in the order such a request tries them, each with its input price for this organization and who runs the built-in tools on it, beside its traffic: how many requests a backup served, and how many named one offering or a policy instead, by API key and provider. The traffic is the workspaces the caller may see in their active organization, by the rule the organization's usage reads use.
+        The models the caller's organization sent requests to in the last 30 days, and the fallback each gets.  A request that sends a model's catalog ID moves to the model's next offering when one fails, with no policy. Each model lists its offerings in the order such a request tries them before automatic selection reorders it, each with its input price for this organization and who runs the built-in tools on it, beside its traffic: how many requests a backup served, and how many named one offering or a policy instead, by API key and provider. The traffic is the workspaces the caller may see in their active organization, by the rule the organization's usage reads use.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -988,7 +988,7 @@ class RoutingApi:
     ) -> ApiResponse[AutomaticFallbacksResponse]:
         """List Automatic Fallbacks
 
-        The models the caller's organization sent requests to in the last 30 days, and the fallback each gets.  A request that sends a model's catalog ID moves to the model's next offering when one fails, with no policy. Each model lists its offerings in the order such a request tries them, each with its input price for this organization and who runs the built-in tools on it, beside its traffic: how many requests a backup served, and how many named one offering or a policy instead, by API key and provider. The traffic is the workspaces the caller may see in their active organization, by the rule the organization's usage reads use.
+        The models the caller's organization sent requests to in the last 30 days, and the fallback each gets.  A request that sends a model's catalog ID moves to the model's next offering when one fails, with no policy. Each model lists its offerings in the order such a request tries them before automatic selection reorders it, each with its input price for this organization and who runs the built-in tools on it, beside its traffic: how many requests a backup served, and how many named one offering or a policy instead, by API key and provider. The traffic is the workspaces the caller may see in their active organization, by the rule the organization's usage reads use.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1051,7 +1051,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """List Automatic Fallbacks
 
-        The models the caller's organization sent requests to in the last 30 days, and the fallback each gets.  A request that sends a model's catalog ID moves to the model's next offering when one fails, with no policy. Each model lists its offerings in the order such a request tries them, each with its input price for this organization and who runs the built-in tools on it, beside its traffic: how many requests a backup served, and how many named one offering or a policy instead, by API key and provider. The traffic is the workspaces the caller may see in their active organization, by the rule the organization's usage reads use.
+        The models the caller's organization sent requests to in the last 30 days, and the fallback each gets.  A request that sends a model's catalog ID moves to the model's next offering when one fails, with no policy. Each model lists its offerings in the order such a request tries them before automatic selection reorders it, each with its input price for this organization and who runs the built-in tools on it, beside its traffic: how many requests a backup served, and how many named one offering or a policy instead, by API key and provider. The traffic is the workspaces the caller may see in their active organization, by the rule the organization's usage reads use.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

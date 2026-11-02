@@ -32,7 +32,7 @@ class AutomaticFallbackPublic(BaseModel):
     fell_back: StrictInt = Field(description="Of `requests`, the successful ones a later offering served.")
     id: StrictStr = Field(description="The catalog ID a caller sends to get the fallback, e.g. `anthropic/claude-sonnet-5`.")
     name: StrictStr
-    offerings: List[FallbackOfferingPublic] = Field(description="What a request sent by catalog ID tries, first first. One entry means no backup.")
+    offerings: List[FallbackOfferingPublic] = Field(description="Offerings in baseline catalog order. Automatic selection can reorder them per request using cost, recent health, load, region, latency and cache continuity. One entry means no backup.")
     pinned: StrictInt = Field(description="Of `requests`, those that named an offering or a policy rather than the catalog ID, and so got no automatic fallback.")
     pinned_keys: List[PinnedTrafficPublic] = Field(description="`pinned` by API key and the provider that served it, most first. Includes requests that named a policy, which may have fallen back within it.")
     pinned_provider: Optional[StrictStr] = Field(description="The instance most pinned requests reached.")
