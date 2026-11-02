@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
+from otari._client.models.code_executor import CodeExecutor
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -34,13 +35,15 @@ class WorkspaceWebSearchConfigPublic(BaseModel):
     created_at: Optional[StrictStr]
     default_enabled: StrictBool
     enabled: StrictBool
+    fetch_executor: Optional[CodeExecutor]
     max_results: Optional[StrictInt]
     provider_options: Optional[Dict[str, Any]] = Field(description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     purpose_hint: Optional[StrictStr]
+    search_executor: Optional[CodeExecutor]
     updated_at: Optional[StrictStr]
     web_search_configured: StrictBool
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_domains", "blocked_domains", "configured", "created_at", "default_enabled", "enabled", "max_results", "provider_options", "purpose_hint", "updated_at", "web_search_configured", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_domains", "blocked_domains", "configured", "created_at", "default_enabled", "enabled", "fetch_executor", "max_results", "provider_options", "purpose_hint", "search_executor", "updated_at", "web_search_configured", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -96,6 +99,11 @@ class WorkspaceWebSearchConfigPublic(BaseModel):
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict['created_at'] = None
 
+        # set to None if fetch_executor (nullable) is None
+        # and model_fields_set contains the field
+        if self.fetch_executor is None and "fetch_executor" in self.model_fields_set:
+            _dict['fetch_executor'] = None
+
         # set to None if max_results (nullable) is None
         # and model_fields_set contains the field
         if self.max_results is None and "max_results" in self.model_fields_set:
@@ -110,6 +118,11 @@ class WorkspaceWebSearchConfigPublic(BaseModel):
         # and model_fields_set contains the field
         if self.purpose_hint is None and "purpose_hint" in self.model_fields_set:
             _dict['purpose_hint'] = None
+
+        # set to None if search_executor (nullable) is None
+        # and model_fields_set contains the field
+        if self.search_executor is None and "search_executor" in self.model_fields_set:
+            _dict['search_executor'] = None
 
         # set to None if updated_at (nullable) is None
         # and model_fields_set contains the field
@@ -134,9 +147,11 @@ class WorkspaceWebSearchConfigPublic(BaseModel):
             "created_at": obj.get("created_at"),
             "default_enabled": obj.get("default_enabled"),
             "enabled": obj.get("enabled"),
+            "fetch_executor": obj.get("fetch_executor"),
             "max_results": obj.get("max_results"),
             "provider_options": obj.get("provider_options"),
             "purpose_hint": obj.get("purpose_hint"),
+            "search_executor": obj.get("search_executor"),
             "updated_at": obj.get("updated_at"),
             "web_search_configured": obj.get("web_search_configured"),
             "workspace_id": obj.get("workspace_id")
