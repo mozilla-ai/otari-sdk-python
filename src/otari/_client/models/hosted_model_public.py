@@ -27,11 +27,12 @@ from pydantic_core import to_jsonable_python
 
 class HostedModelPublic(BaseModel):
     """
-    One offered model, with the price the deployment currently serves it at.  ``price_source`` says which rung of the deployment's ladder answered: ``deployment`` for a rate an operator set, ``defaults`` for the community-maintained rate, whether this surface stored it or the fallback supplies it, and None when nothing prices the model yet. ``unit`` says what the rates are per, so a per-request rate is not read as a per-token one. ``enabled`` is the serving switch; a model offered without a discoverable price starts off.
+    One offered model, with the price the deployment currently serves it at.  ``price_source`` says which rung of the deployment's ladder answered: ``deployment`` for a rate an operator set, ``defaults`` for the community-maintained rate, whether this surface stored it or the fallback supplies it, and None when nothing prices the model yet. ``unit`` says what the rates are per, so a per-request rate is not read as a per-token one. ``enabled`` is the serving switch; a model offered without a discoverable price starts off. ``disabled_reason`` says why a model is off: ``unpriced`` while it waits for a rate, ``operator`` when an operator switched it off, ``unavailable`` when its provider refused to serve it.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     created_at: datetime
+    disabled_reason: Optional[StrictStr] = None
     enabled: StrictBool
     id: UUID
     input_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
@@ -41,7 +42,17 @@ class HostedModelPublic(BaseModel):
     provider: StrictStr
     unit: Optional[StrictStr] = None
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "enabled", "id", "input_price_per_million", "model", "output_price_per_million", "price_source", "provider", "unit", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "disabled_reason", "enabled", "id", "input_price_per_million", "model", "output_price_per_million", "price_source", "provider", "unit", "updated_at"]
+
+    @field_validator('disabled_reason')
+    def disabled_reason_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['unpriced', 'operator', 'unavailable']):
+            raise ValueError("must be one of enum values ('unpriced', 'operator', 'unavailable')")
+        return value
 
     @field_validator('price_source')
     def price_source_validate_enum(cls, value):
@@ -102,6 +113,11 @@ class HostedModelPublic(BaseModel):
         if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
             _dict['cache_write_price_per_million'] = None
 
+        # set to None if disabled_reason (nullable) is None
+        # and model_fields_set contains the field
+        if self.disabled_reason is None and "disabled_reason" in self.model_fields_set:
+            _dict['disabled_reason'] = None
+
         # set to None if input_price_per_million (nullable) is None
         # and model_fields_set contains the field
         if self.input_price_per_million is None and "input_price_per_million" in self.model_fields_set:
@@ -142,6 +158,7 @@ class HostedModelPublic(BaseModel):
             "cache_read_price_per_million": obj.get("cache_read_price_per_million"),
             "cache_write_price_per_million": obj.get("cache_write_price_per_million"),
             "created_at": obj.get("created_at"),
+            "disabled_reason": obj.get("disabled_reason"),
             "enabled": obj.get("enabled"),
             "id": obj.get("id"),
             "input_price_per_million": obj.get("input_price_per_million"),
