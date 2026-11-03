@@ -53,7 +53,7 @@ class ToolsApi:
     ) -> ToolsResponse:
         """List Tools
 
-        List the tools Otari runs itself, with the declaration forms it accepts.  Every other `tools[]` entry, including provider-native keywords not listed here, is forwarded to the upstream provider untouched.
+        List the tools Otari runs itself, with the declaration forms it accepts.  Called with an API key, a tool its workspace does not allow is listed as unavailable. Every other `tools[]` entry, including provider-native keywords not listed here, is forwarded to the upstream provider untouched.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -116,7 +116,7 @@ class ToolsApi:
     ) -> ApiResponse[ToolsResponse]:
         """List Tools
 
-        List the tools Otari runs itself, with the declaration forms it accepts.  Every other `tools[]` entry, including provider-native keywords not listed here, is forwarded to the upstream provider untouched.
+        List the tools Otari runs itself, with the declaration forms it accepts.  Called with an API key, a tool its workspace does not allow is listed as unavailable. Every other `tools[]` entry, including provider-native keywords not listed here, is forwarded to the upstream provider untouched.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -179,7 +179,7 @@ class ToolsApi:
     ) -> RESTResponseType:
         """List Tools
 
-        List the tools Otari runs itself, with the declaration forms it accepts.  Every other `tools[]` entry, including provider-native keywords not listed here, is forwarded to the upstream provider untouched.
+        List the tools Otari runs itself, with the declaration forms it accepts.  Called with an API key, a tool its workspace does not allow is listed as unavailable. Every other `tools[]` entry, including provider-native keywords not listed here, is forwarded to the upstream provider untouched.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

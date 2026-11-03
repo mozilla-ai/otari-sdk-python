@@ -30,9 +30,11 @@ class WorkspaceWebSearchKeysPublic(BaseModel):
     """ # noqa: E501
     count: StrictInt = Field(description="Every live key of the organization, not only this page.")
     data: List[WorkspaceWebSearchKeyPublic]
+    deployment_fetch_tool: Optional[StrictStr] = Field(default=None, description="The name of the deployment's fetch tool, which the workspace's fetches run on when no key serves them, whether or not one does now: builtin_fetch for the built-in fetcher.")
+    deployment_search_tool: Optional[StrictStr] = Field(default=None, description="The name of the deployment's search tool, which the workspace's searches run on when no key serves them, whether or not one does now. Null when the deployment has none.")
     fetch_provider: Optional[StrictStr] = Field(default=None, description="The provider the workspace's fetch tool runs on, and the enrichment of its search hits unless the search's instance names a fetch instance of its own: its effective fetch key's, else the deployment's default fetch instance's, which is builtin for the built-in fetcher.")
     search_provider: Optional[StrictStr] = Field(default=None, description="The provider the workspace's searches run on: its effective search key's, else the deployment's default search's. Null when nothing searches for it.")
-    __properties: ClassVar[List[str]] = ["count", "data", "fetch_provider", "search_provider"]
+    __properties: ClassVar[List[str]] = ["count", "data", "deployment_fetch_tool", "deployment_search_tool", "fetch_provider", "search_provider"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -80,6 +82,16 @@ class WorkspaceWebSearchKeysPublic(BaseModel):
                 if _item_data:
                     _items.append(_item_data.to_dict())
             _dict['data'] = _items
+        # set to None if deployment_fetch_tool (nullable) is None
+        # and model_fields_set contains the field
+        if self.deployment_fetch_tool is None and "deployment_fetch_tool" in self.model_fields_set:
+            _dict['deployment_fetch_tool'] = None
+
+        # set to None if deployment_search_tool (nullable) is None
+        # and model_fields_set contains the field
+        if self.deployment_search_tool is None and "deployment_search_tool" in self.model_fields_set:
+            _dict['deployment_search_tool'] = None
+
         # set to None if fetch_provider (nullable) is None
         # and model_fields_set contains the field
         if self.fetch_provider is None and "fetch_provider" in self.model_fields_set:
@@ -104,6 +116,8 @@ class WorkspaceWebSearchKeysPublic(BaseModel):
         _obj = cls.model_validate({
             "count": obj.get("count"),
             "data": [WorkspaceWebSearchKeyPublic.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None,
+            "deployment_fetch_tool": obj.get("deployment_fetch_tool"),
+            "deployment_search_tool": obj.get("deployment_search_tool"),
             "fetch_provider": obj.get("fetch_provider"),
             "search_provider": obj.get("search_provider")
         })

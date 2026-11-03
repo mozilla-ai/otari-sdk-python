@@ -12,6 +12,7 @@ from otari._client.api.bootstrap_api import BootstrapApi
 from otari._client.api.budgets_api import BudgetsApi
 from otari._client.api.catalog_api import CatalogApi
 from otari._client.api.chat_api import ChatApi
+from otari._client.api.code_execution_api import CodeExecutionApi
 from otari._client.api.decisions_api import DecisionsApi
 from otari._client.api.embeddings_api import EmbeddingsApi
 from otari._client.api.end_users_api import EndUsersApi

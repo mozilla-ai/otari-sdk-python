@@ -56,9 +56,10 @@ class CatalogModelDetail(BaseModel):
     resolves_to: Optional[StrictStr] = Field(default=None, description="The offering `selector` resolves to.")
     selector: Optional[StrictStr] = Field(default=None, description="The id as a selector: send it as `model` and the best offering the caller can reach answers. Priced offerings come first, and among them the organization's own key, then the vendor's own provider, then the cheapest. Null until the gateway has indexed the catalog.")
     selectors: List[StrictStr] = Field(description="Every offering's selector, so the list can be searched by one.")
+    type: Optional[StrictStr] = Field(default=None, description="What kind of model it is: the kind most of its offerings give, from the provider's listing or models.dev. A tie goes to the vendor's own provider. Null where no offering gives one.")
     unpriced_count: StrictInt = Field(description="How many offerings carry no price for this caller.")
     vendor: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["also_available_from", "capabilities", "context_window", "default_pricing", "deprecated", "description", "discovered", "family", "id", "input_modalities", "knowledge_cutoff", "max_output_tokens", "min_input_price_per_million", "min_output_price_per_million", "name", "offering_count", "offerings", "open_weights", "output_modalities", "price_sources", "provider_count", "providers", "release_date", "resolves_to", "selector", "selectors", "unpriced_count", "vendor"]
+    __properties: ClassVar[List[str]] = ["also_available_from", "capabilities", "context_window", "default_pricing", "deprecated", "description", "discovered", "family", "id", "input_modalities", "knowledge_cutoff", "max_output_tokens", "min_input_price_per_million", "min_output_price_per_million", "name", "offering_count", "offerings", "open_weights", "output_modalities", "price_sources", "provider_count", "providers", "release_date", "resolves_to", "selector", "selectors", "type", "unpriced_count", "vendor"]
 
     @field_validator('price_sources')
     def price_sources_validate_enum(cls, value):
@@ -66,6 +67,16 @@ class CatalogModelDetail(BaseModel):
         for i in value:
             if i not in set(['organization', 'deployment', 'defaults']):
                 raise ValueError("each list item must be one of ('organization', 'deployment', 'defaults')")
+        return value
+
+    @field_validator('type')
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other']):
+            raise ValueError("must be one of enum values ('chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other')")
         return value
 
     model_config = ConfigDict(
@@ -174,6 +185,11 @@ class CatalogModelDetail(BaseModel):
         if self.selector is None and "selector" in self.model_fields_set:
             _dict['selector'] = None
 
+        # set to None if type (nullable) is None
+        # and model_fields_set contains the field
+        if self.type is None and "type" in self.model_fields_set:
+            _dict['type'] = None
+
         # set to None if vendor (nullable) is None
         # and model_fields_set contains the field
         if self.vendor is None and "vendor" in self.model_fields_set:
@@ -217,6 +233,7 @@ class CatalogModelDetail(BaseModel):
             "resolves_to": obj.get("resolves_to"),
             "selector": obj.get("selector"),
             "selectors": obj.get("selectors"),
+            "type": obj.get("type"),
             "unpriced_count": obj.get("unpriced_count"),
             "vendor": obj.get("vendor")
         })

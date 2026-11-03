@@ -54,6 +54,16 @@ class OrgProviderKeyModelPublic(BaseModel):
             raise ValueError("must be one of enum values ('organization', 'deployment', 'defaults')")
         return value
 
+    @field_validator('unit')
+    def unit_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search')")
+        return value
+
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

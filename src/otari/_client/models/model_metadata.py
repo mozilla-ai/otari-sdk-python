@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -46,7 +46,18 @@ class ModelMetadata(BaseModel):
     structured_output: Optional[StrictBool] = False
     temperature: Optional[StrictBool] = False
     tool_call: Optional[StrictBool] = False
-    __properties: ClassVar[List[str]] = ["attachment", "context_window", "cost_input", "cost_output", "deprecated", "description", "family", "input_modalities", "knowledge_cutoff", "last_updated", "max_output_tokens", "name", "open_weights", "output_modalities", "reasoning", "release_date", "structured_output", "temperature", "tool_call"]
+    type: Optional[StrictStr] = Field(default=None, description="What kind of model models.dev says it is. Null where the catalog gives no kind.")
+    __properties: ClassVar[List[str]] = ["attachment", "context_window", "cost_input", "cost_output", "deprecated", "description", "family", "input_modalities", "knowledge_cutoff", "last_updated", "max_output_tokens", "name", "open_weights", "output_modalities", "reasoning", "release_date", "structured_output", "temperature", "tool_call", "type"]
+
+    @field_validator('type')
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other']):
+            raise ValueError("must be one of enum values ('chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -137,6 +148,11 @@ class ModelMetadata(BaseModel):
         if self.release_date is None and "release_date" in self.model_fields_set:
             _dict['release_date'] = None
 
+        # set to None if type (nullable) is None
+        # and model_fields_set contains the field
+        if self.type is None and "type" in self.model_fields_set:
+            _dict['type'] = None
+
         return _dict
 
     @classmethod
@@ -167,7 +183,8 @@ class ModelMetadata(BaseModel):
             "release_date": obj.get("release_date"),
             "structured_output": obj.get("structured_output") if obj.get("structured_output") is not None else False,
             "temperature": obj.get("temperature") if obj.get("temperature") is not None else False,
-            "tool_call": obj.get("tool_call") if obj.get("tool_call") is not None else False
+            "tool_call": obj.get("tool_call") if obj.get("tool_call") is not None else False,
+            "type": obj.get("type")
         })
         return _obj
 

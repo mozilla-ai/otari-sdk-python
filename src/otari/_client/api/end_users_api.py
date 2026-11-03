@@ -901,7 +901,7 @@ class EndUsersApi:
     ) -> List[EndUserBudgetPublic]:
         """List End User Budgets
 
-        List the budgets the calling service key may put its end users on, with how many end users each holds.  Requires a service key. The counts cover the end users of the key's user, blocked ones included and deleted ones not.
+        List the budgets the calling service key may put its end users on, with their limits and end user counts.  Requires a service key. Each budget's name, limits and period are the ones every end user on it is held to. The counts cover the end users of the key's user, blocked ones included and deleted ones not.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -964,7 +964,7 @@ class EndUsersApi:
     ) -> ApiResponse[List[EndUserBudgetPublic]]:
         """List End User Budgets
 
-        List the budgets the calling service key may put its end users on, with how many end users each holds.  Requires a service key. The counts cover the end users of the key's user, blocked ones included and deleted ones not.
+        List the budgets the calling service key may put its end users on, with their limits and end user counts.  Requires a service key. Each budget's name, limits and period are the ones every end user on it is held to. The counts cover the end users of the key's user, blocked ones included and deleted ones not.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1027,7 +1027,7 @@ class EndUsersApi:
     ) -> RESTResponseType:
         """List End User Budgets
 
-        List the budgets the calling service key may put its end users on, with how many end users each holds.  Requires a service key. The counts cover the end users of the key's user, blocked ones included and deleted ones not.
+        List the budgets the calling service key may put its end users on, with their limits and end user counts.  Requires a service key. Each budget's name, limits and period are the ones every end user on it is held to. The counts cover the end users of the key's user, blocked ones included and deleted ones not.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

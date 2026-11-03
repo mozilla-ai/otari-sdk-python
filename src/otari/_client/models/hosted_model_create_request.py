@@ -42,8 +42,8 @@ class HostedModelCreateRequest(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['tokens', 'requests', 'images']):
-            raise ValueError("must be one of enum values ('tokens', 'requests', 'images')")
+        if value not in set(['tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search')")
         return value
 
     model_config = ConfigDict(

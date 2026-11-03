@@ -50,8 +50,8 @@ class ModelObject(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'other']):
-            raise ValueError("must be one of enum values ('chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'other')")
+        if value not in set(['chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other']):
+            raise ValueError("must be one of enum values ('chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other')")
         return value
 
     model_config = ConfigDict(

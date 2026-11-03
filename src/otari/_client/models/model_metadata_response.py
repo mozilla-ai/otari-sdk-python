@@ -28,7 +28,7 @@ class ModelMetadataResponse(BaseModel):
     """
     models.dev metadata keyed by ``provider:model``.
     """ # noqa: E501
-    available: StrictBool = Field(description="False when metadata could not be loaded (enrichment disabled or models.dev unreachable).")
+    available: StrictBool = Field(description="False when no models.dev catalog could be read, not even the one bundled with the gateway.")
     models: Optional[Dict[str, ModelMetadata]] = None
     source: Optional[StrictStr] = 'models.dev'
     __properties: ClassVar[List[str]] = ["available", "models", "source"]

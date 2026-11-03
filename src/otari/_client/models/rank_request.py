@@ -28,7 +28,7 @@ from pydantic_core import to_jsonable_python
 
 class RankRequest(BaseModel):
     """
-    Record how well each candidate did, for one or many prompts.  A batch because of the arithmetic: a pool routes nothing until it holds ``router_seed_count`` examples (20 by default) and the vote reads the ``k`` nearest (5 by default), so a useful first teaching pass is dozens of examples across the kinds of prompt you care about.
+    RankRequest
     """ # noqa: E501
     examples: Annotated[List[ScoredExample], Field(min_length=1, max_length=100)] = Field(description="The scored prompts to record.")
     user_id: StrictStr = Field(description="Whose routing memory these examples belong to.")
