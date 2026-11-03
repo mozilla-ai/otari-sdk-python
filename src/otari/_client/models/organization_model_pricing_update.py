@@ -37,7 +37,7 @@ class OrganizationModelPricingUpdate(BaseModel):
     input_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M of the rate's unit: input tokens, requests or images")
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens; unused by a rate in requests or images")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
-    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint, each priced per million. A completion model priced per requests is charged one request per successful call.")
+    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint. A completion model priced per requests is charged one request per successful call. Every rate is USD per million of its unit. A rate in a unit that has no meter yet is stored and prices nothing.")
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('unit')
@@ -46,8 +46,8 @@ class OrganizationModelPricingUpdate(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['tokens', 'requests', 'images']):
-            raise ValueError("must be one of enum values ('tokens', 'requests', 'images')")
+        if value not in set(['tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search')")
         return value
 
     model_config = ConfigDict(

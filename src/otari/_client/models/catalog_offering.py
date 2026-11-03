@@ -33,6 +33,7 @@ class CatalogOffering(BaseModel):
     context_window: Optional[StrictInt] = None
     credential: CatalogCredential = Field(description="Whose key serves it: `deployment` for a `providers:` instance the operator configured, `hosted` for a provider the deployment pays for in any workspace of the viewer's organization, `organization` for one on the organization's own key, which it may set its own rate for. A workspace can still call a `hosted` provider with the organization's own key.")
     discovered: StrictBool = Field(description="Whether the provider itself reported this model.")
+    endpoints: Optional[List[StrictStr]] = Field(default=None, description="The Otari routes its models.dev protocols map to, below the API base, in models.dev's order. `/decisions` and `/systemone` take only a `decision_providers` selector, not this one. Empty when not known: models.dev has no entry for the offering, or names no protocol Otari serves.")
     max_output_tokens: Optional[StrictInt] = None
     metadata_input_price_per_million: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="What the live models.dev catalog lists this provider charging. The default is billed from the accepted models.dev snapshot, which can lag the live catalog, so a difference means a price update is waiting for review.")
     metadata_output_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
@@ -45,7 +46,18 @@ class CatalogOffering(BaseModel):
     selector: StrictStr = Field(description="What to send as `model`, in `instance:model` form.")
     short_selector: Optional[StrictStr] = Field(default=None, description="The pinned spelling the gateway also accepts for this offering: the instance with the model's catalog id (`fireworks:openai/gpt-oss-120b`), which pins the instance and reaches the model's best offering on it. Null for another build on the same instance, or until the gateway has indexed the catalog.")
     usage_30d: Optional[OfferingUsage] = None
-    __properties: ClassVar[List[str]] = ["context_window", "credential", "discovered", "max_output_tokens", "metadata_input_price_per_million", "metadata_output_price_per_million", "price_reference", "price_source", "pricing", "provider", "provider_type", "quantization", "selector", "short_selector", "usage_30d"]
+    __properties: ClassVar[List[str]] = ["context_window", "credential", "discovered", "endpoints", "max_output_tokens", "metadata_input_price_per_million", "metadata_output_price_per_million", "price_reference", "price_source", "pricing", "provider", "provider_type", "quantization", "selector", "short_selector", "usage_30d"]
+
+    @field_validator('endpoints')
+    def endpoints_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        for i in value:
+            if i not in set(['/chat/completions', '/responses', '/messages', '/images/generations', '/embeddings', '/audio/speech', '/audio/transcriptions', '/systemone', '/rerank', '/decisions', '/moderations']):
+                raise ValueError("each list item must be one of ('/chat/completions', '/responses', '/messages', '/images/generations', '/embeddings', '/audio/speech', '/audio/transcriptions', '/systemone', '/rerank', '/decisions', '/moderations')")
+        return value
 
     @field_validator('price_source')
     def price_source_validate_enum(cls, value):
@@ -167,6 +179,7 @@ class CatalogOffering(BaseModel):
             "context_window": obj.get("context_window"),
             "credential": obj.get("credential"),
             "discovered": obj.get("discovered"),
+            "endpoints": obj.get("endpoints"),
             "max_output_tokens": obj.get("max_output_tokens"),
             "metadata_input_price_per_million": obj.get("metadata_input_price_per_million"),
             "metadata_output_price_per_million": obj.get("metadata_output_price_per_million"),

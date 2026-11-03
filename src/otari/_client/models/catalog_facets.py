@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from otari._client.models.catalog_vendor_facet import CatalogVendorFacet
@@ -31,8 +31,17 @@ class CatalogFacets(BaseModel):
     """ # noqa: E501
     providers: List[StrictStr] = Field(description="Every provider instance offering an authorized model, sorted.")
     total_count: Annotated[int, Field(strict=True, ge=0)] = Field(description="Authorized models before any of the request's filters.")
+    types: List[StrictStr] = Field(description="Every kind an authorized model has, sorted.")
     vendors: List[CatalogVendorFacet]
-    __properties: ClassVar[List[str]] = ["providers", "total_count", "vendors"]
+    __properties: ClassVar[List[str]] = ["providers", "total_count", "types", "vendors"]
+
+    @field_validator('types')
+    def types_validate_enum(cls, value):
+        """Validates the enum"""
+        for i in value:
+            if i not in set(['chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other']):
+                raise ValueError("each list item must be one of ('chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -94,6 +103,7 @@ class CatalogFacets(BaseModel):
         _obj = cls.model_validate({
             "providers": obj.get("providers"),
             "total_count": obj.get("total_count"),
+            "types": obj.get("types"),
             "vendors": [CatalogVendorFacet.from_dict(_item) for _item in obj["vendors"]] if obj.get("vendors") is not None else None
         })
         return _obj

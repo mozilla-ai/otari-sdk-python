@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from otari._client.models.pricing_tiers_inner import PricingTiersInner
 from typing import Optional, Set
@@ -35,6 +35,16 @@ class ModelPricingInfo(BaseModel):
     pricing_tiers: Optional[List[PricingTiersInner]] = None
     unit: Optional[StrictStr] = 'tokens'
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
+
+    @field_validator('unit')
+    def unit_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

@@ -31,6 +31,7 @@ class WorkspaceWebSearchKeyPublic(BaseModel):
     disabled: StrictBool = Field(description="The workspace turned this key off.")
     is_default: StrictBool = Field(description="The workspace pinned this key as its own for its kind.")
     is_effective: StrictBool = Field(description="This is the key the workspace's calls of its kind use.")
+    is_org_default: Optional[StrictBool] = Field(default=False, description="The organization's default of its kind, which a workspace that pinned no key uses unless it turned the key off or this deployment cannot decrypt it; the deployment's instance serves it then.")
     kind: StrictStr
     last4: Optional[StrictStr] = None
     name: StrictStr
@@ -38,7 +39,7 @@ class WorkspaceWebSearchKeyPublic(BaseModel):
     provider: StrictStr
     usable: StrictBool
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["disabled", "is_default", "is_effective", "kind", "last4", "name", "org_web_search_key_id", "provider", "usable", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["disabled", "is_default", "is_effective", "is_org_default", "kind", "last4", "name", "org_web_search_key_id", "provider", "usable", "workspace_id"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -106,6 +107,7 @@ class WorkspaceWebSearchKeyPublic(BaseModel):
             "disabled": obj.get("disabled"),
             "is_default": obj.get("is_default"),
             "is_effective": obj.get("is_effective"),
+            "is_org_default": obj.get("is_org_default") if obj.get("is_org_default") is not None else False,
             "kind": obj.get("kind"),
             "last4": obj.get("last4"),
             "name": obj.get("name"),

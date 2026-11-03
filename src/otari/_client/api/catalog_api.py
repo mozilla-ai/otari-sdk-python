@@ -318,6 +318,7 @@ class CatalogApi:
         input_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every input modality.")] = None,
         output_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every output modality.")] = None,
         capability: Annotated[Optional[Annotated[List[CatalogCapability], Field(max_length=100)]], Field(description="Require every capability.")] = None,
+        type: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=100)]], Field(description="Match any kind; a model of unknown kind does not match.")] = None,
         min_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Minimum context window; unknown windows do not match.")] = None,
         max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
         pricing: Optional[StrictStr] = None,
@@ -361,6 +362,8 @@ class CatalogApi:
         :type output_modality: List[Optional[str]]
         :param capability: Require every capability.
         :type capability: List[CatalogCapability]
+        :param type: Match any kind; a model of unknown kind does not match.
+        :type type: List[str]
         :param min_context: Minimum context window; unknown windows do not match.
         :type min_context: int
         :param max_input: Maximum cheapest input price per million tokens; unpriced models do not match.
@@ -409,6 +412,7 @@ class CatalogApi:
             input_modality=input_modality,
             output_modality=output_modality,
             capability=capability,
+            type=type,
             min_context=min_context,
             max_input=max_input,
             pricing=pricing,
@@ -450,6 +454,7 @@ class CatalogApi:
         input_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every input modality.")] = None,
         output_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every output modality.")] = None,
         capability: Annotated[Optional[Annotated[List[CatalogCapability], Field(max_length=100)]], Field(description="Require every capability.")] = None,
+        type: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=100)]], Field(description="Match any kind; a model of unknown kind does not match.")] = None,
         min_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Minimum context window; unknown windows do not match.")] = None,
         max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
         pricing: Optional[StrictStr] = None,
@@ -493,6 +498,8 @@ class CatalogApi:
         :type output_modality: List[Optional[str]]
         :param capability: Require every capability.
         :type capability: List[CatalogCapability]
+        :param type: Match any kind; a model of unknown kind does not match.
+        :type type: List[str]
         :param min_context: Minimum context window; unknown windows do not match.
         :type min_context: int
         :param max_input: Maximum cheapest input price per million tokens; unpriced models do not match.
@@ -541,6 +548,7 @@ class CatalogApi:
             input_modality=input_modality,
             output_modality=output_modality,
             capability=capability,
+            type=type,
             min_context=min_context,
             max_input=max_input,
             pricing=pricing,
@@ -582,6 +590,7 @@ class CatalogApi:
         input_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every input modality.")] = None,
         output_modality: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Require every output modality.")] = None,
         capability: Annotated[Optional[Annotated[List[CatalogCapability], Field(max_length=100)]], Field(description="Require every capability.")] = None,
+        type: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=100)]], Field(description="Match any kind; a model of unknown kind does not match.")] = None,
         min_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Minimum context window; unknown windows do not match.")] = None,
         max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
         pricing: Optional[StrictStr] = None,
@@ -625,6 +634,8 @@ class CatalogApi:
         :type output_modality: List[Optional[str]]
         :param capability: Require every capability.
         :type capability: List[CatalogCapability]
+        :param type: Match any kind; a model of unknown kind does not match.
+        :type type: List[str]
         :param min_context: Minimum context window; unknown windows do not match.
         :type min_context: int
         :param max_input: Maximum cheapest input price per million tokens; unpriced models do not match.
@@ -673,6 +684,7 @@ class CatalogApi:
             input_modality=input_modality,
             output_modality=output_modality,
             capability=capability,
+            type=type,
             min_context=min_context,
             max_input=max_input,
             pricing=pricing,
@@ -709,6 +721,7 @@ class CatalogApi:
         input_modality,
         output_modality,
         capability,
+        type,
         min_context,
         max_input,
         pricing,
@@ -731,6 +744,7 @@ class CatalogApi:
             'input_modality': 'multi',
             'output_modality': 'multi',
             'capability': 'multi',
+            'type': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -779,6 +793,10 @@ class CatalogApi:
         if capability is not None:
             
             _query_params.append(('capability', capability))
+            
+        if type is not None:
+            
+            _query_params.append(('type', type))
             
         if min_context is not None:
             

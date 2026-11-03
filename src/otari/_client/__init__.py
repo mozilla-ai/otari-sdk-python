@@ -29,6 +29,7 @@ __all__ = [
     "BudgetsApi",
     "CatalogApi",
     "ChatApi",
+    "CodeExecutionApi",
     "DecisionsApi",
     "EmbeddingsApi",
     "EndUsersApi",
@@ -153,6 +154,10 @@ __all__ = [
     "BatchResultsResponse",
     "BillingMeters",
     "BlobResourceContents",
+    "BlockedEmailCreateRequest",
+    "BlockedEmailCreatedPublic",
+    "BlockedEmailPublic",
+    "BlockedEmailsPublic",
     "BreakGlassCreate",
     "BreakGlassReadListPublic",
     "BreakGlassReadPublic",
@@ -223,6 +228,9 @@ __all__ = [
     "CheckFailure",
     "CheckVerdictRequest",
     "ChoiceQuestion",
+    "CodeExecuteRequest",
+    "CodeExecuteResponse",
+    "CodeExecutionOutputFile",
     "CodeExecutor",
     "ConfigField",
     "ConfigSearchToolSchema",
@@ -373,6 +381,7 @@ __all__ = [
     "InviteOrganizationMemberResultPublic",
     "JudgeVerdictRequest",
     "KeyInfo",
+    "KeyRankRequest",
     "KnownProviderSchema",
     "KnownProviderSummarySchema",
     "LearnedPolicy",
@@ -829,6 +838,7 @@ from otari._client.api.bootstrap_api import BootstrapApi as BootstrapApi
 from otari._client.api.budgets_api import BudgetsApi as BudgetsApi
 from otari._client.api.catalog_api import CatalogApi as CatalogApi
 from otari._client.api.chat_api import ChatApi as ChatApi
+from otari._client.api.code_execution_api import CodeExecutionApi as CodeExecutionApi
 from otari._client.api.decisions_api import DecisionsApi as DecisionsApi
 from otari._client.api.embeddings_api import EmbeddingsApi as EmbeddingsApi
 from otari._client.api.end_users_api import EndUsersApi as EndUsersApi
@@ -957,6 +967,10 @@ from otari._client.models.batch_result_item_error import BatchResultItemError as
 from otari._client.models.batch_results_response import BatchResultsResponse as BatchResultsResponse
 from otari._client.models.billing_meters import BillingMeters as BillingMeters
 from otari._client.models.blob_resource_contents import BlobResourceContents as BlobResourceContents
+from otari._client.models.blocked_email_create_request import BlockedEmailCreateRequest as BlockedEmailCreateRequest
+from otari._client.models.blocked_email_created_public import BlockedEmailCreatedPublic as BlockedEmailCreatedPublic
+from otari._client.models.blocked_email_public import BlockedEmailPublic as BlockedEmailPublic
+from otari._client.models.blocked_emails_public import BlockedEmailsPublic as BlockedEmailsPublic
 from otari._client.models.break_glass_create import BreakGlassCreate as BreakGlassCreate
 from otari._client.models.break_glass_read_list_public import BreakGlassReadListPublic as BreakGlassReadListPublic
 from otari._client.models.break_glass_read_public import BreakGlassReadPublic as BreakGlassReadPublic
@@ -1027,6 +1041,9 @@ from otari._client.models.chat_message_input import ChatMessageInput as ChatMess
 from otari._client.models.check_failure import CheckFailure as CheckFailure
 from otari._client.models.check_verdict_request import CheckVerdictRequest as CheckVerdictRequest
 from otari._client.models.choice_question import ChoiceQuestion as ChoiceQuestion
+from otari._client.models.code_execute_request import CodeExecuteRequest as CodeExecuteRequest
+from otari._client.models.code_execute_response import CodeExecuteResponse as CodeExecuteResponse
+from otari._client.models.code_execution_output_file import CodeExecutionOutputFile as CodeExecutionOutputFile
 from otari._client.models.code_executor import CodeExecutor as CodeExecutor
 from otari._client.models.config_field import ConfigField as ConfigField
 from otari._client.models.config_search_tool_schema import ConfigSearchToolSchema as ConfigSearchToolSchema
@@ -1177,6 +1194,7 @@ from otari._client.models.invite_organization_member_request import InviteOrgani
 from otari._client.models.invite_organization_member_result_public import InviteOrganizationMemberResultPublic as InviteOrganizationMemberResultPublic
 from otari._client.models.judge_verdict_request import JudgeVerdictRequest as JudgeVerdictRequest
 from otari._client.models.key_info import KeyInfo as KeyInfo
+from otari._client.models.key_rank_request import KeyRankRequest as KeyRankRequest
 from otari._client.models.known_provider_schema import KnownProviderSchema as KnownProviderSchema
 from otari._client.models.known_provider_summary_schema import KnownProviderSummarySchema as KnownProviderSummarySchema
 from otari._client.models.learned_policy import LearnedPolicy as LearnedPolicy

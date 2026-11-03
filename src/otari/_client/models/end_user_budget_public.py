@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,10 +28,18 @@ class EndUserBudgetPublic(BaseModel):
     A budget a service key may put its end users on, and how many of them are on it.
     """ # noqa: E501
     blocked_end_user_count: StrictInt
+    budget_duration_sec: Optional[StrictInt] = None
     budget_id: StrictStr
     end_user_count: StrictInt = Field(description="End users of the key's user on this budget, blocked ones included")
     is_default: StrictBool = Field(description="Whether a new end user starts here when its request names no budget")
-    __properties: ClassVar[List[str]] = ["blocked_end_user_count", "budget_id", "end_user_count", "is_default"]
+    max_budget: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Dollars each end user may spend over the period")
+    name: Optional[StrictStr] = None
+    request_limit: Optional[StrictInt] = None
+    reset_alignment: Optional[StrictStr] = None
+    rpm_limit: Optional[StrictInt] = None
+    token_limit: Optional[StrictInt] = None
+    tpm_limit: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["blocked_end_user_count", "budget_duration_sec", "budget_id", "end_user_count", "is_default", "max_budget", "name", "request_limit", "reset_alignment", "rpm_limit", "token_limit", "tpm_limit"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -72,6 +80,46 @@ class EndUserBudgetPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if budget_duration_sec (nullable) is None
+        # and model_fields_set contains the field
+        if self.budget_duration_sec is None and "budget_duration_sec" in self.model_fields_set:
+            _dict['budget_duration_sec'] = None
+
+        # set to None if max_budget (nullable) is None
+        # and model_fields_set contains the field
+        if self.max_budget is None and "max_budget" in self.model_fields_set:
+            _dict['max_budget'] = None
+
+        # set to None if name (nullable) is None
+        # and model_fields_set contains the field
+        if self.name is None and "name" in self.model_fields_set:
+            _dict['name'] = None
+
+        # set to None if request_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.request_limit is None and "request_limit" in self.model_fields_set:
+            _dict['request_limit'] = None
+
+        # set to None if reset_alignment (nullable) is None
+        # and model_fields_set contains the field
+        if self.reset_alignment is None and "reset_alignment" in self.model_fields_set:
+            _dict['reset_alignment'] = None
+
+        # set to None if rpm_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.rpm_limit is None and "rpm_limit" in self.model_fields_set:
+            _dict['rpm_limit'] = None
+
+        # set to None if token_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.token_limit is None and "token_limit" in self.model_fields_set:
+            _dict['token_limit'] = None
+
+        # set to None if tpm_limit (nullable) is None
+        # and model_fields_set contains the field
+        if self.tpm_limit is None and "tpm_limit" in self.model_fields_set:
+            _dict['tpm_limit'] = None
+
         return _dict
 
     @classmethod
@@ -85,9 +133,17 @@ class EndUserBudgetPublic(BaseModel):
 
         _obj = cls.model_validate({
             "blocked_end_user_count": obj.get("blocked_end_user_count"),
+            "budget_duration_sec": obj.get("budget_duration_sec"),
             "budget_id": obj.get("budget_id"),
             "end_user_count": obj.get("end_user_count"),
-            "is_default": obj.get("is_default")
+            "is_default": obj.get("is_default"),
+            "max_budget": obj.get("max_budget"),
+            "name": obj.get("name"),
+            "request_limit": obj.get("request_limit"),
+            "reset_alignment": obj.get("reset_alignment"),
+            "rpm_limit": obj.get("rpm_limit"),
+            "token_limit": obj.get("token_limit"),
+            "tpm_limit": obj.get("tpm_limit")
         })
         return _obj
 

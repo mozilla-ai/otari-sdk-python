@@ -39,7 +39,7 @@ class SetPricingRequest(BaseModel):
     output_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M output tokens; unused by a rate in requests or images")
     price_per_request: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="USD for each request, whatever it uses: a completion model billed per call, such as Exa's or Liner's answers. Shorthand for unit 'requests' with input_price_per_million at a million times this; not combined with token prices.")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
-    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: 'tokens' for a model, 'requests' for a gateway-run tool, a moderation call, or a completion model billed per call (USD per million requests), 'images' for image generation (USD per million images).")
+    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: 'tokens' for a model, 'requests' for a gateway-run tool, a moderation call, or a completion model billed per call, 'images' for image generation. Every rate is USD per million of its unit. A rate in a unit that has no meter yet is stored and prices nothing.")
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_at", "input_price_per_million", "kind", "model_key", "output_price_per_million", "price_per_request", "pricing_tiers", "unit"]
 
     @field_validator('kind')
@@ -58,8 +58,8 @@ class SetPricingRequest(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['tokens', 'requests', 'images']):
-            raise ValueError("must be one of enum values ('tokens', 'requests', 'images')")
+        if value not in set(['tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search')")
         return value
 
     model_config = ConfigDict(
