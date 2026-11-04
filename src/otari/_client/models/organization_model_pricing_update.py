@@ -35,9 +35,9 @@ class OrganizationModelPricingUpdate(BaseModel):
     effective_from: datetime = Field(description="ISO 8601 datetime from which this rate applies, inclusive. Required on a replacement, so an omitted value cannot silently move a stored period to the present.")
     effective_to: Optional[datetime] = Field(default=None, description="ISO 8601 datetime at which this rate stops applying, exclusive. Null leaves it open ended. Because the end is exclusive, the next period may begin at exactly this instant without overlapping.")
     input_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M of the rate's unit: input tokens, requests or images")
-    output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens; unused by a rate in requests or images")
+    output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens; unused by a rate per request or per image")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
-    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: tokens for a model, requests or images for a non-token endpoint. A completion model priced per requests is charged one request per successful call. Every rate is USD per million of its unit. A rate in a unit that has no meter yet is stored and prices nothing.")
+    unit: Optional[StrictStr] = Field(default='token', description="What the rates are per: token for a model, request or image for a non-token endpoint. A completion model priced per request is charged one request per successful call. Every rate is USD per million of its unit. A rate in a unit that has no meter yet is stored and prices nothing. The plural names tokens, requests and images are still read for one release.")
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('unit')
@@ -46,8 +46,8 @@ class OrganizationModelPricingUpdate(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search']):
-            raise ValueError("must be one of enum values ('tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search')")
+        if value not in set(['token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search')")
         return value
 
     model_config = ConfigDict(
@@ -135,7 +135,7 @@ class OrganizationModelPricingUpdate(BaseModel):
             "input_price_per_million": obj.get("input_price_per_million"),
             "output_price_per_million": obj.get("output_price_per_million"),
             "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
-            "unit": obj.get("unit") if obj.get("unit") is not None else 'tokens'
+            "unit": obj.get("unit") if obj.get("unit") is not None else 'token'
         })
         return _obj
 

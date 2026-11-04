@@ -37,9 +37,9 @@ class PricingResponse(BaseModel):
     model_key: StrictStr
     origin: Optional[StrictStr] = Field(description="Which writer set this row: config, api, or migration. Null when recorded before origins were.")
     output_price_per_million: Union[StrictFloat, StrictInt]
-    price_per_request: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="USD for each request, for a rate in requests; null for any other unit.")
+    price_per_request: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="USD for each request, for a rate per request; null for any other unit.")
     pricing_tiers: List[PricingTier]
-    unit: StrictStr = Field(description="What the rates are per: tokens, requests, or images.")
+    unit: StrictStr = Field(description="What the rates are per: token for a model, request or image for a non-token endpoint.")
     updated_at: StrictStr
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_at", "input_price_per_million", "kind", "model_key", "origin", "output_price_per_million", "price_per_request", "pricing_tiers", "unit", "updated_at"]
 
