@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
@@ -36,7 +36,8 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
     org_provider_key_id: UUID
     usable: StrictBool
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "disabled", "is_default", "is_effective_default", "is_effective_enabled", "org_provider_key_id", "usable", "workspace_id"]
+    zero_data_retention: Optional[StrictBool] = False
+    __properties: ClassVar[List[str]] = ["allowed_models", "disabled", "is_default", "is_effective_default", "is_effective_enabled", "org_provider_key_id", "usable", "workspace_id", "zero_data_retention"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -96,7 +97,8 @@ class WorkspaceProviderKeyOverridePublic(BaseModel):
             "is_effective_enabled": obj.get("is_effective_enabled"),
             "org_provider_key_id": obj.get("org_provider_key_id"),
             "usable": obj.get("usable"),
-            "workspace_id": obj.get("workspace_id")
+            "workspace_id": obj.get("workspace_id"),
+            "zero_data_retention": obj.get("zero_data_retention") if obj.get("zero_data_retention") is not None else False
         })
         return _obj
 

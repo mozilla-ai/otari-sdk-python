@@ -18,6 +18,7 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import List, Optional, Union
 from typing_extensions import Annotated
+from uuid import UUID
 from otari._client.models.catalog_capability import CatalogCapability
 from otari._client.models.catalog_model_detail import CatalogModelDetail
 from otari._client.models.catalog_response import CatalogResponse
@@ -45,6 +46,7 @@ class CatalogApi:
     def catalog_get_catalog_model(
         self,
         model_id: StrictStr,
+        workspace_id: Annotated[Optional[UUID], Field(description="For a signed-in caller, only the offerings a request billed to this workspace may call.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -64,6 +66,8 @@ class CatalogApi:
 
         :param model_id: (required)
         :type model_id: str
+        :param workspace_id: For a signed-in caller, only the offerings a request billed to this workspace may call.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -88,6 +92,7 @@ class CatalogApi:
 
         _param = self._catalog_get_catalog_model_serialize(
             model_id=model_id,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -113,6 +118,7 @@ class CatalogApi:
     def catalog_get_catalog_model_with_http_info(
         self,
         model_id: StrictStr,
+        workspace_id: Annotated[Optional[UUID], Field(description="For a signed-in caller, only the offerings a request billed to this workspace may call.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -132,6 +138,8 @@ class CatalogApi:
 
         :param model_id: (required)
         :type model_id: str
+        :param workspace_id: For a signed-in caller, only the offerings a request billed to this workspace may call.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -156,6 +164,7 @@ class CatalogApi:
 
         _param = self._catalog_get_catalog_model_serialize(
             model_id=model_id,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -181,6 +190,7 @@ class CatalogApi:
     def catalog_get_catalog_model_without_preload_content(
         self,
         model_id: StrictStr,
+        workspace_id: Annotated[Optional[UUID], Field(description="For a signed-in caller, only the offerings a request billed to this workspace may call.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -200,6 +210,8 @@ class CatalogApi:
 
         :param model_id: (required)
         :type model_id: str
+        :param workspace_id: For a signed-in caller, only the offerings a request billed to this workspace may call.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -224,6 +236,7 @@ class CatalogApi:
 
         _param = self._catalog_get_catalog_model_serialize(
             model_id=model_id,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -244,6 +257,7 @@ class CatalogApi:
     def _catalog_get_catalog_model_serialize(
         self,
         model_id,
+        workspace_id,
         _request_auth,
         _content_type,
         _headers,
@@ -268,6 +282,10 @@ class CatalogApi:
         if model_id is not None:
             _path_params['model_id'] = model_id
         # process the query parameters
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -311,6 +329,7 @@ class CatalogApi:
         self,
         at_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.")] = None,
         search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="For a signed-in caller, list only what a request billed to this workspace may call, with its own disabled keys and model lists applied. A workspace the caller cannot see answers 404. Ignored for an API key, which already names its workspace.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of matching models to skip.")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of models to return.")] = None,
         provider: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Match any named provider instance.")] = None,
@@ -349,6 +368,8 @@ class CatalogApi:
         :type at_context: int
         :param search: Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.
         :type search: str
+        :param workspace_id: For a signed-in caller, list only what a request billed to this workspace may call, with its own disabled keys and model lists applied. A workspace the caller cannot see answers 404. Ignored for an API key, which already names its workspace.
+        :type workspace_id: UUID
         :param skip: Number of matching models to skip.
         :type skip: int
         :param limit: Maximum number of models to return.
@@ -408,6 +429,7 @@ class CatalogApi:
         _param = self._catalog_list_catalog_serialize(
             at_context=at_context,
             search=search,
+            workspace_id=workspace_id,
             skip=skip,
             limit=limit,
             provider=provider,
@@ -451,6 +473,7 @@ class CatalogApi:
         self,
         at_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.")] = None,
         search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="For a signed-in caller, list only what a request billed to this workspace may call, with its own disabled keys and model lists applied. A workspace the caller cannot see answers 404. Ignored for an API key, which already names its workspace.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of matching models to skip.")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of models to return.")] = None,
         provider: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Match any named provider instance.")] = None,
@@ -489,6 +512,8 @@ class CatalogApi:
         :type at_context: int
         :param search: Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.
         :type search: str
+        :param workspace_id: For a signed-in caller, list only what a request billed to this workspace may call, with its own disabled keys and model lists applied. A workspace the caller cannot see answers 404. Ignored for an API key, which already names its workspace.
+        :type workspace_id: UUID
         :param skip: Number of matching models to skip.
         :type skip: int
         :param limit: Maximum number of models to return.
@@ -548,6 +573,7 @@ class CatalogApi:
         _param = self._catalog_list_catalog_serialize(
             at_context=at_context,
             search=search,
+            workspace_id=workspace_id,
             skip=skip,
             limit=limit,
             provider=provider,
@@ -591,6 +617,7 @@ class CatalogApi:
         self,
         at_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="Compare prices for a request of this many input tokens: each model's minimum is taken from the pricing tier that request would settle at. Omitted, the base rates compare.")] = None,
         search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="For a signed-in caller, list only what a request billed to this workspace may call, with its own disabled keys and model lists applied. A workspace the caller cannot see answers 404. Ignored for an API key, which already names its workspace.")] = None,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of matching models to skip.")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of models to return.")] = None,
         provider: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(max_length=100)]], Field(description="Match any named provider instance.")] = None,
@@ -629,6 +656,8 @@ class CatalogApi:
         :type at_context: int
         :param search: Case-insensitive text in a model's name, vendor, id, selectors, or provider instances.
         :type search: str
+        :param workspace_id: For a signed-in caller, list only what a request billed to this workspace may call, with its own disabled keys and model lists applied. A workspace the caller cannot see answers 404. Ignored for an API key, which already names its workspace.
+        :type workspace_id: UUID
         :param skip: Number of matching models to skip.
         :type skip: int
         :param limit: Maximum number of models to return.
@@ -688,6 +717,7 @@ class CatalogApi:
         _param = self._catalog_list_catalog_serialize(
             at_context=at_context,
             search=search,
+            workspace_id=workspace_id,
             skip=skip,
             limit=limit,
             provider=provider,
@@ -726,6 +756,7 @@ class CatalogApi:
         self,
         at_context,
         search,
+        workspace_id,
         skip,
         limit,
         provider,
@@ -778,6 +809,10 @@ class CatalogApi:
         if search is not None:
             
             _query_params.append(('search', search))
+            
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
             
         if skip is not None:
             
