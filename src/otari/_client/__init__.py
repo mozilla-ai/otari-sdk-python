@@ -202,6 +202,8 @@ __all__ = [
     "CCPromptTokensDetails",
     "CCTopLogprob",
     "CacheMissReason",
+    "CacheRatesInput",
+    "CacheRatesOutput",
     "CallToolResult",
     "Caller",
     "Caller1",
@@ -317,6 +319,7 @@ __all__ = [
     "ExternalIngestError",
     "ExternalIngestResult",
     "ExternalUsageEvent",
+    "Factor",
     "FallbackOfferingPublic",
     "FederationRuleCreate",
     "FederationRulePublic",
@@ -768,6 +771,10 @@ __all__ = [
     "RateLimitRulePublic",
     "RateLimitRuleUpdate",
     "RateLimitRulesPublic",
+    "RateMultiplier",
+    "RateOverrideInput",
+    "RateOverrideOutput",
+    "RatesDocumentInput",
     "RecommendationRefusal",
     "ReencryptSearchToolsResponse",
     "RegisterPasskeyRequest",
@@ -849,6 +856,8 @@ __all__ = [
     "TraceSummaryPublic",
     "TurnPublic",
     "UnitChargeLine",
+    "UnitRateInput",
+    "UnitRateOutput",
     "Units",
     "Units1",
     "UpdateBudgetRequest",
@@ -921,6 +930,7 @@ __all__ = [
     "WorkspaceWebSearchKeysPublic",
     "WorkspacesPublic",
     "WorstAllocationResponse",
+    "Write",
 ]
 
 # import apis into sdk package
@@ -1112,6 +1122,8 @@ from otari._client.models.cck_top_logprob import CCKTopLogprob as CCKTopLogprob
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails as CCPromptTokensDetails
 from otari._client.models.cc_top_logprob import CCTopLogprob as CCTopLogprob
 from otari._client.models.cache_miss_reason import CacheMissReason as CacheMissReason
+from otari._client.models.cache_rates_input import CacheRatesInput as CacheRatesInput
+from otari._client.models.cache_rates_output import CacheRatesOutput as CacheRatesOutput
 from otari._client.models.call_tool_result import CallToolResult as CallToolResult
 from otari._client.models.caller import Caller as Caller
 from otari._client.models.caller1 import Caller1 as Caller1
@@ -1227,6 +1239,7 @@ from otari._client.models.external_events_request import ExternalEventsRequest a
 from otari._client.models.external_ingest_error import ExternalIngestError as ExternalIngestError
 from otari._client.models.external_ingest_result import ExternalIngestResult as ExternalIngestResult
 from otari._client.models.external_usage_event import ExternalUsageEvent as ExternalUsageEvent
+from otari._client.models.factor import Factor as Factor
 from otari._client.models.fallback_offering_public import FallbackOfferingPublic as FallbackOfferingPublic
 from otari._client.models.federation_rule_create import FederationRuleCreate as FederationRuleCreate
 from otari._client.models.federation_rule_public import FederationRulePublic as FederationRulePublic
@@ -1678,6 +1691,10 @@ from otari._client.models.rate_limit_rule_create import RateLimitRuleCreate as R
 from otari._client.models.rate_limit_rule_public import RateLimitRulePublic as RateLimitRulePublic
 from otari._client.models.rate_limit_rule_update import RateLimitRuleUpdate as RateLimitRuleUpdate
 from otari._client.models.rate_limit_rules_public import RateLimitRulesPublic as RateLimitRulesPublic
+from otari._client.models.rate_multiplier import RateMultiplier as RateMultiplier
+from otari._client.models.rate_override_input import RateOverrideInput as RateOverrideInput
+from otari._client.models.rate_override_output import RateOverrideOutput as RateOverrideOutput
+from otari._client.models.rates_document_input import RatesDocumentInput as RatesDocumentInput
 from otari._client.models.recommendation_refusal import RecommendationRefusal as RecommendationRefusal
 from otari._client.models.reencrypt_search_tools_response import ReencryptSearchToolsResponse as ReencryptSearchToolsResponse
 from otari._client.models.register_passkey_request import RegisterPasskeyRequest as RegisterPasskeyRequest
@@ -1759,6 +1776,8 @@ from otari._client.models.trace_series_public import TraceSeriesPublic as TraceS
 from otari._client.models.trace_summary_public import TraceSummaryPublic as TraceSummaryPublic
 from otari._client.models.turn_public import TurnPublic as TurnPublic
 from otari._client.models.unit_charge_line import UnitChargeLine as UnitChargeLine
+from otari._client.models.unit_rate_input import UnitRateInput as UnitRateInput
+from otari._client.models.unit_rate_output import UnitRateOutput as UnitRateOutput
 from otari._client.models.units import Units as Units
 from otari._client.models.units1 import Units1 as Units1
 from otari._client.models.update_budget_request import UpdateBudgetRequest as UpdateBudgetRequest
@@ -1831,4 +1850,5 @@ from otari._client.models.workspace_web_search_key_public import WorkspaceWebSea
 from otari._client.models.workspace_web_search_keys_public import WorkspaceWebSearchKeysPublic as WorkspaceWebSearchKeysPublic
 from otari._client.models.workspaces_public import WorkspacesPublic as WorkspacesPublic
 from otari._client.models.worst_allocation_response import WorstAllocationResponse as WorstAllocationResponse
+from otari._client.models.write import Write as Write
 

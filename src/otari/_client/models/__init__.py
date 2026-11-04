@@ -124,6 +124,8 @@ from otari._client.models.cck_top_logprob import CCKTopLogprob
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails
 from otari._client.models.cc_top_logprob import CCTopLogprob
 from otari._client.models.cache_miss_reason import CacheMissReason
+from otari._client.models.cache_rates_input import CacheRatesInput
+from otari._client.models.cache_rates_output import CacheRatesOutput
 from otari._client.models.call_tool_result import CallToolResult
 from otari._client.models.caller import Caller
 from otari._client.models.caller1 import Caller1
@@ -239,6 +241,7 @@ from otari._client.models.external_events_request import ExternalEventsRequest
 from otari._client.models.external_ingest_error import ExternalIngestError
 from otari._client.models.external_ingest_result import ExternalIngestResult
 from otari._client.models.external_usage_event import ExternalUsageEvent
+from otari._client.models.factor import Factor
 from otari._client.models.fallback_offering_public import FallbackOfferingPublic
 from otari._client.models.federation_rule_create import FederationRuleCreate
 from otari._client.models.federation_rule_public import FederationRulePublic
@@ -690,6 +693,10 @@ from otari._client.models.rate_limit_rule_create import RateLimitRuleCreate
 from otari._client.models.rate_limit_rule_public import RateLimitRulePublic
 from otari._client.models.rate_limit_rule_update import RateLimitRuleUpdate
 from otari._client.models.rate_limit_rules_public import RateLimitRulesPublic
+from otari._client.models.rate_multiplier import RateMultiplier
+from otari._client.models.rate_override_input import RateOverrideInput
+from otari._client.models.rate_override_output import RateOverrideOutput
+from otari._client.models.rates_document_input import RatesDocumentInput
 from otari._client.models.recommendation_refusal import RecommendationRefusal
 from otari._client.models.reencrypt_search_tools_response import ReencryptSearchToolsResponse
 from otari._client.models.register_passkey_request import RegisterPasskeyRequest
@@ -771,6 +778,8 @@ from otari._client.models.trace_series_public import TraceSeriesPublic
 from otari._client.models.trace_summary_public import TraceSummaryPublic
 from otari._client.models.turn_public import TurnPublic
 from otari._client.models.unit_charge_line import UnitChargeLine
+from otari._client.models.unit_rate_input import UnitRateInput
+from otari._client.models.unit_rate_output import UnitRateOutput
 from otari._client.models.units import Units
 from otari._client.models.units1 import Units1
 from otari._client.models.update_budget_request import UpdateBudgetRequest
@@ -843,4 +852,5 @@ from otari._client.models.workspace_web_search_key_public import WorkspaceWebSea
 from otari._client.models.workspace_web_search_keys_public import WorkspaceWebSearchKeysPublic
 from otari._client.models.workspaces_public import WorkspacesPublic
 from otari._client.models.worst_allocation_response import WorstAllocationResponse
+from otari._client.models.write import Write
 

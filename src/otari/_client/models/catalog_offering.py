@@ -46,7 +46,8 @@ class CatalogOffering(BaseModel):
     selector: StrictStr = Field(description="What to send as `model`, in `instance:model` form.")
     short_selector: Optional[StrictStr] = Field(default=None, description="The pinned spelling the gateway also accepts for this offering: the instance with the model's catalog id (`fireworks:openai/gpt-oss-120b`), which pins the instance and reaches the model's best offering on it. Null for another build on the same instance, or until the gateway has indexed the catalog.")
     usage_30d: Optional[OfferingUsage] = None
-    __properties: ClassVar[List[str]] = ["context_window", "credential", "discovered", "endpoints", "max_output_tokens", "metadata_input_price_per_million", "metadata_output_price_per_million", "price_reference", "price_source", "pricing", "provider", "provider_type", "quantization", "selector", "short_selector", "usage_30d"]
+    zero_data_retention: Optional[StrictBool] = Field(default=False, description="Whether whoever holds the serving key declared that the provider keeps no prompt or completion data: the operator for a `hosted` offering, the organization for one on its own keys, where every usable key of the provider must declare it. A declaration, not something the gateway can verify.")
+    __properties: ClassVar[List[str]] = ["context_window", "credential", "discovered", "endpoints", "max_output_tokens", "metadata_input_price_per_million", "metadata_output_price_per_million", "price_reference", "price_source", "pricing", "provider", "provider_type", "quantization", "selector", "short_selector", "usage_30d", "zero_data_retention"]
 
     @field_validator('endpoints')
     def endpoints_validate_enum(cls, value):
@@ -191,7 +192,8 @@ class CatalogOffering(BaseModel):
             "quantization": obj.get("quantization"),
             "selector": obj.get("selector"),
             "short_selector": obj.get("short_selector"),
-            "usage_30d": OfferingUsage.from_dict(obj["usage_30d"]) if obj.get("usage_30d") is not None else None
+            "usage_30d": OfferingUsage.from_dict(obj["usage_30d"]) if obj.get("usage_30d") is not None else None,
+            "zero_data_retention": obj.get("zero_data_retention") if obj.get("zero_data_retention") is not None else False
         })
         return _obj
 

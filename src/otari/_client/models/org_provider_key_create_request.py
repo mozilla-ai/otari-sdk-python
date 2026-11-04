@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -33,7 +33,8 @@ class OrgProviderKeyCreateRequest(BaseModel):
     client_args: Optional[Dict[str, Any]] = None
     name: Annotated[str, Field(strict=True, max_length=255)]
     provider: Annotated[str, Field(strict=True, max_length=255)]
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "name", "provider"]
+    zero_data_retention: Optional[StrictBool] = Field(default=False, description="The organization's declaration that the provider account behind this key keeps no prompt or completion data. The catalog shows it and filters on it; nothing is enforced on it.")
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "name", "provider", "zero_data_retention"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -105,7 +106,8 @@ class OrgProviderKeyCreateRequest(BaseModel):
             "api_key": obj.get("api_key"),
             "client_args": obj.get("client_args"),
             "name": obj.get("name"),
-            "provider": obj.get("provider")
+            "provider": obj.get("provider"),
+            "zero_data_retention": obj.get("zero_data_retention") if obj.get("zero_data_retention") is not None else False
         })
         return _obj
 

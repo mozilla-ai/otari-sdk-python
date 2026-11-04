@@ -43,7 +43,8 @@ class OrgProviderKeyPublic(BaseModel):
     serving_count: StrictInt = Field(description="How many of the offered models have their serving switch on. A key offering models and serving none refuses every request through it until one is switched on.")
     updated_at: Optional[datetime] = None
     usable: StrictBool = Field(description="False when the stored credential cannot be decrypted on this deployment, so the key supplies nothing at dispatch and the catalog withholds its provider. A row this deployment cannot read is still listed, because deleting or replacing it is what fixes it.")
-    __properties: ClassVar[List[str]] = ["api_base", "archived_at", "client_args", "created_at", "id", "is_org_default", "last4", "name", "offered_count", "organization_id", "provider", "serving_count", "updated_at", "usable"]
+    zero_data_retention: Optional[StrictBool] = False
+    __properties: ClassVar[List[str]] = ["api_base", "archived_at", "client_args", "created_at", "id", "is_org_default", "last4", "name", "offered_count", "organization_id", "provider", "serving_count", "updated_at", "usable", "zero_data_retention"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -134,7 +135,8 @@ class OrgProviderKeyPublic(BaseModel):
             "provider": obj.get("provider"),
             "serving_count": obj.get("serving_count"),
             "updated_at": obj.get("updated_at"),
-            "usable": obj.get("usable")
+            "usable": obj.get("usable"),
+            "zero_data_retention": obj.get("zero_data_retention") if obj.get("zero_data_retention") is not None else False
         })
         return _obj
 
