@@ -323,6 +323,7 @@ class CatalogApi:
         max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
         pricing: Optional[StrictStr] = None,
         source: Optional[StrictStr] = None,
+        zero_data_retention: Annotated[Optional[StrictBool], Field(description="Only models at least one provider declared to keep no prompt or completion data offers.")] = None,
         released_within_days: Annotated[Optional[Annotated[int, Field(le=36500, strict=True, ge=0)]], Field(description="Release window ending today (UTC); zero disables it. Unknown and future releases do not match.")] = None,
         sort: Optional[StrictStr] = None,
         direction: Optional[StrictStr] = None,
@@ -372,6 +373,8 @@ class CatalogApi:
         :type pricing: str
         :param source:
         :type source: str
+        :param zero_data_retention: Only models at least one provider declared to keep no prompt or completion data offers.
+        :type zero_data_retention: bool
         :param released_within_days: Release window ending today (UTC); zero disables it. Unknown and future releases do not match.
         :type released_within_days: int
         :param sort:
@@ -417,6 +420,7 @@ class CatalogApi:
             max_input=max_input,
             pricing=pricing,
             source=source,
+            zero_data_retention=zero_data_retention,
             released_within_days=released_within_days,
             sort=sort,
             direction=direction,
@@ -459,6 +463,7 @@ class CatalogApi:
         max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
         pricing: Optional[StrictStr] = None,
         source: Optional[StrictStr] = None,
+        zero_data_retention: Annotated[Optional[StrictBool], Field(description="Only models at least one provider declared to keep no prompt or completion data offers.")] = None,
         released_within_days: Annotated[Optional[Annotated[int, Field(le=36500, strict=True, ge=0)]], Field(description="Release window ending today (UTC); zero disables it. Unknown and future releases do not match.")] = None,
         sort: Optional[StrictStr] = None,
         direction: Optional[StrictStr] = None,
@@ -508,6 +513,8 @@ class CatalogApi:
         :type pricing: str
         :param source:
         :type source: str
+        :param zero_data_retention: Only models at least one provider declared to keep no prompt or completion data offers.
+        :type zero_data_retention: bool
         :param released_within_days: Release window ending today (UTC); zero disables it. Unknown and future releases do not match.
         :type released_within_days: int
         :param sort:
@@ -553,6 +560,7 @@ class CatalogApi:
             max_input=max_input,
             pricing=pricing,
             source=source,
+            zero_data_retention=zero_data_retention,
             released_within_days=released_within_days,
             sort=sort,
             direction=direction,
@@ -595,6 +603,7 @@ class CatalogApi:
         max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
         pricing: Optional[StrictStr] = None,
         source: Optional[StrictStr] = None,
+        zero_data_retention: Annotated[Optional[StrictBool], Field(description="Only models at least one provider declared to keep no prompt or completion data offers.")] = None,
         released_within_days: Annotated[Optional[Annotated[int, Field(le=36500, strict=True, ge=0)]], Field(description="Release window ending today (UTC); zero disables it. Unknown and future releases do not match.")] = None,
         sort: Optional[StrictStr] = None,
         direction: Optional[StrictStr] = None,
@@ -644,6 +653,8 @@ class CatalogApi:
         :type pricing: str
         :param source:
         :type source: str
+        :param zero_data_retention: Only models at least one provider declared to keep no prompt or completion data offers.
+        :type zero_data_retention: bool
         :param released_within_days: Release window ending today (UTC); zero disables it. Unknown and future releases do not match.
         :type released_within_days: int
         :param sort:
@@ -689,6 +700,7 @@ class CatalogApi:
             max_input=max_input,
             pricing=pricing,
             source=source,
+            zero_data_retention=zero_data_retention,
             released_within_days=released_within_days,
             sort=sort,
             direction=direction,
@@ -726,6 +738,7 @@ class CatalogApi:
         max_input,
         pricing,
         source,
+        zero_data_retention,
         released_within_days,
         sort,
         direction,
@@ -813,6 +826,10 @@ class CatalogApi:
         if source is not None:
             
             _query_params.append(('source', source))
+            
+        if zero_data_retention is not None:
+            
+            _query_params.append(('zero_data_retention', zero_data_retention))
             
         if released_within_days is not None:
             

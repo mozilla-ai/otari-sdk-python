@@ -59,7 +59,8 @@ class CatalogModelDetail(BaseModel):
     type: Optional[StrictStr] = Field(default=None, description="What kind of model it is: the kind most of its offerings give, from the provider's listing or models.dev. A tie goes to the vendor's own provider. Null where no offering gives one.")
     unpriced_count: StrictInt = Field(description="How many offerings carry no price for this caller.")
     vendor: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["also_available_from", "capabilities", "context_window", "default_pricing", "deprecated", "description", "discovered", "family", "id", "input_modalities", "knowledge_cutoff", "max_output_tokens", "min_input_price_per_million", "min_output_price_per_million", "name", "offering_count", "offerings", "open_weights", "output_modalities", "price_sources", "provider_count", "providers", "release_date", "resolves_to", "selector", "selectors", "type", "unpriced_count", "vendor"]
+    zero_data_retention_providers: Optional[List[StrictStr]] = Field(default=None, description="The provider instances offering it that are declared to keep no prompt or completion data, sorted.")
+    __properties: ClassVar[List[str]] = ["also_available_from", "capabilities", "context_window", "default_pricing", "deprecated", "description", "discovered", "family", "id", "input_modalities", "knowledge_cutoff", "max_output_tokens", "min_input_price_per_million", "min_output_price_per_million", "name", "offering_count", "offerings", "open_weights", "output_modalities", "price_sources", "provider_count", "providers", "release_date", "resolves_to", "selector", "selectors", "type", "unpriced_count", "vendor", "zero_data_retention_providers"]
 
     @field_validator('price_sources')
     def price_sources_validate_enum(cls, value):
@@ -235,7 +236,8 @@ class CatalogModelDetail(BaseModel):
             "selectors": obj.get("selectors"),
             "type": obj.get("type"),
             "unpriced_count": obj.get("unpriced_count"),
-            "vendor": obj.get("vendor")
+            "vendor": obj.get("vendor"),
+            "zero_data_retention_providers": obj.get("zero_data_retention_providers")
         })
         return _obj
 

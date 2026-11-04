@@ -39,9 +39,10 @@ class PricingResponse(BaseModel):
     output_price_per_million: Union[StrictFloat, StrictInt]
     price_per_request: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="USD for each request, for a rate per request; null for any other unit.")
     pricing_tiers: List[PricingTier]
+    rates: Dict[str, Any] = Field(description="Every price of the row as a models.dev cost block: each modality's input and output price with its unit, cache and overrides, web_search beside the modalities, and multipliers. A price is per its unit as published (one image, one million tokens, one thousand searches). Given instead of the per-million fields, which are then read out of it; a row always reads back with both.")
     unit: StrictStr = Field(description="What the rates are per: token for a model, request or image for a non-token endpoint.")
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_at", "input_price_per_million", "kind", "model_key", "origin", "output_price_per_million", "price_per_request", "pricing_tiers", "unit", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "effective_at", "input_price_per_million", "kind", "model_key", "origin", "output_price_per_million", "price_per_request", "pricing_tiers", "rates", "unit", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -132,6 +133,7 @@ class PricingResponse(BaseModel):
             "output_price_per_million": obj.get("output_price_per_million"),
             "price_per_request": obj.get("price_per_request"),
             "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
+            "rates": obj.get("rates"),
             "unit": obj.get("unit"),
             "updated_at": obj.get("updated_at")
         })

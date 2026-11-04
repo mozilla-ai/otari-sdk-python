@@ -22,6 +22,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from otari._client.models.pricing_tier import PricingTier
+from otari._client.models.rates_document_input import RatesDocumentInput
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -39,8 +40,9 @@ class OrganizationModelPricingCreate(BaseModel):
     model_key: Annotated[str, Field(min_length=1, strict=True, max_length=255)] = Field(description="For a model, 'provider:model', matching the key the deployment price list uses; a provider instance name is valid here ('home_lab:llama-3'), because pricing keys on the instance a request resolves to. For a search or fetch kind, the instance's name.")
     output_price_per_million: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Price per 1M output tokens; unused by a rate per request or per image")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
+    rates: Optional[RatesDocumentInput] = Field(default=None, description="Every price of the row as a models.dev cost block: each modality's input and output price with its unit, cache and overrides, web_search beside the modalities, and multipliers. A price is per its unit as published (one image, one million tokens, one thousand searches). Given instead of the per-million fields, which are then read out of it; a row always reads back with both.")
     unit: Optional[StrictStr] = Field(default='token', description="What the rates are per: token for a model, request or image for a non-token endpoint. A completion model priced per request is charged one request per successful call. Every rate is USD per million of its unit. A rate in a unit that has no meter yet is stored and prices nothing. The plural names tokens, requests and images are still read for one release.")
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "kind", "model_key", "output_price_per_million", "pricing_tiers", "unit"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_from", "effective_to", "input_price_per_million", "kind", "model_key", "output_price_per_million", "pricing_tiers", "rates", "unit"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -108,6 +110,9 @@ class OrganizationModelPricingCreate(BaseModel):
                 if _item_pricing_tiers:
                     _items.append(_item_pricing_tiers.to_dict())
             _dict['pricing_tiers'] = _items
+        # override the default output from pydantic by calling `to_dict()` of rates
+        if self.rates:
+            _dict['rates'] = self.rates.to_dict()
         # set to None if cache_read_price_per_million (nullable) is None
         # and model_fields_set contains the field
         if self.cache_read_price_per_million is None and "cache_read_price_per_million" in self.model_fields_set:
@@ -138,6 +143,11 @@ class OrganizationModelPricingCreate(BaseModel):
         if self.pricing_tiers is None and "pricing_tiers" in self.model_fields_set:
             _dict['pricing_tiers'] = None
 
+        # set to None if rates (nullable) is None
+        # and model_fields_set contains the field
+        if self.rates is None and "rates" in self.model_fields_set:
+            _dict['rates'] = None
+
         return _dict
 
     @classmethod
@@ -159,6 +169,7 @@ class OrganizationModelPricingCreate(BaseModel):
             "model_key": obj.get("model_key"),
             "output_price_per_million": obj.get("output_price_per_million"),
             "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
+            "rates": RatesDocumentInput.from_dict(obj["rates"]) if obj.get("rates") is not None else None,
             "unit": obj.get("unit") if obj.get("unit") is not None else 'token'
         })
         return _obj

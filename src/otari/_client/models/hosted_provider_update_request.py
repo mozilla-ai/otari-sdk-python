@@ -36,7 +36,8 @@ class HostedProviderUpdateRequest(BaseModel):
     restricted_to_organization_id: Optional[UUID] = None
     serves_unlisted_models: Optional[StrictBool] = None
     supported_countries: Optional[Annotated[List[StrictStr], Field(max_length=300)]] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "enabled", "restricted_to_organization_id", "serves_unlisted_models", "supported_countries"]
+    zero_data_retention: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "enabled", "restricted_to_organization_id", "serves_unlisted_models", "supported_countries", "zero_data_retention"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -112,6 +113,11 @@ class HostedProviderUpdateRequest(BaseModel):
         if self.supported_countries is None and "supported_countries" in self.model_fields_set:
             _dict['supported_countries'] = None
 
+        # set to None if zero_data_retention (nullable) is None
+        # and model_fields_set contains the field
+        if self.zero_data_retention is None and "zero_data_retention" in self.model_fields_set:
+            _dict['zero_data_retention'] = None
+
         return _dict
 
     @classmethod
@@ -130,7 +136,8 @@ class HostedProviderUpdateRequest(BaseModel):
             "enabled": obj.get("enabled"),
             "restricted_to_organization_id": obj.get("restricted_to_organization_id"),
             "serves_unlisted_models": obj.get("serves_unlisted_models"),
-            "supported_countries": obj.get("supported_countries")
+            "supported_countries": obj.get("supported_countries"),
+            "zero_data_retention": obj.get("zero_data_retention")
         })
         return _obj
 
