@@ -55,8 +55,8 @@ class CatalogOffering(BaseModel):
             return value
 
         for i in value:
-            if i not in set(['/chat/completions', '/responses', '/messages', '/images/generations', '/embeddings', '/audio/speech', '/audio/transcriptions', '/systemone', '/rerank', '/decisions', '/moderations']):
-                raise ValueError("each list item must be one of ('/chat/completions', '/responses', '/messages', '/images/generations', '/embeddings', '/audio/speech', '/audio/transcriptions', '/systemone', '/rerank', '/decisions', '/moderations')")
+            if i not in set(['/chat/completions', '/responses', '/messages', '/images/generations', '/images/edits', '/embeddings', '/audio/speech', '/audio/transcriptions', '/systemone', '/rerank', '/decisions', '/moderations']):
+                raise ValueError("each list item must be one of ('/chat/completions', '/responses', '/messages', '/images/generations', '/images/edits', '/embeddings', '/audio/speech', '/audio/transcriptions', '/systemone', '/rerank', '/decisions', '/moderations')")
         return value
 
     @field_validator('price_source')

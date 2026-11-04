@@ -31,7 +31,8 @@ class TraceContentPolicyPublic(BaseModel):
     platform_break_glass: StrictBool = Field(description="Whether the deployment's operator may open any organization's session content without its owner's share, recorded with a reason and a reference.")
     retention_days: StrictInt = Field(description="Days after its last activity that a session, with what it was about and its shares, is deleted.")
     session_max_age_days: StrictInt = Field(description="Days after it started that a session is deleted, however active it still is.")
-    __properties: ClassVar[List[str]] = ["content_available", "platform_break_glass", "retention_days", "session_max_age_days"]
+    tool_output: StrictBool = Field(description="Whether content also keeps what each tool returned, on a request routed through the gateway. Never true where content_available is false.")
+    __properties: ClassVar[List[str]] = ["content_available", "platform_break_glass", "retention_days", "session_max_age_days", "tool_output"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,7 +88,8 @@ class TraceContentPolicyPublic(BaseModel):
             "content_available": obj.get("content_available"),
             "platform_break_glass": obj.get("platform_break_glass"),
             "retention_days": obj.get("retention_days"),
-            "session_max_age_days": obj.get("session_max_age_days")
+            "session_max_age_days": obj.get("session_max_age_days"),
+            "tool_output": obj.get("tool_output")
         })
         return _obj
 

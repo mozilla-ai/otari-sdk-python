@@ -20,7 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from otari._client.models.mr_beta_skill import MRBetaSkill
+from otari._client.models.mr_beta_container_skill import MRBetaContainerSkill
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,7 +31,7 @@ class MRBetaContainer(BaseModel):
     """ # noqa: E501
     id: StrictStr
     expires_at: datetime
-    skills: Optional[List[MRBetaSkill]] = None
+    skills: Optional[List[MRBetaContainerSkill]] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "expires_at", "skills"]
 
@@ -107,7 +107,7 @@ class MRBetaContainer(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "expires_at": obj.get("expires_at"),
-            "skills": [MRBetaSkill.from_dict(_item) for _item in obj["skills"]] if obj.get("skills") is not None else None
+            "skills": [MRBetaContainerSkill.from_dict(_item) for _item in obj["skills"]] if obj.get("skills") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

@@ -105,6 +105,7 @@ class FilesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ResponseFilesCreateFile",
+            '413': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -181,6 +182,7 @@ class FilesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ResponseFilesCreateFile",
+            '413': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -257,6 +259,7 @@ class FilesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ResponseFilesCreateFile",
+            '413': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(

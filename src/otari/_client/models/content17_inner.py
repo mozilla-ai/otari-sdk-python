@@ -28,6 +28,7 @@ from otari._client.models.mr_beta_code_execution_tool_result_block import MRBeta
 from otari._client.models.mr_beta_compaction_block import MRBetaCompactionBlock
 from otari._client.models.mr_beta_container_upload_block import MRBetaContainerUploadBlock
 from otari._client.models.mr_beta_fallback_block import MRBetaFallbackBlock
+from otari._client.models.mr_beta_mcp_tool_listing_block import MRBetaMCPToolListingBlock
 from otari._client.models.mr_beta_mcp_tool_result_block import MRBetaMCPToolResultBlock
 from otari._client.models.mr_beta_mcp_tool_use_block import MRBetaMCPToolUseBlock
 from otari._client.models.mr_beta_redacted_thinking_block import MRBetaRedactedThinkingBlock
@@ -53,7 +54,7 @@ from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-CONTENT17INNER_ANY_OF_SCHEMAS = ["MRAnthropicTypesThinkingBlockThinkingBlock", "MRAnyLlmTypesMessagesThinkingBlock", "MRBashCodeExecutionToolResultBlock", "MRBetaAdvisorToolResultBlock", "MRBetaBashCodeExecutionToolResultBlock", "MRBetaCodeExecutionToolResultBlock", "MRBetaCompactionBlock", "MRBetaContainerUploadBlock", "MRBetaFallbackBlock", "MRBetaMCPToolResultBlock", "MRBetaMCPToolUseBlock", "MRBetaRedactedThinkingBlock", "MRBetaServerToolUseBlock", "MRBetaTextBlock", "MRBetaTextEditorCodeExecutionToolResultBlock", "MRBetaThinkingBlock", "MRBetaToolSearchToolResultBlock", "MRBetaToolUseBlock", "MRBetaWebFetchToolResultBlock", "MRBetaWebSearchToolResultBlock", "MRCodeExecutionToolResultBlock", "MRContainerUploadBlock", "MRRedactedThinkingBlock", "MRServerToolUseBlock", "MRTextBlock", "MRTextEditorCodeExecutionToolResultBlock", "MRToolSearchToolResultBlock", "MRToolUseBlock", "MRWebFetchToolResultBlock", "MRWebSearchToolResultBlock"]
+CONTENT17INNER_ANY_OF_SCHEMAS = ["MRAnthropicTypesThinkingBlockThinkingBlock", "MRAnyLlmTypesMessagesThinkingBlock", "MRBashCodeExecutionToolResultBlock", "MRBetaAdvisorToolResultBlock", "MRBetaBashCodeExecutionToolResultBlock", "MRBetaCodeExecutionToolResultBlock", "MRBetaCompactionBlock", "MRBetaContainerUploadBlock", "MRBetaFallbackBlock", "MRBetaMCPToolListingBlock", "MRBetaMCPToolResultBlock", "MRBetaMCPToolUseBlock", "MRBetaRedactedThinkingBlock", "MRBetaServerToolUseBlock", "MRBetaTextBlock", "MRBetaTextEditorCodeExecutionToolResultBlock", "MRBetaThinkingBlock", "MRBetaToolSearchToolResultBlock", "MRBetaToolUseBlock", "MRBetaWebFetchToolResultBlock", "MRBetaWebSearchToolResultBlock", "MRCodeExecutionToolResultBlock", "MRContainerUploadBlock", "MRRedactedThinkingBlock", "MRServerToolUseBlock", "MRTextBlock", "MRTextEditorCodeExecutionToolResultBlock", "MRToolSearchToolResultBlock", "MRToolUseBlock", "MRWebFetchToolResultBlock", "MRWebSearchToolResultBlock"]
 
 class Content17Inner(BaseModel):
     """
@@ -120,11 +121,13 @@ class Content17Inner(BaseModel):
     anyof_schema_29_validator: Optional[MRBetaCompactionBlock] = None
     # data type: MRBetaFallbackBlock
     anyof_schema_30_validator: Optional[MRBetaFallbackBlock] = None
+    # data type: MRBetaMCPToolListingBlock
+    anyof_schema_31_validator: Optional[MRBetaMCPToolListingBlock] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[MRAnthropicTypesThinkingBlockThinkingBlock, MRAnyLlmTypesMessagesThinkingBlock, MRBashCodeExecutionToolResultBlock, MRBetaAdvisorToolResultBlock, MRBetaBashCodeExecutionToolResultBlock, MRBetaCodeExecutionToolResultBlock, MRBetaCompactionBlock, MRBetaContainerUploadBlock, MRBetaFallbackBlock, MRBetaMCPToolResultBlock, MRBetaMCPToolUseBlock, MRBetaRedactedThinkingBlock, MRBetaServerToolUseBlock, MRBetaTextBlock, MRBetaTextEditorCodeExecutionToolResultBlock, MRBetaThinkingBlock, MRBetaToolSearchToolResultBlock, MRBetaToolUseBlock, MRBetaWebFetchToolResultBlock, MRBetaWebSearchToolResultBlock, MRCodeExecutionToolResultBlock, MRContainerUploadBlock, MRRedactedThinkingBlock, MRServerToolUseBlock, MRTextBlock, MRTextEditorCodeExecutionToolResultBlock, MRToolSearchToolResultBlock, MRToolUseBlock, MRWebFetchToolResultBlock, MRWebSearchToolResultBlock]] = None
+        actual_instance: Optional[Union[MRAnthropicTypesThinkingBlockThinkingBlock, MRAnyLlmTypesMessagesThinkingBlock, MRBashCodeExecutionToolResultBlock, MRBetaAdvisorToolResultBlock, MRBetaBashCodeExecutionToolResultBlock, MRBetaCodeExecutionToolResultBlock, MRBetaCompactionBlock, MRBetaContainerUploadBlock, MRBetaFallbackBlock, MRBetaMCPToolListingBlock, MRBetaMCPToolResultBlock, MRBetaMCPToolUseBlock, MRBetaRedactedThinkingBlock, MRBetaServerToolUseBlock, MRBetaTextBlock, MRBetaTextEditorCodeExecutionToolResultBlock, MRBetaThinkingBlock, MRBetaToolSearchToolResultBlock, MRBetaToolUseBlock, MRBetaWebFetchToolResultBlock, MRBetaWebSearchToolResultBlock, MRCodeExecutionToolResultBlock, MRContainerUploadBlock, MRRedactedThinkingBlock, MRServerToolUseBlock, MRTextBlock, MRTextEditorCodeExecutionToolResultBlock, MRToolSearchToolResultBlock, MRToolUseBlock, MRWebFetchToolResultBlock, MRWebSearchToolResultBlock]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "MRAnthropicTypesThinkingBlockThinkingBlock", "MRAnyLlmTypesMessagesThinkingBlock", "MRBashCodeExecutionToolResultBlock", "MRBetaAdvisorToolResultBlock", "MRBetaBashCodeExecutionToolResultBlock", "MRBetaCodeExecutionToolResultBlock", "MRBetaCompactionBlock", "MRBetaContainerUploadBlock", "MRBetaFallbackBlock", "MRBetaMCPToolResultBlock", "MRBetaMCPToolUseBlock", "MRBetaRedactedThinkingBlock", "MRBetaServerToolUseBlock", "MRBetaTextBlock", "MRBetaTextEditorCodeExecutionToolResultBlock", "MRBetaThinkingBlock", "MRBetaToolSearchToolResultBlock", "MRBetaToolUseBlock", "MRBetaWebFetchToolResultBlock", "MRBetaWebSearchToolResultBlock", "MRCodeExecutionToolResultBlock", "MRContainerUploadBlock", "MRRedactedThinkingBlock", "MRServerToolUseBlock", "MRTextBlock", "MRTextEditorCodeExecutionToolResultBlock", "MRToolSearchToolResultBlock", "MRToolUseBlock", "MRWebFetchToolResultBlock", "MRWebSearchToolResultBlock" }
+    any_of_schemas: Set[str] = { "MRAnthropicTypesThinkingBlockThinkingBlock", "MRAnyLlmTypesMessagesThinkingBlock", "MRBashCodeExecutionToolResultBlock", "MRBetaAdvisorToolResultBlock", "MRBetaBashCodeExecutionToolResultBlock", "MRBetaCodeExecutionToolResultBlock", "MRBetaCompactionBlock", "MRBetaContainerUploadBlock", "MRBetaFallbackBlock", "MRBetaMCPToolListingBlock", "MRBetaMCPToolResultBlock", "MRBetaMCPToolUseBlock", "MRBetaRedactedThinkingBlock", "MRBetaServerToolUseBlock", "MRBetaTextBlock", "MRBetaTextEditorCodeExecutionToolResultBlock", "MRBetaThinkingBlock", "MRBetaToolSearchToolResultBlock", "MRBetaToolUseBlock", "MRBetaWebFetchToolResultBlock", "MRBetaWebSearchToolResultBlock", "MRCodeExecutionToolResultBlock", "MRContainerUploadBlock", "MRRedactedThinkingBlock", "MRServerToolUseBlock", "MRTextBlock", "MRTextEditorCodeExecutionToolResultBlock", "MRToolSearchToolResultBlock", "MRToolUseBlock", "MRWebFetchToolResultBlock", "MRWebSearchToolResultBlock" }
 
     model_config = {
         "validate_assignment": True,
@@ -325,9 +328,15 @@ class Content17Inner(BaseModel):
         else:
             return v
 
+        # validate data type: MRBetaMCPToolListingBlock
+        if not isinstance(v, MRBetaMCPToolListingBlock):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `MRBetaMCPToolListingBlock`")
+        else:
+            return v
+
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Content17Inner with anyOf schemas: MRAnthropicTypesThinkingBlockThinkingBlock, MRAnyLlmTypesMessagesThinkingBlock, MRBashCodeExecutionToolResultBlock, MRBetaAdvisorToolResultBlock, MRBetaBashCodeExecutionToolResultBlock, MRBetaCodeExecutionToolResultBlock, MRBetaCompactionBlock, MRBetaContainerUploadBlock, MRBetaFallbackBlock, MRBetaMCPToolResultBlock, MRBetaMCPToolUseBlock, MRBetaRedactedThinkingBlock, MRBetaServerToolUseBlock, MRBetaTextBlock, MRBetaTextEditorCodeExecutionToolResultBlock, MRBetaThinkingBlock, MRBetaToolSearchToolResultBlock, MRBetaToolUseBlock, MRBetaWebFetchToolResultBlock, MRBetaWebSearchToolResultBlock, MRCodeExecutionToolResultBlock, MRContainerUploadBlock, MRRedactedThinkingBlock, MRServerToolUseBlock, MRTextBlock, MRTextEditorCodeExecutionToolResultBlock, MRToolSearchToolResultBlock, MRToolUseBlock, MRWebFetchToolResultBlock, MRWebSearchToolResultBlock. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Content17Inner with anyOf schemas: MRAnthropicTypesThinkingBlockThinkingBlock, MRAnyLlmTypesMessagesThinkingBlock, MRBashCodeExecutionToolResultBlock, MRBetaAdvisorToolResultBlock, MRBetaBashCodeExecutionToolResultBlock, MRBetaCodeExecutionToolResultBlock, MRBetaCompactionBlock, MRBetaContainerUploadBlock, MRBetaFallbackBlock, MRBetaMCPToolListingBlock, MRBetaMCPToolResultBlock, MRBetaMCPToolUseBlock, MRBetaRedactedThinkingBlock, MRBetaServerToolUseBlock, MRBetaTextBlock, MRBetaTextEditorCodeExecutionToolResultBlock, MRBetaThinkingBlock, MRBetaToolSearchToolResultBlock, MRBetaToolUseBlock, MRBetaWebFetchToolResultBlock, MRBetaWebSearchToolResultBlock, MRCodeExecutionToolResultBlock, MRContainerUploadBlock, MRRedactedThinkingBlock, MRServerToolUseBlock, MRTextBlock, MRTextEditorCodeExecutionToolResultBlock, MRToolSearchToolResultBlock, MRToolUseBlock, MRWebFetchToolResultBlock, MRWebSearchToolResultBlock. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -520,10 +529,16 @@ class Content17Inner(BaseModel):
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
+        # anyof_schema_31_validator: Optional[MRBetaMCPToolListingBlock] = None
+        try:
+            instance.actual_instance = MRBetaMCPToolListingBlock.from_json(json_str)
+            return instance
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Content17Inner with anyOf schemas: MRAnthropicTypesThinkingBlockThinkingBlock, MRAnyLlmTypesMessagesThinkingBlock, MRBashCodeExecutionToolResultBlock, MRBetaAdvisorToolResultBlock, MRBetaBashCodeExecutionToolResultBlock, MRBetaCodeExecutionToolResultBlock, MRBetaCompactionBlock, MRBetaContainerUploadBlock, MRBetaFallbackBlock, MRBetaMCPToolResultBlock, MRBetaMCPToolUseBlock, MRBetaRedactedThinkingBlock, MRBetaServerToolUseBlock, MRBetaTextBlock, MRBetaTextEditorCodeExecutionToolResultBlock, MRBetaThinkingBlock, MRBetaToolSearchToolResultBlock, MRBetaToolUseBlock, MRBetaWebFetchToolResultBlock, MRBetaWebSearchToolResultBlock, MRCodeExecutionToolResultBlock, MRContainerUploadBlock, MRRedactedThinkingBlock, MRServerToolUseBlock, MRTextBlock, MRTextEditorCodeExecutionToolResultBlock, MRToolSearchToolResultBlock, MRToolUseBlock, MRWebFetchToolResultBlock, MRWebSearchToolResultBlock. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Content17Inner with anyOf schemas: MRAnthropicTypesThinkingBlockThinkingBlock, MRAnyLlmTypesMessagesThinkingBlock, MRBashCodeExecutionToolResultBlock, MRBetaAdvisorToolResultBlock, MRBetaBashCodeExecutionToolResultBlock, MRBetaCodeExecutionToolResultBlock, MRBetaCompactionBlock, MRBetaContainerUploadBlock, MRBetaFallbackBlock, MRBetaMCPToolListingBlock, MRBetaMCPToolResultBlock, MRBetaMCPToolUseBlock, MRBetaRedactedThinkingBlock, MRBetaServerToolUseBlock, MRBetaTextBlock, MRBetaTextEditorCodeExecutionToolResultBlock, MRBetaThinkingBlock, MRBetaToolSearchToolResultBlock, MRBetaToolUseBlock, MRBetaWebFetchToolResultBlock, MRBetaWebSearchToolResultBlock, MRCodeExecutionToolResultBlock, MRContainerUploadBlock, MRRedactedThinkingBlock, MRServerToolUseBlock, MRTextBlock, MRTextEditorCodeExecutionToolResultBlock, MRToolSearchToolResultBlock, MRToolUseBlock, MRWebFetchToolResultBlock, MRWebSearchToolResultBlock. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -537,7 +552,7 @@ class Content17Inner(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], MRAnthropicTypesThinkingBlockThinkingBlock, MRAnyLlmTypesMessagesThinkingBlock, MRBashCodeExecutionToolResultBlock, MRBetaAdvisorToolResultBlock, MRBetaBashCodeExecutionToolResultBlock, MRBetaCodeExecutionToolResultBlock, MRBetaCompactionBlock, MRBetaContainerUploadBlock, MRBetaFallbackBlock, MRBetaMCPToolResultBlock, MRBetaMCPToolUseBlock, MRBetaRedactedThinkingBlock, MRBetaServerToolUseBlock, MRBetaTextBlock, MRBetaTextEditorCodeExecutionToolResultBlock, MRBetaThinkingBlock, MRBetaToolSearchToolResultBlock, MRBetaToolUseBlock, MRBetaWebFetchToolResultBlock, MRBetaWebSearchToolResultBlock, MRCodeExecutionToolResultBlock, MRContainerUploadBlock, MRRedactedThinkingBlock, MRServerToolUseBlock, MRTextBlock, MRTextEditorCodeExecutionToolResultBlock, MRToolSearchToolResultBlock, MRToolUseBlock, MRWebFetchToolResultBlock, MRWebSearchToolResultBlock]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], MRAnthropicTypesThinkingBlockThinkingBlock, MRAnyLlmTypesMessagesThinkingBlock, MRBashCodeExecutionToolResultBlock, MRBetaAdvisorToolResultBlock, MRBetaBashCodeExecutionToolResultBlock, MRBetaCodeExecutionToolResultBlock, MRBetaCompactionBlock, MRBetaContainerUploadBlock, MRBetaFallbackBlock, MRBetaMCPToolListingBlock, MRBetaMCPToolResultBlock, MRBetaMCPToolUseBlock, MRBetaRedactedThinkingBlock, MRBetaServerToolUseBlock, MRBetaTextBlock, MRBetaTextEditorCodeExecutionToolResultBlock, MRBetaThinkingBlock, MRBetaToolSearchToolResultBlock, MRBetaToolUseBlock, MRBetaWebFetchToolResultBlock, MRBetaWebSearchToolResultBlock, MRCodeExecutionToolResultBlock, MRContainerUploadBlock, MRRedactedThinkingBlock, MRServerToolUseBlock, MRTextBlock, MRTextEditorCodeExecutionToolResultBlock, MRToolSearchToolResultBlock, MRToolUseBlock, MRWebFetchToolResultBlock, MRWebSearchToolResultBlock]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

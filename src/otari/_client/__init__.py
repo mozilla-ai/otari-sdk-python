@@ -228,6 +228,7 @@ __all__ = [
     "CheckFailure",
     "CheckVerdictRequest",
     "ChoiceQuestion",
+    "ClientToolResults",
     "CodeExecuteRequest",
     "CodeExecuteResponse",
     "CodeExecutionOutputFile",
@@ -281,6 +282,7 @@ __all__ = [
     "DecisionRequest",
     "DecisionResponse",
     "DecisionUsage",
+    "Definition",
     "DeploymentAdminAccessPublic",
     "DeploymentBootstrap",
     "DeploymentProviderMigrationPublic",
@@ -394,6 +396,7 @@ __all__ = [
     "MRBetaAdvisorMessageIterationUsage",
     "MRBetaAdvisorRedactedResultBlock",
     "MRBetaAdvisorResultBlock",
+    "MRBetaAdvisorTool20260301",
     "MRBetaAdvisorToolResultBlock",
     "MRBetaAdvisorToolResultError",
     "MRBetaBase64PDFSource",
@@ -401,6 +404,40 @@ __all__ = [
     "MRBetaBashCodeExecutionResultBlock",
     "MRBetaBashCodeExecutionToolResultBlock",
     "MRBetaBashCodeExecutionToolResultError",
+    "MRBetaBrowserCloseTabConfig",
+    "MRBetaBrowserDoubleClickConfig",
+    "MRBetaBrowserFileUploadConfig",
+    "MRBetaBrowserFindConfig",
+    "MRBetaBrowserFormInputConfig",
+    "MRBetaBrowserGetPageTextConfig",
+    "MRBetaBrowserHoldKeyConfig",
+    "MRBetaBrowserHoverConfig",
+    "MRBetaBrowserJavascriptExecConfig",
+    "MRBetaBrowserKeyConfig",
+    "MRBetaBrowserLeftClickConfig",
+    "MRBetaBrowserLeftClickDragConfig",
+    "MRBetaBrowserLeftMouseDownConfig",
+    "MRBetaBrowserLeftMouseUpConfig",
+    "MRBetaBrowserListTabsConfig",
+    "MRBetaBrowserMiddleClickConfig",
+    "MRBetaBrowserMouseMoveConfig",
+    "MRBetaBrowserNavigateConfig",
+    "MRBetaBrowserNewTabConfig",
+    "MRBetaBrowserReadConsoleConfig",
+    "MRBetaBrowserReadNetworkConfig",
+    "MRBetaBrowserReadPageConfig",
+    "MRBetaBrowserRightClickConfig",
+    "MRBetaBrowserScreenshotConfig",
+    "MRBetaBrowserScrollConfig",
+    "MRBetaBrowserScrollToConfig",
+    "MRBetaBrowserSwitchTabConfig",
+    "MRBetaBrowserToolset20260801",
+    "MRBetaBrowserToolsetConfigs",
+    "MRBetaBrowserTripleClickConfig",
+    "MRBetaBrowserTypeConfig",
+    "MRBetaBrowserWaitConfig",
+    "MRBetaBrowserZoomConfig",
+    "MRBetaCacheControlEphemeral",
     "MRBetaCacheCreation",
     "MRBetaCacheMissMessagesChanged",
     "MRBetaCacheMissModelChanged",
@@ -413,16 +450,42 @@ __all__ = [
     "MRBetaCitationContentBlockLocation",
     "MRBetaCitationPageLocation",
     "MRBetaCitationSearchResultLocation",
+    "MRBetaCitationsConfigParam",
     "MRBetaCitationsWebSearchResultLocation",
     "MRBetaClearThinking20251015EditResponse",
     "MRBetaClearToolUses20250919EditResponse",
     "MRBetaCodeExecutionOutputBlock",
     "MRBetaCodeExecutionResultBlock",
+    "MRBetaCodeExecutionTool20250522",
+    "MRBetaCodeExecutionTool20250825",
+    "MRBetaCodeExecutionTool20260120",
+    "MRBetaCodeExecutionTool20260521",
     "MRBetaCodeExecutionToolResultBlock",
     "MRBetaCodeExecutionToolResultError",
     "MRBetaCompactionBlock",
+    "MRBetaCompactionBlockToolChangesInner",
     "MRBetaCompactionIterationUsage",
+    "MRBetaComputerCursorPositionConfig",
+    "MRBetaComputerDoubleClickConfig",
+    "MRBetaComputerHoldKeyConfig",
+    "MRBetaComputerKeyConfig",
+    "MRBetaComputerLeftClickConfig",
+    "MRBetaComputerLeftClickDragConfig",
+    "MRBetaComputerLeftMouseDownConfig",
+    "MRBetaComputerLeftMouseUpConfig",
+    "MRBetaComputerMiddleClickConfig",
+    "MRBetaComputerMouseMoveConfig",
+    "MRBetaComputerRightClickConfig",
+    "MRBetaComputerScreenshotConfig",
+    "MRBetaComputerScrollConfig",
+    "MRBetaComputerToolset20260801",
+    "MRBetaComputerToolsetConfigs",
+    "MRBetaComputerTripleClickConfig",
+    "MRBetaComputerTypeConfig",
+    "MRBetaComputerWaitConfig",
+    "MRBetaComputerZoomConfig",
     "MRBetaContainer",
+    "MRBetaContainerSkill",
     "MRBetaContainerUploadBlock",
     "MRBetaContextManagementResponse",
     "MRBetaDiagnostics",
@@ -433,14 +496,27 @@ __all__ = [
     "MRBetaFallbackInfo",
     "MRBetaFallbackMessageIterationUsage",
     "MRBetaFallbackRefusalTrigger",
+    "MRBetaMCPTool",
+    "MRBetaMCPToolConfig",
+    "MRBetaMCPToolDefaultConfig",
+    "MRBetaMCPToolListingBlock",
+    "MRBetaMCPToolParam",
     "MRBetaMCPToolResultBlock",
     "MRBetaMCPToolUseBlock",
+    "MRBetaMCPToolset",
+    "MRBetaMemoryTool20250818",
     "MRBetaPlainTextSource",
     "MRBetaRedactedThinkingBlock",
+    "MRBetaResponseTool",
+    "MRBetaResponseToolAdditionBlock",
+    "MRBetaResponseToolChangeMCPToolReference",
+    "MRBetaResponseToolChangeMCPToolsetReference",
+    "MRBetaResponseToolChangeToolReference",
+    "MRBetaResponseToolInputSchema",
+    "MRBetaResponseToolRemovalBlock",
     "MRBetaServerToolCaller",
     "MRBetaServerToolCaller20260120",
     "MRBetaServerToolUseBlock",
-    "MRBetaSkill",
     "MRBetaTextBlock",
     "MRBetaTextBlockCitationsInner",
     "MRBetaTextEditorCodeExecutionCreateResultBlock",
@@ -449,15 +525,41 @@ __all__ = [
     "MRBetaTextEditorCodeExecutionToolResultError",
     "MRBetaTextEditorCodeExecutionViewResultBlock",
     "MRBetaThinkingBlock",
+    "MRBetaToolBash20241022",
+    "MRBetaToolBash20250124",
+    "MRBetaToolChangeToolDefinition",
+    "MRBetaToolComputerUse20241022",
+    "MRBetaToolComputerUse20250124",
+    "MRBetaToolComputerUse20251124",
     "MRBetaToolReferenceBlock",
+    "MRBetaToolSearchToolBm2520251119",
+    "MRBetaToolSearchToolRegex20251119",
     "MRBetaToolSearchToolResultBlock",
     "MRBetaToolSearchToolResultError",
     "MRBetaToolSearchToolSearchResultBlock",
+    "MRBetaToolTextEditor20241022",
+    "MRBetaToolTextEditor20250124",
+    "MRBetaToolTextEditor20250429",
+    "MRBetaToolTextEditor20250728",
     "MRBetaToolUseBlock",
+    "MRBetaUserLocation",
     "MRBetaWebFetchBlock",
+    "MRBetaWebFetchTool20250910",
+    "MRBetaWebFetchTool20260209",
+    "MRBetaWebFetchTool20260309",
+    "MRBetaWebFetchTool20260318",
     "MRBetaWebFetchToolResultBlock",
     "MRBetaWebFetchToolResultErrorBlock",
+    "MRBetaWebFetchURLSourceAll",
+    "MRBetaWebFetchURLSourceExcept",
+    "MRBetaWebFetchURLSourceNone",
+    "MRBetaWebFetchURLSourceOnly",
+    "MRBetaWebFetchURLSourceToolReference",
+    "MRBetaWebFetchURLSources",
     "MRBetaWebSearchResultBlock",
+    "MRBetaWebSearchTool20250305",
+    "MRBetaWebSearchTool20260209",
+    "MRBetaWebSearchTool20260318",
     "MRBetaWebSearchToolResultBlock",
     "MRBetaWebSearchToolResultError",
     "MRCacheCreation",
@@ -706,6 +808,7 @@ __all__ = [
     "SelectorIndexResponse",
     "SendTestMailRequest",
     "SendTestMailResponse",
+    "ServerToolResults",
     "SessionResponse",
     "SetPasswordRequest",
     "SetPricingRequest",
@@ -726,6 +829,8 @@ __all__ = [
     "TextContent",
     "TextResourceContents",
     "TokenChargeLine",
+    "Tool",
+    "Tool1",
     "ToolCallsInner",
     "ToolChargeLine",
     "ToolChoice",
@@ -773,6 +878,7 @@ __all__ = [
     "UsageToolRow",
     "UsageTotals",
     "UserId",
+    "UserInput",
     "UserResponse",
     "ValidateInvitationRequest",
     "ValidationError",
@@ -1032,6 +1138,7 @@ from otari._client.models.chat_message_input import ChatMessageInput as ChatMess
 from otari._client.models.check_failure import CheckFailure as CheckFailure
 from otari._client.models.check_verdict_request import CheckVerdictRequest as CheckVerdictRequest
 from otari._client.models.choice_question import ChoiceQuestion as ChoiceQuestion
+from otari._client.models.client_tool_results import ClientToolResults as ClientToolResults
 from otari._client.models.code_execute_request import CodeExecuteRequest as CodeExecuteRequest
 from otari._client.models.code_execute_response import CodeExecuteResponse as CodeExecuteResponse
 from otari._client.models.code_execution_output_file import CodeExecutionOutputFile as CodeExecutionOutputFile
@@ -1085,6 +1192,7 @@ from otari._client.models.decision_answer import DecisionAnswer as DecisionAnswe
 from otari._client.models.decision_request import DecisionRequest as DecisionRequest
 from otari._client.models.decision_response import DecisionResponse as DecisionResponse
 from otari._client.models.decision_usage import DecisionUsage as DecisionUsage
+from otari._client.models.definition import Definition as Definition
 from otari._client.models.deployment_admin_access_public import DeploymentAdminAccessPublic as DeploymentAdminAccessPublic
 from otari._client.models.deployment_bootstrap import DeploymentBootstrap as DeploymentBootstrap
 from otari._client.models.deployment_provider_migration_public import DeploymentProviderMigrationPublic as DeploymentProviderMigrationPublic
@@ -1198,6 +1306,7 @@ from otari._client.models.mr_bash_code_execution_tool_result_error import MRBash
 from otari._client.models.mr_beta_advisor_message_iteration_usage import MRBetaAdvisorMessageIterationUsage as MRBetaAdvisorMessageIterationUsage
 from otari._client.models.mr_beta_advisor_redacted_result_block import MRBetaAdvisorRedactedResultBlock as MRBetaAdvisorRedactedResultBlock
 from otari._client.models.mr_beta_advisor_result_block import MRBetaAdvisorResultBlock as MRBetaAdvisorResultBlock
+from otari._client.models.mr_beta_advisor_tool20260301 import MRBetaAdvisorTool20260301 as MRBetaAdvisorTool20260301
 from otari._client.models.mr_beta_advisor_tool_result_block import MRBetaAdvisorToolResultBlock as MRBetaAdvisorToolResultBlock
 from otari._client.models.mr_beta_advisor_tool_result_error import MRBetaAdvisorToolResultError as MRBetaAdvisorToolResultError
 from otari._client.models.mr_beta_base64_pdf_source import MRBetaBase64PDFSource as MRBetaBase64PDFSource
@@ -1205,6 +1314,40 @@ from otari._client.models.mr_beta_bash_code_execution_output_block import MRBeta
 from otari._client.models.mr_beta_bash_code_execution_result_block import MRBetaBashCodeExecutionResultBlock as MRBetaBashCodeExecutionResultBlock
 from otari._client.models.mr_beta_bash_code_execution_tool_result_block import MRBetaBashCodeExecutionToolResultBlock as MRBetaBashCodeExecutionToolResultBlock
 from otari._client.models.mr_beta_bash_code_execution_tool_result_error import MRBetaBashCodeExecutionToolResultError as MRBetaBashCodeExecutionToolResultError
+from otari._client.models.mr_beta_browser_close_tab_config import MRBetaBrowserCloseTabConfig as MRBetaBrowserCloseTabConfig
+from otari._client.models.mr_beta_browser_double_click_config import MRBetaBrowserDoubleClickConfig as MRBetaBrowserDoubleClickConfig
+from otari._client.models.mr_beta_browser_file_upload_config import MRBetaBrowserFileUploadConfig as MRBetaBrowserFileUploadConfig
+from otari._client.models.mr_beta_browser_find_config import MRBetaBrowserFindConfig as MRBetaBrowserFindConfig
+from otari._client.models.mr_beta_browser_form_input_config import MRBetaBrowserFormInputConfig as MRBetaBrowserFormInputConfig
+from otari._client.models.mr_beta_browser_get_page_text_config import MRBetaBrowserGetPageTextConfig as MRBetaBrowserGetPageTextConfig
+from otari._client.models.mr_beta_browser_hold_key_config import MRBetaBrowserHoldKeyConfig as MRBetaBrowserHoldKeyConfig
+from otari._client.models.mr_beta_browser_hover_config import MRBetaBrowserHoverConfig as MRBetaBrowserHoverConfig
+from otari._client.models.mr_beta_browser_javascript_exec_config import MRBetaBrowserJavascriptExecConfig as MRBetaBrowserJavascriptExecConfig
+from otari._client.models.mr_beta_browser_key_config import MRBetaBrowserKeyConfig as MRBetaBrowserKeyConfig
+from otari._client.models.mr_beta_browser_left_click_config import MRBetaBrowserLeftClickConfig as MRBetaBrowserLeftClickConfig
+from otari._client.models.mr_beta_browser_left_click_drag_config import MRBetaBrowserLeftClickDragConfig as MRBetaBrowserLeftClickDragConfig
+from otari._client.models.mr_beta_browser_left_mouse_down_config import MRBetaBrowserLeftMouseDownConfig as MRBetaBrowserLeftMouseDownConfig
+from otari._client.models.mr_beta_browser_left_mouse_up_config import MRBetaBrowserLeftMouseUpConfig as MRBetaBrowserLeftMouseUpConfig
+from otari._client.models.mr_beta_browser_list_tabs_config import MRBetaBrowserListTabsConfig as MRBetaBrowserListTabsConfig
+from otari._client.models.mr_beta_browser_middle_click_config import MRBetaBrowserMiddleClickConfig as MRBetaBrowserMiddleClickConfig
+from otari._client.models.mr_beta_browser_mouse_move_config import MRBetaBrowserMouseMoveConfig as MRBetaBrowserMouseMoveConfig
+from otari._client.models.mr_beta_browser_navigate_config import MRBetaBrowserNavigateConfig as MRBetaBrowserNavigateConfig
+from otari._client.models.mr_beta_browser_new_tab_config import MRBetaBrowserNewTabConfig as MRBetaBrowserNewTabConfig
+from otari._client.models.mr_beta_browser_read_console_config import MRBetaBrowserReadConsoleConfig as MRBetaBrowserReadConsoleConfig
+from otari._client.models.mr_beta_browser_read_network_config import MRBetaBrowserReadNetworkConfig as MRBetaBrowserReadNetworkConfig
+from otari._client.models.mr_beta_browser_read_page_config import MRBetaBrowserReadPageConfig as MRBetaBrowserReadPageConfig
+from otari._client.models.mr_beta_browser_right_click_config import MRBetaBrowserRightClickConfig as MRBetaBrowserRightClickConfig
+from otari._client.models.mr_beta_browser_screenshot_config import MRBetaBrowserScreenshotConfig as MRBetaBrowserScreenshotConfig
+from otari._client.models.mr_beta_browser_scroll_config import MRBetaBrowserScrollConfig as MRBetaBrowserScrollConfig
+from otari._client.models.mr_beta_browser_scroll_to_config import MRBetaBrowserScrollToConfig as MRBetaBrowserScrollToConfig
+from otari._client.models.mr_beta_browser_switch_tab_config import MRBetaBrowserSwitchTabConfig as MRBetaBrowserSwitchTabConfig
+from otari._client.models.mr_beta_browser_toolset20260801 import MRBetaBrowserToolset20260801 as MRBetaBrowserToolset20260801
+from otari._client.models.mr_beta_browser_toolset_configs import MRBetaBrowserToolsetConfigs as MRBetaBrowserToolsetConfigs
+from otari._client.models.mr_beta_browser_triple_click_config import MRBetaBrowserTripleClickConfig as MRBetaBrowserTripleClickConfig
+from otari._client.models.mr_beta_browser_type_config import MRBetaBrowserTypeConfig as MRBetaBrowserTypeConfig
+from otari._client.models.mr_beta_browser_wait_config import MRBetaBrowserWaitConfig as MRBetaBrowserWaitConfig
+from otari._client.models.mr_beta_browser_zoom_config import MRBetaBrowserZoomConfig as MRBetaBrowserZoomConfig
+from otari._client.models.mr_beta_cache_control_ephemeral import MRBetaCacheControlEphemeral as MRBetaCacheControlEphemeral
 from otari._client.models.mr_beta_cache_creation import MRBetaCacheCreation as MRBetaCacheCreation
 from otari._client.models.mr_beta_cache_miss_messages_changed import MRBetaCacheMissMessagesChanged as MRBetaCacheMissMessagesChanged
 from otari._client.models.mr_beta_cache_miss_model_changed import MRBetaCacheMissModelChanged as MRBetaCacheMissModelChanged
@@ -1217,16 +1360,42 @@ from otari._client.models.mr_beta_citation_config import MRBetaCitationConfig as
 from otari._client.models.mr_beta_citation_content_block_location import MRBetaCitationContentBlockLocation as MRBetaCitationContentBlockLocation
 from otari._client.models.mr_beta_citation_page_location import MRBetaCitationPageLocation as MRBetaCitationPageLocation
 from otari._client.models.mr_beta_citation_search_result_location import MRBetaCitationSearchResultLocation as MRBetaCitationSearchResultLocation
+from otari._client.models.mr_beta_citations_config_param import MRBetaCitationsConfigParam as MRBetaCitationsConfigParam
 from otari._client.models.mr_beta_citations_web_search_result_location import MRBetaCitationsWebSearchResultLocation as MRBetaCitationsWebSearchResultLocation
 from otari._client.models.mr_beta_clear_thinking20251015_edit_response import MRBetaClearThinking20251015EditResponse as MRBetaClearThinking20251015EditResponse
 from otari._client.models.mr_beta_clear_tool_uses20250919_edit_response import MRBetaClearToolUses20250919EditResponse as MRBetaClearToolUses20250919EditResponse
 from otari._client.models.mr_beta_code_execution_output_block import MRBetaCodeExecutionOutputBlock as MRBetaCodeExecutionOutputBlock
 from otari._client.models.mr_beta_code_execution_result_block import MRBetaCodeExecutionResultBlock as MRBetaCodeExecutionResultBlock
+from otari._client.models.mr_beta_code_execution_tool20250522 import MRBetaCodeExecutionTool20250522 as MRBetaCodeExecutionTool20250522
+from otari._client.models.mr_beta_code_execution_tool20250825 import MRBetaCodeExecutionTool20250825 as MRBetaCodeExecutionTool20250825
+from otari._client.models.mr_beta_code_execution_tool20260120 import MRBetaCodeExecutionTool20260120 as MRBetaCodeExecutionTool20260120
+from otari._client.models.mr_beta_code_execution_tool20260521 import MRBetaCodeExecutionTool20260521 as MRBetaCodeExecutionTool20260521
 from otari._client.models.mr_beta_code_execution_tool_result_block import MRBetaCodeExecutionToolResultBlock as MRBetaCodeExecutionToolResultBlock
 from otari._client.models.mr_beta_code_execution_tool_result_error import MRBetaCodeExecutionToolResultError as MRBetaCodeExecutionToolResultError
 from otari._client.models.mr_beta_compaction_block import MRBetaCompactionBlock as MRBetaCompactionBlock
+from otari._client.models.mr_beta_compaction_block_tool_changes_inner import MRBetaCompactionBlockToolChangesInner as MRBetaCompactionBlockToolChangesInner
 from otari._client.models.mr_beta_compaction_iteration_usage import MRBetaCompactionIterationUsage as MRBetaCompactionIterationUsage
+from otari._client.models.mr_beta_computer_cursor_position_config import MRBetaComputerCursorPositionConfig as MRBetaComputerCursorPositionConfig
+from otari._client.models.mr_beta_computer_double_click_config import MRBetaComputerDoubleClickConfig as MRBetaComputerDoubleClickConfig
+from otari._client.models.mr_beta_computer_hold_key_config import MRBetaComputerHoldKeyConfig as MRBetaComputerHoldKeyConfig
+from otari._client.models.mr_beta_computer_key_config import MRBetaComputerKeyConfig as MRBetaComputerKeyConfig
+from otari._client.models.mr_beta_computer_left_click_config import MRBetaComputerLeftClickConfig as MRBetaComputerLeftClickConfig
+from otari._client.models.mr_beta_computer_left_click_drag_config import MRBetaComputerLeftClickDragConfig as MRBetaComputerLeftClickDragConfig
+from otari._client.models.mr_beta_computer_left_mouse_down_config import MRBetaComputerLeftMouseDownConfig as MRBetaComputerLeftMouseDownConfig
+from otari._client.models.mr_beta_computer_left_mouse_up_config import MRBetaComputerLeftMouseUpConfig as MRBetaComputerLeftMouseUpConfig
+from otari._client.models.mr_beta_computer_middle_click_config import MRBetaComputerMiddleClickConfig as MRBetaComputerMiddleClickConfig
+from otari._client.models.mr_beta_computer_mouse_move_config import MRBetaComputerMouseMoveConfig as MRBetaComputerMouseMoveConfig
+from otari._client.models.mr_beta_computer_right_click_config import MRBetaComputerRightClickConfig as MRBetaComputerRightClickConfig
+from otari._client.models.mr_beta_computer_screenshot_config import MRBetaComputerScreenshotConfig as MRBetaComputerScreenshotConfig
+from otari._client.models.mr_beta_computer_scroll_config import MRBetaComputerScrollConfig as MRBetaComputerScrollConfig
+from otari._client.models.mr_beta_computer_toolset20260801 import MRBetaComputerToolset20260801 as MRBetaComputerToolset20260801
+from otari._client.models.mr_beta_computer_toolset_configs import MRBetaComputerToolsetConfigs as MRBetaComputerToolsetConfigs
+from otari._client.models.mr_beta_computer_triple_click_config import MRBetaComputerTripleClickConfig as MRBetaComputerTripleClickConfig
+from otari._client.models.mr_beta_computer_type_config import MRBetaComputerTypeConfig as MRBetaComputerTypeConfig
+from otari._client.models.mr_beta_computer_wait_config import MRBetaComputerWaitConfig as MRBetaComputerWaitConfig
+from otari._client.models.mr_beta_computer_zoom_config import MRBetaComputerZoomConfig as MRBetaComputerZoomConfig
 from otari._client.models.mr_beta_container import MRBetaContainer as MRBetaContainer
+from otari._client.models.mr_beta_container_skill import MRBetaContainerSkill as MRBetaContainerSkill
 from otari._client.models.mr_beta_container_upload_block import MRBetaContainerUploadBlock as MRBetaContainerUploadBlock
 from otari._client.models.mr_beta_context_management_response import MRBetaContextManagementResponse as MRBetaContextManagementResponse
 from otari._client.models.mr_beta_diagnostics import MRBetaDiagnostics as MRBetaDiagnostics
@@ -1237,14 +1406,27 @@ from otari._client.models.mr_beta_fallback_block import MRBetaFallbackBlock as M
 from otari._client.models.mr_beta_fallback_info import MRBetaFallbackInfo as MRBetaFallbackInfo
 from otari._client.models.mr_beta_fallback_message_iteration_usage import MRBetaFallbackMessageIterationUsage as MRBetaFallbackMessageIterationUsage
 from otari._client.models.mr_beta_fallback_refusal_trigger import MRBetaFallbackRefusalTrigger as MRBetaFallbackRefusalTrigger
+from otari._client.models.mr_beta_mcp_tool import MRBetaMCPTool as MRBetaMCPTool
+from otari._client.models.mr_beta_mcp_tool_config import MRBetaMCPToolConfig as MRBetaMCPToolConfig
+from otari._client.models.mr_beta_mcp_tool_default_config import MRBetaMCPToolDefaultConfig as MRBetaMCPToolDefaultConfig
+from otari._client.models.mr_beta_mcp_tool_listing_block import MRBetaMCPToolListingBlock as MRBetaMCPToolListingBlock
+from otari._client.models.mr_beta_mcp_tool_param import MRBetaMCPToolParam as MRBetaMCPToolParam
 from otari._client.models.mr_beta_mcp_tool_result_block import MRBetaMCPToolResultBlock as MRBetaMCPToolResultBlock
 from otari._client.models.mr_beta_mcp_tool_use_block import MRBetaMCPToolUseBlock as MRBetaMCPToolUseBlock
+from otari._client.models.mr_beta_mcp_toolset import MRBetaMCPToolset as MRBetaMCPToolset
+from otari._client.models.mr_beta_memory_tool20250818 import MRBetaMemoryTool20250818 as MRBetaMemoryTool20250818
 from otari._client.models.mr_beta_plain_text_source import MRBetaPlainTextSource as MRBetaPlainTextSource
 from otari._client.models.mr_beta_redacted_thinking_block import MRBetaRedactedThinkingBlock as MRBetaRedactedThinkingBlock
+from otari._client.models.mr_beta_response_tool import MRBetaResponseTool as MRBetaResponseTool
+from otari._client.models.mr_beta_response_tool_addition_block import MRBetaResponseToolAdditionBlock as MRBetaResponseToolAdditionBlock
+from otari._client.models.mr_beta_response_tool_change_mcp_tool_reference import MRBetaResponseToolChangeMCPToolReference as MRBetaResponseToolChangeMCPToolReference
+from otari._client.models.mr_beta_response_tool_change_mcp_toolset_reference import MRBetaResponseToolChangeMCPToolsetReference as MRBetaResponseToolChangeMCPToolsetReference
+from otari._client.models.mr_beta_response_tool_change_tool_reference import MRBetaResponseToolChangeToolReference as MRBetaResponseToolChangeToolReference
+from otari._client.models.mr_beta_response_tool_input_schema import MRBetaResponseToolInputSchema as MRBetaResponseToolInputSchema
+from otari._client.models.mr_beta_response_tool_removal_block import MRBetaResponseToolRemovalBlock as MRBetaResponseToolRemovalBlock
 from otari._client.models.mr_beta_server_tool_caller import MRBetaServerToolCaller as MRBetaServerToolCaller
 from otari._client.models.mr_beta_server_tool_caller20260120 import MRBetaServerToolCaller20260120 as MRBetaServerToolCaller20260120
 from otari._client.models.mr_beta_server_tool_use_block import MRBetaServerToolUseBlock as MRBetaServerToolUseBlock
-from otari._client.models.mr_beta_skill import MRBetaSkill as MRBetaSkill
 from otari._client.models.mr_beta_text_block import MRBetaTextBlock as MRBetaTextBlock
 from otari._client.models.mr_beta_text_block_citations_inner import MRBetaTextBlockCitationsInner as MRBetaTextBlockCitationsInner
 from otari._client.models.mr_beta_text_editor_code_execution_create_result_block import MRBetaTextEditorCodeExecutionCreateResultBlock as MRBetaTextEditorCodeExecutionCreateResultBlock
@@ -1253,15 +1435,41 @@ from otari._client.models.mr_beta_text_editor_code_execution_tool_result_block i
 from otari._client.models.mr_beta_text_editor_code_execution_tool_result_error import MRBetaTextEditorCodeExecutionToolResultError as MRBetaTextEditorCodeExecutionToolResultError
 from otari._client.models.mr_beta_text_editor_code_execution_view_result_block import MRBetaTextEditorCodeExecutionViewResultBlock as MRBetaTextEditorCodeExecutionViewResultBlock
 from otari._client.models.mr_beta_thinking_block import MRBetaThinkingBlock as MRBetaThinkingBlock
+from otari._client.models.mr_beta_tool_bash20241022 import MRBetaToolBash20241022 as MRBetaToolBash20241022
+from otari._client.models.mr_beta_tool_bash20250124 import MRBetaToolBash20250124 as MRBetaToolBash20250124
+from otari._client.models.mr_beta_tool_change_tool_definition import MRBetaToolChangeToolDefinition as MRBetaToolChangeToolDefinition
+from otari._client.models.mr_beta_tool_computer_use20241022 import MRBetaToolComputerUse20241022 as MRBetaToolComputerUse20241022
+from otari._client.models.mr_beta_tool_computer_use20250124 import MRBetaToolComputerUse20250124 as MRBetaToolComputerUse20250124
+from otari._client.models.mr_beta_tool_computer_use20251124 import MRBetaToolComputerUse20251124 as MRBetaToolComputerUse20251124
 from otari._client.models.mr_beta_tool_reference_block import MRBetaToolReferenceBlock as MRBetaToolReferenceBlock
+from otari._client.models.mr_beta_tool_search_tool_bm2520251119 import MRBetaToolSearchToolBm2520251119 as MRBetaToolSearchToolBm2520251119
+from otari._client.models.mr_beta_tool_search_tool_regex20251119 import MRBetaToolSearchToolRegex20251119 as MRBetaToolSearchToolRegex20251119
 from otari._client.models.mr_beta_tool_search_tool_result_block import MRBetaToolSearchToolResultBlock as MRBetaToolSearchToolResultBlock
 from otari._client.models.mr_beta_tool_search_tool_result_error import MRBetaToolSearchToolResultError as MRBetaToolSearchToolResultError
 from otari._client.models.mr_beta_tool_search_tool_search_result_block import MRBetaToolSearchToolSearchResultBlock as MRBetaToolSearchToolSearchResultBlock
+from otari._client.models.mr_beta_tool_text_editor20241022 import MRBetaToolTextEditor20241022 as MRBetaToolTextEditor20241022
+from otari._client.models.mr_beta_tool_text_editor20250124 import MRBetaToolTextEditor20250124 as MRBetaToolTextEditor20250124
+from otari._client.models.mr_beta_tool_text_editor20250429 import MRBetaToolTextEditor20250429 as MRBetaToolTextEditor20250429
+from otari._client.models.mr_beta_tool_text_editor20250728 import MRBetaToolTextEditor20250728 as MRBetaToolTextEditor20250728
 from otari._client.models.mr_beta_tool_use_block import MRBetaToolUseBlock as MRBetaToolUseBlock
+from otari._client.models.mr_beta_user_location import MRBetaUserLocation as MRBetaUserLocation
 from otari._client.models.mr_beta_web_fetch_block import MRBetaWebFetchBlock as MRBetaWebFetchBlock
+from otari._client.models.mr_beta_web_fetch_tool20250910 import MRBetaWebFetchTool20250910 as MRBetaWebFetchTool20250910
+from otari._client.models.mr_beta_web_fetch_tool20260209 import MRBetaWebFetchTool20260209 as MRBetaWebFetchTool20260209
+from otari._client.models.mr_beta_web_fetch_tool20260309 import MRBetaWebFetchTool20260309 as MRBetaWebFetchTool20260309
+from otari._client.models.mr_beta_web_fetch_tool20260318 import MRBetaWebFetchTool20260318 as MRBetaWebFetchTool20260318
 from otari._client.models.mr_beta_web_fetch_tool_result_block import MRBetaWebFetchToolResultBlock as MRBetaWebFetchToolResultBlock
 from otari._client.models.mr_beta_web_fetch_tool_result_error_block import MRBetaWebFetchToolResultErrorBlock as MRBetaWebFetchToolResultErrorBlock
+from otari._client.models.mr_beta_web_fetch_url_source_all import MRBetaWebFetchURLSourceAll as MRBetaWebFetchURLSourceAll
+from otari._client.models.mr_beta_web_fetch_url_source_except import MRBetaWebFetchURLSourceExcept as MRBetaWebFetchURLSourceExcept
+from otari._client.models.mr_beta_web_fetch_url_source_none import MRBetaWebFetchURLSourceNone as MRBetaWebFetchURLSourceNone
+from otari._client.models.mr_beta_web_fetch_url_source_only import MRBetaWebFetchURLSourceOnly as MRBetaWebFetchURLSourceOnly
+from otari._client.models.mr_beta_web_fetch_url_source_tool_reference import MRBetaWebFetchURLSourceToolReference as MRBetaWebFetchURLSourceToolReference
+from otari._client.models.mr_beta_web_fetch_url_sources import MRBetaWebFetchURLSources as MRBetaWebFetchURLSources
 from otari._client.models.mr_beta_web_search_result_block import MRBetaWebSearchResultBlock as MRBetaWebSearchResultBlock
+from otari._client.models.mr_beta_web_search_tool20250305 import MRBetaWebSearchTool20250305 as MRBetaWebSearchTool20250305
+from otari._client.models.mr_beta_web_search_tool20260209 import MRBetaWebSearchTool20260209 as MRBetaWebSearchTool20260209
+from otari._client.models.mr_beta_web_search_tool20260318 import MRBetaWebSearchTool20260318 as MRBetaWebSearchTool20260318
 from otari._client.models.mr_beta_web_search_tool_result_block import MRBetaWebSearchToolResultBlock as MRBetaWebSearchToolResultBlock
 from otari._client.models.mr_beta_web_search_tool_result_error import MRBetaWebSearchToolResultError as MRBetaWebSearchToolResultError
 from otari._client.models.mr_cache_creation import MRCacheCreation as MRCacheCreation
@@ -1510,6 +1718,7 @@ from otari._client.models.search_tools_response import SearchToolsResponse as Se
 from otari._client.models.selector_index_response import SelectorIndexResponse as SelectorIndexResponse
 from otari._client.models.send_test_mail_request import SendTestMailRequest as SendTestMailRequest
 from otari._client.models.send_test_mail_response import SendTestMailResponse as SendTestMailResponse
+from otari._client.models.server_tool_results import ServerToolResults as ServerToolResults
 from otari._client.models.session_response import SessionResponse as SessionResponse
 from otari._client.models.set_password_request import SetPasswordRequest as SetPasswordRequest
 from otari._client.models.set_pricing_request import SetPricingRequest as SetPricingRequest
@@ -1530,6 +1739,8 @@ from otari._client.models.test_service_response import TestServiceResponse as Te
 from otari._client.models.text_content import TextContent as TextContent
 from otari._client.models.text_resource_contents import TextResourceContents as TextResourceContents
 from otari._client.models.token_charge_line import TokenChargeLine as TokenChargeLine
+from otari._client.models.tool import Tool as Tool
+from otari._client.models.tool1 import Tool1 as Tool1
 from otari._client.models.tool_calls_inner import ToolCallsInner as ToolCallsInner
 from otari._client.models.tool_charge_line import ToolChargeLine as ToolChargeLine
 from otari._client.models.tool_choice import ToolChoice as ToolChoice
@@ -1577,6 +1788,7 @@ from otari._client.models.usage_summary import UsageSummary as UsageSummary
 from otari._client.models.usage_tool_row import UsageToolRow as UsageToolRow
 from otari._client.models.usage_totals import UsageTotals as UsageTotals
 from otari._client.models.user_id import UserId as UserId
+from otari._client.models.user_input import UserInput as UserInput
 from otari._client.models.user_response import UserResponse as UserResponse
 from otari._client.models.validate_invitation_request import ValidateInvitationRequest as ValidateInvitationRequest
 from otari._client.models.validation_error import ValidationError as ValidationError
