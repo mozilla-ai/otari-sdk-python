@@ -36,10 +36,10 @@ class SetPricingRequest(BaseModel):
     input_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M of the rate's unit: input tokens, requests or images")
     kind: Optional[StrictStr] = Field(default=None, description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")
     model_key: StrictStr = Field(description="Model identifier in format 'provider:model', or a search or fetch instance's name for those kinds")
-    output_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M output tokens; unused by a rate in requests or images")
-    price_per_request: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="USD for each request, whatever it uses: a completion model billed per call, such as Exa's or Liner's answers. Shorthand for unit 'requests' with input_price_per_million at a million times this; not combined with token prices.")
+    output_price_per_million: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Price per 1M output tokens; unused by a rate per request or per image")
+    price_per_request: Optional[Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="USD for each request, whatever it uses: a completion model billed per call, such as Exa's or Liner's answers. Shorthand for unit 'request' with input_price_per_million at a million times this; not combined with token prices.")
     pricing_tiers: Optional[List[PricingTier]] = Field(default=None, description="Whole-request context thresholds. Fields omitted by a tier inherit the base rate.")
-    unit: Optional[StrictStr] = Field(default='tokens', description="What the rates are per: 'tokens' for a model, 'requests' for a gateway-run tool, a moderation call, or a completion model billed per call, 'images' for image generation. Every rate is USD per million of its unit. A rate in a unit that has no meter yet is stored and prices nothing.")
+    unit: Optional[StrictStr] = Field(default='token', description="What the rates are per: 'token' for a model, 'request' for a gateway-run tool, a moderation call, or a completion model billed per call, 'image' for image generation. Every rate is USD per million of its unit. A rate in a unit that has no meter yet is stored and prices nothing. The plural names 'tokens', 'requests' and 'images' are still read for one release.")
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "effective_at", "input_price_per_million", "kind", "model_key", "output_price_per_million", "price_per_request", "pricing_tiers", "unit"]
 
     @field_validator('kind')
@@ -58,8 +58,8 @@ class SetPricingRequest(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search']):
-            raise ValueError("must be one of enum values ('tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search')")
+        if value not in set(['token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search')")
         return value
 
     model_config = ConfigDict(
@@ -159,7 +159,7 @@ class SetPricingRequest(BaseModel):
             "output_price_per_million": obj.get("output_price_per_million"),
             "price_per_request": obj.get("price_per_request"),
             "pricing_tiers": [PricingTier.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
-            "unit": obj.get("unit") if obj.get("unit") is not None else 'tokens'
+            "unit": obj.get("unit") if obj.get("unit") is not None else 'token'
         })
         return _obj
 

@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class OrgProviderKeyModelPublic(BaseModel):
     """
-    One offered model, with the rate the caller's organization is charged for it.  ``price_source`` says which rung of ``services.pricing_service`` answered: ``organization`` for a rate an admin set, ``defaults`` for the community-maintained rate this surface seeded or the models.dev fallback, ``deployment`` for the deployment's own price list, and None when nothing prices the model yet. ``pricing_id`` names the organization's own row where there is one, so a client can edit that rate without re-deriving the key. ``unit`` says what the rates are per, as on a pricing row: tokens, requests or images, so a per-request rate is not read as a per-token one.
+    One offered model, with the rate the caller's organization is charged for it.  ``price_source`` says which rung of ``services.pricing_service`` answered: ``organization`` for a rate an admin set, ``defaults`` for the community-maintained rate this surface seeded or the models.dev fallback, ``deployment`` for the deployment's own price list, and None when nothing prices the model yet. ``pricing_id`` names the organization's own row where there is one, so a client can edit that rate without re-deriving the key. ``unit`` says what the rates are per, as on a pricing row: token, request or image, so a per-request rate is not read as a per-token one.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
@@ -40,7 +40,7 @@ class OrgProviderKeyModelPublic(BaseModel):
     output_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     price_source: Optional[StrictStr] = None
     pricing_id: Optional[UUID] = None
-    unit: Optional[StrictStr] = 'tokens'
+    unit: Optional[StrictStr] = 'token'
     updated_at: Optional[datetime] = None
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "enabled", "id", "input_price_per_million", "model", "org_provider_key_id", "output_price_per_million", "price_source", "pricing_id", "unit", "updated_at"]
 
@@ -60,8 +60,8 @@ class OrgProviderKeyModelPublic(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search']):
-            raise ValueError("must be one of enum values ('tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search')")
+        if value not in set(['token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search')")
         return value
 
     model_config = ConfigDict(
@@ -161,7 +161,7 @@ class OrgProviderKeyModelPublic(BaseModel):
             "output_price_per_million": obj.get("output_price_per_million"),
             "price_source": obj.get("price_source"),
             "pricing_id": obj.get("pricing_id"),
-            "unit": obj.get("unit") if obj.get("unit") is not None else 'tokens',
+            "unit": obj.get("unit") if obj.get("unit") is not None else 'token',
             "updated_at": obj.get("updated_at")
         })
         return _obj

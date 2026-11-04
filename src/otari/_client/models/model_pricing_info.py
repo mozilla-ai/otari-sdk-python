@@ -33,7 +33,7 @@ class ModelPricingInfo(BaseModel):
     input_price_per_million: Union[StrictFloat, StrictInt]
     output_price_per_million: Union[StrictFloat, StrictInt]
     pricing_tiers: Optional[List[PricingTiersInner]] = None
-    unit: Optional[StrictStr] = 'tokens'
+    unit: Optional[StrictStr] = 'token'
     __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
 
     @field_validator('unit')
@@ -42,8 +42,8 @@ class ModelPricingInfo(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search']):
-            raise ValueError("must be one of enum values ('tokens', 'requests', 'images', 'character', 'megapixel', 'second', 'minute', 'web_search')")
+        if value not in set(['token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search')")
         return value
 
     model_config = ConfigDict(
@@ -119,7 +119,7 @@ class ModelPricingInfo(BaseModel):
             "input_price_per_million": obj.get("input_price_per_million"),
             "output_price_per_million": obj.get("output_price_per_million"),
             "pricing_tiers": [PricingTiersInner.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
-            "unit": obj.get("unit") if obj.get("unit") is not None else 'tokens'
+            "unit": obj.get("unit") if obj.get("unit") is not None else 'token'
         })
         return _obj
 
