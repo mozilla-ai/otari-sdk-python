@@ -29,7 +29,7 @@ class SearchResponse(BaseModel):
     A completed direct search.
     """ # noqa: E501
     object: Optional[StrictStr] = 'search'
-    raw: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
+    raw: Optional[Dict[str, Any]] = Field(default=None, description="The provider's whole response, untouched; only when the request set include_raw.")
     results: List[SearchResultItem]
     search_tool: StrictStr = Field(description="The configured search tool that served the request")
     __properties: ClassVar[List[str]] = ["object", "raw", "results", "search_tool"]

@@ -17,6 +17,7 @@ from otari._client.api.decisions_api import DecisionsApi
 from otari._client.api.embeddings_api import EmbeddingsApi
 from otari._client.api.end_users_api import EndUsersApi
 from otari._client.api.feedback_api import FeedbackApi
+from otari._client.api.fetch_api import FetchApi
 from otari._client.api.files_api import FilesApi
 from otari._client.api.health_api import HealthApi
 from otari._client.api.health_checks_api import HealthChecksApi
