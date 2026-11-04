@@ -15,6 +15,9 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
+from pydantic import Field, StrictStr
+from typing import Any, List, Optional
+from typing_extensions import Annotated
 from otari._client.models.image_generation_request import ImageGenerationRequest
 from otari._client.models.images_response import ImagesResponse
 
@@ -299,6 +302,424 @@ class ImagesApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/api/v1/images/generations',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def images_edit_image(
+        self,
+        model: StrictStr,
+        prompt: StrictStr,
+        image: Annotated[Optional[List[StrictStr]], Field(description="The image or images to edit.")] = None,
+        image2: Annotated[Optional[List[StrictStr]], Field(description="Same as image.")] = None,
+        mask: Annotated[Optional[StrictStr], Field(description="Where to edit: the transparent areas of this PNG.")] = None,
+        n: Optional[Annotated[int, Field(strict=True, ge=1)]] = None,
+        quality: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        response_format: Optional[StrictStr] = None,
+        size: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        user: Optional[StrictStr] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> object:
+        """Edit Image
+
+        OpenAI-compatible image edit endpoint, taking ``multipart/form-data``.  Authentication modes: - Master key: the ``user`` field is required and names an existing user. - API key: usage and spend go to the key's own user. A ``user`` naming a   different user is refused with 403, or ignored when mismatch rejection is off.
+
+        :param model: (required)
+        :type model: str
+        :param prompt: (required)
+        :type prompt: str
+        :param image: The image or images to edit.
+        :type image: List[str]
+        :param image2: Same as image.
+        :type image2: List[str]
+        :param mask: Where to edit: the transparent areas of this PNG.
+        :type mask: str
+        :param n:
+        :type n: int
+        :param quality: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type quality: str
+        :param response_format:
+        :type response_format: str
+        :param size: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type size: str
+        :param user:
+        :type user: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._images_edit_image_serialize(
+            model=model,
+            prompt=prompt,
+            image=image,
+            image2=image2,
+            mask=mask,
+            n=n,
+            quality=quality,
+            response_format=response_format,
+            size=size,
+            user=user,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "object",
+            '413': None,
+            '422': None,
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def images_edit_image_with_http_info(
+        self,
+        model: StrictStr,
+        prompt: StrictStr,
+        image: Annotated[Optional[List[StrictStr]], Field(description="The image or images to edit.")] = None,
+        image2: Annotated[Optional[List[StrictStr]], Field(description="Same as image.")] = None,
+        mask: Annotated[Optional[StrictStr], Field(description="Where to edit: the transparent areas of this PNG.")] = None,
+        n: Optional[Annotated[int, Field(strict=True, ge=1)]] = None,
+        quality: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        response_format: Optional[StrictStr] = None,
+        size: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        user: Optional[StrictStr] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[object]:
+        """Edit Image
+
+        OpenAI-compatible image edit endpoint, taking ``multipart/form-data``.  Authentication modes: - Master key: the ``user`` field is required and names an existing user. - API key: usage and spend go to the key's own user. A ``user`` naming a   different user is refused with 403, or ignored when mismatch rejection is off.
+
+        :param model: (required)
+        :type model: str
+        :param prompt: (required)
+        :type prompt: str
+        :param image: The image or images to edit.
+        :type image: List[str]
+        :param image2: Same as image.
+        :type image2: List[str]
+        :param mask: Where to edit: the transparent areas of this PNG.
+        :type mask: str
+        :param n:
+        :type n: int
+        :param quality: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type quality: str
+        :param response_format:
+        :type response_format: str
+        :param size: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type size: str
+        :param user:
+        :type user: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._images_edit_image_serialize(
+            model=model,
+            prompt=prompt,
+            image=image,
+            image2=image2,
+            mask=mask,
+            n=n,
+            quality=quality,
+            response_format=response_format,
+            size=size,
+            user=user,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "object",
+            '413': None,
+            '422': None,
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def images_edit_image_without_preload_content(
+        self,
+        model: StrictStr,
+        prompt: StrictStr,
+        image: Annotated[Optional[List[StrictStr]], Field(description="The image or images to edit.")] = None,
+        image2: Annotated[Optional[List[StrictStr]], Field(description="Same as image.")] = None,
+        mask: Annotated[Optional[StrictStr], Field(description="Where to edit: the transparent areas of this PNG.")] = None,
+        n: Optional[Annotated[int, Field(strict=True, ge=1)]] = None,
+        quality: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        response_format: Optional[StrictStr] = None,
+        size: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        user: Optional[StrictStr] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Edit Image
+
+        OpenAI-compatible image edit endpoint, taking ``multipart/form-data``.  Authentication modes: - Master key: the ``user`` field is required and names an existing user. - API key: usage and spend go to the key's own user. A ``user`` naming a   different user is refused with 403, or ignored when mismatch rejection is off.
+
+        :param model: (required)
+        :type model: str
+        :param prompt: (required)
+        :type prompt: str
+        :param image: The image or images to edit.
+        :type image: List[str]
+        :param image2: Same as image.
+        :type image2: List[str]
+        :param mask: Where to edit: the transparent areas of this PNG.
+        :type mask: str
+        :param n:
+        :type n: int
+        :param quality: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type quality: str
+        :param response_format:
+        :type response_format: str
+        :param size: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
+        :type size: str
+        :param user:
+        :type user: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._images_edit_image_serialize(
+            model=model,
+            prompt=prompt,
+            image=image,
+            image2=image2,
+            mask=mask,
+            n=n,
+            quality=quality,
+            response_format=response_format,
+            size=size,
+            user=user,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "object",
+            '413': None,
+            '422': None,
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _images_edit_image_serialize(
+        self,
+        model,
+        prompt,
+        image,
+        image2,
+        mask,
+        n,
+        quality,
+        response_format,
+        size,
+        user,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'image': 'csv',
+            'image[]': 'csv',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        if image is not None:
+            _form_params.append(('image', image))
+        if image2 is not None:
+            _form_params.append(('image[]', image2))
+        if mask is not None:
+            _form_params.append(('mask', mask))
+        if model is not None:
+            _form_params.append(('model', model))
+        if n is not None:
+            _form_params.append(('n', n))
+        if prompt is not None:
+            _form_params.append(('prompt', prompt))
+        if quality is not None:
+            _form_params.append(('quality', quality))
+        if response_format is not None:
+            _form_params.append(('response_format', response_format))
+        if size is not None:
+            _form_params.append(('size', size))
+        if user is not None:
+            _form_params.append(('user', user))
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'multipart/form-data'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/images/edits',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

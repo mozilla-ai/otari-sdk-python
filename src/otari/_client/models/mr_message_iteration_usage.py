@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class MRMessageIterationUsage(BaseModel):
     """
-    Usage of one sampling iteration of the requested model.  The Anthropic SDK requires ``model`` here, but a Messages stream can arrive without it (Otari relays code-execution turns that way), and strict validation would then reject the whole event. The SDK itself builds its objects without validating, so its own instances can lack it too.
+    Usage of one sampling iteration of the requested model.  Anthropic SDKs before 1.8 require ``model`` here, but a Messages stream can arrive without it (Otari relays code-execution turns that way), and strict validation would then reject the whole event. The SDK itself builds its objects without validating, so its own instances can lack it too.
     """ # noqa: E501
     cache_creation: Optional[MRBetaCacheCreation] = None
     cache_creation_input_tokens: StrictInt

@@ -31,7 +31,8 @@ class WorkspaceUpdate(BaseModel):
     description: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
     name: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
     trace_content_enabled: Optional[StrictBool] = Field(default=None, description="Keep what this workspace's agent sessions were about: the prompts, commands and file paths its agents report. Only where the deployment keeps content at all.")
-    __properties: ClassVar[List[str]] = ["description", "name", "trace_content_enabled"]
+    trace_content_tool_output: Optional[StrictBool] = Field(default=None, description="Also keep what each tool returned, where this workspace keeps content and the deployment keeps tool output. Turning it off keeps none from the next request on, whatever the deployment allows.")
+    __properties: ClassVar[List[str]] = ["description", "name", "trace_content_enabled", "trace_content_tool_output"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,6 +88,11 @@ class WorkspaceUpdate(BaseModel):
         if self.trace_content_enabled is None and "trace_content_enabled" in self.model_fields_set:
             _dict['trace_content_enabled'] = None
 
+        # set to None if trace_content_tool_output (nullable) is None
+        # and model_fields_set contains the field
+        if self.trace_content_tool_output is None and "trace_content_tool_output" in self.model_fields_set:
+            _dict['trace_content_tool_output'] = None
+
         return _dict
 
     @classmethod
@@ -101,7 +107,8 @@ class WorkspaceUpdate(BaseModel):
         _obj = cls.model_validate({
             "description": obj.get("description"),
             "name": obj.get("name"),
-            "trace_content_enabled": obj.get("trace_content_enabled")
+            "trace_content_enabled": obj.get("trace_content_enabled"),
+            "trace_content_tool_output": obj.get("trace_content_tool_output")
         })
         return _obj
 

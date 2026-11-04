@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class MRBetaDiagnostics(BaseModel):
     """
-    Response envelope for request-level diagnostics.  Present (possibly null) whenever the caller supplied `diagnostics` on the request.
+    Request-level diagnostics: why the prompt cache could not fully reuse the prefix of the request named by `diagnostics.previous_message_id`.
     """ # noqa: E501
     cache_miss_reason: Optional[CacheMissReason] = None
     additional_properties: Dict[str, Any] = {}

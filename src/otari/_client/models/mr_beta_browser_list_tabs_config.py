@@ -17,28 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class MRBetaSkill(BaseModel):
+class MRBetaBrowserListTabsConfig(BaseModel):
     """
-    A skill that was loaded in a container (response model).
+    ``list_tabs``'s config overrides.
     """ # noqa: E501
-    skill_id: StrictStr
-    type: StrictStr
-    version: StrictStr
+    defer_loading: Optional[StrictBool] = None
+    enabled: Optional[StrictBool] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["skill_id", "type", "version"]
-
-    @field_validator('type')
-    def type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['anthropic', 'custom']):
-            raise ValueError("must be one of enum values ('anthropic', 'custom')")
-        return value
+    __properties: ClassVar[List[str]] = ["defer_loading", "enabled"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -58,7 +50,7 @@ class MRBetaSkill(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of MRBetaSkill from a JSON string"""
+        """Create an instance of MRBetaBrowserListTabsConfig from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -86,11 +78,21 @@ class MRBetaSkill(BaseModel):
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
+        # set to None if defer_loading (nullable) is None
+        # and model_fields_set contains the field
+        if self.defer_loading is None and "defer_loading" in self.model_fields_set:
+            _dict['defer_loading'] = None
+
+        # set to None if enabled (nullable) is None
+        # and model_fields_set contains the field
+        if self.enabled is None and "enabled" in self.model_fields_set:
+            _dict['enabled'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of MRBetaSkill from a dict"""
+        """Create an instance of MRBetaBrowserListTabsConfig from a dict"""
         if obj is None:
             return None
 
@@ -98,9 +100,8 @@ class MRBetaSkill(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "skill_id": obj.get("skill_id"),
-            "type": obj.get("type"),
-            "version": obj.get("version")
+            "defer_loading": obj.get("defer_loading"),
+            "enabled": obj.get("enabled")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

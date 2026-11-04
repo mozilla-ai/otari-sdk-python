@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.mr_beta_compaction_block_tool_changes_inner import MRBetaCompactionBlockToolChangesInner
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,8 +31,10 @@ class MRBetaCompactionBlock(BaseModel):
     content: Optional[StrictStr] = None
     encrypted_content: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     type: StrictStr
+    signature: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
+    tool_changes: Optional[List[MRBetaCompactionBlockToolChangesInner]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["content", "encrypted_content", "type"]
+    __properties: ClassVar[List[str]] = ["content", "encrypted_content", "type", "signature", "tool_changes"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -81,6 +84,13 @@ class MRBetaCompactionBlock(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in tool_changes (list)
+        _items = []
+        if self.tool_changes:
+            for _item_tool_changes in self.tool_changes:
+                if _item_tool_changes:
+                    _items.append(_item_tool_changes.to_dict())
+            _dict['tool_changes'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -96,6 +106,16 @@ class MRBetaCompactionBlock(BaseModel):
         if self.encrypted_content is None and "encrypted_content" in self.model_fields_set:
             _dict['encrypted_content'] = None
 
+        # set to None if signature (nullable) is None
+        # and model_fields_set contains the field
+        if self.signature is None and "signature" in self.model_fields_set:
+            _dict['signature'] = None
+
+        # set to None if tool_changes (nullable) is None
+        # and model_fields_set contains the field
+        if self.tool_changes is None and "tool_changes" in self.model_fields_set:
+            _dict['tool_changes'] = None
+
         return _dict
 
     @classmethod
@@ -110,7 +130,9 @@ class MRBetaCompactionBlock(BaseModel):
         _obj = cls.model_validate({
             "content": obj.get("content"),
             "encrypted_content": obj.get("encrypted_content"),
-            "type": obj.get("type")
+            "type": obj.get("type"),
+            "signature": obj.get("signature"),
+            "tool_changes": [MRBetaCompactionBlockToolChangesInner.from_dict(_item) for _item in obj["tool_changes"]] if obj.get("tool_changes") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

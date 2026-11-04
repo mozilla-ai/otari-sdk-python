@@ -2304,7 +2304,7 @@ class WorkspacesApi:
     ) -> WorkspacePublic:
         """Update Workspace
 
-        Rename a workspace, change its description, or turn keeping its agent sessions' content on or off.  Turning content off keeps nothing new from the next export on; what is already stored stays until it ages out, or until ``DELETE .../trace-content`` deletes it.
+        Rename a workspace, change its description, or turn keeping its agent sessions' content or tool output on or off.  Turning either off keeps nothing new of it from the next export on; what is already stored stays until it ages out, or until ``DELETE .../trace-content`` deletes it.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -2376,7 +2376,7 @@ class WorkspacesApi:
     ) -> ApiResponse[WorkspacePublic]:
         """Update Workspace
 
-        Rename a workspace, change its description, or turn keeping its agent sessions' content on or off.  Turning content off keeps nothing new from the next export on; what is already stored stays until it ages out, or until ``DELETE .../trace-content`` deletes it.
+        Rename a workspace, change its description, or turn keeping its agent sessions' content or tool output on or off.  Turning either off keeps nothing new of it from the next export on; what is already stored stays until it ages out, or until ``DELETE .../trace-content`` deletes it.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -2448,7 +2448,7 @@ class WorkspacesApi:
     ) -> RESTResponseType:
         """Update Workspace
 
-        Rename a workspace, change its description, or turn keeping its agent sessions' content on or off.  Turning content off keeps nothing new from the next export on; what is already stored stays until it ages out, or until ``DELETE .../trace-content`` deletes it.
+        Rename a workspace, change its description, or turn keeping its agent sessions' content or tool output on or off.  Turning either off keeps nothing new of it from the next export on; what is already stored stays until it ages out, or until ``DELETE .../trace-content`` deletes it.
 
         :param workspace_id: (required)
         :type workspace_id: UUID

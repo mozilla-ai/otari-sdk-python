@@ -15,8 +15,9 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import StrictFloat, StrictInt, StrictStr
+from pydantic import Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, Optional, Union
+from typing_extensions import Annotated
 from otari._client.models.audio_speech_request import AudioSpeechRequest
 
 from otari._client.api_client import ApiClient, RequestSerialized
@@ -326,8 +327,8 @@ class AudioApi:
         self,
         file: StrictStr,
         model: StrictStr,
-        language: Optional[StrictStr] = None,
-        prompt: Optional[StrictStr] = None,
+        language: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        prompt: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
         response_format: Optional[StrictStr] = None,
         temperature: Optional[Union[StrictFloat, StrictInt]] = None,
         user: Optional[StrictStr] = None,
@@ -352,9 +353,9 @@ class AudioApi:
         :type file: str
         :param model: (required)
         :type model: str
-        :param language:
+        :param language: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
         :type language: str
-        :param prompt:
+        :param prompt: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
         :type prompt: str
         :param response_format:
         :type response_format: str
@@ -400,6 +401,7 @@ class AudioApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "object",
+            '413': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -418,8 +420,8 @@ class AudioApi:
         self,
         file: StrictStr,
         model: StrictStr,
-        language: Optional[StrictStr] = None,
-        prompt: Optional[StrictStr] = None,
+        language: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        prompt: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
         response_format: Optional[StrictStr] = None,
         temperature: Optional[Union[StrictFloat, StrictInt]] = None,
         user: Optional[StrictStr] = None,
@@ -444,9 +446,9 @@ class AudioApi:
         :type file: str
         :param model: (required)
         :type model: str
-        :param language:
+        :param language: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
         :type language: str
-        :param prompt:
+        :param prompt: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
         :type prompt: str
         :param response_format:
         :type response_format: str
@@ -492,6 +494,7 @@ class AudioApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "object",
+            '413': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -510,8 +513,8 @@ class AudioApi:
         self,
         file: StrictStr,
         model: StrictStr,
-        language: Optional[StrictStr] = None,
-        prompt: Optional[StrictStr] = None,
+        language: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
+        prompt: Annotated[Optional[StrictStr], Field(description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")] = None,
         response_format: Optional[StrictStr] = None,
         temperature: Optional[Union[StrictFloat, StrictInt]] = None,
         user: Optional[StrictStr] = None,
@@ -536,9 +539,9 @@ class AudioApi:
         :type file: str
         :param model: (required)
         :type model: str
-        :param language:
+        :param language: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
         :type language: str
-        :param prompt:
+        :param prompt: Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')
         :type prompt: str
         :param response_format:
         :type response_format: str
@@ -584,6 +587,7 @@ class AudioApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "object",
+            '413': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(

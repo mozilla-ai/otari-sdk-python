@@ -40,10 +40,10 @@ class MRMessageUsage(BaseModel):
     output_tokens_details: Optional[MROutputTokensDetails] = None
     server_tool_use: Optional[MRServerToolUsage] = None
     service_tier: Optional[StrictStr] = None
-    iterations: Optional[List[MRMessageUsageIterationsInner]] = None
     speed: Optional[StrictStr] = None
+    iterations: Optional[List[MRMessageUsageIterationsInner]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["cache_creation", "cache_creation_input_tokens", "cache_read_input_tokens", "inference_geo", "input_tokens", "output_tokens", "output_tokens_details", "server_tool_use", "service_tier", "iterations", "speed"]
+    __properties: ClassVar[List[str]] = ["cache_creation", "cache_creation_input_tokens", "cache_read_input_tokens", "inference_geo", "input_tokens", "output_tokens", "output_tokens_details", "server_tool_use", "service_tier", "speed", "iterations"]
 
     @field_validator('service_tier')
     def service_tier_validate_enum(cls, value):
@@ -162,15 +162,15 @@ class MRMessageUsage(BaseModel):
         if self.service_tier is None and "service_tier" in self.model_fields_set:
             _dict['service_tier'] = None
 
-        # set to None if iterations (nullable) is None
-        # and model_fields_set contains the field
-        if self.iterations is None and "iterations" in self.model_fields_set:
-            _dict['iterations'] = None
-
         # set to None if speed (nullable) is None
         # and model_fields_set contains the field
         if self.speed is None and "speed" in self.model_fields_set:
             _dict['speed'] = None
+
+        # set to None if iterations (nullable) is None
+        # and model_fields_set contains the field
+        if self.iterations is None and "iterations" in self.model_fields_set:
+            _dict['iterations'] = None
 
         return _dict
 
@@ -193,8 +193,8 @@ class MRMessageUsage(BaseModel):
             "output_tokens_details": MROutputTokensDetails.from_dict(obj["output_tokens_details"]) if obj.get("output_tokens_details") is not None else None,
             "server_tool_use": MRServerToolUsage.from_dict(obj["server_tool_use"]) if obj.get("server_tool_use") is not None else None,
             "service_tier": obj.get("service_tier"),
-            "iterations": [MRMessageUsageIterationsInner.from_dict(_item) for _item in obj["iterations"]] if obj.get("iterations") is not None else None,
-            "speed": obj.get("speed")
+            "speed": obj.get("speed"),
+            "iterations": [MRMessageUsageIterationsInner.from_dict(_item) for _item in obj["iterations"]] if obj.get("iterations") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

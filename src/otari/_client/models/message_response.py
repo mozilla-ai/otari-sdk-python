@@ -37,6 +37,7 @@ class MessageResponse(BaseModel):
     id: StrictStr
     container: Optional[MRBetaContainer] = None
     content: List[Content17Inner]
+    diagnostics: Optional[MRBetaDiagnostics] = None
     model: Model1
     role: StrictStr
     stop_details: Optional[MRRefusalStopDetails] = None
@@ -46,9 +47,8 @@ class MessageResponse(BaseModel):
     usage: MRMessageUsage
     request_id: Optional[StrictStr] = None
     context_management: Optional[MRBetaContextManagementResponse] = None
-    diagnostics: Optional[MRBetaDiagnostics] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "container", "content", "model", "role", "stop_details", "stop_reason", "stop_sequence", "type", "usage", "request_id", "context_management", "diagnostics"]
+    __properties: ClassVar[List[str]] = ["id", "container", "content", "diagnostics", "model", "role", "stop_details", "stop_reason", "stop_sequence", "type", "usage", "request_id", "context_management"]
 
     @field_validator('role')
     def role_validate_enum(cls, value):
@@ -125,6 +125,9 @@ class MessageResponse(BaseModel):
                 if _item_content:
                     _items.append(_item_content.to_dict())
             _dict['content'] = _items
+        # override the default output from pydantic by calling `to_dict()` of diagnostics
+        if self.diagnostics:
+            _dict['diagnostics'] = self.diagnostics.to_dict()
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
@@ -137,9 +140,6 @@ class MessageResponse(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of context_management
         if self.context_management:
             _dict['context_management'] = self.context_management.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of diagnostics
-        if self.diagnostics:
-            _dict['diagnostics'] = self.diagnostics.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -149,6 +149,11 @@ class MessageResponse(BaseModel):
         # and model_fields_set contains the field
         if self.container is None and "container" in self.model_fields_set:
             _dict['container'] = None
+
+        # set to None if diagnostics (nullable) is None
+        # and model_fields_set contains the field
+        if self.diagnostics is None and "diagnostics" in self.model_fields_set:
+            _dict['diagnostics'] = None
 
         # set to None if stop_details (nullable) is None
         # and model_fields_set contains the field
@@ -175,11 +180,6 @@ class MessageResponse(BaseModel):
         if self.context_management is None and "context_management" in self.model_fields_set:
             _dict['context_management'] = None
 
-        # set to None if diagnostics (nullable) is None
-        # and model_fields_set contains the field
-        if self.diagnostics is None and "diagnostics" in self.model_fields_set:
-            _dict['diagnostics'] = None
-
         return _dict
 
     @classmethod
@@ -195,6 +195,7 @@ class MessageResponse(BaseModel):
             "id": obj.get("id"),
             "container": MRBetaContainer.from_dict(obj["container"]) if obj.get("container") is not None else None,
             "content": [Content17Inner.from_dict(_item) for _item in obj["content"]] if obj.get("content") is not None else None,
+            "diagnostics": MRBetaDiagnostics.from_dict(obj["diagnostics"]) if obj.get("diagnostics") is not None else None,
             "model": Model1.from_dict(obj["model"]) if obj.get("model") is not None else None,
             "role": obj.get("role"),
             "stop_details": MRRefusalStopDetails.from_dict(obj["stop_details"]) if obj.get("stop_details") is not None else None,
@@ -203,8 +204,7 @@ class MessageResponse(BaseModel):
             "type": obj.get("type"),
             "usage": MRMessageUsage.from_dict(obj["usage"]) if obj.get("usage") is not None else None,
             "request_id": obj.get("request_id"),
-            "context_management": MRBetaContextManagementResponse.from_dict(obj["context_management"]) if obj.get("context_management") is not None else None,
-            "diagnostics": MRBetaDiagnostics.from_dict(obj["diagnostics"]) if obj.get("diagnostics") is not None else None
+            "context_management": MRBetaContextManagementResponse.from_dict(obj["context_management"]) if obj.get("context_management") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

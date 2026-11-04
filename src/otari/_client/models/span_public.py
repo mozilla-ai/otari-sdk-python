@@ -33,7 +33,7 @@ class SpanPublic(BaseModel):
     attributes: Dict[str, AttributesValue]
     cache_read_tokens: Optional[StrictInt] = Field(description="Input tokens read from the prompt cache.")
     cache_write_tokens: Optional[StrictInt] = Field(description="Input tokens written to the prompt cache.")
-    content: Dict[str, StrictStr] = Field(description="What the span was about (prompt, command, file_path, gate.evidence, gate.detail), only where the workspace keeps content, the agent sent it, and the reader may open it. Empty otherwise.")
+    content: Dict[str, StrictStr] = Field(description="What the span was about (prompt, command, file_path, gate.evidence, gate.detail, tool.input, tool.output), only where the workspace keeps content, the client sent it or Otari ran the tool that produced it, and the reader may open it. Empty otherwise.")
     content_private: Optional[StrictBool] = Field(default=False, description="The span holds content this reader may not open: it is private to the session's own user, unless they share the session.")
     context_window: Optional[StrictInt] = Field(description="The model's context window in tokens, where the catalog knows it. Null on a span that is not a model request, and for a model the catalog does not list.")
     cost: Optional[Union[StrictFloat, StrictInt]]

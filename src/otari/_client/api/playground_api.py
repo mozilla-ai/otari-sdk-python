@@ -4230,6 +4230,7 @@ class PlaygroundApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OpenAIFileObject",
+            '413': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4302,6 +4303,7 @@ class PlaygroundApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OpenAIFileObject",
+            '413': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4374,6 +4376,7 @@ class PlaygroundApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OpenAIFileObject",
+            '413': None,
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
