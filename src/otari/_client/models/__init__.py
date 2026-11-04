@@ -248,6 +248,8 @@ from otari._client.models.federation_rule_public import FederationRulePublic
 from otari._client.models.federation_token_request import FederationTokenRequest
 from otari._client.models.federation_token_response import FederationTokenResponse
 from otari._client.models.feedback_submission import FeedbackSubmission
+from otari._client.models.fetch_request import FetchRequest
+from otari._client.models.fetch_response import FetchResponse
 from otari._client.models.gate_definition_request import GateDefinitionRequest
 from otari._client.models.gate_result_response import GateResultResponse
 from otari._client.models.gate_summary_public import GateSummaryPublic

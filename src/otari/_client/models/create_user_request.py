@@ -29,7 +29,7 @@ class CreateUserRequest(BaseModel):
     """ # noqa: E501
     alias: Optional[StrictStr] = Field(default=None, description="Optional admin-facing alias")
     allowed_models: Optional[List[StrictStr]] = Field(default=None, description="Default model access-list this user's keys inherit; null = unrestricted, [] = deny all")
-    allowed_tools: Optional[List[StrictStr]] = Field(default=None, description="Default search tool access-list this user's keys inherit: null = the tools allowed_models grants, [] = no tool, or search tool names ('*' for every search tool).")
+    allowed_tools: Optional[List[StrictStr]] = Field(default=None, description="Default tool access-list this user's keys inherit, for POST /api/v1/search and /api/v1/fetch: null = the search tools allowed_models grants, [] = no tool, or search and fetch tool names ('*' for every tool).")
     blocked: Optional[StrictBool] = Field(default=False, description="Whether user is blocked")
     budget_id: Optional[StrictStr] = Field(default=None, description="Optional budget ID")
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata")

@@ -34,6 +34,7 @@ __all__ = [
     "EmbeddingsApi",
     "EndUsersApi",
     "FeedbackApi",
+    "FetchApi",
     "FilesApi",
     "HealthApi",
     "HealthChecksApi",
@@ -326,6 +327,8 @@ __all__ = [
     "FederationTokenRequest",
     "FederationTokenResponse",
     "FeedbackSubmission",
+    "FetchRequest",
+    "FetchResponse",
     "GateDefinitionRequest",
     "GateResultResponse",
     "GateSummaryPublic",
@@ -950,6 +953,7 @@ from otari._client.api.decisions_api import DecisionsApi as DecisionsApi
 from otari._client.api.embeddings_api import EmbeddingsApi as EmbeddingsApi
 from otari._client.api.end_users_api import EndUsersApi as EndUsersApi
 from otari._client.api.feedback_api import FeedbackApi as FeedbackApi
+from otari._client.api.fetch_api import FetchApi as FetchApi
 from otari._client.api.files_api import FilesApi as FilesApi
 from otari._client.api.health_api import HealthApi as HealthApi
 from otari._client.api.health_checks_api import HealthChecksApi as HealthChecksApi
@@ -1246,6 +1250,8 @@ from otari._client.models.federation_rule_public import FederationRulePublic as 
 from otari._client.models.federation_token_request import FederationTokenRequest as FederationTokenRequest
 from otari._client.models.federation_token_response import FederationTokenResponse as FederationTokenResponse
 from otari._client.models.feedback_submission import FeedbackSubmission as FeedbackSubmission
+from otari._client.models.fetch_request import FetchRequest as FetchRequest
+from otari._client.models.fetch_response import FetchResponse as FetchResponse
 from otari._client.models.gate_definition_request import GateDefinitionRequest as GateDefinitionRequest
 from otari._client.models.gate_result_response import GateResultResponse as GateResultResponse
 from otari._client.models.gate_summary_public import GateSummaryPublic as GateSummaryPublic
