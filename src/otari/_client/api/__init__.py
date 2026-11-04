@@ -63,6 +63,7 @@ from otari._client.api.users_api import UsersApi
 from otari._client.api.web_search_keys_api import WebSearchKeysApi
 from otari._client.api.workspace_activation_api import WorkspaceActivationApi
 from otari._client.api.workspace_code_execution_policy_api import WorkspaceCodeExecutionPolicyApi
+from otari._client.api.workspace_hosted_providers_api import WorkspaceHostedProvidersApi
 from otari._client.api.workspace_member_budget_policies_api import WorkspaceMemberBudgetPoliciesApi
 from otari._client.api.workspace_web_search_api import WorkspaceWebSearchApi
 from otari._client.api.workspaces_api import WorkspacesApi

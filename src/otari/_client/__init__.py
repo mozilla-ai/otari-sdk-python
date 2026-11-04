@@ -80,6 +80,7 @@ __all__ = [
     "WebSearchKeysApi",
     "WorkspaceActivationApi",
     "WorkspaceCodeExecutionPolicyApi",
+    "WorkspaceHostedProvidersApi",
     "WorkspaceMemberBudgetPoliciesApi",
     "WorkspaceWebSearchApi",
     "WorkspacesApi",
@@ -907,6 +908,9 @@ __all__ = [
     "WorkspaceCodeExecutionPolicyPublic",
     "WorkspaceCodeExecutionPolicyUpdate",
     "WorkspaceCreate",
+    "WorkspaceHostedProviderAccessRequest",
+    "WorkspaceHostedProviderPublic",
+    "WorkspaceHostedProvidersPublic",
     "WorkspaceMcpServerCheckRequest",
     "WorkspaceMcpServerCreate",
     "WorkspaceMcpServerHealth",
@@ -924,6 +928,8 @@ __all__ = [
     "WorkspaceProviderKeyOverridesPublic",
     "WorkspaceProviderModelRestrictionRequest",
     "WorkspaceProviderModelRestrictionsPublic",
+    "WorkspaceProviderPolicyPublic",
+    "WorkspaceProviderPolicyRequest",
     "WorkspacePublic",
     "WorkspaceUpdate",
     "WorkspaceWebSearchConfigPublic",
@@ -999,6 +1005,7 @@ from otari._client.api.users_api import UsersApi as UsersApi
 from otari._client.api.web_search_keys_api import WebSearchKeysApi as WebSearchKeysApi
 from otari._client.api.workspace_activation_api import WorkspaceActivationApi as WorkspaceActivationApi
 from otari._client.api.workspace_code_execution_policy_api import WorkspaceCodeExecutionPolicyApi as WorkspaceCodeExecutionPolicyApi
+from otari._client.api.workspace_hosted_providers_api import WorkspaceHostedProvidersApi as WorkspaceHostedProvidersApi
 from otari._client.api.workspace_member_budget_policies_api import WorkspaceMemberBudgetPoliciesApi as WorkspaceMemberBudgetPoliciesApi
 from otari._client.api.workspace_web_search_api import WorkspaceWebSearchApi as WorkspaceWebSearchApi
 from otari._client.api.workspaces_api import WorkspacesApi as WorkspacesApi
@@ -1830,6 +1837,9 @@ from otari._client.models.workspace_assignment_request import WorkspaceAssignmen
 from otari._client.models.workspace_code_execution_policy_public import WorkspaceCodeExecutionPolicyPublic as WorkspaceCodeExecutionPolicyPublic
 from otari._client.models.workspace_code_execution_policy_update import WorkspaceCodeExecutionPolicyUpdate as WorkspaceCodeExecutionPolicyUpdate
 from otari._client.models.workspace_create import WorkspaceCreate as WorkspaceCreate
+from otari._client.models.workspace_hosted_provider_access_request import WorkspaceHostedProviderAccessRequest as WorkspaceHostedProviderAccessRequest
+from otari._client.models.workspace_hosted_provider_public import WorkspaceHostedProviderPublic as WorkspaceHostedProviderPublic
+from otari._client.models.workspace_hosted_providers_public import WorkspaceHostedProvidersPublic as WorkspaceHostedProvidersPublic
 from otari._client.models.workspace_mcp_server_check_request import WorkspaceMcpServerCheckRequest as WorkspaceMcpServerCheckRequest
 from otari._client.models.workspace_mcp_server_create import WorkspaceMcpServerCreate as WorkspaceMcpServerCreate
 from otari._client.models.workspace_mcp_server_health import WorkspaceMcpServerHealth as WorkspaceMcpServerHealth
@@ -1847,6 +1857,8 @@ from otari._client.models.workspace_provider_key_override_request import Workspa
 from otari._client.models.workspace_provider_key_overrides_public import WorkspaceProviderKeyOverridesPublic as WorkspaceProviderKeyOverridesPublic
 from otari._client.models.workspace_provider_model_restriction_request import WorkspaceProviderModelRestrictionRequest as WorkspaceProviderModelRestrictionRequest
 from otari._client.models.workspace_provider_model_restrictions_public import WorkspaceProviderModelRestrictionsPublic as WorkspaceProviderModelRestrictionsPublic
+from otari._client.models.workspace_provider_policy_public import WorkspaceProviderPolicyPublic as WorkspaceProviderPolicyPublic
+from otari._client.models.workspace_provider_policy_request import WorkspaceProviderPolicyRequest as WorkspaceProviderPolicyRequest
 from otari._client.models.workspace_public import WorkspacePublic as WorkspacePublic
 from otari._client.models.workspace_update import WorkspaceUpdate as WorkspaceUpdate
 from otari._client.models.workspace_web_search_config_public import WorkspaceWebSearchConfigPublic as WorkspaceWebSearchConfigPublic
