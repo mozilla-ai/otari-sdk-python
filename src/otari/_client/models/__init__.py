@@ -312,6 +312,7 @@ from otari._client.models.judge_verdict_request import JudgeVerdictRequest
 from otari._client.models.key_info import KeyInfo
 from otari._client.models.known_provider_schema import KnownProviderSchema
 from otari._client.models.known_provider_summary_schema import KnownProviderSummarySchema
+from otari._client.models.listed_search_tool_schema import ListedSearchToolSchema
 from otari._client.models.location_inner import LocationInner
 from otari._client.models.mr_anthropic_types_thinking_block_thinking_block import MRAnthropicTypesThinkingBlockThinkingBlock
 from otari._client.models.mr_any_llm_types_messages_thinking_block import MRAnyLlmTypesMessagesThinkingBlock

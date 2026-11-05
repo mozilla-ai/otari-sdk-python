@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,9 +32,11 @@ class ConfigSearchToolSchema(BaseModel):
     has_api_key: StrictBool = Field(description="Whether the config entry carries an API key. The key itself is not shown.")
     kind: Optional[StrictStr] = Field(default='search', description="Whether this is a search or a fetch instance.")
     name: StrictStr
+    price_per_call: Optional[Union[StrictFloat, StrictInt]] = Field(description="USD for one call on the deployment's own account when the provider reports no cost of its own, from the deployment's price list. An override the operator set for one organization prices that organization's calls instead. Null when no row prices the tool: with require_pricing on, its calls are refused.")
+    price_source: StrictStr = Field(description="Which row price_per_call comes from: 'own', the tool's own row (its kind and name as model_key); 'config', that row while the tool's config.yml entry sets price_per_call, which each start writes to it again when the rate in force differs, so a rate set through the API lasts until the next start; 'old_key', the tool's old <provider>:<name> row, which prices it while it has no row of its own; 'none', no row.")
     provider: StrictStr
     shadowed: Optional[StrictBool] = Field(default=False, description="True when a stored instance of the same name and kind overrides this entry.")
-    __properties: ClassVar[List[str]] = ["api_base", "fetch_tool", "has_api_key", "kind", "name", "provider", "shadowed"]
+    __properties: ClassVar[List[str]] = ["api_base", "fetch_tool", "has_api_key", "kind", "name", "price_per_call", "price_source", "provider", "shadowed"]
 
     @field_validator('kind')
     def kind_validate_enum(cls, value):
@@ -44,6 +46,13 @@ class ConfigSearchToolSchema(BaseModel):
 
         if value not in set(['search', 'fetch']):
             raise ValueError("must be one of enum values ('search', 'fetch')")
+        return value
+
+    @field_validator('price_source')
+    def price_source_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['own', 'config', 'old_key', 'none']):
+            raise ValueError("must be one of enum values ('own', 'config', 'old_key', 'none')")
         return value
 
     model_config = ConfigDict(
@@ -95,6 +104,11 @@ class ConfigSearchToolSchema(BaseModel):
         if self.fetch_tool is None and "fetch_tool" in self.model_fields_set:
             _dict['fetch_tool'] = None
 
+        # set to None if price_per_call (nullable) is None
+        # and model_fields_set contains the field
+        if self.price_per_call is None and "price_per_call" in self.model_fields_set:
+            _dict['price_per_call'] = None
+
         return _dict
 
     @classmethod
@@ -112,6 +126,8 @@ class ConfigSearchToolSchema(BaseModel):
             "has_api_key": obj.get("has_api_key"),
             "kind": obj.get("kind") if obj.get("kind") is not None else 'search',
             "name": obj.get("name"),
+            "price_per_call": obj.get("price_per_call"),
+            "price_source": obj.get("price_source"),
             "provider": obj.get("provider"),
             "shadowed": obj.get("shadowed") if obj.get("shadowed") is not None else False
         })
