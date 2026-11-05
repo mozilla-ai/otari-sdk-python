@@ -309,7 +309,9 @@ from otari._client.models.invitation_preview_public import InvitationPreviewPubl
 from otari._client.models.invite_organization_member_request import InviteOrganizationMemberRequest
 from otari._client.models.invite_organization_member_result_public import InviteOrganizationMemberResultPublic
 from otari._client.models.judge_verdict_request import JudgeVerdictRequest
+from otari._client.models.key_budget_public import KeyBudgetPublic
 from otari._client.models.key_info import KeyInfo
+from otari._client.models.key_limit_public import KeyLimitPublic
 from otari._client.models.known_provider_schema import KnownProviderSchema
 from otari._client.models.known_provider_summary_schema import KnownProviderSummarySchema
 from otari._client.models.listed_search_tool_schema import ListedSearchToolSchema
