@@ -25,6 +25,7 @@ from otari._client.api.hooks_api import HooksApi
 from otari._client.api.hosted_providers_api import HostedProvidersApi
 from otari._client.api.images_api import ImagesApi
 from otari._client.api.invitations_api import InvitationsApi
+from otari._client.api.key_api import KeyApi
 from otari._client.api.keys_api import KeysApi
 from otari._client.api.mcp_api import McpApi
 from otari._client.api.mcp_servers_api import McpServersApi

@@ -42,6 +42,7 @@ __all__ = [
     "HostedProvidersApi",
     "ImagesApi",
     "InvitationsApi",
+    "KeyApi",
     "KeysApi",
     "McpApi",
     "McpServersApi",
@@ -390,7 +391,9 @@ __all__ = [
     "InviteOrganizationMemberRequest",
     "InviteOrganizationMemberResultPublic",
     "JudgeVerdictRequest",
+    "KeyBudgetPublic",
     "KeyInfo",
+    "KeyLimitPublic",
     "KnownProviderSchema",
     "KnownProviderSummarySchema",
     "ListedSearchToolSchema",
@@ -974,6 +977,7 @@ from otari._client.api.hooks_api import HooksApi as HooksApi
 from otari._client.api.hosted_providers_api import HostedProvidersApi as HostedProvidersApi
 from otari._client.api.images_api import ImagesApi as ImagesApi
 from otari._client.api.invitations_api import InvitationsApi as InvitationsApi
+from otari._client.api.key_api import KeyApi as KeyApi
 from otari._client.api.keys_api import KeysApi as KeysApi
 from otari._client.api.mcp_api import McpApi as McpApi
 from otari._client.api.mcp_servers_api import McpServersApi as McpServersApi
@@ -1326,7 +1330,9 @@ from otari._client.models.invitation_preview_public import InvitationPreviewPubl
 from otari._client.models.invite_organization_member_request import InviteOrganizationMemberRequest as InviteOrganizationMemberRequest
 from otari._client.models.invite_organization_member_result_public import InviteOrganizationMemberResultPublic as InviteOrganizationMemberResultPublic
 from otari._client.models.judge_verdict_request import JudgeVerdictRequest as JudgeVerdictRequest
+from otari._client.models.key_budget_public import KeyBudgetPublic as KeyBudgetPublic
 from otari._client.models.key_info import KeyInfo as KeyInfo
+from otari._client.models.key_limit_public import KeyLimitPublic as KeyLimitPublic
 from otari._client.models.known_provider_schema import KnownProviderSchema as KnownProviderSchema
 from otari._client.models.known_provider_summary_schema import KnownProviderSummarySchema as KnownProviderSummarySchema
 from otari._client.models.listed_search_tool_schema import ListedSearchToolSchema as ListedSearchToolSchema
