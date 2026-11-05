@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List
 from otari._client.models.config_search_tool_schema import ConfigSearchToolSchema
-from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
+from otari._client.models.listed_search_tool_schema import ListedSearchToolSchema
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,7 +30,7 @@ class SearchToolsResponse(BaseModel):
     Every search instance ``POST /api/v1/search`` can name, or every fetch instance, by where it came from.
     """ # noqa: E501
     config: List[ConfigSearchToolSchema]
-    stored: List[StoredSearchToolSchema]
+    stored: List[ListedSearchToolSchema]
     __properties: ClassVar[List[str]] = ["config", "stored"]
 
     model_config = ConfigDict(
@@ -99,7 +99,7 @@ class SearchToolsResponse(BaseModel):
 
         _obj = cls.model_validate({
             "config": [ConfigSearchToolSchema.from_dict(_item) for _item in obj["config"]] if obj.get("config") is not None else None,
-            "stored": [StoredSearchToolSchema.from_dict(_item) for _item in obj["stored"]] if obj.get("stored") is not None else None
+            "stored": [ListedSearchToolSchema.from_dict(_item) for _item in obj["stored"]] if obj.get("stored") is not None else None
         })
         return _obj
 
