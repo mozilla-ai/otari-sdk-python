@@ -907,6 +907,7 @@ class RoutingApi:
     @validate_call
     def routing_list_automatic_fallbacks(
         self,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only the offerings a request billed to this workspace may call.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -924,6 +925,8 @@ class RoutingApi:
 
         The models the caller's organization sent requests to in the last 30 days, and the fallback each gets.  A request that sends a model's catalog ID moves to the model's next offering when one fails, with no policy. Each model lists its offerings in the order such a request tries them before automatic selection reorders it, each with its input price for this organization and who runs the built-in tools on it, beside its traffic: how many requests a backup served, and how many named one offering or a policy instead, by API key and provider. The traffic is the workspaces the caller may see in their active organization, by the rule the organization's usage reads use.
 
+        :param workspace_id: Only the offerings a request billed to this workspace may call.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -947,6 +950,7 @@ class RoutingApi:
         """ # noqa: E501
 
         _param = self._routing_list_automatic_fallbacks_serialize(
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -955,6 +959,7 @@ class RoutingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AutomaticFallbacksResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -970,6 +975,7 @@ class RoutingApi:
     @validate_call
     def routing_list_automatic_fallbacks_with_http_info(
         self,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only the offerings a request billed to this workspace may call.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -987,6 +993,8 @@ class RoutingApi:
 
         The models the caller's organization sent requests to in the last 30 days, and the fallback each gets.  A request that sends a model's catalog ID moves to the model's next offering when one fails, with no policy. Each model lists its offerings in the order such a request tries them before automatic selection reorders it, each with its input price for this organization and who runs the built-in tools on it, beside its traffic: how many requests a backup served, and how many named one offering or a policy instead, by API key and provider. The traffic is the workspaces the caller may see in their active organization, by the rule the organization's usage reads use.
 
+        :param workspace_id: Only the offerings a request billed to this workspace may call.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1010,6 +1018,7 @@ class RoutingApi:
         """ # noqa: E501
 
         _param = self._routing_list_automatic_fallbacks_serialize(
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1018,6 +1027,7 @@ class RoutingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AutomaticFallbacksResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1033,6 +1043,7 @@ class RoutingApi:
     @validate_call
     def routing_list_automatic_fallbacks_without_preload_content(
         self,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only the offerings a request billed to this workspace may call.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1050,6 +1061,8 @@ class RoutingApi:
 
         The models the caller's organization sent requests to in the last 30 days, and the fallback each gets.  A request that sends a model's catalog ID moves to the model's next offering when one fails, with no policy. Each model lists its offerings in the order such a request tries them before automatic selection reorders it, each with its input price for this organization and who runs the built-in tools on it, beside its traffic: how many requests a backup served, and how many named one offering or a policy instead, by API key and provider. The traffic is the workspaces the caller may see in their active organization, by the rule the organization's usage reads use.
 
+        :param workspace_id: Only the offerings a request billed to this workspace may call.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1073,6 +1086,7 @@ class RoutingApi:
         """ # noqa: E501
 
         _param = self._routing_list_automatic_fallbacks_serialize(
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1081,6 +1095,7 @@ class RoutingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AutomaticFallbacksResponse",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -1091,6 +1106,7 @@ class RoutingApi:
 
     def _routing_list_automatic_fallbacks_serialize(
         self,
+        workspace_id,
         _request_auth,
         _content_type,
         _headers,
@@ -1113,6 +1129,10 @@ class RoutingApi:
 
         # process the path parameters
         # process the query parameters
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
