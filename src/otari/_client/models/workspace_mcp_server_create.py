@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -31,10 +31,12 @@ class WorkspaceMcpServerCreate(BaseModel):
     allowed_tools: Optional[Annotated[List[Annotated[str, Field(strict=True, max_length=256)]], Field(max_length=200)]] = Field(default=None, description="Allow-list of tool names; null exposes every tool the server offers")
     authorization_token: Optional[Annotated[str, Field(strict=True, max_length=8192)]] = Field(default=None, description="Bearer token for the server; requires an https URL. Encrypted at rest, never returned")
     enabled: Optional[StrictBool] = Field(default=True, description="Whether a request naming this server actually reaches it")
+    everyone_tools: Optional[List[StrictStr]] = Field(default=None, description="What every key of the workspace may call on this server: tool names, '*' for every tool, or 'prefix*', or '@read' for read_tools; [] denies everyone. A grant for a key or its owner overrides it")
     name: Annotated[str, Field(min_length=1, strict=True, max_length=128)] = Field(description="Label for the server, unique within the workspace")
     purpose_hint: Optional[Annotated[str, Field(strict=True, max_length=2000)]] = Field(default=None, description="Hint prepended to the system message to help the model choose")
+    read_tools: Optional[List[StrictStr]] = Field(default=None, description="The tool names a manager labeled read, which '@read' in an access rule stands for. The server's own readOnlyHint is never read as one")
     url: Annotated[str, Field(min_length=1, strict=True, max_length=2048)] = Field(description="Streamable HTTP MCP endpoint")
-    __properties: ClassVar[List[str]] = ["allowed_tools", "authorization_token", "enabled", "name", "purpose_hint", "url"]
+    __properties: ClassVar[List[str]] = ["allowed_tools", "authorization_token", "enabled", "everyone_tools", "name", "purpose_hint", "read_tools", "url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -105,8 +107,10 @@ class WorkspaceMcpServerCreate(BaseModel):
             "allowed_tools": obj.get("allowed_tools"),
             "authorization_token": obj.get("authorization_token"),
             "enabled": obj.get("enabled") if obj.get("enabled") is not None else True,
+            "everyone_tools": obj.get("everyone_tools"),
             "name": obj.get("name"),
             "purpose_hint": obj.get("purpose_hint"),
+            "read_tools": obj.get("read_tools"),
             "url": obj.get("url")
         })
         return _obj

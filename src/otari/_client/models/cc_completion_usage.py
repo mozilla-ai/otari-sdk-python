@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictInt
+from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.cc_completion_tokens_details import CCCompletionTokensDetails
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails
@@ -34,8 +34,9 @@ class CCCompletionUsage(BaseModel):
     total_tokens: StrictInt
     completion_tokens_details: Optional[CCCompletionTokensDetails] = None
     prompt_tokens_details: Optional[CCPromptTokensDetails] = None
+    inference_geo: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["completion_tokens", "prompt_tokens", "total_tokens", "completion_tokens_details", "prompt_tokens_details"]
+    __properties: ClassVar[List[str]] = ["completion_tokens", "prompt_tokens", "total_tokens", "completion_tokens_details", "prompt_tokens_details", "inference_geo"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -99,6 +100,11 @@ class CCCompletionUsage(BaseModel):
         if self.prompt_tokens_details is None and "prompt_tokens_details" in self.model_fields_set:
             _dict['prompt_tokens_details'] = None
 
+        # set to None if inference_geo (nullable) is None
+        # and model_fields_set contains the field
+        if self.inference_geo is None and "inference_geo" in self.model_fields_set:
+            _dict['inference_geo'] = None
+
         return _dict
 
     @classmethod
@@ -115,7 +121,8 @@ class CCCompletionUsage(BaseModel):
             "prompt_tokens": obj.get("prompt_tokens"),
             "total_tokens": obj.get("total_tokens"),
             "completion_tokens_details": CCCompletionTokensDetails.from_dict(obj["completion_tokens_details"]) if obj.get("completion_tokens_details") is not None else None,
-            "prompt_tokens_details": CCPromptTokensDetails.from_dict(obj["prompt_tokens_details"]) if obj.get("prompt_tokens_details") is not None else None
+            "prompt_tokens_details": CCPromptTokensDetails.from_dict(obj["prompt_tokens_details"]) if obj.get("prompt_tokens_details") is not None else None,
+            "inference_geo": obj.get("inference_geo")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

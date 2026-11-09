@@ -30,9 +30,10 @@ class WorkspaceUpdate(BaseModel):
     """ # noqa: E501
     description: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
     name: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
+    request_mcp_servers_allowed: Optional[StrictBool] = Field(default=None, description="Let this workspace's keys name MCP servers by URL in a request (mcp_servers), beside the stored servers whose access lists the workspace controls.")
     trace_content_enabled: Optional[StrictBool] = Field(default=None, description="Keep what this workspace's agent sessions were about: the prompts, commands and file paths its agents report. Only where the deployment keeps content at all.")
     trace_content_tool_output: Optional[StrictBool] = Field(default=None, description="Also keep what each tool returned, where this workspace keeps content and the deployment keeps tool output. Turning it off keeps none from the next request on, whatever the deployment allows.")
-    __properties: ClassVar[List[str]] = ["description", "name", "trace_content_enabled", "trace_content_tool_output"]
+    __properties: ClassVar[List[str]] = ["description", "name", "request_mcp_servers_allowed", "trace_content_enabled", "trace_content_tool_output"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,6 +84,11 @@ class WorkspaceUpdate(BaseModel):
         if self.name is None and "name" in self.model_fields_set:
             _dict['name'] = None
 
+        # set to None if request_mcp_servers_allowed (nullable) is None
+        # and model_fields_set contains the field
+        if self.request_mcp_servers_allowed is None and "request_mcp_servers_allowed" in self.model_fields_set:
+            _dict['request_mcp_servers_allowed'] = None
+
         # set to None if trace_content_enabled (nullable) is None
         # and model_fields_set contains the field
         if self.trace_content_enabled is None and "trace_content_enabled" in self.model_fields_set:
@@ -107,6 +113,7 @@ class WorkspaceUpdate(BaseModel):
         _obj = cls.model_validate({
             "description": obj.get("description"),
             "name": obj.get("name"),
+            "request_mcp_servers_allowed": obj.get("request_mcp_servers_allowed"),
             "trace_content_enabled": obj.get("trace_content_enabled"),
             "trace_content_tool_output": obj.get("trace_content_tool_output")
         })

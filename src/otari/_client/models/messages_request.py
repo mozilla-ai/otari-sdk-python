@@ -38,6 +38,7 @@ class MessagesRequest(BaseModel):
     container: Optional[Container] = None
     context_management: Optional[Dict[str, Any]] = None
     guardrails: Optional[Annotated[List[GuardrailConfig], Field(max_length=8)]] = None
+    inference_geo: Optional[StrictStr] = None
     max_tokens: StrictInt
     max_tool_iterations: Optional[Annotated[int, Field(le=25, strict=True, ge=1)]] = None
     mcp_server_ids: Optional[Annotated[List[UUID], Field(max_length=50)]] = None
@@ -60,7 +61,7 @@ class MessagesRequest(BaseModel):
     tools_header: Optional[StrictStr] = None
     top_k: Optional[StrictInt] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["betas", "cache_control", "container", "context_management", "guardrails", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_config", "output_format", "prompt_cache_key", "service_tier", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
+    __properties: ClassVar[List[str]] = ["betas", "cache_control", "container", "context_management", "guardrails", "inference_geo", "max_tokens", "max_tool_iterations", "mcp_server_ids", "mcp_servers", "messages", "metadata", "model", "output_config", "output_format", "prompt_cache_key", "service_tier", "session_label", "stop_sequences", "stream", "system", "temperature", "thinking", "tool_choice", "tools", "tools_header", "top_k", "top_p"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -145,6 +146,11 @@ class MessagesRequest(BaseModel):
         # and model_fields_set contains the field
         if self.guardrails is None and "guardrails" in self.model_fields_set:
             _dict['guardrails'] = None
+
+        # set to None if inference_geo (nullable) is None
+        # and model_fields_set contains the field
+        if self.inference_geo is None and "inference_geo" in self.model_fields_set:
+            _dict['inference_geo'] = None
 
         # set to None if max_tool_iterations (nullable) is None
         # and model_fields_set contains the field
@@ -253,6 +259,7 @@ class MessagesRequest(BaseModel):
             "container": Container.from_dict(obj["container"]) if obj.get("container") is not None else None,
             "context_management": obj.get("context_management"),
             "guardrails": [GuardrailConfig.from_dict(_item) for _item in obj["guardrails"]] if obj.get("guardrails") is not None else None,
+            "inference_geo": obj.get("inference_geo"),
             "max_tokens": obj.get("max_tokens"),
             "max_tool_iterations": obj.get("max_tool_iterations"),
             "mcp_server_ids": obj.get("mcp_server_ids"),

@@ -57,7 +57,7 @@ class AudioApi:
     ) -> object:
         """Create Speech
 
-        OpenAI-compatible audio speech (TTS) endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
+        OpenAI-compatible audio speech (TTS) endpoint.  Billed on the characters of ``input`` at a rate priced per character, or one request at a rate priced per request. A model with no rate is refused under ``require_pricing``. The body is audio, so the settled cost rides the response headers: ``Otari-Cost-USD`` and ``Otari-Pricing-Source``, the ``cost_usd`` and ``pricing_source`` other responses carry on ``usage``, and ``Otari-Usage-Unit`` and ``Otari-Usage-Units`` for the meter billed and its count.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param audio_speech_request: (required)
         :type audio_speech_request: AudioSpeechRequest
@@ -125,7 +125,7 @@ class AudioApi:
     ) -> ApiResponse[object]:
         """Create Speech
 
-        OpenAI-compatible audio speech (TTS) endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
+        OpenAI-compatible audio speech (TTS) endpoint.  Billed on the characters of ``input`` at a rate priced per character, or one request at a rate priced per request. A model with no rate is refused under ``require_pricing``. The body is audio, so the settled cost rides the response headers: ``Otari-Cost-USD`` and ``Otari-Pricing-Source``, the ``cost_usd`` and ``pricing_source`` other responses carry on ``usage``, and ``Otari-Usage-Unit`` and ``Otari-Usage-Units`` for the meter billed and its count.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param audio_speech_request: (required)
         :type audio_speech_request: AudioSpeechRequest
@@ -193,7 +193,7 @@ class AudioApi:
     ) -> RESTResponseType:
         """Create Speech
 
-        OpenAI-compatible audio speech (TTS) endpoint.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
+        OpenAI-compatible audio speech (TTS) endpoint.  Billed on the characters of ``input`` at a rate priced per character, or one request at a rate priced per request. A model with no rate is refused under ``require_pricing``. The body is audio, so the settled cost rides the response headers: ``Otari-Cost-USD`` and ``Otari-Pricing-Source``, the ``cost_usd`` and ``pricing_source`` other responses carry on ``usage``, and ``Otari-Usage-Unit`` and ``Otari-Usage-Units`` for the meter billed and its count.  Authentication modes: - Master key + user field: Use specified user (must exist) - API key + user field: Use specified user (must exist) - API key without user field: Use the shared \"default\" user
 
         :param audio_speech_request: (required)
         :type audio_speech_request: AudioSpeechRequest
