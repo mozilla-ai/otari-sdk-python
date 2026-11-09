@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -28,20 +28,22 @@ class VideoGenerationRequest(BaseModel):
     """
     Start a video generation job.  The fields are any-llm's ``VideoGenerationParams``, its ``model_id`` as ``model``; a field any-llm adds fails a test until the route accepts it. ``seconds`` is the length asked for, which the provider may round.
     """ # noqa: E501
-    aspect_ratio: Optional[StrictStr] = None
+    aspect_ratio: Optional[Annotated[str, Field(strict=True, max_length=64)]] = None
     first_frame: Optional[StrictStr] = None
+    generate_audio: Optional[StrictBool] = None
     last_frame: Optional[StrictStr] = None
     model: StrictStr
     negative_prompt: Optional[StrictStr] = None
     prompt: StrictStr
     reference_audios: Optional[List[StrictStr]] = None
     reference_images: Optional[List[StrictStr]] = None
-    resolution: Optional[StrictStr] = None
+    reference_videos: Optional[List[StrictStr]] = None
+    resolution: Optional[Annotated[str, Field(strict=True, max_length=64)]] = None
     seconds: Optional[Annotated[int, Field(le=3600, strict=True, ge=1)]] = None
     seed: Optional[StrictInt] = None
-    size: Optional[StrictStr] = None
+    size: Optional[Annotated[str, Field(strict=True, max_length=64)]] = None
     user: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["aspect_ratio", "first_frame", "last_frame", "model", "negative_prompt", "prompt", "reference_audios", "reference_images", "resolution", "seconds", "seed", "size", "user"]
+    __properties: ClassVar[List[str]] = ["aspect_ratio", "first_frame", "generate_audio", "last_frame", "model", "negative_prompt", "prompt", "reference_audios", "reference_images", "reference_videos", "resolution", "seconds", "seed", "size", "user"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -92,6 +94,11 @@ class VideoGenerationRequest(BaseModel):
         if self.first_frame is None and "first_frame" in self.model_fields_set:
             _dict['first_frame'] = None
 
+        # set to None if generate_audio (nullable) is None
+        # and model_fields_set contains the field
+        if self.generate_audio is None and "generate_audio" in self.model_fields_set:
+            _dict['generate_audio'] = None
+
         # set to None if last_frame (nullable) is None
         # and model_fields_set contains the field
         if self.last_frame is None and "last_frame" in self.model_fields_set:
@@ -111,6 +118,11 @@ class VideoGenerationRequest(BaseModel):
         # and model_fields_set contains the field
         if self.reference_images is None and "reference_images" in self.model_fields_set:
             _dict['reference_images'] = None
+
+        # set to None if reference_videos (nullable) is None
+        # and model_fields_set contains the field
+        if self.reference_videos is None and "reference_videos" in self.model_fields_set:
+            _dict['reference_videos'] = None
 
         # set to None if resolution (nullable) is None
         # and model_fields_set contains the field
@@ -151,12 +163,14 @@ class VideoGenerationRequest(BaseModel):
         _obj = cls.model_validate({
             "aspect_ratio": obj.get("aspect_ratio"),
             "first_frame": obj.get("first_frame"),
+            "generate_audio": obj.get("generate_audio"),
             "last_frame": obj.get("last_frame"),
             "model": obj.get("model"),
             "negative_prompt": obj.get("negative_prompt"),
             "prompt": obj.get("prompt"),
             "reference_audios": obj.get("reference_audios"),
             "reference_images": obj.get("reference_images"),
+            "reference_videos": obj.get("reference_videos"),
             "resolution": obj.get("resolution"),
             "seconds": obj.get("seconds"),
             "seed": obj.get("seed"),

@@ -647,6 +647,8 @@ __all__ = [
     "McpErrorBody",
     "McpExecuteRequest",
     "McpServerConfig",
+    "McpServerSummary",
+    "McpServersResponse",
     "McpToolDefinition",
     "McpToolWarning",
     "McpToolsResponse",
@@ -921,9 +923,15 @@ __all__ = [
     "WorkspaceHostedProviderAccessRequest",
     "WorkspaceHostedProviderPublic",
     "WorkspaceHostedProvidersPublic",
+    "WorkspaceMcpServerAccess",
+    "WorkspaceMcpServerAccessCheck",
     "WorkspaceMcpServerCheckRequest",
     "WorkspaceMcpServerCreate",
+    "WorkspaceMcpServerGrantPublic",
+    "WorkspaceMcpServerGrantUpdate",
+    "WorkspaceMcpServerGrantsCreate",
     "WorkspaceMcpServerHealth",
+    "WorkspaceMcpServerKeyAccess",
     "WorkspaceMcpServerPublic",
     "WorkspaceMcpServerUpdate",
     "WorkspaceMcpServersPublic",
@@ -1586,6 +1594,8 @@ from otari._client.models.managed_tool import ManagedTool as ManagedTool
 from otari._client.models.mcp_error_body import McpErrorBody as McpErrorBody
 from otari._client.models.mcp_execute_request import McpExecuteRequest as McpExecuteRequest
 from otari._client.models.mcp_server_config import McpServerConfig as McpServerConfig
+from otari._client.models.mcp_server_summary import McpServerSummary as McpServerSummary
+from otari._client.models.mcp_servers_response import McpServersResponse as McpServersResponse
 from otari._client.models.mcp_tool_definition import McpToolDefinition as McpToolDefinition
 from otari._client.models.mcp_tool_warning import McpToolWarning as McpToolWarning
 from otari._client.models.mcp_tools_response import McpToolsResponse as McpToolsResponse
@@ -1860,9 +1870,15 @@ from otari._client.models.workspace_create import WorkspaceCreate as WorkspaceCr
 from otari._client.models.workspace_hosted_provider_access_request import WorkspaceHostedProviderAccessRequest as WorkspaceHostedProviderAccessRequest
 from otari._client.models.workspace_hosted_provider_public import WorkspaceHostedProviderPublic as WorkspaceHostedProviderPublic
 from otari._client.models.workspace_hosted_providers_public import WorkspaceHostedProvidersPublic as WorkspaceHostedProvidersPublic
+from otari._client.models.workspace_mcp_server_access import WorkspaceMcpServerAccess as WorkspaceMcpServerAccess
+from otari._client.models.workspace_mcp_server_access_check import WorkspaceMcpServerAccessCheck as WorkspaceMcpServerAccessCheck
 from otari._client.models.workspace_mcp_server_check_request import WorkspaceMcpServerCheckRequest as WorkspaceMcpServerCheckRequest
 from otari._client.models.workspace_mcp_server_create import WorkspaceMcpServerCreate as WorkspaceMcpServerCreate
+from otari._client.models.workspace_mcp_server_grant_public import WorkspaceMcpServerGrantPublic as WorkspaceMcpServerGrantPublic
+from otari._client.models.workspace_mcp_server_grant_update import WorkspaceMcpServerGrantUpdate as WorkspaceMcpServerGrantUpdate
+from otari._client.models.workspace_mcp_server_grants_create import WorkspaceMcpServerGrantsCreate as WorkspaceMcpServerGrantsCreate
 from otari._client.models.workspace_mcp_server_health import WorkspaceMcpServerHealth as WorkspaceMcpServerHealth
+from otari._client.models.workspace_mcp_server_key_access import WorkspaceMcpServerKeyAccess as WorkspaceMcpServerKeyAccess
 from otari._client.models.workspace_mcp_server_public import WorkspaceMcpServerPublic as WorkspaceMcpServerPublic
 from otari._client.models.workspace_mcp_server_update import WorkspaceMcpServerUpdate as WorkspaceMcpServerUpdate
 from otari._client.models.workspace_mcp_servers_public import WorkspaceMcpServersPublic as WorkspaceMcpServersPublic

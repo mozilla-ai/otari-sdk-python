@@ -15,14 +15,19 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field
-from typing import Optional
+from pydantic import Field, StrictStr
+from typing import List, Optional
 from typing_extensions import Annotated
 from uuid import UUID
 from otari._client.models.message import Message
+from otari._client.models.workspace_mcp_server_access import WorkspaceMcpServerAccess
+from otari._client.models.workspace_mcp_server_access_check import WorkspaceMcpServerAccessCheck
 from otari._client.models.workspace_mcp_server_check_request import WorkspaceMcpServerCheckRequest
 from otari._client.models.workspace_mcp_server_create import WorkspaceMcpServerCreate
+from otari._client.models.workspace_mcp_server_grant_update import WorkspaceMcpServerGrantUpdate
+from otari._client.models.workspace_mcp_server_grants_create import WorkspaceMcpServerGrantsCreate
 from otari._client.models.workspace_mcp_server_health import WorkspaceMcpServerHealth
+from otari._client.models.workspace_mcp_server_key_access import WorkspaceMcpServerKeyAccess
 from otari._client.models.workspace_mcp_server_public import WorkspaceMcpServerPublic
 from otari._client.models.workspace_mcp_server_update import WorkspaceMcpServerUpdate
 from otari._client.models.workspace_mcp_servers_public import WorkspaceMcpServersPublic
@@ -43,6 +48,314 @@ class McpServersApi:
         if api_client is None:
             api_client = ApiClient.get_default()
         self.api_client = api_client
+
+
+    @validate_call
+    def mcp_servers_add_workspace_mcp_server_grants(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        workspace_mcp_server_grants_create: WorkspaceMcpServerGrantsCreate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> WorkspaceMcpServerAccess:
+        """Add Workspace Mcp Server Grants
+
+        Give keys and users the same tools on a server.  Organization owners/admins or this workspace's owners/admins.  A key or user that already has a grant on the server gets these tools instead. A key must belong to this workspace, and a user must own a key in it or be someone the Playground lets in (a member of the workspace, or an owner or admin of its organization), named by their identity's canonical id; a deleted user, or anyone else, is refused with a 400. Answers with the server's whole access list.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param workspace_mcp_server_grants_create: (required)
+        :type workspace_mcp_server_grants_create: WorkspaceMcpServerGrantsCreate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_add_workspace_mcp_server_grants_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            workspace_mcp_server_grants_create=workspace_mcp_server_grants_create,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def mcp_servers_add_workspace_mcp_server_grants_with_http_info(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        workspace_mcp_server_grants_create: WorkspaceMcpServerGrantsCreate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[WorkspaceMcpServerAccess]:
+        """Add Workspace Mcp Server Grants
+
+        Give keys and users the same tools on a server.  Organization owners/admins or this workspace's owners/admins.  A key or user that already has a grant on the server gets these tools instead. A key must belong to this workspace, and a user must own a key in it or be someone the Playground lets in (a member of the workspace, or an owner or admin of its organization), named by their identity's canonical id; a deleted user, or anyone else, is refused with a 400. Answers with the server's whole access list.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param workspace_mcp_server_grants_create: (required)
+        :type workspace_mcp_server_grants_create: WorkspaceMcpServerGrantsCreate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_add_workspace_mcp_server_grants_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            workspace_mcp_server_grants_create=workspace_mcp_server_grants_create,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def mcp_servers_add_workspace_mcp_server_grants_without_preload_content(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        workspace_mcp_server_grants_create: WorkspaceMcpServerGrantsCreate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Add Workspace Mcp Server Grants
+
+        Give keys and users the same tools on a server.  Organization owners/admins or this workspace's owners/admins.  A key or user that already has a grant on the server gets these tools instead. A key must belong to this workspace, and a user must own a key in it or be someone the Playground lets in (a member of the workspace, or an owner or admin of its organization), named by their identity's canonical id; a deleted user, or anyone else, is refused with a 400. Answers with the server's whole access list.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param workspace_mcp_server_grants_create: (required)
+        :type workspace_mcp_server_grants_create: WorkspaceMcpServerGrantsCreate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_add_workspace_mcp_server_grants_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            workspace_mcp_server_grants_create=workspace_mcp_server_grants_create,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _mcp_servers_add_workspace_mcp_server_grants_serialize(
+        self,
+        workspace_id,
+        server_id,
+        workspace_mcp_server_grants_create,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if workspace_id is not None:
+            _path_params['workspace_id'] = workspace_id
+        if server_id is not None:
+            _path_params['server_id'] = server_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if workspace_mcp_server_grants_create is not None:
+            _body_params = workspace_mcp_server_grants_create
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}/access/grants',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
 
 
     @validate_call
@@ -313,6 +626,320 @@ class McpServersApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}/check',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def mcp_servers_check_workspace_mcp_server_access(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        api_key_id: Annotated[str, Field(min_length=1, strict=True, max_length=64, description="The key to test")],
+        tool: Annotated[str, Field(min_length=1, strict=True, max_length=256, description="The tool name to test")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> WorkspaceMcpServerAccessCheck:
+        """Check Workspace Mcp Server Access
+
+        Whether a key may call a tool on a server, and which rule decides.  Organization owners/admins or this workspace's owners/admins.  Applies the same order a request does: the server must be enabled and its `allowed_tools` must include the tool, then the key's own grant decides, else its owner's, else the server's `everyone_tools`. A key of another workspace is answered with a 404.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param api_key_id: The key to test (required)
+        :type api_key_id: str
+        :param tool: The tool name to test (required)
+        :type tool: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_check_workspace_mcp_server_access_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            api_key_id=api_key_id,
+            tool=tool,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccessCheck",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def mcp_servers_check_workspace_mcp_server_access_with_http_info(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        api_key_id: Annotated[str, Field(min_length=1, strict=True, max_length=64, description="The key to test")],
+        tool: Annotated[str, Field(min_length=1, strict=True, max_length=256, description="The tool name to test")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[WorkspaceMcpServerAccessCheck]:
+        """Check Workspace Mcp Server Access
+
+        Whether a key may call a tool on a server, and which rule decides.  Organization owners/admins or this workspace's owners/admins.  Applies the same order a request does: the server must be enabled and its `allowed_tools` must include the tool, then the key's own grant decides, else its owner's, else the server's `everyone_tools`. A key of another workspace is answered with a 404.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param api_key_id: The key to test (required)
+        :type api_key_id: str
+        :param tool: The tool name to test (required)
+        :type tool: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_check_workspace_mcp_server_access_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            api_key_id=api_key_id,
+            tool=tool,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccessCheck",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def mcp_servers_check_workspace_mcp_server_access_without_preload_content(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        api_key_id: Annotated[str, Field(min_length=1, strict=True, max_length=64, description="The key to test")],
+        tool: Annotated[str, Field(min_length=1, strict=True, max_length=256, description="The tool name to test")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Check Workspace Mcp Server Access
+
+        Whether a key may call a tool on a server, and which rule decides.  Organization owners/admins or this workspace's owners/admins.  Applies the same order a request does: the server must be enabled and its `allowed_tools` must include the tool, then the key's own grant decides, else its owner's, else the server's `everyone_tools`. A key of another workspace is answered with a 404.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param api_key_id: The key to test (required)
+        :type api_key_id: str
+        :param tool: The tool name to test (required)
+        :type tool: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_check_workspace_mcp_server_access_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            api_key_id=api_key_id,
+            tool=tool,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccessCheck",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _mcp_servers_check_workspace_mcp_server_access_serialize(
+        self,
+        workspace_id,
+        server_id,
+        api_key_id,
+        tool,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if workspace_id is not None:
+            _path_params['workspace_id'] = workspace_id
+        if server_id is not None:
+            _path_params['server_id'] = server_id
+        # process the query parameters
+        if api_key_id is not None:
+            
+            _query_params.append(('api_key_id', api_key_id))
+            
+        if tool is not None:
+            
+            _query_params.append(('tool', tool))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}/access/check',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1201,6 +1828,1141 @@ class McpServersApi:
 
 
     @validate_call
+    def mcp_servers_delete_workspace_mcp_server_grant(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        grant_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> WorkspaceMcpServerAccess:
+        """Delete Workspace Mcp Server Grant
+
+        Remove one grant, so its key or user falls back to the next rule.  Organization owners/admins or this workspace's owners/admins.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param grant_id: (required)
+        :type grant_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_delete_workspace_mcp_server_grant_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            grant_id=grant_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def mcp_servers_delete_workspace_mcp_server_grant_with_http_info(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        grant_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[WorkspaceMcpServerAccess]:
+        """Delete Workspace Mcp Server Grant
+
+        Remove one grant, so its key or user falls back to the next rule.  Organization owners/admins or this workspace's owners/admins.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param grant_id: (required)
+        :type grant_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_delete_workspace_mcp_server_grant_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            grant_id=grant_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def mcp_servers_delete_workspace_mcp_server_grant_without_preload_content(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        grant_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Delete Workspace Mcp Server Grant
+
+        Remove one grant, so its key or user falls back to the next rule.  Organization owners/admins or this workspace's owners/admins.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param grant_id: (required)
+        :type grant_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_delete_workspace_mcp_server_grant_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            grant_id=grant_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _mcp_servers_delete_workspace_mcp_server_grant_serialize(
+        self,
+        workspace_id,
+        server_id,
+        grant_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if workspace_id is not None:
+            _path_params['workspace_id'] = workspace_id
+        if server_id is not None:
+            _path_params['server_id'] = server_id
+        if grant_id is not None:
+            _path_params['grant_id'] = grant_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='DELETE',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}/access/grants/{grant_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def mcp_servers_get_workspace_mcp_key_access(
+        self,
+        workspace_id: UUID,
+        api_key_id: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> List[WorkspaceMcpServerKeyAccess]:
+        """Get Workspace Mcp Key Access
+
+        What one key reaches on each of the workspace's MCP servers.  Organization owners/admins or this workspace's owners/admins.  For each server, oldest first: the rule that decides (the key's own grant, its owner's, or the server's `everyone_tools`) and that rule's tool patterns, beside the server's own `allowed_tools` ceiling. A key of another workspace is answered with a 404.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param api_key_id: (required)
+        :type api_key_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_get_workspace_mcp_key_access_serialize(
+            workspace_id=workspace_id,
+            api_key_id=api_key_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[WorkspaceMcpServerKeyAccess]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def mcp_servers_get_workspace_mcp_key_access_with_http_info(
+        self,
+        workspace_id: UUID,
+        api_key_id: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[List[WorkspaceMcpServerKeyAccess]]:
+        """Get Workspace Mcp Key Access
+
+        What one key reaches on each of the workspace's MCP servers.  Organization owners/admins or this workspace's owners/admins.  For each server, oldest first: the rule that decides (the key's own grant, its owner's, or the server's `everyone_tools`) and that rule's tool patterns, beside the server's own `allowed_tools` ceiling. A key of another workspace is answered with a 404.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param api_key_id: (required)
+        :type api_key_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_get_workspace_mcp_key_access_serialize(
+            workspace_id=workspace_id,
+            api_key_id=api_key_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[WorkspaceMcpServerKeyAccess]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def mcp_servers_get_workspace_mcp_key_access_without_preload_content(
+        self,
+        workspace_id: UUID,
+        api_key_id: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Workspace Mcp Key Access
+
+        What one key reaches on each of the workspace's MCP servers.  Organization owners/admins or this workspace's owners/admins.  For each server, oldest first: the rule that decides (the key's own grant, its owner's, or the server's `everyone_tools`) and that rule's tool patterns, beside the server's own `allowed_tools` ceiling. A key of another workspace is answered with a 404.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param api_key_id: (required)
+        :type api_key_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_get_workspace_mcp_key_access_serialize(
+            workspace_id=workspace_id,
+            api_key_id=api_key_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[WorkspaceMcpServerKeyAccess]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _mcp_servers_get_workspace_mcp_key_access_serialize(
+        self,
+        workspace_id,
+        api_key_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if workspace_id is not None:
+            _path_params['workspace_id'] = workspace_id
+        if api_key_id is not None:
+            _path_params['api_key_id'] = api_key_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/keys/{api_key_id}/access',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def mcp_servers_get_workspace_mcp_server(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> WorkspaceMcpServerPublic:
+        """Get Workspace Mcp Server
+
+        One MCP server of a workspace. Readable by any member who can see the workspace, as the list is.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_get_workspace_mcp_server_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def mcp_servers_get_workspace_mcp_server_with_http_info(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[WorkspaceMcpServerPublic]:
+        """Get Workspace Mcp Server
+
+        One MCP server of a workspace. Readable by any member who can see the workspace, as the list is.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_get_workspace_mcp_server_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def mcp_servers_get_workspace_mcp_server_without_preload_content(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Workspace Mcp Server
+
+        One MCP server of a workspace. Readable by any member who can see the workspace, as the list is.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_get_workspace_mcp_server_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _mcp_servers_get_workspace_mcp_server_serialize(
+        self,
+        workspace_id,
+        server_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if workspace_id is not None:
+            _path_params['workspace_id'] = workspace_id
+        if server_id is not None:
+            _path_params['server_id'] = server_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def mcp_servers_get_workspace_mcp_server_access(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> WorkspaceMcpServerAccess:
+        """Get Workspace Mcp Server Access
+
+        A server's access list. Organization owners/admins or this workspace's owners/admins.  `everyone_tools` is what every key of the workspace may call. Each grant overrides it for one key, or for one user and so every key they own; a key's own grant decides over its owner's. Tool patterns are names, `*`, `prefix*`, or `@read` for the tools the server's `read_tools` labels read, and `[]` denies. The server's `allowed_tools` is a ceiling over all of them. A server holds at most 1000 grants, returned oldest first.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_get_workspace_mcp_server_access_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def mcp_servers_get_workspace_mcp_server_access_with_http_info(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[WorkspaceMcpServerAccess]:
+        """Get Workspace Mcp Server Access
+
+        A server's access list. Organization owners/admins or this workspace's owners/admins.  `everyone_tools` is what every key of the workspace may call. Each grant overrides it for one key, or for one user and so every key they own; a key's own grant decides over its owner's. Tool patterns are names, `*`, `prefix*`, or `@read` for the tools the server's `read_tools` labels read, and `[]` denies. The server's `allowed_tools` is a ceiling over all of them. A server holds at most 1000 grants, returned oldest first.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_get_workspace_mcp_server_access_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def mcp_servers_get_workspace_mcp_server_access_without_preload_content(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Workspace Mcp Server Access
+
+        A server's access list. Organization owners/admins or this workspace's owners/admins.  `everyone_tools` is what every key of the workspace may call. Each grant overrides it for one key, or for one user and so every key they own; a key's own grant decides over its owner's. Tool patterns are names, `*`, `prefix*`, or `@read` for the tools the server's `read_tools` labels read, and `[]` denies. The server's `allowed_tools` is a ceiling over all of them. A server holds at most 1000 grants, returned oldest first.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_get_workspace_mcp_server_access_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _mcp_servers_get_workspace_mcp_server_access_serialize(
+        self,
+        workspace_id,
+        server_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if workspace_id is not None:
+            _path_params['workspace_id'] = workspace_id
+        if server_id is not None:
+            _path_params['server_id'] = server_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}/access',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def mcp_servers_list_workspace_mcp_servers(
         self,
         workspace_id: UUID,
@@ -1520,7 +3282,7 @@ class McpServersApi:
     ) -> WorkspaceMcpServerPublic:
         """Update Workspace Mcp Server
 
-        Update a server. Organization owners/admins or this workspace's owners/admins.  Only the fields sent are applied. Omit `authorization_token` to leave the stored token alone, send an empty string to clear it, or send a value to rotate it. A change to the URL, the token or the allow-list checks the server again, as creating it does.
+        Update a server. Organization owners/admins or this workspace's owners/admins.  Only the fields sent are applied. Omit `authorization_token` to leave the stored token alone, send an empty string to clear it, or send a value to rotate it. A change to the URL, the token or the allow-list checks the server again, as creating it does. `everyone_tools` is what every key of the workspace may call; the server's grants override it per key or user.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -1596,7 +3358,7 @@ class McpServersApi:
     ) -> ApiResponse[WorkspaceMcpServerPublic]:
         """Update Workspace Mcp Server
 
-        Update a server. Organization owners/admins or this workspace's owners/admins.  Only the fields sent are applied. Omit `authorization_token` to leave the stored token alone, send an empty string to clear it, or send a value to rotate it. A change to the URL, the token or the allow-list checks the server again, as creating it does.
+        Update a server. Organization owners/admins or this workspace's owners/admins.  Only the fields sent are applied. Omit `authorization_token` to leave the stored token alone, send an empty string to clear it, or send a value to rotate it. A change to the URL, the token or the allow-list checks the server again, as creating it does. `everyone_tools` is what every key of the workspace may call; the server's grants override it per key or user.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -1672,7 +3434,7 @@ class McpServersApi:
     ) -> RESTResponseType:
         """Update Workspace Mcp Server
 
-        Update a server. Organization owners/admins or this workspace's owners/admins.  Only the fields sent are applied. Omit `authorization_token` to leave the stored token alone, send an empty string to clear it, or send a value to rotate it. A change to the URL, the token or the allow-list checks the server again, as creating it does.
+        Update a server. Organization owners/admins or this workspace's owners/admins.  Only the fields sent are applied. Omit `authorization_token` to leave the stored token alone, send an empty string to clear it, or send a value to rotate it. A change to the URL, the token or the allow-list checks the server again, as creating it does. `everyone_tools` is what every key of the workspace may call; the server's grants override it per key or user.
 
         :param workspace_id: (required)
         :type workspace_id: UUID
@@ -1792,6 +3554,329 @@ class McpServersApi:
         return self.api_client.param_serialize(
             method='PATCH',
             resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def mcp_servers_update_workspace_mcp_server_grant(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        grant_id: UUID,
+        workspace_mcp_server_grant_update: WorkspaceMcpServerGrantUpdate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> WorkspaceMcpServerAccess:
+        """Update Workspace Mcp Server Grant
+
+        Change the tools of one grant. Organization owners/admins or this workspace's owners/admins.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param grant_id: (required)
+        :type grant_id: UUID
+        :param workspace_mcp_server_grant_update: (required)
+        :type workspace_mcp_server_grant_update: WorkspaceMcpServerGrantUpdate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_update_workspace_mcp_server_grant_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            grant_id=grant_id,
+            workspace_mcp_server_grant_update=workspace_mcp_server_grant_update,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def mcp_servers_update_workspace_mcp_server_grant_with_http_info(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        grant_id: UUID,
+        workspace_mcp_server_grant_update: WorkspaceMcpServerGrantUpdate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[WorkspaceMcpServerAccess]:
+        """Update Workspace Mcp Server Grant
+
+        Change the tools of one grant. Organization owners/admins or this workspace's owners/admins.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param grant_id: (required)
+        :type grant_id: UUID
+        :param workspace_mcp_server_grant_update: (required)
+        :type workspace_mcp_server_grant_update: WorkspaceMcpServerGrantUpdate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_update_workspace_mcp_server_grant_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            grant_id=grant_id,
+            workspace_mcp_server_grant_update=workspace_mcp_server_grant_update,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def mcp_servers_update_workspace_mcp_server_grant_without_preload_content(
+        self,
+        workspace_id: UUID,
+        server_id: UUID,
+        grant_id: UUID,
+        workspace_mcp_server_grant_update: WorkspaceMcpServerGrantUpdate,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Update Workspace Mcp Server Grant
+
+        Change the tools of one grant. Organization owners/admins or this workspace's owners/admins.
+
+        :param workspace_id: (required)
+        :type workspace_id: UUID
+        :param server_id: (required)
+        :type server_id: UUID
+        :param grant_id: (required)
+        :type grant_id: UUID
+        :param workspace_mcp_server_grant_update: (required)
+        :type workspace_mcp_server_grant_update: WorkspaceMcpServerGrantUpdate
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._mcp_servers_update_workspace_mcp_server_grant_serialize(
+            workspace_id=workspace_id,
+            server_id=server_id,
+            grant_id=grant_id,
+            workspace_mcp_server_grant_update=workspace_mcp_server_grant_update,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkspaceMcpServerAccess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _mcp_servers_update_workspace_mcp_server_grant_serialize(
+        self,
+        workspace_id,
+        server_id,
+        grant_id,
+        workspace_mcp_server_grant_update,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if workspace_id is not None:
+            _path_params['workspace_id'] = workspace_id
+        if server_id is not None:
+            _path_params['server_id'] = server_id
+        if grant_id is not None:
+            _path_params['grant_id'] = grant_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if workspace_mcp_server_grant_update is not None:
+            _body_params = workspace_mcp_server_grant_update
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PATCH',
+            resource_path='/api/v1/workspaces/{workspace_id}/mcp-servers/{server_id}/access/grants/{grant_id}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -565,6 +565,8 @@ from otari._client.models.managed_tool import ManagedTool
 from otari._client.models.mcp_error_body import McpErrorBody
 from otari._client.models.mcp_execute_request import McpExecuteRequest
 from otari._client.models.mcp_server_config import McpServerConfig
+from otari._client.models.mcp_server_summary import McpServerSummary
+from otari._client.models.mcp_servers_response import McpServersResponse
 from otari._client.models.mcp_tool_definition import McpToolDefinition
 from otari._client.models.mcp_tool_warning import McpToolWarning
 from otari._client.models.mcp_tools_response import McpToolsResponse
@@ -839,9 +841,15 @@ from otari._client.models.workspace_create import WorkspaceCreate
 from otari._client.models.workspace_hosted_provider_access_request import WorkspaceHostedProviderAccessRequest
 from otari._client.models.workspace_hosted_provider_public import WorkspaceHostedProviderPublic
 from otari._client.models.workspace_hosted_providers_public import WorkspaceHostedProvidersPublic
+from otari._client.models.workspace_mcp_server_access import WorkspaceMcpServerAccess
+from otari._client.models.workspace_mcp_server_access_check import WorkspaceMcpServerAccessCheck
 from otari._client.models.workspace_mcp_server_check_request import WorkspaceMcpServerCheckRequest
 from otari._client.models.workspace_mcp_server_create import WorkspaceMcpServerCreate
+from otari._client.models.workspace_mcp_server_grant_public import WorkspaceMcpServerGrantPublic
+from otari._client.models.workspace_mcp_server_grant_update import WorkspaceMcpServerGrantUpdate
+from otari._client.models.workspace_mcp_server_grants_create import WorkspaceMcpServerGrantsCreate
 from otari._client.models.workspace_mcp_server_health import WorkspaceMcpServerHealth
+from otari._client.models.workspace_mcp_server_key_access import WorkspaceMcpServerKeyAccess
 from otari._client.models.workspace_mcp_server_public import WorkspaceMcpServerPublic
 from otari._client.models.workspace_mcp_server_update import WorkspaceMcpServerUpdate
 from otari._client.models.workspace_mcp_servers_public import WorkspaceMcpServersPublic

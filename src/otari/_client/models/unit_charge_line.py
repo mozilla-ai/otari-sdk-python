@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class UnitChargeLine(BaseModel):
     """
-    A charge line billed per call, for gateway-run tools and per-request routes.  ``unit_rate`` is the discriminator, in the same sense as :class:`TokenChargeLine`'s ``rate_per_million``.
+    A charge line billed per call, for gateway-run tools and per-request routes.  ``unit_rate`` is the discriminator, in the same sense as :class:`TokenChargeLine`'s ``rate_per_million``. A line whose price an override or a multiplier changed also carries ``rules``, as a token line does.
     """ # noqa: E501
     cost: Union[StrictFloat, StrictInt] = Field(description="USD charged for this line.")
     meter: StrictStr = Field(description="What was metered, e.g. 'request' or 'web_search_calls'.")
