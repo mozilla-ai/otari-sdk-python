@@ -35,7 +35,7 @@ class PricingResponse(BaseModel):
     input_price_per_million: Union[StrictFloat, StrictInt]
     kind: StrictStr = Field(description="What the row prices: 'model' (the default), or 'search' or 'fetch' for a search or fetch instance, keyed by the instance's name and priced per call. Only the deployment operator sets a search or fetch rate.")
     model_key: StrictStr
-    origin: Optional[StrictStr] = Field(description="Which writer set this row: config, api, or migration. Null when recorded before origins were.")
+    origin: Optional[StrictStr] = Field(description="Which writer set this row: config, api, seed or migration. Null before origins were recorded.")
     output_price_per_million: Union[StrictFloat, StrictInt]
     price_per_request: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="USD for each request, for a rate per request; null for any other unit.")
     pricing_tiers: List[PricingTier]
