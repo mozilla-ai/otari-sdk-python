@@ -27,13 +27,14 @@ class SearchProviderOptionSchema(BaseModel):
     """
     One native option a provider accepts, under the provider's own name.
     """ # noqa: E501
+    cost_tier: Optional[StrictBool] = Field(default=False, description="True when the option's values are the provider's cost tiers: the provider bills a call at a price of its own for each value. enum lists the tiers, and default is the one used when the option is unset.")
     default: Optional[Any] = None
     description: Optional[StrictStr] = ''
     enum: Optional[List[StrictStr]] = Field(default=None, description="The only values it takes, when it is limited to a list.")
     name: StrictStr
-    operator_only: Optional[StrictBool] = Field(default=False, description="True when only an instance or a credential may set it, never a workspace or a request.")
+    operator_only: Optional[StrictBool] = Field(default=False, description="True when only an instance or a credential may set it, never a workspace or a request: an option the provider's library marks so, or a cost tier of a provider that reports no cost.")
     type: StrictStr
-    __properties: ClassVar[List[str]] = ["default", "description", "enum", "name", "operator_only", "type"]
+    __properties: ClassVar[List[str]] = ["cost_tier", "default", "description", "enum", "name", "operator_only", "type"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -103,6 +104,7 @@ class SearchProviderOptionSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "cost_tier": obj.get("cost_tier") if obj.get("cost_tier") is not None else False,
             "default": obj.get("default"),
             "description": obj.get("description") if obj.get("description") is not None else '',
             "enum": obj.get("enum"),
