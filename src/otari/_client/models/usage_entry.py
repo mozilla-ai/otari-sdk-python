@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from otari._client.models.billing_meters import BillingMeters
 from otari._client.models.usage_entry_pricing_breakdown_inner import UsageEntryPricingBreakdownInner
@@ -58,12 +58,23 @@ class UsageEntry(BaseModel):
     source_label: Optional[StrictStr]
     status: StrictStr
     status_code: Optional[StrictInt]
+    stream_cut_by: Optional[StrictStr] = None
     tags: Optional[Dict[str, StrictStr]] = None
     timestamp: StrictStr
     total_tokens: Optional[StrictInt]
     user_alias: Optional[StrictStr] = None
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "provider_latency_ms", "reasoning_tokens", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "tags", "timestamp", "total_tokens", "user_alias", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "endpoint", "error_message", "id", "latency_ms", "model", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "provider_latency_ms", "reasoning_tokens", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "stream_cut_by", "tags", "timestamp", "total_tokens", "user_alias", "user_id"]
+
+    @field_validator('stream_cut_by')
+    def stream_cut_by_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['provider', 'client']):
+            raise ValueError("must be one of enum values ('provider', 'client')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -224,6 +235,11 @@ class UsageEntry(BaseModel):
         if self.status_code is None and "status_code" in self.model_fields_set:
             _dict['status_code'] = None
 
+        # set to None if stream_cut_by (nullable) is None
+        # and model_fields_set contains the field
+        if self.stream_cut_by is None and "stream_cut_by" in self.model_fields_set:
+            _dict['stream_cut_by'] = None
+
         # set to None if tags (nullable) is None
         # and model_fields_set contains the field
         if self.tags is None and "tags" in self.model_fields_set:
@@ -285,6 +301,7 @@ class UsageEntry(BaseModel):
             "source_label": obj.get("source_label"),
             "status": obj.get("status"),
             "status_code": obj.get("status_code"),
+            "stream_cut_by": obj.get("stream_cut_by"),
             "tags": obj.get("tags"),
             "timestamp": obj.get("timestamp"),
             "total_tokens": obj.get("total_tokens"),
