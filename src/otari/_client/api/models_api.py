@@ -18,6 +18,7 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictBool, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
+from uuid import UUID
 from otari._client.models.discoverable_models_response import DiscoverableModelsResponse
 from otari._client.models.model_list_response import ModelListResponse
 from otari._client.models.model_metadata_response import ModelMetadataResponse
@@ -824,6 +825,7 @@ class ModelsApi:
     def models_list_models(
         self,
         provider: Annotated[Optional[StrictStr], Field(description="Only the models this provider instance serves, described as served there.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="For a signed-in caller, only the models a request billed to this workspace may call.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -843,6 +845,8 @@ class ModelsApi:
 
         :param provider: Only the models this provider instance serves, described as served there.
         :type provider: str
+        :param workspace_id: For a signed-in caller, only the models a request billed to this workspace may call.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -867,6 +871,7 @@ class ModelsApi:
 
         _param = self._models_list_models_serialize(
             provider=provider,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -892,6 +897,7 @@ class ModelsApi:
     def models_list_models_with_http_info(
         self,
         provider: Annotated[Optional[StrictStr], Field(description="Only the models this provider instance serves, described as served there.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="For a signed-in caller, only the models a request billed to this workspace may call.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -911,6 +917,8 @@ class ModelsApi:
 
         :param provider: Only the models this provider instance serves, described as served there.
         :type provider: str
+        :param workspace_id: For a signed-in caller, only the models a request billed to this workspace may call.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -935,6 +943,7 @@ class ModelsApi:
 
         _param = self._models_list_models_serialize(
             provider=provider,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -960,6 +969,7 @@ class ModelsApi:
     def models_list_models_without_preload_content(
         self,
         provider: Annotated[Optional[StrictStr], Field(description="Only the models this provider instance serves, described as served there.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="For a signed-in caller, only the models a request billed to this workspace may call.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -979,6 +989,8 @@ class ModelsApi:
 
         :param provider: Only the models this provider instance serves, described as served there.
         :type provider: str
+        :param workspace_id: For a signed-in caller, only the models a request billed to this workspace may call.
+        :type workspace_id: UUID
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1003,6 +1015,7 @@ class ModelsApi:
 
         _param = self._models_list_models_serialize(
             provider=provider,
+            workspace_id=workspace_id,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1023,6 +1036,7 @@ class ModelsApi:
     def _models_list_models_serialize(
         self,
         provider,
+        workspace_id,
         _request_auth,
         _content_type,
         _headers,
@@ -1048,6 +1062,10 @@ class ModelsApi:
         if provider is not None:
             
             _query_params.append(('provider', provider))
+            
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
             
         # process the header parameters
         # process the form parameters
