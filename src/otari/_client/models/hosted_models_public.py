@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictInt
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.hosted_model_public import HostedModelPublic
 from typing import Optional, Set
 from typing_extensions import Self
@@ -26,11 +26,12 @@ from pydantic_core import to_jsonable_python
 
 class HostedModelsPublic(BaseModel):
     """
-    A page of one hosted provider's offered models, and how many there are in total.
+    A page of one hosted provider's offered models, and how many there are in total.  ``count`` is the total of the kind asked for, and ``type_counts`` how many of each kind the provider offers, ``unknown`` for a model of no known kind.
     """ # noqa: E501
     count: StrictInt
     data: List[HostedModelPublic]
-    __properties: ClassVar[List[str]] = ["count", "data"]
+    type_counts: Optional[Dict[str, StrictInt]] = None
+    __properties: ClassVar[List[str]] = ["count", "data", "type_counts"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -91,7 +92,8 @@ class HostedModelsPublic(BaseModel):
 
         _obj = cls.model_validate({
             "count": obj.get("count"),
-            "data": [HostedModelPublic.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None
+            "data": [HostedModelPublic.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None,
+            "type_counts": obj.get("type_counts")
         })
         return _obj
 

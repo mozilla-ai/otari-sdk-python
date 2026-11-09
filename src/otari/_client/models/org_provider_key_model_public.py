@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class OrgProviderKeyModelPublic(BaseModel):
     """
-    One offered model, with the rate the caller's organization is charged for it.  ``price_source`` says which rung of ``services.pricing_service`` answered: ``organization`` for a rate an admin set, ``defaults`` for the community-maintained rate this surface seeded or the models.dev fallback, ``deployment`` for the deployment's own price list, and None when nothing prices the model yet. ``pricing_id`` names the organization's own row where there is one, so a client can edit that rate without re-deriving the key. ``unit`` says what the rates are per, as on a pricing row: token, request or image, so a per-request rate is not read as a per-token one.
+    One offered model, with the rate the caller's organization is charged for it.  ``price_source`` says which rung of ``services.pricing_service`` answered: ``organization`` for a rate an admin set, ``defaults`` for the community-maintained rate this surface seeded or the models.dev fallback, ``deployment`` for the deployment's own price list, and None when nothing prices the model yet. ``pricing_id`` names the organization's own row where there is one, so a client can edit that rate without re-deriving the key. ``unit`` says what the rates are per, as on a pricing row: token, request or image, so a per-request rate is not read as a per-token one. ``type`` is the kind of model, from models.dev, and None when it does not know.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
@@ -40,9 +40,10 @@ class OrgProviderKeyModelPublic(BaseModel):
     output_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     price_source: Optional[StrictStr] = None
     pricing_id: Optional[UUID] = None
+    type: Optional[StrictStr] = None
     unit: Optional[StrictStr] = 'token'
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "enabled", "id", "input_price_per_million", "model", "org_provider_key_id", "output_price_per_million", "price_source", "pricing_id", "unit", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "enabled", "id", "input_price_per_million", "model", "org_provider_key_id", "output_price_per_million", "price_source", "pricing_id", "type", "unit", "updated_at"]
 
     @field_validator('price_source')
     def price_source_validate_enum(cls, value):
@@ -52,6 +53,16 @@ class OrgProviderKeyModelPublic(BaseModel):
 
         if value not in set(['organization', 'deployment', 'defaults']):
             raise ValueError("must be one of enum values ('organization', 'deployment', 'defaults')")
+        return value
+
+    @field_validator('type')
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other']):
+            raise ValueError("must be one of enum values ('chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other')")
         return value
 
     @field_validator('unit')
@@ -133,6 +144,11 @@ class OrgProviderKeyModelPublic(BaseModel):
         if self.pricing_id is None and "pricing_id" in self.model_fields_set:
             _dict['pricing_id'] = None
 
+        # set to None if type (nullable) is None
+        # and model_fields_set contains the field
+        if self.type is None and "type" in self.model_fields_set:
+            _dict['type'] = None
+
         # set to None if updated_at (nullable) is None
         # and model_fields_set contains the field
         if self.updated_at is None and "updated_at" in self.model_fields_set:
@@ -161,6 +177,7 @@ class OrgProviderKeyModelPublic(BaseModel):
             "output_price_per_million": obj.get("output_price_per_million"),
             "price_source": obj.get("price_source"),
             "pricing_id": obj.get("pricing_id"),
+            "type": obj.get("type"),
             "unit": obj.get("unit") if obj.get("unit") is not None else 'token',
             "updated_at": obj.get("updated_at")
         })

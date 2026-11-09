@@ -339,7 +339,7 @@ class CatalogApi:
         capability: Annotated[Optional[Annotated[List[CatalogCapability], Field(max_length=100)]], Field(description="Require every capability.")] = None,
         type: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=100)]], Field(description="Match any kind; a model of unknown kind does not match.")] = None,
         min_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Minimum context window; unknown windows do not match.")] = None,
-        max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
+        max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models, and models priced in another unit, do not match.")] = None,
         pricing: Optional[StrictStr] = None,
         source: Optional[StrictStr] = None,
         zero_data_retention: Annotated[Optional[StrictBool], Field(description="Only models at least one provider declared to keep no prompt or completion data offers.")] = None,
@@ -388,7 +388,7 @@ class CatalogApi:
         :type type: List[str]
         :param min_context: Minimum context window; unknown windows do not match.
         :type min_context: int
-        :param max_input: Maximum cheapest input price per million tokens; unpriced models do not match.
+        :param max_input: Maximum cheapest input price per million tokens; unpriced models, and models priced in another unit, do not match.
         :type max_input: float
         :param pricing:
         :type pricing: str
@@ -483,7 +483,7 @@ class CatalogApi:
         capability: Annotated[Optional[Annotated[List[CatalogCapability], Field(max_length=100)]], Field(description="Require every capability.")] = None,
         type: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=100)]], Field(description="Match any kind; a model of unknown kind does not match.")] = None,
         min_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Minimum context window; unknown windows do not match.")] = None,
-        max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
+        max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models, and models priced in another unit, do not match.")] = None,
         pricing: Optional[StrictStr] = None,
         source: Optional[StrictStr] = None,
         zero_data_retention: Annotated[Optional[StrictBool], Field(description="Only models at least one provider declared to keep no prompt or completion data offers.")] = None,
@@ -532,7 +532,7 @@ class CatalogApi:
         :type type: List[str]
         :param min_context: Minimum context window; unknown windows do not match.
         :type min_context: int
-        :param max_input: Maximum cheapest input price per million tokens; unpriced models do not match.
+        :param max_input: Maximum cheapest input price per million tokens; unpriced models, and models priced in another unit, do not match.
         :type max_input: float
         :param pricing:
         :type pricing: str
@@ -627,7 +627,7 @@ class CatalogApi:
         capability: Annotated[Optional[Annotated[List[CatalogCapability], Field(max_length=100)]], Field(description="Require every capability.")] = None,
         type: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=100)]], Field(description="Match any kind; a model of unknown kind does not match.")] = None,
         min_context: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Minimum context window; unknown windows do not match.")] = None,
-        max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models do not match.")] = None,
+        max_input: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum cheapest input price per million tokens; unpriced models, and models priced in another unit, do not match.")] = None,
         pricing: Optional[StrictStr] = None,
         source: Optional[StrictStr] = None,
         zero_data_retention: Annotated[Optional[StrictBool], Field(description="Only models at least one provider declared to keep no prompt or completion data offers.")] = None,
@@ -676,7 +676,7 @@ class CatalogApi:
         :type type: List[str]
         :param min_context: Minimum context window; unknown windows do not match.
         :type min_context: int
-        :param max_input: Maximum cheapest input price per million tokens; unpriced models do not match.
+        :param max_input: Maximum cheapest input price per million tokens; unpriced models, and models priced in another unit, do not match.
         :type max_input: float
         :param pricing:
         :type pricing: str

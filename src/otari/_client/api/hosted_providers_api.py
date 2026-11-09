@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
 from uuid import UUID
@@ -1708,6 +1708,7 @@ class HostedProvidersApi:
         provider: StrictStr,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        type: Annotated[Optional[StrictStr], Field(description="Only models of this kind; `unknown` for those no source names a kind for")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1731,6 +1732,8 @@ class HostedProvidersApi:
         :type skip: int
         :param limit:
         :type limit: int
+        :param type: Only models of this kind; `unknown` for those no source names a kind for
+        :type type: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1757,6 +1760,7 @@ class HostedProvidersApi:
             provider=provider,
             skip=skip,
             limit=limit,
+            type=type,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1784,6 +1788,7 @@ class HostedProvidersApi:
         provider: StrictStr,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        type: Annotated[Optional[StrictStr], Field(description="Only models of this kind; `unknown` for those no source names a kind for")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1807,6 +1812,8 @@ class HostedProvidersApi:
         :type skip: int
         :param limit:
         :type limit: int
+        :param type: Only models of this kind; `unknown` for those no source names a kind for
+        :type type: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1833,6 +1840,7 @@ class HostedProvidersApi:
             provider=provider,
             skip=skip,
             limit=limit,
+            type=type,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1860,6 +1868,7 @@ class HostedProvidersApi:
         provider: StrictStr,
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
+        type: Annotated[Optional[StrictStr], Field(description="Only models of this kind; `unknown` for those no source names a kind for")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1883,6 +1892,8 @@ class HostedProvidersApi:
         :type skip: int
         :param limit:
         :type limit: int
+        :param type: Only models of this kind; `unknown` for those no source names a kind for
+        :type type: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1909,6 +1920,7 @@ class HostedProvidersApi:
             provider=provider,
             skip=skip,
             limit=limit,
+            type=type,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1931,6 +1943,7 @@ class HostedProvidersApi:
         provider,
         skip,
         limit,
+        type,
         _request_auth,
         _content_type,
         _headers,
@@ -1962,6 +1975,10 @@ class HostedProvidersApi:
         if limit is not None:
             
             _query_params.append(('limit', limit))
+            
+        if type is not None:
+            
+            _query_params.append(('type', type))
             
         # process the header parameters
         # process the form parameters

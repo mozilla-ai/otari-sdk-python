@@ -42,7 +42,7 @@ class CatalogModelDetail(BaseModel):
     input_modalities: List[StrictStr]
     knowledge_cutoff: Optional[StrictStr] = None
     max_output_tokens: Optional[StrictInt] = Field(default=None, description="The largest any offering serves.")
-    min_input_price_per_million: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The cheapest offering's, at the comparison context where one was asked for.")
+    min_input_price_per_million: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The cheapest offering's, per million of `price_unit`, at the comparison context where one was asked for.")
     min_output_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     name: StrictStr
     offering_count: StrictInt
@@ -50,6 +50,7 @@ class CatalogModelDetail(BaseModel):
     open_weights: Optional[StrictBool] = False
     output_modalities: List[StrictStr]
     price_sources: List[StrictStr] = Field(description="Which price lists the priced offerings came from, distinct and sorted.")
+    price_unit: Optional[StrictStr] = Field(default=None, description="What the cheapest prices are per: the unit every priced offering is priced in. Null where no offering is priced, or where offerings are priced in different units, which leaves both null.")
     provider_count: StrictInt
     providers: List[StrictStr] = Field(description="The provider instances offering it, sorted.")
     release_date: Optional[StrictStr] = None
@@ -60,7 +61,7 @@ class CatalogModelDetail(BaseModel):
     unpriced_count: StrictInt = Field(description="How many offerings carry no price for this caller.")
     vendor: Optional[StrictStr]
     zero_data_retention_providers: Optional[List[StrictStr]] = Field(default=None, description="The provider instances offering it that are declared to keep no prompt or completion data, sorted.")
-    __properties: ClassVar[List[str]] = ["also_available_from", "capabilities", "context_window", "default_pricing", "deprecated", "description", "discovered", "family", "id", "input_modalities", "knowledge_cutoff", "max_output_tokens", "min_input_price_per_million", "min_output_price_per_million", "name", "offering_count", "offerings", "open_weights", "output_modalities", "price_sources", "provider_count", "providers", "release_date", "resolves_to", "selector", "selectors", "type", "unpriced_count", "vendor", "zero_data_retention_providers"]
+    __properties: ClassVar[List[str]] = ["also_available_from", "capabilities", "context_window", "default_pricing", "deprecated", "description", "discovered", "family", "id", "input_modalities", "knowledge_cutoff", "max_output_tokens", "min_input_price_per_million", "min_output_price_per_million", "name", "offering_count", "offerings", "open_weights", "output_modalities", "price_sources", "price_unit", "provider_count", "providers", "release_date", "resolves_to", "selector", "selectors", "type", "unpriced_count", "vendor", "zero_data_retention_providers"]
 
     @field_validator('price_sources')
     def price_sources_validate_enum(cls, value):
@@ -68,6 +69,16 @@ class CatalogModelDetail(BaseModel):
         for i in value:
             if i not in set(['organization', 'deployment', 'defaults']):
                 raise ValueError("each list item must be one of ('organization', 'deployment', 'defaults')")
+        return value
+
+    @field_validator('price_unit')
+    def price_unit_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search']):
+            raise ValueError("must be one of enum values ('token', 'request', 'image', 'character', 'megapixel', 'second', 'minute', 'web_search')")
         return value
 
     @field_validator('type')
@@ -171,6 +182,11 @@ class CatalogModelDetail(BaseModel):
         if self.min_output_price_per_million is None and "min_output_price_per_million" in self.model_fields_set:
             _dict['min_output_price_per_million'] = None
 
+        # set to None if price_unit (nullable) is None
+        # and model_fields_set contains the field
+        if self.price_unit is None and "price_unit" in self.model_fields_set:
+            _dict['price_unit'] = None
+
         # set to None if release_date (nullable) is None
         # and model_fields_set contains the field
         if self.release_date is None and "release_date" in self.model_fields_set:
@@ -228,6 +244,7 @@ class CatalogModelDetail(BaseModel):
             "open_weights": obj.get("open_weights") if obj.get("open_weights") is not None else False,
             "output_modalities": obj.get("output_modalities"),
             "price_sources": obj.get("price_sources"),
+            "price_unit": obj.get("price_unit"),
             "provider_count": obj.get("provider_count"),
             "providers": obj.get("providers"),
             "release_date": obj.get("release_date"),
