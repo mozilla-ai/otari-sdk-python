@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictStr
+from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
 from uuid import UUID
@@ -1734,6 +1734,7 @@ class ProviderKeysApi:
         key_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
+        type: Annotated[Optional[StrictStr], Field(description="Only models of this kind; `unknown` for those no source names a kind for")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1757,6 +1758,8 @@ class ProviderKeysApi:
         :type skip: int
         :param limit: Maximum number of records to return
         :type limit: int
+        :param type: Only models of this kind; `unknown` for those no source names a kind for
+        :type type: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1783,6 +1786,7 @@ class ProviderKeysApi:
             key_id=key_id,
             skip=skip,
             limit=limit,
+            type=type,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1810,6 +1814,7 @@ class ProviderKeysApi:
         key_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
+        type: Annotated[Optional[StrictStr], Field(description="Only models of this kind; `unknown` for those no source names a kind for")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1833,6 +1838,8 @@ class ProviderKeysApi:
         :type skip: int
         :param limit: Maximum number of records to return
         :type limit: int
+        :param type: Only models of this kind; `unknown` for those no source names a kind for
+        :type type: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1859,6 +1866,7 @@ class ProviderKeysApi:
             key_id=key_id,
             skip=skip,
             limit=limit,
+            type=type,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1886,6 +1894,7 @@ class ProviderKeysApi:
         key_id: UUID,
         skip: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="Number of records to skip")] = None,
         limit: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Maximum number of records to return")] = None,
+        type: Annotated[Optional[StrictStr], Field(description="Only models of this kind; `unknown` for those no source names a kind for")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1909,6 +1918,8 @@ class ProviderKeysApi:
         :type skip: int
         :param limit: Maximum number of records to return
         :type limit: int
+        :param type: Only models of this kind; `unknown` for those no source names a kind for
+        :type type: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1935,6 +1946,7 @@ class ProviderKeysApi:
             key_id=key_id,
             skip=skip,
             limit=limit,
+            type=type,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1957,6 +1969,7 @@ class ProviderKeysApi:
         key_id,
         skip,
         limit,
+        type,
         _request_auth,
         _content_type,
         _headers,
@@ -1988,6 +2001,10 @@ class ProviderKeysApi:
         if limit is not None:
             
             _query_params.append(('limit', limit))
+            
+        if type is not None:
+            
+            _query_params.append(('type', type))
             
         # process the header parameters
         # process the form parameters

@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class HostedModelPublic(BaseModel):
     """
-    One offered model, with the price the deployment currently serves it at.  ``price_source`` says which rung of the deployment's ladder answered: ``deployment`` for a rate an operator set, ``defaults`` for the community-maintained rate, whether this surface stored it or the fallback supplies it, and None when nothing prices the model yet. ``unit`` says what the rates are per, so a per-request rate is not read as a per-token one. ``enabled`` is the serving switch; a model offered without a discoverable price starts off. ``disabled_reason`` says why a model is off: ``unpriced`` while it waits for a rate, ``operator`` when an operator switched it off, ``unavailable`` when its provider refused to serve it.
+    One offered model, with the price the deployment currently serves it at.  ``price_source`` says which rung of the deployment's ladder answered: ``deployment`` for a rate an operator set, ``defaults`` for the community-maintained rate, whether this surface stored it or the fallback supplies it, and None when nothing prices the model yet. ``unit`` says what the rates are per, so a per-request rate is not read as a per-token one. ``enabled`` is the serving switch; a model offered without a discoverable price starts off. ``disabled_reason`` says why a model is off: ``unpriced`` while it waits for a rate, ``operator`` when an operator switched it off, ``unavailable`` when its provider refused to serve it. ``type`` is the kind of model, from models.dev, and None when it does not know.
     """ # noqa: E501
     cache_read_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     cache_write_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
@@ -40,9 +40,10 @@ class HostedModelPublic(BaseModel):
     output_price_per_million: Optional[Union[StrictFloat, StrictInt]] = None
     price_source: Optional[StrictStr] = None
     provider: StrictStr
+    type: Optional[StrictStr] = None
     unit: Optional[StrictStr] = None
     updated_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "disabled_reason", "enabled", "id", "input_price_per_million", "model", "output_price_per_million", "price_source", "provider", "unit", "updated_at"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "created_at", "disabled_reason", "enabled", "id", "input_price_per_million", "model", "output_price_per_million", "price_source", "provider", "type", "unit", "updated_at"]
 
     @field_validator('disabled_reason')
     def disabled_reason_validate_enum(cls, value):
@@ -62,6 +63,16 @@ class HostedModelPublic(BaseModel):
 
         if value not in set(['organization', 'deployment', 'defaults']):
             raise ValueError("must be one of enum values ('organization', 'deployment', 'defaults')")
+        return value
+
+    @field_validator('type')
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other']):
+            raise ValueError("must be one of enum values ('chat', 'embedding', 'image', 'speech', 'transcription', 'rerank', 'moderation', 'video', 'decision', 'realtime', 'other')")
         return value
 
     model_config = ConfigDict(
@@ -133,6 +144,11 @@ class HostedModelPublic(BaseModel):
         if self.price_source is None and "price_source" in self.model_fields_set:
             _dict['price_source'] = None
 
+        # set to None if type (nullable) is None
+        # and model_fields_set contains the field
+        if self.type is None and "type" in self.model_fields_set:
+            _dict['type'] = None
+
         # set to None if unit (nullable) is None
         # and model_fields_set contains the field
         if self.unit is None and "unit" in self.model_fields_set:
@@ -166,6 +182,7 @@ class HostedModelPublic(BaseModel):
             "output_price_per_million": obj.get("output_price_per_million"),
             "price_source": obj.get("price_source"),
             "provider": obj.get("provider"),
+            "type": obj.get("type"),
             "unit": obj.get("unit"),
             "updated_at": obj.get("updated_at")
         })

@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from otari._client.models.pricing_tiers_inner import PricingTiersInner
 from typing import Optional, Set
@@ -33,8 +33,9 @@ class ModelPricingInfo(BaseModel):
     input_price_per_million: Union[StrictFloat, StrictInt]
     output_price_per_million: Union[StrictFloat, StrictInt]
     pricing_tiers: Optional[List[PricingTiersInner]] = None
+    rates: Optional[Dict[str, Any]] = Field(default=None, description="Every price of the row as a models.dev cost block: each modality's input and output price with its unit, web_search, and the overrides and multipliers that change a price when a condition holds. The fields above are its text view. Null where the stored block cannot be read.")
     unit: Optional[StrictStr] = 'token'
-    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "input_price_per_million", "output_price_per_million", "pricing_tiers", "unit"]
+    __properties: ClassVar[List[str]] = ["cache_read_price_per_million", "cache_write_price_per_million", "input_price_per_million", "output_price_per_million", "pricing_tiers", "rates", "unit"]
 
     @field_validator('unit')
     def unit_validate_enum(cls, value):
@@ -102,6 +103,11 @@ class ModelPricingInfo(BaseModel):
         if self.cache_write_price_per_million is None and "cache_write_price_per_million" in self.model_fields_set:
             _dict['cache_write_price_per_million'] = None
 
+        # set to None if rates (nullable) is None
+        # and model_fields_set contains the field
+        if self.rates is None and "rates" in self.model_fields_set:
+            _dict['rates'] = None
+
         return _dict
 
     @classmethod
@@ -119,6 +125,7 @@ class ModelPricingInfo(BaseModel):
             "input_price_per_million": obj.get("input_price_per_million"),
             "output_price_per_million": obj.get("output_price_per_million"),
             "pricing_tiers": [PricingTiersInner.from_dict(_item) for _item in obj["pricing_tiers"]] if obj.get("pricing_tiers") is not None else None,
+            "rates": obj.get("rates"),
             "unit": obj.get("unit") if obj.get("unit") is not None else 'token'
         })
         return _obj
