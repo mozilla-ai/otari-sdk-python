@@ -219,6 +219,7 @@ from otari._client.models.deployment_user_organization_public import DeploymentU
 from otari._client.models.deployment_user_public import DeploymentUserPublic
 from otari._client.models.deployment_user_update_request import DeploymentUserUpdateRequest
 from otari._client.models.deployment_users_public import DeploymentUsersPublic
+from otari._client.models.disabled_reason import DisabledReason
 from otari._client.models.discoverable_model import DiscoverableModel
 from otari._client.models.discoverable_models_response import DiscoverableModelsResponse
 from otari._client.models.discoverable_provider import DiscoverableProvider
