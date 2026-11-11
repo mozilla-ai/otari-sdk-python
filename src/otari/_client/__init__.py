@@ -55,6 +55,7 @@ __all__ = [
     "OrganizationGuardrailsApi",
     "OrganizationKeysApi",
     "OrganizationPricingApi",
+    "OrganizationSsoApi",
     "OrganizationTracesApi",
     "OrganizationUsageApi",
     "OrganizationsApi",
@@ -679,6 +680,10 @@ __all__ = [
     "OAuthCallbackRequest",
     "OAuthErrorResponse",
     "OAuthSessionResponse",
+    "OIDCConnectionDomain",
+    "OIDCConnectionEnabledRequest",
+    "OIDCConnectionPublic",
+    "OIDCConnectionRequest",
     "OfferingUsage",
     "OpenAIFileDeleted",
     "OpenAIFileList",
@@ -729,6 +734,11 @@ __all__ = [
     "OrganizationScopedBudgetPublic",
     "OrganizationScopedBudgetUpdate",
     "OrganizationScopedBudgetsPublic",
+    "OrganizationSsoEnforcementPublic",
+    "OrganizationSsoEnforcementRequest",
+    "OrganizationSsoPreflightMemberPublic",
+    "OrganizationSsoPreflightPublic",
+    "OrganizationSsoPublic",
     "OutputShape",
     "OverviewSummaryResponse",
     "PasskeySessionResponse",
@@ -840,6 +850,11 @@ __all__ = [
     "Source",
     "Source1",
     "SpanPublic",
+    "SsoAuthorizeResponse",
+    "SsoCallbackRequest",
+    "SsoLookupRequest",
+    "SsoLookupResponse",
+    "SsoSessionPublic",
     "State",
     "Stop",
     "StoredCountryDatabasePublic",
@@ -1004,6 +1019,7 @@ from otari._client.api.organization_guardrail_definitions_api import Organizatio
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi as OrganizationGuardrailsApi
 from otari._client.api.organization_keys_api import OrganizationKeysApi as OrganizationKeysApi
 from otari._client.api.organization_pricing_api import OrganizationPricingApi as OrganizationPricingApi
+from otari._client.api.organization_sso_api import OrganizationSsoApi as OrganizationSsoApi
 from otari._client.api.organization_traces_api import OrganizationTracesApi as OrganizationTracesApi
 from otari._client.api.organization_usage_api import OrganizationUsageApi as OrganizationUsageApi
 from otari._client.api.organizations_api import OrganizationsApi as OrganizationsApi
@@ -1632,6 +1648,10 @@ from otari._client.models.noul_question import NoulQuestion as NoulQuestion
 from otari._client.models.o_auth_callback_request import OAuthCallbackRequest as OAuthCallbackRequest
 from otari._client.models.o_auth_error_response import OAuthErrorResponse as OAuthErrorResponse
 from otari._client.models.o_auth_session_response import OAuthSessionResponse as OAuthSessionResponse
+from otari._client.models.oidc_connection_domain import OIDCConnectionDomain as OIDCConnectionDomain
+from otari._client.models.oidc_connection_enabled_request import OIDCConnectionEnabledRequest as OIDCConnectionEnabledRequest
+from otari._client.models.oidc_connection_public import OIDCConnectionPublic as OIDCConnectionPublic
+from otari._client.models.oidc_connection_request import OIDCConnectionRequest as OIDCConnectionRequest
 from otari._client.models.offering_usage import OfferingUsage as OfferingUsage
 from otari._client.models.open_ai_file_deleted import OpenAIFileDeleted as OpenAIFileDeleted
 from otari._client.models.open_ai_file_list import OpenAIFileList as OpenAIFileList
@@ -1682,6 +1702,11 @@ from otari._client.models.organization_scoped_budget_create import OrganizationS
 from otari._client.models.organization_scoped_budget_public import OrganizationScopedBudgetPublic as OrganizationScopedBudgetPublic
 from otari._client.models.organization_scoped_budget_update import OrganizationScopedBudgetUpdate as OrganizationScopedBudgetUpdate
 from otari._client.models.organization_scoped_budgets_public import OrganizationScopedBudgetsPublic as OrganizationScopedBudgetsPublic
+from otari._client.models.organization_sso_enforcement_public import OrganizationSsoEnforcementPublic as OrganizationSsoEnforcementPublic
+from otari._client.models.organization_sso_enforcement_request import OrganizationSsoEnforcementRequest as OrganizationSsoEnforcementRequest
+from otari._client.models.organization_sso_preflight_member_public import OrganizationSsoPreflightMemberPublic as OrganizationSsoPreflightMemberPublic
+from otari._client.models.organization_sso_preflight_public import OrganizationSsoPreflightPublic as OrganizationSsoPreflightPublic
+from otari._client.models.organization_sso_public import OrganizationSsoPublic as OrganizationSsoPublic
 from otari._client.models.output_shape import OutputShape as OutputShape
 from otari._client.models.overview_summary_response import OverviewSummaryResponse as OverviewSummaryResponse
 from otari._client.models.passkey_session_response import PasskeySessionResponse as PasskeySessionResponse
@@ -1793,6 +1818,11 @@ from otari._client.models.signup_response import SignupResponse as SignupRespons
 from otari._client.models.source import Source as Source
 from otari._client.models.source1 import Source1 as Source1
 from otari._client.models.span_public import SpanPublic as SpanPublic
+from otari._client.models.sso_authorize_response import SsoAuthorizeResponse as SsoAuthorizeResponse
+from otari._client.models.sso_callback_request import SsoCallbackRequest as SsoCallbackRequest
+from otari._client.models.sso_lookup_request import SsoLookupRequest as SsoLookupRequest
+from otari._client.models.sso_lookup_response import SsoLookupResponse as SsoLookupResponse
+from otari._client.models.sso_session_public import SsoSessionPublic as SsoSessionPublic
 from otari._client.models.state import State as State
 from otari._client.models.stop import Stop as Stop
 from otari._client.models.stored_country_database_public import StoredCountryDatabasePublic as StoredCountryDatabasePublic

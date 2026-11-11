@@ -28,13 +28,13 @@ class ManagedTool(BaseModel):
     One tool the gateway can run itself.
     """ # noqa: E501
     accepted_types: List[StrictStr] = Field(description="Every `tools[].type` this deployment currently routes to the tool. Always includes the canonical `otari_*` type; for web search it also includes the provider-named keywords when interception is enabled and the deployment has a search of its own, and for code execution the provider-named keywords unless the deployment's executor is `provider`.")
-    available: StrictBool = Field(description="Whether a request from this caller may declare the tool: the deployment has enabled and configured it and, for an API key, the key's workspace allows it. A master key or a dashboard session gets the deployment's answer alone. A request declaring an unavailable tool is refused.")
+    available: StrictBool = Field(description="Whether a request from this caller may declare the tool: the deployment has enabled and configured it and, for an API key, the key's workspace allows it and its organization can pay for what the tool runs on the deployment's account. A master key or a dashboard session gets the deployment's answer alone. A request declaring an unavailable tool is refused.")
     description: StrictStr = Field(description="What the tool does, as the model is told.")
     example: Dict[str, Any] = Field(description="A ready-to-use `tools[]` entry.")
     id: StrictStr = Field(description="The canonical tool type to put in `tools[]`.")
     input_schema: Dict[str, Any] = Field(description="JSON Schema for the arguments the model supplies, as the model sees it.")
     object: Optional[StrictStr] = 'tool'
-    reason: Optional[StrictStr] = Field(default=None, description="Why the tool is unavailable, `null` when it is available. `not_configured`: nothing is set up to run it (for web search, neither the deployment nor the API key's organization has a search provider). `workspace_disabled`: the API key's workspace does not allow it, which a workspace admin changes under Tools in the dashboard.")
+    reason: Optional[StrictStr] = Field(default=None, description="Why the tool is unavailable, `null` when it is available. `not_configured`: nothing is set up to run it (for web search, neither the deployment nor the API key's organization has a search provider). `workspace_disabled`: the API key's workspace does not allow it, which a workspace admin changes under Tools in the dashboard. `insufficient_funds`: the tool, or for web search the pages it reads, would run on the deployment's account and the API key's organization has no funds to pay for it, which adding funds changes.")
     __properties: ClassVar[List[str]] = ["accepted_types", "available", "description", "example", "id", "input_schema", "object", "reason"]
 
     @field_validator('object')
@@ -53,8 +53,8 @@ class ManagedTool(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['not_configured', 'workspace_disabled']):
-            raise ValueError("must be one of enum values ('not_configured', 'workspace_disabled')")
+        if value not in set(['not_configured', 'workspace_disabled', 'insufficient_funds']):
+            raise ValueError("must be one of enum values ('not_configured', 'workspace_disabled', 'insufficient_funds')")
         return value
 
     model_config = ConfigDict(

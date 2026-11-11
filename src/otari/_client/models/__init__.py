@@ -596,6 +596,10 @@ from otari._client.models.noul_question import NoulQuestion
 from otari._client.models.o_auth_callback_request import OAuthCallbackRequest
 from otari._client.models.o_auth_error_response import OAuthErrorResponse
 from otari._client.models.o_auth_session_response import OAuthSessionResponse
+from otari._client.models.oidc_connection_domain import OIDCConnectionDomain
+from otari._client.models.oidc_connection_enabled_request import OIDCConnectionEnabledRequest
+from otari._client.models.oidc_connection_public import OIDCConnectionPublic
+from otari._client.models.oidc_connection_request import OIDCConnectionRequest
 from otari._client.models.offering_usage import OfferingUsage
 from otari._client.models.open_ai_file_deleted import OpenAIFileDeleted
 from otari._client.models.open_ai_file_list import OpenAIFileList
@@ -646,6 +650,11 @@ from otari._client.models.organization_scoped_budget_create import OrganizationS
 from otari._client.models.organization_scoped_budget_public import OrganizationScopedBudgetPublic
 from otari._client.models.organization_scoped_budget_update import OrganizationScopedBudgetUpdate
 from otari._client.models.organization_scoped_budgets_public import OrganizationScopedBudgetsPublic
+from otari._client.models.organization_sso_enforcement_public import OrganizationSsoEnforcementPublic
+from otari._client.models.organization_sso_enforcement_request import OrganizationSsoEnforcementRequest
+from otari._client.models.organization_sso_preflight_member_public import OrganizationSsoPreflightMemberPublic
+from otari._client.models.organization_sso_preflight_public import OrganizationSsoPreflightPublic
+from otari._client.models.organization_sso_public import OrganizationSsoPublic
 from otari._client.models.output_shape import OutputShape
 from otari._client.models.overview_summary_response import OverviewSummaryResponse
 from otari._client.models.passkey_session_response import PasskeySessionResponse
@@ -757,6 +766,11 @@ from otari._client.models.signup_response import SignupResponse
 from otari._client.models.source import Source
 from otari._client.models.source1 import Source1
 from otari._client.models.span_public import SpanPublic
+from otari._client.models.sso_authorize_response import SsoAuthorizeResponse
+from otari._client.models.sso_callback_request import SsoCallbackRequest
+from otari._client.models.sso_lookup_request import SsoLookupRequest
+from otari._client.models.sso_lookup_response import SsoLookupResponse
+from otari._client.models.sso_session_public import SsoSessionPublic
 from otari._client.models.state import State
 from otari._client.models.stop import Stop
 from otari._client.models.stored_country_database_public import StoredCountryDatabasePublic

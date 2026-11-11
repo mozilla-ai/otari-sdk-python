@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, field_validator
+from pydantic import Field, StrictStr, field_validator
 from typing import Any, Dict
 from typing_extensions import Annotated
 from uuid import UUID
@@ -39,6 +39,11 @@ from otari._client.models.session_response import SessionResponse
 from otari._client.models.set_password_request import SetPasswordRequest
 from otari._client.models.signup_request import SignupRequest
 from otari._client.models.signup_response import SignupResponse
+from otari._client.models.sso_authorize_response import SsoAuthorizeResponse
+from otari._client.models.sso_callback_request import SsoCallbackRequest
+from otari._client.models.sso_lookup_request import SsoLookupRequest
+from otari._client.models.sso_lookup_response import SsoLookupResponse
+from otari._client.models.sso_session_public import SsoSessionPublic
 from otari._client.models.update_avatar_request import UpdateAvatarRequest
 from otari._client.models.update_profile_request import UpdateProfileRequest
 from otari._client.models.verify_email_request import VerifyEmailRequest
@@ -850,6 +855,271 @@ class AuthApi:
 
 
     @validate_call
+    def auth_authorize_sso(
+        self,
+        slug: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> SsoAuthorizeResponse:
+        """Authorize Sso
+
+        Start a sign-in through the organization's own connection at ``slug``.  An unknown slug and a slug naming an organization with no enabled connection answer alike (404), so this surface cannot be read as a directory of which organizations use Otari.  NOTE: This GET writes. It records a pending authorization and sets an HttpOnly cookie, both scoped to this router's own path.
+
+        :param slug: (required)
+        :type slug: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_authorize_sso_serialize(
+            slug=slug,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SsoAuthorizeResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def auth_authorize_sso_with_http_info(
+        self,
+        slug: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[SsoAuthorizeResponse]:
+        """Authorize Sso
+
+        Start a sign-in through the organization's own connection at ``slug``.  An unknown slug and a slug naming an organization with no enabled connection answer alike (404), so this surface cannot be read as a directory of which organizations use Otari.  NOTE: This GET writes. It records a pending authorization and sets an HttpOnly cookie, both scoped to this router's own path.
+
+        :param slug: (required)
+        :type slug: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_authorize_sso_serialize(
+            slug=slug,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SsoAuthorizeResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def auth_authorize_sso_without_preload_content(
+        self,
+        slug: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Authorize Sso
+
+        Start a sign-in through the organization's own connection at ``slug``.  An unknown slug and a slug naming an organization with no enabled connection answer alike (404), so this surface cannot be read as a directory of which organizations use Otari.  NOTE: This GET writes. It records a pending authorization and sets an HttpOnly cookie, both scoped to this router's own path.
+
+        :param slug: (required)
+        :type slug: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_authorize_sso_serialize(
+            slug=slug,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SsoAuthorizeResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _auth_authorize_sso_serialize(
+        self,
+        slug,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if slug is not None:
+            _path_params['slug'] = slug
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/auth/sso/{slug}/authorize',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def auth_callback(
         self,
         provider: Annotated[str, Field(strict=True, description="Which OAuth provider to sign in with.")],
@@ -1125,6 +1395,284 @@ class AuthApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/api/v1/auth/oauth/{provider}/callback',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def auth_callback_sso(
+        self,
+        sso_callback_request: SsoCallbackRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> SsoSessionPublic:
+        """Callback Sso
+
+        Exchange an authorization code and set the HttpOnly session cookie.  The session is bound to the identity the organization's connection resolves to. A refusal is counted as a failed sign-in, and a sign-in that creates the account, or is the first way in to one, is reported to ``GrowthSignalPort`` once it has committed.  **Maintenance mode freezes this.** A frozen deployment makes no outbound call and spends nobody's authorization code.
+
+        :param sso_callback_request: (required)
+        :type sso_callback_request: SsoCallbackRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_callback_sso_serialize(
+            sso_callback_request=sso_callback_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SsoSessionPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def auth_callback_sso_with_http_info(
+        self,
+        sso_callback_request: SsoCallbackRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[SsoSessionPublic]:
+        """Callback Sso
+
+        Exchange an authorization code and set the HttpOnly session cookie.  The session is bound to the identity the organization's connection resolves to. A refusal is counted as a failed sign-in, and a sign-in that creates the account, or is the first way in to one, is reported to ``GrowthSignalPort`` once it has committed.  **Maintenance mode freezes this.** A frozen deployment makes no outbound call and spends nobody's authorization code.
+
+        :param sso_callback_request: (required)
+        :type sso_callback_request: SsoCallbackRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_callback_sso_serialize(
+            sso_callback_request=sso_callback_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SsoSessionPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def auth_callback_sso_without_preload_content(
+        self,
+        sso_callback_request: SsoCallbackRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Callback Sso
+
+        Exchange an authorization code and set the HttpOnly session cookie.  The session is bound to the identity the organization's connection resolves to. A refusal is counted as a failed sign-in, and a sign-in that creates the account, or is the first way in to one, is reported to ``GrowthSignalPort`` once it has committed.  **Maintenance mode freezes this.** A frozen deployment makes no outbound call and spends nobody's authorization code.
+
+        :param sso_callback_request: (required)
+        :type sso_callback_request: SsoCallbackRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_callback_sso_serialize(
+            sso_callback_request=sso_callback_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SsoSessionPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _auth_callback_sso_serialize(
+        self,
+        sso_callback_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if sso_callback_request is not None:
+            _body_params = sso_callback_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/auth/sso/callback',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2674,6 +3222,284 @@ class AuthApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/api/v1/auth/webauthn/credentials',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def auth_lookup_sso(
+        self,
+        sso_lookup_request: SsoLookupRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> SsoLookupResponse:
+        """Lookup Sso
+
+        Say whether an organization's own connection admits a sign-in at this address.  An unknown domain, one no organization has proven, and a proven one whose organization holds no enabled connection all answer alike: ``found`` is false and nothing else is named.
+
+        :param sso_lookup_request: (required)
+        :type sso_lookup_request: SsoLookupRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_lookup_sso_serialize(
+            sso_lookup_request=sso_lookup_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SsoLookupResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def auth_lookup_sso_with_http_info(
+        self,
+        sso_lookup_request: SsoLookupRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[SsoLookupResponse]:
+        """Lookup Sso
+
+        Say whether an organization's own connection admits a sign-in at this address.  An unknown domain, one no organization has proven, and a proven one whose organization holds no enabled connection all answer alike: ``found`` is false and nothing else is named.
+
+        :param sso_lookup_request: (required)
+        :type sso_lookup_request: SsoLookupRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_lookup_sso_serialize(
+            sso_lookup_request=sso_lookup_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SsoLookupResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def auth_lookup_sso_without_preload_content(
+        self,
+        sso_lookup_request: SsoLookupRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Lookup Sso
+
+        Say whether an organization's own connection admits a sign-in at this address.  An unknown domain, one no organization has proven, and a proven one whose organization holds no enabled connection all answer alike: ``found`` is false and nothing else is named.
+
+        :param sso_lookup_request: (required)
+        :type sso_lookup_request: SsoLookupRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._auth_lookup_sso_serialize(
+            sso_lookup_request=sso_lookup_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SsoLookupResponse",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _auth_lookup_sso_serialize(
+        self,
+        sso_lookup_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if sso_lookup_request is not None:
+            _body_params = sso_lookup_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/auth/sso/lookup',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4356,7 +5182,7 @@ class AuthApi:
     ) -> SignupResponse:
         """Signup
 
-        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.  Refused with a 400 where the deployment publishes terms and ``terms_accepted`` is not set, whatever the address.
+        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.  Refused with a 400 where the deployment publishes terms and ``terms_accepted`` is not set, whatever the address.  With an ``invite`` that names this address, the account is verified as it is created and ``verified`` says so: the invitation reached the mailbox, so a verification email would prove nothing more. Only the token's holder learns that.
 
         :param signup_request: (required)
         :type signup_request: SignupRequest
@@ -4424,7 +5250,7 @@ class AuthApi:
     ) -> ApiResponse[SignupResponse]:
         """Signup
 
-        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.  Refused with a 400 where the deployment publishes terms and ``terms_accepted`` is not set, whatever the address.
+        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.  Refused with a 400 where the deployment publishes terms and ``terms_accepted`` is not set, whatever the address.  With an ``invite`` that names this address, the account is verified as it is created and ``verified`` says so: the invitation reached the mailbox, so a verification email would prove nothing more. Only the token's holder learns that.
 
         :param signup_request: (required)
         :type signup_request: SignupRequest
@@ -4492,7 +5318,7 @@ class AuthApi:
     ) -> RESTResponseType:
         """Signup
 
-        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.  Refused with a 400 where the deployment publishes terms and ``terms_accepted`` is not set, whatever the address.
+        Claim a roster identity, register a new one, or do nothing: the response never says which.  Which of the three this deployment will do is ``open_signup``, published in the bootstrap so the page can say so before anyone types an address.  No session is minted. A newly claimed or registered identity is hard-blocked from signing in until it verifies, so there is nothing yet to sign it into.  Refused with a 400 where the deployment publishes terms and ``terms_accepted`` is not set, whatever the address.  With an ``invite`` that names this address, the account is verified as it is created and ``verified`` says so: the invitation reached the mailbox, so a verification email would prove nothing more. Only the token's holder learns that.
 
         :param signup_request: (required)
         :type signup_request: SignupRequest

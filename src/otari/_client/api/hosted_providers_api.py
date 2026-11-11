@@ -1709,6 +1709,7 @@ class HostedProvidersApi:
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
         type: Annotated[Optional[StrictStr], Field(description="Only models of this kind; `unknown` for those no source names a kind for")] = None,
+        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Only models whose name contains this text, case-insensitively")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1734,6 +1735,8 @@ class HostedProvidersApi:
         :type limit: int
         :param type: Only models of this kind; `unknown` for those no source names a kind for
         :type type: str
+        :param search: Only models whose name contains this text, case-insensitively
+        :type search: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1761,6 +1764,7 @@ class HostedProvidersApi:
             skip=skip,
             limit=limit,
             type=type,
+            search=search,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1789,6 +1793,7 @@ class HostedProvidersApi:
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
         type: Annotated[Optional[StrictStr], Field(description="Only models of this kind; `unknown` for those no source names a kind for")] = None,
+        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Only models whose name contains this text, case-insensitively")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1814,6 +1819,8 @@ class HostedProvidersApi:
         :type limit: int
         :param type: Only models of this kind; `unknown` for those no source names a kind for
         :type type: str
+        :param search: Only models whose name contains this text, case-insensitively
+        :type search: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1841,6 +1848,7 @@ class HostedProvidersApi:
             skip=skip,
             limit=limit,
             type=type,
+            search=search,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1869,6 +1877,7 @@ class HostedProvidersApi:
         skip: Optional[Annotated[int, Field(strict=True, ge=0)]] = None,
         limit: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = None,
         type: Annotated[Optional[StrictStr], Field(description="Only models of this kind; `unknown` for those no source names a kind for")] = None,
+        search: Annotated[Optional[Annotated[str, Field(strict=True, max_length=200)]], Field(description="Only models whose name contains this text, case-insensitively")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1894,6 +1903,8 @@ class HostedProvidersApi:
         :type limit: int
         :param type: Only models of this kind; `unknown` for those no source names a kind for
         :type type: str
+        :param search: Only models whose name contains this text, case-insensitively
+        :type search: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1921,6 +1932,7 @@ class HostedProvidersApi:
             skip=skip,
             limit=limit,
             type=type,
+            search=search,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1944,6 +1956,7 @@ class HostedProvidersApi:
         skip,
         limit,
         type,
+        search,
         _request_auth,
         _content_type,
         _headers,
@@ -1979,6 +1992,10 @@ class HostedProvidersApi:
         if type is not None:
             
             _query_params.append(('type', type))
+            
+        if search is not None:
+            
+            _query_params.append(('search', search))
             
         # process the header parameters
         # process the form parameters

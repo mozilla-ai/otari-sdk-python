@@ -1723,7 +1723,7 @@ class OrganizationsApi:
     ) -> OrganizationMembershipContextPublic:
         """Delete Active Organization
 
-        Delete the caller's active organization, if it has no usage, and move the caller out of it.  Owners and admins only. Its workspaces, memberships, invitations and organization-level settings go with it. Refused for the deployment's default organization, for the only organization the caller belongs to, and for one whose workspaces still hold usage, API keys, aliases or routing policies, so a deletion never takes spend history with it.  Answers with the caller's context in the organization they are moved to, their oldest other one.
+        Delete the caller's active organization, if it has no usage, and move the caller out of it.  Owners and admins only. Its workspaces, memberships, invitations and organization-level settings go with it. Refused for the deployment's default organization, for the only organization the caller belongs to, and for one whose workspaces still hold usage, API keys, aliases or routing policies, so a deletion never takes spend history with it.  Answers with the caller's context in the organization they are moved to: the oldest of their other memberships that admits them. One requiring sign-in through its own connection admits a member who holds a link to it, and the account its enforcement exempts, and nobody else.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1789,7 +1789,7 @@ class OrganizationsApi:
     ) -> ApiResponse[OrganizationMembershipContextPublic]:
         """Delete Active Organization
 
-        Delete the caller's active organization, if it has no usage, and move the caller out of it.  Owners and admins only. Its workspaces, memberships, invitations and organization-level settings go with it. Refused for the deployment's default organization, for the only organization the caller belongs to, and for one whose workspaces still hold usage, API keys, aliases or routing policies, so a deletion never takes spend history with it.  Answers with the caller's context in the organization they are moved to, their oldest other one.
+        Delete the caller's active organization, if it has no usage, and move the caller out of it.  Owners and admins only. Its workspaces, memberships, invitations and organization-level settings go with it. Refused for the deployment's default organization, for the only organization the caller belongs to, and for one whose workspaces still hold usage, API keys, aliases or routing policies, so a deletion never takes spend history with it.  Answers with the caller's context in the organization they are moved to: the oldest of their other memberships that admits them. One requiring sign-in through its own connection admits a member who holds a link to it, and the account its enforcement exempts, and nobody else.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1855,7 +1855,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """Delete Active Organization
 
-        Delete the caller's active organization, if it has no usage, and move the caller out of it.  Owners and admins only. Its workspaces, memberships, invitations and organization-level settings go with it. Refused for the deployment's default organization, for the only organization the caller belongs to, and for one whose workspaces still hold usage, API keys, aliases or routing policies, so a deletion never takes spend history with it.  Answers with the caller's context in the organization they are moved to, their oldest other one.
+        Delete the caller's active organization, if it has no usage, and move the caller out of it.  Owners and admins only. Its workspaces, memberships, invitations and organization-level settings go with it. Refused for the deployment's default organization, for the only organization the caller belongs to, and for one whose workspaces still hold usage, API keys, aliases or routing policies, so a deletion never takes spend history with it.  Answers with the caller's context in the organization they are moved to: the oldest of their other memberships that admits them. One requiring sign-in through its own connection admits a member who holds a link to it, and the account its enforcement exempts, and nobody else.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3322,7 +3322,7 @@ class OrganizationsApi:
     ) -> CallerOrganizationMembershipsPublic:
         """List Caller Organization Memberships
 
-        List the organizations the caller belongs to, and their role in each.  The caller's own active memberships, not a directory of the deployment's organizations: this is what an organization switcher renders, and one row carries ``is_active_organization`` so it can mark the current one. Not to be confused with ``GET /me/members``, which is the active organization's roster.
+        List the organizations the caller belongs to, and their role in each.  The caller's own active memberships, not a directory of the deployment's organizations: this is what an organization switcher renders, and one row carries ``is_active_organization`` so it can mark the current one. Not to be confused with ``GET /me/members``, which is the active organization's memberships. An organization whose own SSO enforcement refuses the caller is left off.
 
         :param skip: Number of records to skip
         :type skip: int
@@ -3394,7 +3394,7 @@ class OrganizationsApi:
     ) -> ApiResponse[CallerOrganizationMembershipsPublic]:
         """List Caller Organization Memberships
 
-        List the organizations the caller belongs to, and their role in each.  The caller's own active memberships, not a directory of the deployment's organizations: this is what an organization switcher renders, and one row carries ``is_active_organization`` so it can mark the current one. Not to be confused with ``GET /me/members``, which is the active organization's roster.
+        List the organizations the caller belongs to, and their role in each.  The caller's own active memberships, not a directory of the deployment's organizations: this is what an organization switcher renders, and one row carries ``is_active_organization`` so it can mark the current one. Not to be confused with ``GET /me/members``, which is the active organization's memberships. An organization whose own SSO enforcement refuses the caller is left off.
 
         :param skip: Number of records to skip
         :type skip: int
@@ -3466,7 +3466,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """List Caller Organization Memberships
 
-        List the organizations the caller belongs to, and their role in each.  The caller's own active memberships, not a directory of the deployment's organizations: this is what an organization switcher renders, and one row carries ``is_active_organization`` so it can mark the current one. Not to be confused with ``GET /me/members``, which is the active organization's roster.
+        List the organizations the caller belongs to, and their role in each.  The caller's own active memberships, not a directory of the deployment's organizations: this is what an organization switcher renders, and one row carries ``is_active_organization`` so it can mark the current one. Not to be confused with ``GET /me/members``, which is the active organization's memberships. An organization whose own SSO enforcement refuses the caller is left off.
 
         :param skip: Number of records to skip
         :type skip: int
@@ -4684,7 +4684,7 @@ class OrganizationsApi:
     ) -> OrganizationMembershipContextPublic:
         """Switch Active Organization
 
-        Point the caller's identity at another organization they belong to.  Distinct from ``PATCH /me``, which renames the organization already active. This changes which organization every later request is scoped to, so workspaces, keys, budgets and usage all follow it. Answers 404 for an organization the caller holds no active membership in, whether or not it exists.
+        Point the caller's identity at another organization they belong to.  Distinct from ``PATCH /me``, which renames the organization already active. This changes which organization every later request is scoped to, so workspaces, keys, budgets and usage all follow it. Answers 404 for an organization the caller holds no active membership in, whether or not it exists, and for one whose own SSO enforcement refuses the caller.
 
         :param switch_active_organization_request: (required)
         :type switch_active_organization_request: SwitchActiveOrganizationRequest
@@ -4752,7 +4752,7 @@ class OrganizationsApi:
     ) -> ApiResponse[OrganizationMembershipContextPublic]:
         """Switch Active Organization
 
-        Point the caller's identity at another organization they belong to.  Distinct from ``PATCH /me``, which renames the organization already active. This changes which organization every later request is scoped to, so workspaces, keys, budgets and usage all follow it. Answers 404 for an organization the caller holds no active membership in, whether or not it exists.
+        Point the caller's identity at another organization they belong to.  Distinct from ``PATCH /me``, which renames the organization already active. This changes which organization every later request is scoped to, so workspaces, keys, budgets and usage all follow it. Answers 404 for an organization the caller holds no active membership in, whether or not it exists, and for one whose own SSO enforcement refuses the caller.
 
         :param switch_active_organization_request: (required)
         :type switch_active_organization_request: SwitchActiveOrganizationRequest
@@ -4820,7 +4820,7 @@ class OrganizationsApi:
     ) -> RESTResponseType:
         """Switch Active Organization
 
-        Point the caller's identity at another organization they belong to.  Distinct from ``PATCH /me``, which renames the organization already active. This changes which organization every later request is scoped to, so workspaces, keys, budgets and usage all follow it. Answers 404 for an organization the caller holds no active membership in, whether or not it exists.
+        Point the caller's identity at another organization they belong to.  Distinct from ``PATCH /me``, which renames the organization already active. This changes which organization every later request is scoped to, so workspaces, keys, budgets and usage all follow it. Answers 404 for an organization the caller holds no active membership in, whether or not it exists, and for one whose own SSO enforcement refuses the caller.
 
         :param switch_active_organization_request: (required)
         :type switch_active_organization_request: SwitchActiveOrganizationRequest

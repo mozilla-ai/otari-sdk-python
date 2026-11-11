@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
@@ -35,6 +35,7 @@ class OrganizationGuardrailPublic(BaseModel):
     has_credential: StrictBool
     id: UUID
     mode: StrictStr
+    on: List[StrictStr]
     on_unavailable: StrictStr
     organization_id: UUID
     profile: StrictStr
@@ -42,7 +43,15 @@ class OrganizationGuardrailPublic(BaseModel):
     url: Optional[StrictStr]
     validate_kwargs: Optional[Dict[str, Any]] = Field(description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     workspace_ids: List[UUID]
-    __properties: ClassVar[List[str]] = ["applies_to_all_workspaces", "created_at", "definition_id", "enabled", "has_credential", "id", "mode", "on_unavailable", "organization_id", "profile", "updated_at", "url", "validate_kwargs", "workspace_ids"]
+    __properties: ClassVar[List[str]] = ["applies_to_all_workspaces", "created_at", "definition_id", "enabled", "has_credential", "id", "mode", "on", "on_unavailable", "organization_id", "profile", "updated_at", "url", "validate_kwargs", "workspace_ids"]
+
+    @field_validator('on')
+    def on_validate_enum(cls, value):
+        """Validates the enum"""
+        for i in value:
+            if i not in set(['input', 'tool_results', 'tool_calls', 'output']):
+                raise ValueError("each list item must be one of ('input', 'tool_results', 'tool_calls', 'output')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -117,6 +126,7 @@ class OrganizationGuardrailPublic(BaseModel):
             "has_credential": obj.get("has_credential"),
             "id": obj.get("id"),
             "mode": obj.get("mode"),
+            "on": obj.get("on"),
             "on_unavailable": obj.get("on_unavailable"),
             "organization_id": obj.get("organization_id"),
             "profile": obj.get("profile"),

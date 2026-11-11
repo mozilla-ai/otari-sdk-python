@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +28,8 @@ class SignupResponse(BaseModel):
     The same message whether or not the address had anything to claim.
     """ # noqa: E501
     message: StrictStr = Field(description="What the caller should do next.")
-    __properties: ClassVar[List[str]] = ["message"]
+    verified: Optional[StrictBool] = Field(default=False, description="The account is verified already, through its invitation, so the caller can sign in now.")
+    __properties: ClassVar[List[str]] = ["message", "verified"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,7 +82,8 @@ class SignupResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "message": obj.get("message")
+            "message": obj.get("message"),
+            "verified": obj.get("verified") if obj.get("verified") is not None else False
         })
         return _obj
 

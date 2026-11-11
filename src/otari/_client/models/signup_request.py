@@ -30,9 +30,10 @@ class SignupRequest(BaseModel):
     """ # noqa: E501
     email: Annotated[str, Field(strict=True, max_length=255)] = Field(description="The address to sign in with. An address an admin added or invited where this deployment keeps signup closed; any address where the bootstrap reports open_signup.")
     full_name: Optional[Annotated[str, Field(strict=True, max_length=255)]] = Field(default=None, description="Filled in only if not already set.")
+    invite: Optional[Annotated[str, Field(strict=True, max_length=512)]] = Field(default=None, description="An invitation token from a link emailed to this address. Where it names the same address, the account is verified at once and no verification email is sent.")
     password: Annotated[str, Field(min_length=8, strict=True, max_length=1024)] = Field(description="The password to sign in with once verified. At least 8 characters, at most 72 bytes.")
     terms_accepted: Optional[StrictBool] = Field(default=False, description="Whether the caller accepted this deployment's terms. Required where the bootstrap reports a terms_url.")
-    __properties: ClassVar[List[str]] = ["email", "full_name", "password", "terms_accepted"]
+    __properties: ClassVar[List[str]] = ["email", "full_name", "invite", "password", "terms_accepted"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -78,6 +79,11 @@ class SignupRequest(BaseModel):
         if self.full_name is None and "full_name" in self.model_fields_set:
             _dict['full_name'] = None
 
+        # set to None if invite (nullable) is None
+        # and model_fields_set contains the field
+        if self.invite is None and "invite" in self.model_fields_set:
+            _dict['invite'] = None
+
         return _dict
 
     @classmethod
@@ -92,6 +98,7 @@ class SignupRequest(BaseModel):
         _obj = cls.model_validate({
             "email": obj.get("email"),
             "full_name": obj.get("full_name"),
+            "invite": obj.get("invite"),
             "password": obj.get("password"),
             "terms_accepted": obj.get("terms_accepted") if obj.get("terms_accepted") is not None else False
         })
