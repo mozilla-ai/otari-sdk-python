@@ -38,6 +38,7 @@ from otari._client.api.organization_guardrail_definitions_api import Organizatio
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi
 from otari._client.api.organization_keys_api import OrganizationKeysApi
 from otari._client.api.organization_pricing_api import OrganizationPricingApi
+from otari._client.api.organization_sso_api import OrganizationSsoApi
 from otari._client.api.organization_traces_api import OrganizationTracesApi
 from otari._client.api.organization_usage_api import OrganizationUsageApi
 from otari._client.api.organizations_api import OrganizationsApi

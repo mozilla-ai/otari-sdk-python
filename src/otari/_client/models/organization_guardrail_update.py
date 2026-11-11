@@ -34,12 +34,13 @@ class OrganizationGuardrailUpdate(BaseModel):
     definition_id: Optional[UUID] = Field(default=None, description="The organization's own definition this mandate runs. Unlike url and credential, an explicit null clears the link; omit the field to leave it as it is")
     enabled: Optional[StrictBool] = None
     mode: Optional[StrictStr] = None
+    on: Optional[List[StrictStr]] = None
     on_unavailable: Optional[StrictStr] = None
     profile: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None
     url: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = None
     validate_kwargs: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     workspace_ids: Optional[Annotated[List[UUID], Field(max_length=500)]] = None
-    __properties: ClassVar[List[str]] = ["applies_to_all_workspaces", "credential", "definition_id", "enabled", "mode", "on_unavailable", "profile", "url", "validate_kwargs", "workspace_ids"]
+    __properties: ClassVar[List[str]] = ["applies_to_all_workspaces", "credential", "definition_id", "enabled", "mode", "on", "on_unavailable", "profile", "url", "validate_kwargs", "workspace_ids"]
 
     @field_validator('mode')
     def mode_validate_enum(cls, value):
@@ -49,6 +50,17 @@ class OrganizationGuardrailUpdate(BaseModel):
 
         if value not in set(['block', 'monitor']):
             raise ValueError("must be one of enum values ('block', 'monitor')")
+        return value
+
+    @field_validator('on')
+    def on_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        for i in value:
+            if i not in set(['input', 'tool_results', 'tool_calls', 'output']):
+                raise ValueError("each list item must be one of ('input', 'tool_results', 'tool_calls', 'output')")
         return value
 
     @field_validator('on_unavailable')
@@ -142,6 +154,7 @@ class OrganizationGuardrailUpdate(BaseModel):
             "definition_id": obj.get("definition_id"),
             "enabled": obj.get("enabled"),
             "mode": obj.get("mode"),
+            "on": obj.get("on"),
             "on_unavailable": obj.get("on_unavailable"),
             "profile": obj.get("profile"),
             "url": obj.get("url"),

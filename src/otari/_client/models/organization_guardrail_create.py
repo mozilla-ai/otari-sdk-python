@@ -27,19 +27,20 @@ from pydantic_core import to_jsonable_python
 
 class OrganizationGuardrailCreate(BaseModel):
     """
-    Request body for mandating a guardrail across an organization.  ``credential`` is never stored as sent: it is encrypted with ``OTARI_SECRET_KEY`` and only the ciphertext is kept, the same convention `tools.WorkspaceMcpServer` and `providers.ProviderCredential` use. It is sent to the endpoint as ``Authorization: Bearer`` when the guardrail runs, so it authenticates this gateway to the guardrails service the entry names. A guardrail *vendor's* own key is not this: the guardrails service builds its guardrails from the operator's YAML and holds those itself.  A credential therefore requires ``url``. The deployment's ``guardrails_url`` is not necessarily encrypted (the shipped compose file makes it a same-host ``http://`` sidecar) and this row cannot see what it is set to, so an entry that fell back to it could not promise the bearer was sent over https. See `_require_url_for_credential`.  ``on`` is not offered. This plane mandates input-direction checks, which is the only direction the request path enforces (`services.guardrails.run_input_guardrails`); an organization that could store an output-direction mandate would be storing one nothing runs.
+    Request body for mandating a guardrail across an organization.  ``credential`` is never stored as sent: it is encrypted with ``OTARI_SECRET_KEY`` and only the ciphertext is kept, the same convention `tools.WorkspaceMcpServer` and `providers.ProviderCredential` use. It is sent to the endpoint as ``Authorization: Bearer`` when the guardrail runs, so it authenticates this gateway to the guardrails service the entry names. A guardrail *vendor's* own key is not this: the guardrails service builds its guardrails from the operator's YAML and holds those itself.  A credential therefore requires ``url``. The deployment's ``guardrails_url`` is not necessarily encrypted (the shipped compose file makes it a same-host ``http://`` sidecar) and this row cannot see what it is set to, so an entry that fell back to it could not promise the bearer was sent over https. See `_require_url_for_credential`.
     """ # noqa: E501
     applies_to_all_workspaces: Optional[StrictBool] = Field(default=False, description="True runs this in every workspace of the organization, including one created later; false runs it only in the workspaces named by workspace_ids")
     credential: Optional[Annotated[str, Field(strict=True, max_length=8192)]] = Field(default=None, description="Bearer credential for this entry's endpoint. Requires url to be set, and https: an entry with no endpoint of its own falls back to the deployment's guardrails_url, which is commonly a same-host http sidecar. Encrypted at rest, never returned")
     definition_id: Optional[UUID] = Field(default=None, description="A guardrail definition of this organization for Otari to build and run itself, instead of calling a profile on a guardrails service. Mutually exclusive with url and credential, which name a service")
     enabled: Optional[StrictBool] = Field(default=True, description="False stops the guardrail everywhere without discarding it")
-    mode: Optional[StrictStr] = Field(default='monitor', description="block rejects a flagged request with 403; monitor annotates the response and forwards it")
+    mode: Optional[StrictStr] = Field(default='monitor', description="monitor records the verdict and forwards the request; block refuses flagged input or a flagged answer with 403 and withholds a flagged tool result or tool call")
+    on: Optional[Annotated[List[StrictStr], Field(min_length=1)]] = Field(default=None, description="What the guardrail reads: input (the caller's input), tool_results, tool_calls (each call before it runs or reaches the client), output (the model's answer)")
     on_unavailable: Optional[StrictStr] = Field(default='block', description="What a block-mode entry does when the guardrails service cannot be reached or gives no verdict")
     profile: Annotated[str, Field(min_length=1, strict=True, max_length=128)] = Field(description="Profile name configured on the guardrails service, unique within the organization")
     url: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = Field(default=None, description="Guardrails endpoint for this entry; null uses the deployment's guardrails_url")
     validate_kwargs: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
     workspace_ids: Optional[Annotated[List[UUID], Field(max_length=500)]] = Field(default=None, description="Workspaces this guardrail runs in. Must be empty when applies_to_all_workspaces is true")
-    __properties: ClassVar[List[str]] = ["applies_to_all_workspaces", "credential", "definition_id", "enabled", "mode", "on_unavailable", "profile", "url", "validate_kwargs", "workspace_ids"]
+    __properties: ClassVar[List[str]] = ["applies_to_all_workspaces", "credential", "definition_id", "enabled", "mode", "on", "on_unavailable", "profile", "url", "validate_kwargs", "workspace_ids"]
 
     @field_validator('mode')
     def mode_validate_enum(cls, value):
@@ -49,6 +50,17 @@ class OrganizationGuardrailCreate(BaseModel):
 
         if value not in set(['block', 'monitor']):
             raise ValueError("must be one of enum values ('block', 'monitor')")
+        return value
+
+    @field_validator('on')
+    def on_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        for i in value:
+            if i not in set(['input', 'tool_results', 'tool_calls', 'output']):
+                raise ValueError("each list item must be one of ('input', 'tool_results', 'tool_calls', 'output')")
         return value
 
     @field_validator('on_unavailable')
@@ -137,6 +149,7 @@ class OrganizationGuardrailCreate(BaseModel):
             "definition_id": obj.get("definition_id"),
             "enabled": obj.get("enabled") if obj.get("enabled") is not None else True,
             "mode": obj.get("mode") if obj.get("mode") is not None else 'monitor',
+            "on": obj.get("on"),
             "on_unavailable": obj.get("on_unavailable") if obj.get("on_unavailable") is not None else 'block',
             "profile": obj.get("profile"),
             "url": obj.get("url"),

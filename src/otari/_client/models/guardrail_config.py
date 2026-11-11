@@ -26,11 +26,11 @@ from pydantic_core import to_jsonable_python
 
 class GuardrailConfig(BaseModel):
     """
-    A single guardrail check the caller wants the gateway to enforce.  URL safety: when ``url`` is supplied it is validated by :func:`gateway.services.guardrails.run_input_guardrails` (not here at parse time — the check does a DNS lookup that must be awaited) with the same SSRF guard used for MCP server URLs (loopback allowed by default for same-host sidecars; gated by ``OTARI_MCP_ALLOW_LOOPBACK`` / ``OTARI_MCP_ALLOW_PRIVATE_HOSTS``). Most deployments omit ``url`` and rely on the operator-set ``OTARI_GUARDRAILS_URL`` instead.
+    A single guardrail check the caller wants the gateway to enforce.  URL safety: when ``url`` is supplied it is validated by :func:`gateway.services.guardrails.check_guardrail_urls` (not here at parse time — the check does a DNS lookup that must be awaited) with the same SSRF guard used for MCP server URLs (loopback allowed by default for same-host sidecars; gated by ``OTARI_MCP_ALLOW_LOOPBACK`` / ``OTARI_MCP_ALLOW_PRIVATE_HOSTS``). Most deployments omit ``url`` and rely on the operator-set ``OTARI_GUARDRAILS_URL`` instead.
     """ # noqa: E501
     credential: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     mode: Optional[StrictStr] = 'monitor'
-    on: Optional[List[StrictStr]] = None
+    on: Optional[Annotated[List[StrictStr], Field(min_length=1)]] = None
     on_unavailable: Optional[StrictStr] = 'block'
     profile: Annotated[str, Field(min_length=1, strict=True, max_length=128)]
     url: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
@@ -54,8 +54,8 @@ class GuardrailConfig(BaseModel):
             return value
 
         for i in value:
-            if i not in set(['input', 'output']):
-                raise ValueError("each list item must be one of ('input', 'output')")
+            if i not in set(['input', 'tool_results', 'tool_calls', 'output']):
+                raise ValueError("each list item must be one of ('input', 'tool_results', 'tool_calls', 'output')")
         return value
 
     @field_validator('on_unavailable')
