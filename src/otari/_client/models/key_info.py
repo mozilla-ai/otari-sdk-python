@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
+from otari._client.models.disabled_reason import DisabledReason
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -33,6 +34,7 @@ class KeyInfo(BaseModel):
     capture_agent_telemetry: Optional[StrictBool]
     config_name: Optional[StrictStr] = None
     created_at: StrictStr
+    disabled_reason: Optional[DisabledReason]
     end_user_budget_id: Optional[StrictStr]
     end_user_budget_ids: List[StrictStr]
     exclude_from_budget: StrictBool
@@ -47,11 +49,11 @@ class KeyInfo(BaseModel):
     last_used_at: Optional[StrictStr]
     max_end_users: Optional[StrictInt] = None
     metadata: Dict[str, Any]
-    operator_disabled: Optional[StrictBool] = False
+    operator_can_enable: StrictBool
     reject_user_mismatch: Optional[StrictBool]
     user_id: Optional[StrictStr]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "config_name", "created_at", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_organization_service_key", "is_service_key", "key_name", "key_prefix", "key_suffix", "last_used_at", "max_end_users", "metadata", "operator_disabled", "reject_user_mismatch", "user_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["allowed_models", "allowed_tools", "capture_agent_telemetry", "config_name", "created_at", "disabled_reason", "end_user_budget_id", "end_user_budget_ids", "exclude_from_budget", "expires_at", "id", "is_active", "is_organization_service_key", "is_service_key", "key_name", "key_prefix", "key_suffix", "last_used_at", "max_end_users", "metadata", "operator_can_enable", "reject_user_mismatch", "user_id", "workspace_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -111,6 +113,11 @@ class KeyInfo(BaseModel):
         # and model_fields_set contains the field
         if self.config_name is None and "config_name" in self.model_fields_set:
             _dict['config_name'] = None
+
+        # set to None if disabled_reason (nullable) is None
+        # and model_fields_set contains the field
+        if self.disabled_reason is None and "disabled_reason" in self.model_fields_set:
+            _dict['disabled_reason'] = None
 
         # set to None if end_user_budget_id (nullable) is None
         # and model_fields_set contains the field
@@ -174,6 +181,7 @@ class KeyInfo(BaseModel):
             "capture_agent_telemetry": obj.get("capture_agent_telemetry"),
             "config_name": obj.get("config_name"),
             "created_at": obj.get("created_at"),
+            "disabled_reason": obj.get("disabled_reason"),
             "end_user_budget_id": obj.get("end_user_budget_id"),
             "end_user_budget_ids": obj.get("end_user_budget_ids"),
             "exclude_from_budget": obj.get("exclude_from_budget"),
@@ -188,7 +196,7 @@ class KeyInfo(BaseModel):
             "last_used_at": obj.get("last_used_at"),
             "max_end_users": obj.get("max_end_users"),
             "metadata": obj.get("metadata"),
-            "operator_disabled": obj.get("operator_disabled") if obj.get("operator_disabled") is not None else False,
+            "operator_can_enable": obj.get("operator_can_enable"),
             "reject_user_mismatch": obj.get("reject_user_mismatch"),
             "user_id": obj.get("user_id"),
             "workspace_id": obj.get("workspace_id")

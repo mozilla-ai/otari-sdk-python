@@ -303,6 +303,7 @@ __all__ = [
     "DeploymentUserPublic",
     "DeploymentUserUpdateRequest",
     "DeploymentUsersPublic",
+    "DisabledReason",
     "DiscoverableModel",
     "DiscoverableModelsResponse",
     "DiscoverableProvider",
@@ -1271,6 +1272,7 @@ from otari._client.models.deployment_user_organization_public import DeploymentU
 from otari._client.models.deployment_user_public import DeploymentUserPublic as DeploymentUserPublic
 from otari._client.models.deployment_user_update_request import DeploymentUserUpdateRequest as DeploymentUserUpdateRequest
 from otari._client.models.deployment_users_public import DeploymentUsersPublic as DeploymentUsersPublic
+from otari._client.models.disabled_reason import DisabledReason as DisabledReason
 from otari._client.models.discoverable_model import DiscoverableModel as DiscoverableModel
 from otari._client.models.discoverable_models_response import DiscoverableModelsResponse as DiscoverableModelsResponse
 from otari._client.models.discoverable_provider import DiscoverableProvider as DiscoverableProvider
