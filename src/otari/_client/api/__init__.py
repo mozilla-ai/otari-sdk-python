@@ -33,6 +33,7 @@ from otari._client.api.messages_api import MessagesApi
 from otari._client.api.models_api import ModelsApi
 from otari._client.api.moderations_api import ModerationsApi
 from otari._client.api.oauth_api import OauthApi
+from otari._client.api.oauth_apps_api import OauthAppsApi
 from otari._client.api.organization_budgets_api import OrganizationBudgetsApi
 from otari._client.api.organization_guardrail_definitions_api import OrganizationGuardrailDefinitionsApi
 from otari._client.api.organization_guardrails_api import OrganizationGuardrailsApi
@@ -61,6 +62,7 @@ from otari._client.api.settings_api import SettingsApi
 from otari._client.api.tool_settings_api import ToolSettingsApi
 from otari._client.api.tools_api import ToolsApi
 from otari._client.api.traces_api import TracesApi
+from otari._client.api.update_check_api import UpdateCheckApi
 from otari._client.api.usage_api import UsageApi
 from otari._client.api.users_api import UsersApi
 from otari._client.api.videos_api import VideosApi
