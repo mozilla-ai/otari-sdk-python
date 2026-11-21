@@ -25,7 +25,7 @@ from pydantic_core import to_jsonable_python
 
 class MSGAudio(BaseModel):
     """
-    Data about a previous audio response from the model. [Learn more](https://platform.openai.com/docs/guides/audio).
+    Data about a previous audio response from the model. [Learn more](https://developers.openai.com/api/docs/guides/audio).
     """ # noqa: E501
     id: StrictStr
     __properties: ClassVar[List[str]] = ["id"]

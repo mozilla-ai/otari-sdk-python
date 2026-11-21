@@ -25,7 +25,7 @@ from pydantic_core import to_jsonable_python
 
 class CCChatCompletionAudio(BaseModel):
     """
-    If the audio output modality is requested, this object contains data about the audio response from the model. [Learn more](https://platform.openai.com/docs/guides/audio).
+    If the audio output modality is requested, this object contains data about the audio response from the model. [Learn more](https://developers.openai.com/api/docs/guides/audio).
     """ # noqa: E501
     id: StrictStr
     data: StrictStr

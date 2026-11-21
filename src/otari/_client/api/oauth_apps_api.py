@@ -634,6 +634,8 @@ class OauthAppsApi:
         code_challenge: Annotated[str, Field(strict=True)],
         code_challenge_method: StrictStr,
         response_type: Optional[StrictStr] = None,
+        limit: Annotated[Optional[StrictStr], Field(description="A spending limit in USD to suggest for the key. The person can change it on the consent screen, and one the screen cannot use is left blank.")] = None,
+        expiration: Annotated[Optional[StrictStr], Field(description="An expiry to suggest for the key: 1-hour, 1-day, 7-days, 30-days, 90-days, 180-days, 1-year or never. The person can change it, and any other value leaves it at never.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -663,6 +665,10 @@ class OauthAppsApi:
         :type code_challenge_method: str
         :param response_type:
         :type response_type: str
+        :param limit: A spending limit in USD to suggest for the key. The person can change it on the consent screen, and one the screen cannot use is left blank.
+        :type limit: str
+        :param expiration: An expiry to suggest for the key: 1-hour, 1-day, 7-days, 30-days, 90-days, 180-days, 1-year or never. The person can change it, and any other value leaves it at never.
+        :type expiration: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -692,6 +698,8 @@ class OauthAppsApi:
             code_challenge=code_challenge,
             code_challenge_method=code_challenge_method,
             response_type=response_type,
+            limit=limit,
+            expiration=expiration,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -723,6 +731,8 @@ class OauthAppsApi:
         code_challenge: Annotated[str, Field(strict=True)],
         code_challenge_method: StrictStr,
         response_type: Optional[StrictStr] = None,
+        limit: Annotated[Optional[StrictStr], Field(description="A spending limit in USD to suggest for the key. The person can change it on the consent screen, and one the screen cannot use is left blank.")] = None,
+        expiration: Annotated[Optional[StrictStr], Field(description="An expiry to suggest for the key: 1-hour, 1-day, 7-days, 30-days, 90-days, 180-days, 1-year or never. The person can change it, and any other value leaves it at never.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -752,6 +762,10 @@ class OauthAppsApi:
         :type code_challenge_method: str
         :param response_type:
         :type response_type: str
+        :param limit: A spending limit in USD to suggest for the key. The person can change it on the consent screen, and one the screen cannot use is left blank.
+        :type limit: str
+        :param expiration: An expiry to suggest for the key: 1-hour, 1-day, 7-days, 30-days, 90-days, 180-days, 1-year or never. The person can change it, and any other value leaves it at never.
+        :type expiration: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -781,6 +795,8 @@ class OauthAppsApi:
             code_challenge=code_challenge,
             code_challenge_method=code_challenge_method,
             response_type=response_type,
+            limit=limit,
+            expiration=expiration,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -812,6 +828,8 @@ class OauthAppsApi:
         code_challenge: Annotated[str, Field(strict=True)],
         code_challenge_method: StrictStr,
         response_type: Optional[StrictStr] = None,
+        limit: Annotated[Optional[StrictStr], Field(description="A spending limit in USD to suggest for the key. The person can change it on the consent screen, and one the screen cannot use is left blank.")] = None,
+        expiration: Annotated[Optional[StrictStr], Field(description="An expiry to suggest for the key: 1-hour, 1-day, 7-days, 30-days, 90-days, 180-days, 1-year or never. The person can change it, and any other value leaves it at never.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -841,6 +859,10 @@ class OauthAppsApi:
         :type code_challenge_method: str
         :param response_type:
         :type response_type: str
+        :param limit: A spending limit in USD to suggest for the key. The person can change it on the consent screen, and one the screen cannot use is left blank.
+        :type limit: str
+        :param expiration: An expiry to suggest for the key: 1-hour, 1-day, 7-days, 30-days, 90-days, 180-days, 1-year or never. The person can change it, and any other value leaves it at never.
+        :type expiration: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -870,6 +892,8 @@ class OauthAppsApi:
             code_challenge=code_challenge,
             code_challenge_method=code_challenge_method,
             response_type=response_type,
+            limit=limit,
+            expiration=expiration,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -896,6 +920,8 @@ class OauthAppsApi:
         code_challenge,
         code_challenge_method,
         response_type,
+        limit,
+        expiration,
         _request_auth,
         _content_type,
         _headers,
@@ -941,6 +967,14 @@ class OauthAppsApi:
         if response_type is not None:
             
             _query_params.append(('response_type', response_type))
+            
+        if limit is not None:
+            
+            _query_params.append(('limit', limit))
+            
+        if expiration is not None:
+            
+            _query_params.append(('expiration', expiration))
             
         # process the header parameters
         # process the form parameters

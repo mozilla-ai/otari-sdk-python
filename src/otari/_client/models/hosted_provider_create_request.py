@@ -27,11 +27,12 @@ from pydantic_core import to_jsonable_python
 
 class HostedProviderCreateRequest(BaseModel):
     """
-    Configure a provider this deployment will serve hosted inference on.  ``provider`` is the any-llm implementation. ``name`` is what requests address it by (``name:model``), defaulting to ``provider``; a name of its own lets two endpoints of one implementation coexist. ``api_key`` may be left out for a backend that needs none, or for an endpoint of its own (``api_base``), which is called with a placeholder key.  ``client_args`` is whatever the provider's SDK client needs beyond the key (Bedrock's region and IAM pair), the same shape an organization provider key takes. Values under credential-shaped names come back masked. ``restricted_to_organization_id`` keeps the provider to one organization; every other one is served as if it were not configured. ``serves_unlisted_models`` serves a model the roster does not list, as a ``config.yml`` instance does, and switches on every model it offers whether or not something prices it. ``supported_countries`` keeps the provider to requests from those ISO country codes, checked as well as ``provider_supported_countries``; null serves every country. ``zero_data_retention`` declares that the upstream keeps no prompt or completion data; the catalog shows it and nothing enforces it. ``terms_url`` and ``privacy_url`` link the upstream's own terms of service and privacy policy from the public Providers pages: absolute http(s) addresses with no username or password.
+    Configure a provider this deployment will serve hosted inference on.  ``provider`` is the any-llm implementation. ``name`` is what requests address it by (``name:model``), defaulting to ``provider``; a name of its own lets two endpoints of one implementation coexist. ``api_key`` may be left out for a backend that needs none, or for an endpoint of its own (``api_base``), which is called with a placeholder key.  ``client_args`` is whatever the provider's SDK client needs beyond the key (Bedrock's region and IAM pair), the same shape an organization provider key takes. Values under credential-shaped names come back masked. ``restricted_to_organization_id`` keeps the provider to one organization; every other one is served as if it were not configured. ``serves_unlisted_models`` serves a model the roster does not list, as a ``config.yml`` instance does, and switches on every model it offers whether or not something prices it. ``supported_countries`` keeps the provider to requests from those ISO country codes, checked as well as ``provider_supported_countries``; null serves every country. ``data_location`` declares where the upstream keeps request data: an ISO 3166-1 alpha-2 country code, ``EU`` or ``GLOBAL``; null leaves it undeclared. A workspace that lists the locations it accepts is served only from one of them. ``zero_data_retention`` declares that the upstream keeps no prompt or completion data; the catalog shows it and nothing enforces it. ``terms_url`` and ``privacy_url`` link the upstream's own terms of service and privacy policy from the public Providers pages: absolute http(s) addresses with no username or password.
     """ # noqa: E501
     api_base: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
     api_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=1024)]] = None
     client_args: Optional[Dict[str, Any]] = Field(default=None, description="Tags for cost attribution, recorded on the request's usage rows and filterable in the usage API: up to 16 string pairs, keys up to 64 characters and values up to 512. A null value is ignored. LiteLLM's nested `spend_logs_metadata` object is also read, and wins over a flat key of the same name; it is never forwarded to the provider.")
+    data_location: Optional[Annotated[str, Field(strict=True, max_length=16)]] = None
     enabled: Optional[StrictBool] = True
     name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=64)]] = None
     privacy_url: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
@@ -41,7 +42,7 @@ class HostedProviderCreateRequest(BaseModel):
     supported_countries: Optional[Annotated[List[StrictStr], Field(max_length=300)]] = None
     terms_url: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
     zero_data_retention: Optional[StrictBool] = False
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "enabled", "name", "privacy_url", "provider", "restricted_to_organization_id", "serves_unlisted_models", "supported_countries", "terms_url", "zero_data_retention"]
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "data_location", "enabled", "name", "privacy_url", "provider", "restricted_to_organization_id", "serves_unlisted_models", "supported_countries", "terms_url", "zero_data_retention"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -97,6 +98,11 @@ class HostedProviderCreateRequest(BaseModel):
         if self.client_args is None and "client_args" in self.model_fields_set:
             _dict['client_args'] = None
 
+        # set to None if data_location (nullable) is None
+        # and model_fields_set contains the field
+        if self.data_location is None and "data_location" in self.model_fields_set:
+            _dict['data_location'] = None
+
         # set to None if name (nullable) is None
         # and model_fields_set contains the field
         if self.name is None and "name" in self.model_fields_set:
@@ -137,6 +143,7 @@ class HostedProviderCreateRequest(BaseModel):
             "api_base": obj.get("api_base"),
             "api_key": obj.get("api_key"),
             "client_args": obj.get("client_args"),
+            "data_location": obj.get("data_location"),
             "enabled": obj.get("enabled") if obj.get("enabled") is not None else True,
             "name": obj.get("name"),
             "privacy_url": obj.get("privacy_url"),

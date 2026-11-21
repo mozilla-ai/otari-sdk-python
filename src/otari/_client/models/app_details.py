@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List
 from otari._client.models.key_scope import KeyScope
 from typing import Optional, Set
@@ -32,7 +32,9 @@ class AppDetails(BaseModel):
     name: StrictStr
     redirect_uri: StrictStr
     scopes: List[KeyScope] = Field(description="The scopes each key this app is issued will hold, from its registration.")
-    __properties: ClassVar[List[str]] = ["issuer", "name", "redirect_uri", "scopes"]
+    spend_limits: StrictBool = Field(description="Whether a spending limit the person sets binds the key. It does not where the deployment has turned budget enforcement off, so the consent screen does not offer one.")
+    verified: StrictBool = Field(description="Whether the operator registered this app. An unregistered app is named after its site, which nothing has checked beyond its callback being on it.")
+    __properties: ClassVar[List[str]] = ["issuer", "name", "redirect_uri", "scopes", "spend_limits", "verified"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -88,7 +90,9 @@ class AppDetails(BaseModel):
             "issuer": obj.get("issuer"),
             "name": obj.get("name"),
             "redirect_uri": obj.get("redirect_uri"),
-            "scopes": obj.get("scopes")
+            "scopes": obj.get("scopes"),
+            "spend_limits": obj.get("spend_limits"),
+            "verified": obj.get("verified")
         })
         return _obj
 

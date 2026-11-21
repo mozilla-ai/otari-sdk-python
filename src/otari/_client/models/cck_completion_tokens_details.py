@@ -31,9 +31,10 @@ class CCKCompletionTokensDetails(BaseModel):
     audio_tokens: Optional[StrictInt] = None
     reasoning_tokens: Optional[StrictInt] = None
     rejected_prediction_tokens: Optional[StrictInt] = None
+    text_tokens: Optional[StrictInt] = None
     image_tokens: Optional[StrictInt] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["accepted_prediction_tokens", "audio_tokens", "reasoning_tokens", "rejected_prediction_tokens", "image_tokens"]
+    __properties: ClassVar[List[str]] = ["accepted_prediction_tokens", "audio_tokens", "reasoning_tokens", "rejected_prediction_tokens", "text_tokens", "image_tokens"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -101,6 +102,11 @@ class CCKCompletionTokensDetails(BaseModel):
         if self.rejected_prediction_tokens is None and "rejected_prediction_tokens" in self.model_fields_set:
             _dict['rejected_prediction_tokens'] = None
 
+        # set to None if text_tokens (nullable) is None
+        # and model_fields_set contains the field
+        if self.text_tokens is None and "text_tokens" in self.model_fields_set:
+            _dict['text_tokens'] = None
+
         # set to None if image_tokens (nullable) is None
         # and model_fields_set contains the field
         if self.image_tokens is None and "image_tokens" in self.model_fields_set:
@@ -122,6 +128,7 @@ class CCKCompletionTokensDetails(BaseModel):
             "audio_tokens": obj.get("audio_tokens"),
             "reasoning_tokens": obj.get("reasoning_tokens"),
             "rejected_prediction_tokens": obj.get("rejected_prediction_tokens"),
+            "text_tokens": obj.get("text_tokens"),
             "image_tokens": obj.get("image_tokens")
         })
         # store additional fields in additional_properties

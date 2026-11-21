@@ -107,6 +107,7 @@ __all__ = [
     "AcceptedSnapshotResponse",
     "ActivationApiKeyPublic",
     "ActivationAttemptPublic",
+    "ActivationIssuedKeyPublic",
     "ActiveOrganizationMemberCreateRequest",
     "ActiveOrganizationMemberCreateResultPublic",
     "ActiveOrganizationMemberPublic",
@@ -213,9 +214,23 @@ __all__ = [
     "CCKCompletionUsage",
     "CCKImageContent",
     "CCKImageURL",
+    "CCKModeration",
+    "CCKModerationInputError",
+    "CCKModerationInputModerationResults",
+    "CCKModerationInputModerationResultsResult",
+    "CCKModerationOutputError",
+    "CCKModerationOutputModerationResults",
+    "CCKModerationOutputModerationResultsResult",
     "CCKPromptTokensDetails",
     "CCKServerToolUsage",
     "CCKTopLogprob",
+    "CCModeration",
+    "CCModerationInputError",
+    "CCModerationInputModerationResults",
+    "CCModerationInputModerationResultsResult",
+    "CCModerationOutputError",
+    "CCModerationOutputModerationResults",
+    "CCModerationOutputModerationResultsResult",
     "CCPromptTokensDetails",
     "CCServerToolUsage",
     "CCTopLogprob",
@@ -395,6 +410,9 @@ __all__ = [
     "HostedProviderCreateRequest",
     "HostedProviderModelSummary",
     "HostedProviderPublic",
+    "HostedProviderRegionCreateRequest",
+    "HostedProviderRegionPublic",
+    "HostedProviderRegionUpdateRequest",
     "HostedProviderTestPublic",
     "HostedProviderTestRequest",
     "HostedProviderUpdateRequest",
@@ -405,6 +423,7 @@ __all__ = [
     "HostedVendorPublic",
     "HostedVendorUpdateRequest",
     "IMGImage",
+    "IMGSvgUsage",
     "IMGUsage",
     "IMGUsageInputTokensDetails",
     "IMGUsageOutputTokensDetails",
@@ -416,6 +435,8 @@ __all__ = [
     "InFlightResponse",
     "Input",
     "Input1",
+    "Input2",
+    "Input3",
     "Instructions",
     "Instructions1",
     "InvitationPreviewPublic",
@@ -429,6 +450,7 @@ __all__ = [
     "KeyScope",
     "KnownProviderSchema",
     "KnownProviderSummarySchema",
+    "Limit",
     "ListedSearchToolSchema",
     "LocationInner",
     "MRAnthropicTypesThinkingBlockThinkingBlock",
@@ -667,10 +689,12 @@ __all__ = [
     "MSGCustom",
     "MSGFile",
     "MSGFileFile",
+    "MSGFilePromptCacheBreakpoint",
     "MSGFunction",
     "MSGFunctionCall",
     "MSGImageURL",
     "MSGInputAudio",
+    "MSGPromptCacheBreakpoint",
     "MailSettings",
     "MailedLinkRequest",
     "MailedLinkStatus",
@@ -740,6 +764,7 @@ __all__ = [
     "OIDCConnectionEnabledRequest",
     "OIDCConnectionPublic",
     "OIDCConnectionRequest",
+    "OfferingSpeedInfo",
     "OfferingUsage",
     "OpenAIFileDeleted",
     "OpenAIFileList",
@@ -795,6 +820,8 @@ __all__ = [
     "OrganizationSsoPreflightMemberPublic",
     "OrganizationSsoPreflightPublic",
     "OrganizationSsoPublic",
+    "Output",
+    "Output1",
     "OutputShape",
     "OverviewSummaryResponse",
     "PasskeySessionResponse",
@@ -905,6 +932,7 @@ __all__ = [
     "SetPricingRequest",
     "SignupRequest",
     "SignupResponse",
+    "Size",
     "Source",
     "Source1",
     "SpanPublic",
@@ -1139,6 +1167,7 @@ from otari._client.models.accept_invitation_result_public import AcceptInvitatio
 from otari._client.models.accepted_snapshot_response import AcceptedSnapshotResponse as AcceptedSnapshotResponse
 from otari._client.models.activation_api_key_public import ActivationApiKeyPublic as ActivationApiKeyPublic
 from otari._client.models.activation_attempt_public import ActivationAttemptPublic as ActivationAttemptPublic
+from otari._client.models.activation_issued_key_public import ActivationIssuedKeyPublic as ActivationIssuedKeyPublic
 from otari._client.models.active_organization_member_create_request import ActiveOrganizationMemberCreateRequest as ActiveOrganizationMemberCreateRequest
 from otari._client.models.active_organization_member_create_result_public import ActiveOrganizationMemberCreateResultPublic as ActiveOrganizationMemberCreateResultPublic
 from otari._client.models.active_organization_member_public import ActiveOrganizationMemberPublic as ActiveOrganizationMemberPublic
@@ -1245,9 +1274,23 @@ from otari._client.models.cck_completion_tokens_details import CCKCompletionToke
 from otari._client.models.cck_completion_usage import CCKCompletionUsage as CCKCompletionUsage
 from otari._client.models.cck_image_content import CCKImageContent as CCKImageContent
 from otari._client.models.cck_image_url import CCKImageURL as CCKImageURL
+from otari._client.models.cck_moderation import CCKModeration as CCKModeration
+from otari._client.models.cck_moderation_input_error import CCKModerationInputError as CCKModerationInputError
+from otari._client.models.cck_moderation_input_moderation_results import CCKModerationInputModerationResults as CCKModerationInputModerationResults
+from otari._client.models.cck_moderation_input_moderation_results_result import CCKModerationInputModerationResultsResult as CCKModerationInputModerationResultsResult
+from otari._client.models.cck_moderation_output_error import CCKModerationOutputError as CCKModerationOutputError
+from otari._client.models.cck_moderation_output_moderation_results import CCKModerationOutputModerationResults as CCKModerationOutputModerationResults
+from otari._client.models.cck_moderation_output_moderation_results_result import CCKModerationOutputModerationResultsResult as CCKModerationOutputModerationResultsResult
 from otari._client.models.cck_prompt_tokens_details import CCKPromptTokensDetails as CCKPromptTokensDetails
 from otari._client.models.cck_server_tool_usage import CCKServerToolUsage as CCKServerToolUsage
 from otari._client.models.cck_top_logprob import CCKTopLogprob as CCKTopLogprob
+from otari._client.models.cc_moderation import CCModeration as CCModeration
+from otari._client.models.cc_moderation_input_error import CCModerationInputError as CCModerationInputError
+from otari._client.models.cc_moderation_input_moderation_results import CCModerationInputModerationResults as CCModerationInputModerationResults
+from otari._client.models.cc_moderation_input_moderation_results_result import CCModerationInputModerationResultsResult as CCModerationInputModerationResultsResult
+from otari._client.models.cc_moderation_output_error import CCModerationOutputError as CCModerationOutputError
+from otari._client.models.cc_moderation_output_moderation_results import CCModerationOutputModerationResults as CCModerationOutputModerationResults
+from otari._client.models.cc_moderation_output_moderation_results_result import CCModerationOutputModerationResultsResult as CCModerationOutputModerationResultsResult
 from otari._client.models.cc_prompt_tokens_details import CCPromptTokensDetails as CCPromptTokensDetails
 from otari._client.models.cc_server_tool_usage import CCServerToolUsage as CCServerToolUsage
 from otari._client.models.cc_top_logprob import CCTopLogprob as CCTopLogprob
@@ -1427,6 +1470,9 @@ from otari._client.models.hosted_price_reset_request import HostedPriceResetRequ
 from otari._client.models.hosted_provider_create_request import HostedProviderCreateRequest as HostedProviderCreateRequest
 from otari._client.models.hosted_provider_model_summary import HostedProviderModelSummary as HostedProviderModelSummary
 from otari._client.models.hosted_provider_public import HostedProviderPublic as HostedProviderPublic
+from otari._client.models.hosted_provider_region_create_request import HostedProviderRegionCreateRequest as HostedProviderRegionCreateRequest
+from otari._client.models.hosted_provider_region_public import HostedProviderRegionPublic as HostedProviderRegionPublic
+from otari._client.models.hosted_provider_region_update_request import HostedProviderRegionUpdateRequest as HostedProviderRegionUpdateRequest
 from otari._client.models.hosted_provider_test_public import HostedProviderTestPublic as HostedProviderTestPublic
 from otari._client.models.hosted_provider_test_request import HostedProviderTestRequest as HostedProviderTestRequest
 from otari._client.models.hosted_provider_update_request import HostedProviderUpdateRequest as HostedProviderUpdateRequest
@@ -1437,6 +1483,7 @@ from otari._client.models.hosted_vendor_models_switch_request import HostedVendo
 from otari._client.models.hosted_vendor_public import HostedVendorPublic as HostedVendorPublic
 from otari._client.models.hosted_vendor_update_request import HostedVendorUpdateRequest as HostedVendorUpdateRequest
 from otari._client.models.img_image import IMGImage as IMGImage
+from otari._client.models.img_svg_usage import IMGSvgUsage as IMGSvgUsage
 from otari._client.models.img_usage import IMGUsage as IMGUsage
 from otari._client.models.img_usage_input_tokens_details import IMGUsageInputTokensDetails as IMGUsageInputTokensDetails
 from otari._client.models.img_usage_output_tokens_details import IMGUsageOutputTokensDetails as IMGUsageOutputTokensDetails
@@ -1448,6 +1495,8 @@ from otari._client.models.in_flight_entry import InFlightEntry as InFlightEntry
 from otari._client.models.in_flight_response import InFlightResponse as InFlightResponse
 from otari._client.models.input import Input as Input
 from otari._client.models.input1 import Input1 as Input1
+from otari._client.models.input2 import Input2 as Input2
+from otari._client.models.input3 import Input3 as Input3
 from otari._client.models.instructions import Instructions as Instructions
 from otari._client.models.instructions1 import Instructions1 as Instructions1
 from otari._client.models.invitation_preview_public import InvitationPreviewPublic as InvitationPreviewPublic
@@ -1461,6 +1510,7 @@ from otari._client.models.key_limit_public import KeyLimitPublic as KeyLimitPubl
 from otari._client.models.key_scope import KeyScope as KeyScope
 from otari._client.models.known_provider_schema import KnownProviderSchema as KnownProviderSchema
 from otari._client.models.known_provider_summary_schema import KnownProviderSummarySchema as KnownProviderSummarySchema
+from otari._client.models.limit import Limit as Limit
 from otari._client.models.listed_search_tool_schema import ListedSearchToolSchema as ListedSearchToolSchema
 from otari._client.models.location_inner import LocationInner as LocationInner
 from otari._client.models.mr_anthropic_types_thinking_block_thinking_block import MRAnthropicTypesThinkingBlockThinkingBlock as MRAnthropicTypesThinkingBlockThinkingBlock
@@ -1699,10 +1749,12 @@ from otari._client.models.msg_chat_completion_user_message_param import MSGChatC
 from otari._client.models.msg_custom import MSGCustom as MSGCustom
 from otari._client.models.msg_file import MSGFile as MSGFile
 from otari._client.models.msg_file_file import MSGFileFile as MSGFileFile
+from otari._client.models.msg_file_prompt_cache_breakpoint import MSGFilePromptCacheBreakpoint as MSGFilePromptCacheBreakpoint
 from otari._client.models.msg_function import MSGFunction as MSGFunction
 from otari._client.models.msg_function_call import MSGFunctionCall as MSGFunctionCall
 from otari._client.models.msg_image_url import MSGImageURL as MSGImageURL
 from otari._client.models.msg_input_audio import MSGInputAudio as MSGInputAudio
+from otari._client.models.msg_prompt_cache_breakpoint import MSGPromptCacheBreakpoint as MSGPromptCacheBreakpoint
 from otari._client.models.mail_settings import MailSettings as MailSettings
 from otari._client.models.mailed_link_request import MailedLinkRequest as MailedLinkRequest
 from otari._client.models.mailed_link_status import MailedLinkStatus as MailedLinkStatus
@@ -1772,6 +1824,7 @@ from otari._client.models.oidc_connection_domain import OIDCConnectionDomain as 
 from otari._client.models.oidc_connection_enabled_request import OIDCConnectionEnabledRequest as OIDCConnectionEnabledRequest
 from otari._client.models.oidc_connection_public import OIDCConnectionPublic as OIDCConnectionPublic
 from otari._client.models.oidc_connection_request import OIDCConnectionRequest as OIDCConnectionRequest
+from otari._client.models.offering_speed_info import OfferingSpeedInfo as OfferingSpeedInfo
 from otari._client.models.offering_usage import OfferingUsage as OfferingUsage
 from otari._client.models.open_ai_file_deleted import OpenAIFileDeleted as OpenAIFileDeleted
 from otari._client.models.open_ai_file_list import OpenAIFileList as OpenAIFileList
@@ -1827,6 +1880,8 @@ from otari._client.models.organization_sso_enforcement_request import Organizati
 from otari._client.models.organization_sso_preflight_member_public import OrganizationSsoPreflightMemberPublic as OrganizationSsoPreflightMemberPublic
 from otari._client.models.organization_sso_preflight_public import OrganizationSsoPreflightPublic as OrganizationSsoPreflightPublic
 from otari._client.models.organization_sso_public import OrganizationSsoPublic as OrganizationSsoPublic
+from otari._client.models.output import Output as Output
+from otari._client.models.output1 import Output1 as Output1
 from otari._client.models.output_shape import OutputShape as OutputShape
 from otari._client.models.overview_summary_response import OverviewSummaryResponse as OverviewSummaryResponse
 from otari._client.models.passkey_session_response import PasskeySessionResponse as PasskeySessionResponse
@@ -1937,6 +1992,7 @@ from otari._client.models.set_password_request import SetPasswordRequest as SetP
 from otari._client.models.set_pricing_request import SetPricingRequest as SetPricingRequest
 from otari._client.models.signup_request import SignupRequest as SignupRequest
 from otari._client.models.signup_response import SignupResponse as SignupResponse
+from otari._client.models.size import Size as Size
 from otari._client.models.source import Source as Source
 from otari._client.models.source1 import Source1 as Source1
 from otari._client.models.span_public import SpanPublic as SpanPublic

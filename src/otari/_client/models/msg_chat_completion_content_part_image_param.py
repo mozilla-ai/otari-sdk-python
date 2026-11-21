@@ -18,19 +18,21 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.msg_image_url import MSGImageURL
+from otari._client.models.msg_prompt_cache_breakpoint import MSGPromptCacheBreakpoint
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class MSGChatCompletionContentPartImageParam(BaseModel):
     """
-    Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+    Learn about [image inputs](https://developers.openai.com/api/docs/guides/images-vision).
     """ # noqa: E501
     image_url: MSGImageURL
     type: StrictStr
-    __properties: ClassVar[List[str]] = ["image_url", "type"]
+    prompt_cache_breakpoint: Optional[MSGPromptCacheBreakpoint] = None
+    __properties: ClassVar[List[str]] = ["image_url", "type", "prompt_cache_breakpoint"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -81,6 +83,9 @@ class MSGChatCompletionContentPartImageParam(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of image_url
         if self.image_url:
             _dict['image_url'] = self.image_url.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of prompt_cache_breakpoint
+        if self.prompt_cache_breakpoint:
+            _dict['prompt_cache_breakpoint'] = self.prompt_cache_breakpoint.to_dict()
         return _dict
 
     @classmethod
@@ -94,7 +99,8 @@ class MSGChatCompletionContentPartImageParam(BaseModel):
 
         _obj = cls.model_validate({
             "image_url": MSGImageURL.from_dict(obj["image_url"]) if obj.get("image_url") is not None else None,
-            "type": obj.get("type")
+            "type": obj.get("type"),
+            "prompt_cache_breakpoint": MSGPromptCacheBreakpoint.from_dict(obj["prompt_cache_breakpoint"]) if obj.get("prompt_cache_breakpoint") is not None else None
         })
         return _obj
 

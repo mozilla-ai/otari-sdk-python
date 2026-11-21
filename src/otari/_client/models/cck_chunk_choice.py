@@ -30,11 +30,11 @@ class CCKChunkChoice(BaseModel):
     CCKChunkChoice
     """ # noqa: E501
     delta: CCKChoiceDelta
-    finish_reason: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     index: StrictInt
+    finish_reason: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     logprobs: Optional[CCKChoiceLogprobs] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["delta", "finish_reason", "index", "logprobs"]
+    __properties: ClassVar[List[str]] = ["delta", "index", "finish_reason", "logprobs"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -111,8 +111,8 @@ class CCKChunkChoice(BaseModel):
 
         _obj = cls.model_validate({
             "delta": CCKChoiceDelta.from_dict(obj["delta"]) if obj.get("delta") is not None else None,
-            "finish_reason": obj.get("finish_reason"),
             "index": obj.get("index"),
+            "finish_reason": obj.get("finish_reason"),
             "logprobs": CCKChoiceLogprobs.from_dict(obj["logprobs"]) if obj.get("logprobs") is not None else None
         })
         # store additional fields in additional_properties
