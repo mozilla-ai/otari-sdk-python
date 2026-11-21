@@ -32,8 +32,9 @@ class PlaygroundToolsResponse(BaseModel):
     code_execution: PlaygroundToolStatus
     files: PlaygroundToolStatus = Field(description="Whether a message may attach a file uploaded here.")
     mcp_servers: List[PlaygroundMcpServer]
+    web_fetch: PlaygroundToolStatus = Field(description="Whether a message may declare otari_web_fetch.")
     web_search: PlaygroundToolStatus
-    __properties: ClassVar[List[str]] = ["code_execution", "files", "mcp_servers", "web_search"]
+    __properties: ClassVar[List[str]] = ["code_execution", "files", "mcp_servers", "web_fetch", "web_search"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,6 +88,9 @@ class PlaygroundToolsResponse(BaseModel):
                 if _item_mcp_servers:
                     _items.append(_item_mcp_servers.to_dict())
             _dict['mcp_servers'] = _items
+        # override the default output from pydantic by calling `to_dict()` of web_fetch
+        if self.web_fetch:
+            _dict['web_fetch'] = self.web_fetch.to_dict()
         # override the default output from pydantic by calling `to_dict()` of web_search
         if self.web_search:
             _dict['web_search'] = self.web_search.to_dict()
@@ -105,6 +109,7 @@ class PlaygroundToolsResponse(BaseModel):
             "code_execution": PlaygroundToolStatus.from_dict(obj["code_execution"]) if obj.get("code_execution") is not None else None,
             "files": PlaygroundToolStatus.from_dict(obj["files"]) if obj.get("files") is not None else None,
             "mcp_servers": [PlaygroundMcpServer.from_dict(_item) for _item in obj["mcp_servers"]] if obj.get("mcp_servers") is not None else None,
+            "web_fetch": PlaygroundToolStatus.from_dict(obj["web_fetch"]) if obj.get("web_fetch") is not None else None,
             "web_search": PlaygroundToolStatus.from_dict(obj["web_search"]) if obj.get("web_search") is not None else None
         })
         return _obj

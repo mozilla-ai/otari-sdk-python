@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from otari._client.models.catalog_credential import CatalogCredential
 from otari._client.models.model_metadata_override_request import ModelMetadataOverrideRequest
 from otari._client.models.model_pricing_info import ModelPricingInfo
+from otari._client.models.offering_speed_info import OfferingSpeedInfo
 from otari._client.models.offering_usage import OfferingUsage
 from typing import Optional, Set
 from typing_extensions import Self
@@ -47,9 +48,10 @@ class CatalogOffering(BaseModel):
     quantization: Optional[StrictStr] = Field(default=None, description="From the provider's id, when it names one.")
     selector: StrictStr = Field(description="What to send as `model`, in `instance:model` form.")
     short_selector: Optional[StrictStr] = Field(default=None, description="The pinned spelling the gateway also accepts for this offering: the instance with the model's catalog id (`fireworks:openai/gpt-oss-120b`), which pins the instance and reaches the model's best offering on it. Null for another build on the same instance, or until the gateway has indexed the catalog.")
+    speed_7d: Optional[OfferingSpeedInfo] = None
     usage_30d: Optional[OfferingUsage] = None
     zero_data_retention: Optional[StrictBool] = Field(default=False, description="Whether whoever holds the serving key declared that the provider keeps no prompt or completion data: the operator for a `hosted` offering, the organization for one on its own keys, where every usable key of the provider must declare it. A declaration, not something the gateway can verify.")
-    __properties: ClassVar[List[str]] = ["context_window", "credential", "discovered", "endpoints", "max_output_tokens", "metadata_input_price_per_million", "metadata_output_price_per_million", "metadata_override", "price_reference", "price_source", "pricing", "provider", "provider_type", "quantization", "selector", "short_selector", "usage_30d", "zero_data_retention"]
+    __properties: ClassVar[List[str]] = ["context_window", "credential", "discovered", "endpoints", "max_output_tokens", "metadata_input_price_per_million", "metadata_output_price_per_million", "metadata_override", "price_reference", "price_source", "pricing", "provider", "provider_type", "quantization", "selector", "short_selector", "speed_7d", "usage_30d", "zero_data_retention"]
 
     @field_validator('endpoints')
     def endpoints_validate_enum(cls, value):
@@ -117,6 +119,9 @@ class CatalogOffering(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of pricing
         if self.pricing:
             _dict['pricing'] = self.pricing.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of speed_7d
+        if self.speed_7d:
+            _dict['speed_7d'] = self.speed_7d.to_dict()
         # override the default output from pydantic by calling `to_dict()` of usage_30d
         if self.usage_30d:
             _dict['usage_30d'] = self.usage_30d.to_dict()
@@ -170,6 +175,11 @@ class CatalogOffering(BaseModel):
         if self.short_selector is None and "short_selector" in self.model_fields_set:
             _dict['short_selector'] = None
 
+        # set to None if speed_7d (nullable) is None
+        # and model_fields_set contains the field
+        if self.speed_7d is None and "speed_7d" in self.model_fields_set:
+            _dict['speed_7d'] = None
+
         # set to None if usage_30d (nullable) is None
         # and model_fields_set contains the field
         if self.usage_30d is None and "usage_30d" in self.model_fields_set:
@@ -203,6 +213,7 @@ class CatalogOffering(BaseModel):
             "quantization": obj.get("quantization"),
             "selector": obj.get("selector"),
             "short_selector": obj.get("short_selector"),
+            "speed_7d": OfferingSpeedInfo.from_dict(obj["speed_7d"]) if obj.get("speed_7d") is not None else None,
             "usage_30d": OfferingUsage.from_dict(obj["usage_30d"]) if obj.get("usage_30d") is not None else None,
             "zero_data_retention": obj.get("zero_data_retention") if obj.get("zero_data_retention") is not None else False
         })

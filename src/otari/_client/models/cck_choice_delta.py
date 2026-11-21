@@ -31,6 +31,7 @@ class CCKChoiceDelta(BaseModel):
     """
     CCKChoiceDelta
     """ # noqa: E501
+    audio: Optional[CCKChoiceDeltaAudio] = None
     content: Optional[StrictStr] = None
     function_call: Optional[CCKChoiceDeltaFunctionCall] = None
     refusal: Optional[StrictStr] = None
@@ -39,9 +40,8 @@ class CCKChoiceDelta(BaseModel):
     reasoning: Optional[StrictStr] = Field(default=None, description="Filter to a single event type or metric name (e.g. 'tool_result', 'claude_code.commit.count')")
     extra_content: Optional[Dict[str, Any]] = None
     images: Optional[List[CCKImageContent]] = None
-    audio: Optional[CCKChoiceDeltaAudio] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["content", "function_call", "refusal", "role", "tool_calls", "reasoning", "extra_content", "images", "audio"]
+    __properties: ClassVar[List[str]] = ["audio", "content", "function_call", "refusal", "role", "tool_calls", "reasoning", "extra_content", "images"]
 
     @field_validator('role')
     def role_validate_enum(cls, value):
@@ -94,6 +94,9 @@ class CCKChoiceDelta(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of audio
+        if self.audio:
+            _dict['audio'] = self.audio.to_dict()
         # override the default output from pydantic by calling `to_dict()` of function_call
         if self.function_call:
             _dict['function_call'] = self.function_call.to_dict()
@@ -111,13 +114,15 @@ class CCKChoiceDelta(BaseModel):
                 if _item_images:
                     _items.append(_item_images.to_dict())
             _dict['images'] = _items
-        # override the default output from pydantic by calling `to_dict()` of audio
-        if self.audio:
-            _dict['audio'] = self.audio.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
+
+        # set to None if audio (nullable) is None
+        # and model_fields_set contains the field
+        if self.audio is None and "audio" in self.model_fields_set:
+            _dict['audio'] = None
 
         # set to None if content (nullable) is None
         # and model_fields_set contains the field
@@ -159,11 +164,6 @@ class CCKChoiceDelta(BaseModel):
         if self.images is None and "images" in self.model_fields_set:
             _dict['images'] = None
 
-        # set to None if audio (nullable) is None
-        # and model_fields_set contains the field
-        if self.audio is None and "audio" in self.model_fields_set:
-            _dict['audio'] = None
-
         return _dict
 
     @classmethod
@@ -176,6 +176,7 @@ class CCKChoiceDelta(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "audio": CCKChoiceDeltaAudio.from_dict(obj["audio"]) if obj.get("audio") is not None else None,
             "content": obj.get("content"),
             "function_call": CCKChoiceDeltaFunctionCall.from_dict(obj["function_call"]) if obj.get("function_call") is not None else None,
             "refusal": obj.get("refusal"),
@@ -183,8 +184,7 @@ class CCKChoiceDelta(BaseModel):
             "tool_calls": [CCKChoiceDeltaToolCall.from_dict(_item) for _item in obj["tool_calls"]] if obj.get("tool_calls") is not None else None,
             "reasoning": obj.get("reasoning"),
             "extra_content": obj.get("extra_content"),
-            "images": [CCKImageContent.from_dict(_item) for _item in obj["images"]] if obj.get("images") is not None else None,
-            "audio": CCKChoiceDeltaAudio.from_dict(obj["audio"]) if obj.get("audio") is not None else None
+            "images": [CCKImageContent.from_dict(_item) for _item in obj["images"]] if obj.get("images") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

@@ -31,9 +31,10 @@ class UsageGroupRow(BaseModel):
     is_other: Optional[StrictBool] = False
     key: Optional[StrictStr]
     label: Optional[StrictStr] = None
+    model_group: Optional[StrictStr] = None
     requests: StrictInt
     tokens: StrictInt
-    __properties: ClassVar[List[str]] = ["cost", "is_other", "key", "label", "requests", "tokens"]
+    __properties: ClassVar[List[str]] = ["cost", "is_other", "key", "label", "model_group", "requests", "tokens"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -84,6 +85,11 @@ class UsageGroupRow(BaseModel):
         if self.label is None and "label" in self.model_fields_set:
             _dict['label'] = None
 
+        # set to None if model_group (nullable) is None
+        # and model_fields_set contains the field
+        if self.model_group is None and "model_group" in self.model_fields_set:
+            _dict['model_group'] = None
+
         return _dict
 
     @classmethod
@@ -100,6 +106,7 @@ class UsageGroupRow(BaseModel):
             "is_other": obj.get("is_other") if obj.get("is_other") is not None else False,
             "key": obj.get("key"),
             "label": obj.get("label"),
+            "model_group": obj.get("model_group"),
             "requests": obj.get("requests"),
             "tokens": obj.get("tokens")
         })

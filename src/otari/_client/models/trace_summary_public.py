@@ -30,6 +30,8 @@ class TraceSummaryPublic(BaseModel):
     One agent session as the session list shows it.
     """ # noqa: E501
     api_key_id: Optional[StrictStr]
+    client_language: Optional[StrictStr] = Field(default=None, description="The language the client was written in, from its SDK's headers or its HTTP library's User-Agent. `javascript` covers TypeScript.")
+    client_version: Optional[StrictStr] = Field(default=None, description="The client's version, from its own User-Agent.")
     cost: Union[StrictFloat, StrictInt] = Field(description="USD, a snapshot of the usage rows' cost. Usage stays the billing record.")
     error_count: StrictInt = Field(description="Spans that ended in an error no fallback recovered, including tools' errors, which do not fail the session.")
     harness: Optional[StrictStr] = Field(description="The agent or client that sent the requests, from its User-Agent.")
@@ -44,7 +46,17 @@ class TraceSummaryPublic(BaseModel):
     trace_id: StrictStr
     user_id: Optional[StrictStr]
     workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["api_key_id", "cost", "error_count", "harness", "input_tokens", "last_activity_at", "name", "output_tokens", "session_source", "span_count", "started_at", "step_count", "trace_id", "user_id", "workspace_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "client_language", "client_version", "cost", "error_count", "harness", "input_tokens", "last_activity_at", "name", "output_tokens", "session_source", "span_count", "started_at", "step_count", "trace_id", "user_id", "workspace_id"]
+
+    @field_validator('client_language')
+    def client_language_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['python', 'javascript', 'go', 'java', 'rust', 'ruby']):
+            raise ValueError("must be one of enum values ('python', 'javascript', 'go', 'java', 'rust', 'ruby')")
+        return value
 
     @field_validator('session_source')
     def session_source_validate_enum(cls, value):
@@ -97,6 +109,16 @@ class TraceSummaryPublic(BaseModel):
         if self.api_key_id is None and "api_key_id" in self.model_fields_set:
             _dict['api_key_id'] = None
 
+        # set to None if client_language (nullable) is None
+        # and model_fields_set contains the field
+        if self.client_language is None and "client_language" in self.model_fields_set:
+            _dict['client_language'] = None
+
+        # set to None if client_version (nullable) is None
+        # and model_fields_set contains the field
+        if self.client_version is None and "client_version" in self.model_fields_set:
+            _dict['client_version'] = None
+
         # set to None if harness (nullable) is None
         # and model_fields_set contains the field
         if self.harness is None and "harness" in self.model_fields_set:
@@ -125,6 +147,8 @@ class TraceSummaryPublic(BaseModel):
 
         _obj = cls.model_validate({
             "api_key_id": obj.get("api_key_id"),
+            "client_language": obj.get("client_language"),
+            "client_version": obj.get("client_version"),
             "cost": obj.get("cost"),
             "error_count": obj.get("error_count"),
             "harness": obj.get("harness"),

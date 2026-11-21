@@ -37,8 +37,8 @@ class MSGImageURL(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['auto', 'low', 'high']):
-            raise ValueError("must be one of enum values ('auto', 'low', 'high')")
+        if value not in set(['auto', 'low', 'high', 'original']):
+            raise ValueError("must be one of enum values ('auto', 'low', 'high', 'original')")
         return value
 
     model_config = ConfigDict(

@@ -22,18 +22,20 @@ from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr, field_validat
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from otari._client.models.hosted_provider_model_summary import HostedProviderModelSummary
+from otari._client.models.hosted_provider_region_public import HostedProviderRegionPublic
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class HostedProviderPublic(BaseModel):
     """
-    One hosted provider, known by its name, its implementation and the tail of its key.  No shape in this section carries key material: a stored credential is known by its last four characters and nothing else, ``client_args`` goes out with credential-shaped values masked, and ``api_base`` with the password in its userinfo and its query values masked.  ``name`` is what requests address and every route takes; ``provider`` is the any-llm implementation. ``source`` says where the provider is defined. A ``config`` provider comes from the ``hosted_providers:`` block, has no row and so no ``id`` or timestamps, and is changed by editing the configuration rather than through this API; its models are administered as a stored provider's are. ``shadows_config`` marks a stored provider that wins over a configuration entry of the same name, which serves again once the row is deleted. ``has_api_key`` is false for one stored without a key, and ``decryptable`` false for one whose key or extras no configured ``OTARI_SECRET_KEY`` reads, which serves nothing until re-entered. ``serves_unlisted_models`` is true for one that serves a model its roster does not list. ``supported_countries`` is null for one that serves every country. ``zero_data_retention`` is the operator's declaration that the upstream keeps no prompt or completion data. ``terms_url`` and ``privacy_url`` are the upstream's policies, null where none is linked. ``models`` counts its offered models, on the list only.
+    One hosted provider, known by its name, its implementation and the tail of its key.  No shape in this section carries key material: a stored credential is known by its last four characters and nothing else, ``client_args`` goes out with credential-shaped values masked, and ``api_base`` with the password in its userinfo and its query values masked.  ``name`` is what requests address and every route takes; ``provider`` is the any-llm implementation. ``source`` says where the provider is defined. A ``config`` provider comes from the ``hosted_providers:`` block, has no row and so no ``id`` or timestamps, and is changed by editing the configuration rather than through this API; its models are administered as a stored provider's are. ``shadows_config`` marks a stored provider that wins over a configuration entry of the same name, which serves again once the row is deleted. ``has_api_key`` is false for one stored without a key, and ``decryptable`` false for one whose key or extras no configured ``OTARI_SECRET_KEY`` reads, which serves nothing until re-entered. ``serves_unlisted_models`` is true for one that serves a model its roster does not list. ``supported_countries`` is null for one that serves every country. ``zero_data_retention`` is the operator's declaration that the upstream keeps no prompt or completion data. ``terms_url`` and ``privacy_url`` are the upstream's policies, null where none is linked. ``data_location`` is where the upstream keeps request data, null where nobody declared it. ``regions`` lists the regions it serves from, in the order they are tried, and is empty for a provider that serves from its own connection alone. ``models`` counts its offered models, on the list only.
     """ # noqa: E501
     api_base: Optional[StrictStr] = None
     api_key_last4: Optional[StrictStr] = None
     client_args: Optional[Dict[str, Any]] = None
     created_at: Optional[datetime] = None
+    data_location: Optional[StrictStr] = None
     decryptable: Optional[StrictBool] = True
     enabled: StrictBool
     has_api_key: Optional[StrictBool] = True
@@ -42,6 +44,7 @@ class HostedProviderPublic(BaseModel):
     name: StrictStr
     privacy_url: Optional[StrictStr] = None
     provider: StrictStr
+    regions: Optional[List[HostedProviderRegionPublic]] = None
     restricted_to_organization_id: Optional[UUID] = None
     serves_unlisted_models: Optional[StrictBool] = False
     shadows_config: Optional[StrictBool] = False
@@ -50,7 +53,7 @@ class HostedProviderPublic(BaseModel):
     terms_url: Optional[StrictStr] = None
     updated_at: Optional[datetime] = None
     zero_data_retention: Optional[StrictBool] = False
-    __properties: ClassVar[List[str]] = ["api_base", "api_key_last4", "client_args", "created_at", "decryptable", "enabled", "has_api_key", "id", "models", "name", "privacy_url", "provider", "restricted_to_organization_id", "serves_unlisted_models", "shadows_config", "source", "supported_countries", "terms_url", "updated_at", "zero_data_retention"]
+    __properties: ClassVar[List[str]] = ["api_base", "api_key_last4", "client_args", "created_at", "data_location", "decryptable", "enabled", "has_api_key", "id", "models", "name", "privacy_url", "provider", "regions", "restricted_to_organization_id", "serves_unlisted_models", "shadows_config", "source", "supported_countries", "terms_url", "updated_at", "zero_data_retention"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -104,6 +107,13 @@ class HostedProviderPublic(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of models
         if self.models:
             _dict['models'] = self.models.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in regions (list)
+        _items = []
+        if self.regions:
+            for _item_regions in self.regions:
+                if _item_regions:
+                    _items.append(_item_regions.to_dict())
+            _dict['regions'] = _items
         # set to None if api_base (nullable) is None
         # and model_fields_set contains the field
         if self.api_base is None and "api_base" in self.model_fields_set:
@@ -123,6 +133,11 @@ class HostedProviderPublic(BaseModel):
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict['created_at'] = None
+
+        # set to None if data_location (nullable) is None
+        # and model_fields_set contains the field
+        if self.data_location is None and "data_location" in self.model_fields_set:
+            _dict['data_location'] = None
 
         # set to None if id (nullable) is None
         # and model_fields_set contains the field
@@ -175,6 +190,7 @@ class HostedProviderPublic(BaseModel):
             "api_key_last4": obj.get("api_key_last4"),
             "client_args": obj.get("client_args"),
             "created_at": obj.get("created_at"),
+            "data_location": obj.get("data_location"),
             "decryptable": obj.get("decryptable") if obj.get("decryptable") is not None else True,
             "enabled": obj.get("enabled"),
             "has_api_key": obj.get("has_api_key") if obj.get("has_api_key") is not None else True,
@@ -183,6 +199,7 @@ class HostedProviderPublic(BaseModel):
             "name": obj.get("name"),
             "privacy_url": obj.get("privacy_url"),
             "provider": obj.get("provider"),
+            "regions": [HostedProviderRegionPublic.from_dict(_item) for _item in obj["regions"]] if obj.get("regions") is not None else None,
             "restricted_to_organization_id": obj.get("restricted_to_organization_id"),
             "serves_unlisted_models": obj.get("serves_unlisted_models") if obj.get("serves_unlisted_models") is not None else False,
             "shadows_config": obj.get("shadows_config") if obj.get("shadows_config") is not None else False,

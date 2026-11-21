@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class IMGUsage(BaseModel):
     """
-    For `gpt-image-1` only, the token usage information for the image generation.
+    Token usage information for image generation with GPT Image models.
     """ # noqa: E501
     input_tokens: StrictInt
     input_tokens_details: IMGUsageInputTokensDetails

@@ -18,18 +18,20 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
+from otari._client.models.msg_prompt_cache_breakpoint import MSGPromptCacheBreakpoint
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class MSGChatCompletionContentPartTextParam(BaseModel):
     """
-    Learn about [text inputs](https://platform.openai.com/docs/guides/text-generation).
+    Learn about [text inputs](https://developers.openai.com/api/docs/guides/text).
     """ # noqa: E501
     text: StrictStr
     type: StrictStr
-    __properties: ClassVar[List[str]] = ["text", "type"]
+    prompt_cache_breakpoint: Optional[MSGPromptCacheBreakpoint] = None
+    __properties: ClassVar[List[str]] = ["text", "type", "prompt_cache_breakpoint"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -77,6 +79,9 @@ class MSGChatCompletionContentPartTextParam(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of prompt_cache_breakpoint
+        if self.prompt_cache_breakpoint:
+            _dict['prompt_cache_breakpoint'] = self.prompt_cache_breakpoint.to_dict()
         return _dict
 
     @classmethod
@@ -90,7 +95,8 @@ class MSGChatCompletionContentPartTextParam(BaseModel):
 
         _obj = cls.model_validate({
             "text": obj.get("text"),
-            "type": obj.get("type")
+            "type": obj.get("type"),
+            "prompt_cache_breakpoint": MSGPromptCacheBreakpoint.from_dict(obj["prompt_cache_breakpoint"]) if obj.get("prompt_cache_breakpoint") is not None else None
         })
         return _obj
 

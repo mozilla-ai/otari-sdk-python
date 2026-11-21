@@ -64,7 +64,7 @@ class CatalogApi:
     ) -> CatalogModelDetail:
         """Get Catalog Model
 
-        One model and every offering of it this caller may use.  The whole merged catalog is built and grouped to answer for one model. That is deliberate: the identity a model is found by is a property of the group, so narrowing the build to one model would need the grouping done first. The query count is constant; the cost is CPU per page view, growing with the size of the catalog rather than with the number of readers.  A model the caller may not see answers 404, the same as one that does not exist, so the route cannot be used to probe the catalog behind an allow-list. A signed-in caller's offerings also carry their organization's own usage of each over the last 30 days, and so do an API key's when it holds ``usage:read``.
+        One model and every offering of it this caller may use.  The whole merged catalog is built and grouped to answer for one model. That is deliberate: the identity a model is found by is a property of the group, so narrowing the build to one model would need the grouping done first. The query count is constant; the cost is CPU per page view, growing with the size of the catalog rather than with the number of readers.  A model the caller may not see answers 404, the same as one that does not exist, so the route cannot be used to probe the catalog behind an allow-list. A signed-in caller's offerings also carry their organization's own usage of each over the last 30 days, and how fast each answered it over the last 7, and so do an API key's when it holds ``usage:read``.
 
         :param model_id: (required)
         :type model_id: str
@@ -136,7 +136,7 @@ class CatalogApi:
     ) -> ApiResponse[CatalogModelDetail]:
         """Get Catalog Model
 
-        One model and every offering of it this caller may use.  The whole merged catalog is built and grouped to answer for one model. That is deliberate: the identity a model is found by is a property of the group, so narrowing the build to one model would need the grouping done first. The query count is constant; the cost is CPU per page view, growing with the size of the catalog rather than with the number of readers.  A model the caller may not see answers 404, the same as one that does not exist, so the route cannot be used to probe the catalog behind an allow-list. A signed-in caller's offerings also carry their organization's own usage of each over the last 30 days, and so do an API key's when it holds ``usage:read``.
+        One model and every offering of it this caller may use.  The whole merged catalog is built and grouped to answer for one model. That is deliberate: the identity a model is found by is a property of the group, so narrowing the build to one model would need the grouping done first. The query count is constant; the cost is CPU per page view, growing with the size of the catalog rather than with the number of readers.  A model the caller may not see answers 404, the same as one that does not exist, so the route cannot be used to probe the catalog behind an allow-list. A signed-in caller's offerings also carry their organization's own usage of each over the last 30 days, and how fast each answered it over the last 7, and so do an API key's when it holds ``usage:read``.
 
         :param model_id: (required)
         :type model_id: str
@@ -208,7 +208,7 @@ class CatalogApi:
     ) -> RESTResponseType:
         """Get Catalog Model
 
-        One model and every offering of it this caller may use.  The whole merged catalog is built and grouped to answer for one model. That is deliberate: the identity a model is found by is a property of the group, so narrowing the build to one model would need the grouping done first. The query count is constant; the cost is CPU per page view, growing with the size of the catalog rather than with the number of readers.  A model the caller may not see answers 404, the same as one that does not exist, so the route cannot be used to probe the catalog behind an allow-list. A signed-in caller's offerings also carry their organization's own usage of each over the last 30 days, and so do an API key's when it holds ``usage:read``.
+        One model and every offering of it this caller may use.  The whole merged catalog is built and grouped to answer for one model. That is deliberate: the identity a model is found by is a property of the group, so narrowing the build to one model would need the grouping done first. The query count is constant; the cost is CPU per page view, growing with the size of the catalog rather than with the number of readers.  A model the caller may not see answers 404, the same as one that does not exist, so the route cannot be used to probe the catalog behind an allow-list. A signed-in caller's offerings also carry their organization's own usage of each over the last 30 days, and how fast each answered it over the last 7, and so do an API key's when it holds ``usage:read``.
 
         :param model_id: (required)
         :type model_id: str
