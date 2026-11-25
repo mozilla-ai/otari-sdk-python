@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from otari._client.models.endpoint_auth_request import EndpointAuthRequest
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,9 +32,10 @@ class OrgProviderKeyUpdateRequest(BaseModel):
     api_base: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
     api_key: Optional[StrictStr] = None
     client_args: Optional[Dict[str, Any]] = None
+    endpoint_auth: Optional[EndpointAuthRequest] = Field(default=None, description="The credential an edge proxy in front of `api_base` requires. Send it to set or replace one; send an explicit null to remove one. Leave it out to keep what is stored.")
     name: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
     zero_data_retention: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "name", "zero_data_retention"]
+    __properties: ClassVar[List[str]] = ["api_base", "api_key", "client_args", "endpoint_auth", "name", "zero_data_retention"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -74,6 +76,9 @@ class OrgProviderKeyUpdateRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of endpoint_auth
+        if self.endpoint_auth:
+            _dict['endpoint_auth'] = self.endpoint_auth.to_dict()
         # set to None if api_base (nullable) is None
         # and model_fields_set contains the field
         if self.api_base is None and "api_base" in self.model_fields_set:
@@ -88,6 +93,11 @@ class OrgProviderKeyUpdateRequest(BaseModel):
         # and model_fields_set contains the field
         if self.client_args is None and "client_args" in self.model_fields_set:
             _dict['client_args'] = None
+
+        # set to None if endpoint_auth (nullable) is None
+        # and model_fields_set contains the field
+        if self.endpoint_auth is None and "endpoint_auth" in self.model_fields_set:
+            _dict['endpoint_auth'] = None
 
         # set to None if name (nullable) is None
         # and model_fields_set contains the field
@@ -114,6 +124,7 @@ class OrgProviderKeyUpdateRequest(BaseModel):
             "api_base": obj.get("api_base"),
             "api_key": obj.get("api_key"),
             "client_args": obj.get("client_args"),
+            "endpoint_auth": EndpointAuthRequest.from_dict(obj["endpoint_auth"]) if obj.get("endpoint_auth") is not None else None,
             "name": obj.get("name"),
             "zero_data_retention": obj.get("zero_data_retention")
         })
