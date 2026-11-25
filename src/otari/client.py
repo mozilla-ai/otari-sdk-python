@@ -31,7 +31,13 @@ from typing import TYPE_CHECKING, Any, Literal, cast, overload
 
 import httpx
 
-from otari._base import REQUEST_ID_HEADER_NAME, _BaseOtariClient, _header_get, build_request
+from otari._base import (
+    REQUEST_ID_HEADER_NAME,
+    _BaseOtariClient,
+    _header_get,
+    build_request,
+    no_redirect_retries,
+)
 from otari._client import ApiClient, Configuration
 from otari._client.api.batches_api import BatchesApi
 from otari._client.api.chat_api import ChatApi
@@ -122,7 +128,7 @@ class OtariClient(_BaseOtariClient):
             default_headers=default_headers,
         )
         self._timeout = timeout
-        config = Configuration(host=self._gateway_root_url)
+        config = Configuration(host=self._gateway_root_url, retries=no_redirect_retries())
         self._api = ApiClient(config)
         # set_default_header is generated (untyped); seed the per-mode auth header.
         api_any = cast("Any", self._api)
@@ -130,7 +136,7 @@ class OtariClient(_BaseOtariClient):
             api_any.set_default_header(name, value)
         # Raw httpx client used only for the SSE streaming shim (the generated
         # core buffers and cannot stream).
-        self._http = httpx.Client(timeout=timeout)
+        self._http = httpx.Client(timeout=timeout, follow_redirects=False)
 
         self._chat = ChatApi(self._api)
         self._responses = ResponsesApi(self._api)
@@ -528,7 +534,7 @@ class OtariClient(_BaseOtariClient):
         response = self._http.post(
             url, headers=self._default_headers, json=json, data=data, files=files
         )
-        if response.status_code >= 400:
+        if response.status_code >= 300:
             raise self._map_streaming_response(response, response.content)
         return response
 
@@ -560,7 +566,7 @@ class OtariClient(_BaseOtariClient):
             **self._default_headers,
         }
         with self._http.stream("POST", url, json=body, headers=headers) as response:
-            if response.status_code >= 400:
+            if response.status_code >= 300:
                 raw = response.read()
                 raise self._map_streaming_response(response, raw)
             if stream is not None:

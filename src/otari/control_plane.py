@@ -22,7 +22,7 @@ from functools import cached_property, wraps
 from typing import TYPE_CHECKING, Any, ParamSpec, TypeVar, cast
 
 from otari import _client as _cp
-from otari._base import map_api_exception
+from otari._base import map_api_exception, no_redirect_retries
 from otari._client.api.budgets_api import BudgetsApi
 from otari._client.api.keys_api import KeysApi
 from otari._client.api.pricing_api import PricingApi
@@ -253,7 +253,7 @@ class ControlPlane:
     """
 
     def __init__(self, base_url: str, bearer_token: str) -> None:
-        config = _cp.Configuration(host=base_url)
+        config = _cp.Configuration(host=base_url, retries=no_redirect_retries())
         # The generated client is intentionally not type-checked here; treat it
         # as ``Any`` so strict mypy does not flag its untyped methods.
         self._api_client = cast("Any", _cp.ApiClient(config))

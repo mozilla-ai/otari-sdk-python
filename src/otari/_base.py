@@ -21,6 +21,8 @@ import re
 import urllib.parse
 from typing import TYPE_CHECKING, Any, Protocol, TypeVar, cast
 
+import urllib3
+
 from otari._client.exceptions import ApiException
 from otari.errors import (
     AuthenticationError,
@@ -30,6 +32,7 @@ from otari.errors import (
     ModelNotFoundError,
     OtariError,
     RateLimitError,
+    RedirectError,
     UnsupportedCapabilityError,
     UpstreamProviderError,
 )
@@ -198,6 +201,21 @@ class _BaseOtariClient:
 # Module-level helpers
 # ---------------------------------------------------------------------------
 
+_REDIRECT_STATUSES = frozenset({301, 302, 303, 307, 308})
+
+
+def no_redirect_retries() -> urllib3.Retry:
+    """Return the retry policy for the generated core: urllib3's default, minus redirects.
+
+    urllib3 drops ``Authorization`` when a redirect leaves the host, but it keeps
+    ``Otari-Key`` and the request body, so following one would hand both to
+    whatever address the response named. With this policy the redirect response
+    comes back instead, and :func:`map_api_exception` raises it as
+    :class:`~otari.errors.RedirectError`.
+    """
+    return urllib3.Retry.DEFAULT.new(redirect=0, raise_on_redirect=False)
+
+
 
 class _FromDict(Protocol):
     """Structural type for the generated request models' ``from_dict`` classmethod."""
@@ -302,6 +320,18 @@ def map_api_exception(error: ApiException) -> OtariError:
     retry_after = _header_get(headers, "retry-after")
 
     full = f"{detail} (attempt_id={attempt_id})" if attempt_id else detail
+
+    if status in _REDIRECT_STATUSES:
+        location = _header_get(headers, "location")
+        target = f" to {location}" if location else ""
+        return RedirectError(
+            f"The gateway answered with a redirect{target}, which the SDK does not follow. "
+            "Set api_base to the address the gateway answers on.",
+            status_code=status,
+            original_error=error,
+            provider_name=PROVIDER_NAME,
+            location=location,
+        )
 
     # Unsupported-capability is surfaced regardless of mode.
     if status == 400 and _UNSUPPORTED_MODERATION_RE.search(detail):

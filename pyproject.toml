@@ -25,7 +25,9 @@ dependencies = [
     # Streaming shim (raw SSE over httpx); the generated core cannot stream.
     "httpx>=0.25.0",
     # Runtime deps of the OpenAPI-generated core (otari._client).
-    "urllib3>=2.1.0",
+    # 2.5.0 is the first release where a pool-level Retry stops redirects, which
+    # is how the SDK refuses to follow one (otari._base.no_redirect_retries).
+    "urllib3>=2.5.0",
     "python-dateutil>=2.8.2",
     "pydantic>=2.0.0",
 ]

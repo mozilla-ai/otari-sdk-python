@@ -308,7 +308,7 @@ requires-dist = [
     { name = "python-dateutil", specifier = ">=2.8.2" },
     { name = "respx", marker = "extra == 'dev'", specifier = ">=0.21" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8" },
-    { name = "urllib3", specifier = ">=2.1.0" },
+    { name = "urllib3", specifier = ">=2.5.0" },
 ]
 provides-extras = ["dev"]
 
