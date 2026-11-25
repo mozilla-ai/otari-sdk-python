@@ -26,6 +26,7 @@ from otari._client.models.explain_request import ExplainRequest
 from otari._client.models.explain_response import ExplainResponse
 from otari._client.models.policy_request import PolicyRequest
 from otari._client.models.policy_response import PolicyResponse
+from otari._client.models.subagent_outcome_report import SubagentOutcomeReport
 
 from otari._client.api_client import ApiClient, RequestSerialized
 from otari._client.api_response import ApiResponse
@@ -2019,7 +2020,7 @@ class RoutingApi:
     ) -> AgentModelRecommendation:
         """Recommend Model For Agent
 
-        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the subagent router an operator switched on in the dashboard to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
+        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the subagent router an operator switched on in the dashboard to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate. `decision_id` names the record of this answer, and is absent where the record could not be kept.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
 
         :param agent_model_recommendation_request: (required)
         :type agent_model_recommendation_request: AgentModelRecommendationRequest
@@ -2088,7 +2089,7 @@ class RoutingApi:
     ) -> ApiResponse[AgentModelRecommendation]:
         """Recommend Model For Agent
 
-        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the subagent router an operator switched on in the dashboard to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
+        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the subagent router an operator switched on in the dashboard to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate. `decision_id` names the record of this answer, and is absent where the record could not be kept.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
 
         :param agent_model_recommendation_request: (required)
         :type agent_model_recommendation_request: AgentModelRecommendationRequest
@@ -2157,7 +2158,7 @@ class RoutingApi:
     ) -> RESTResponseType:
         """Recommend Model For Agent
 
-        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the subagent router an operator switched on in the dashboard to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
+        Recommend the model a subagent about to start should run on.  The harness sends the facts it holds at spawn time: its own ids for the session and the spawning tool call, the subagent type, the task, the parent's model and the model the caller asked for, if any. The recommender this build binds picks one of the candidate models and the answer names it. By default the deployment asks the subagent router an operator switched on in the dashboard to choose among `agent_recommender_candidates` for Claude Code and among the request's own `candidates` for pi; a bootstrap may bind a recommender of its own, which the caller never configures. Where the recommender reports them, the answer also carries a one-line reason and its probability for each candidate. `decision_id` names the record of this answer, and is absent where the record could not be kept.  Authentication modes: - Master key: the ``user`` field is required and names who the decision is billed to. - API key: the decision is billed to the key's own user.
 
         :param agent_model_recommendation_request: (required)
         :type agent_model_recommendation_request: AgentModelRecommendationRequest
@@ -2266,6 +2267,302 @@ class RoutingApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/api/v1/routing/recommend',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def routing_report_subagent_outcome(
+        self,
+        decision_id: UUID,
+        subagent_outcome_report: SubagentOutcomeReport,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> None:
+        """Report Subagent Outcome
+
+        Report what the subagent a recommendation started has consumed.  The harness sends the token counts it holds for the subagent, one line per model it ran on, as running totals: each report replaces the one before it. The gateway prices those tokens twice, at the models named and at the model the subagent would have started on without the recommendation, and keeps both amounts as an estimate. No content is sent, nothing is charged and no usage row is written.  Authentication modes: - Master key: any decision. - API key: a decision made for the key's own user in the key's workspace.
+
+        :param decision_id: (required)
+        :type decision_id: UUID
+        :param subagent_outcome_report: (required)
+        :type subagent_outcome_report: SubagentOutcomeReport
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._routing_report_subagent_outcome_serialize(
+            decision_id=decision_id,
+            subagent_outcome_report=subagent_outcome_report,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '204': None,
+            '404': "RecommendationRefusal",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def routing_report_subagent_outcome_with_http_info(
+        self,
+        decision_id: UUID,
+        subagent_outcome_report: SubagentOutcomeReport,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[None]:
+        """Report Subagent Outcome
+
+        Report what the subagent a recommendation started has consumed.  The harness sends the token counts it holds for the subagent, one line per model it ran on, as running totals: each report replaces the one before it. The gateway prices those tokens twice, at the models named and at the model the subagent would have started on without the recommendation, and keeps both amounts as an estimate. No content is sent, nothing is charged and no usage row is written.  Authentication modes: - Master key: any decision. - API key: a decision made for the key's own user in the key's workspace.
+
+        :param decision_id: (required)
+        :type decision_id: UUID
+        :param subagent_outcome_report: (required)
+        :type subagent_outcome_report: SubagentOutcomeReport
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._routing_report_subagent_outcome_serialize(
+            decision_id=decision_id,
+            subagent_outcome_report=subagent_outcome_report,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '204': None,
+            '404': "RecommendationRefusal",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def routing_report_subagent_outcome_without_preload_content(
+        self,
+        decision_id: UUID,
+        subagent_outcome_report: SubagentOutcomeReport,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Report Subagent Outcome
+
+        Report what the subagent a recommendation started has consumed.  The harness sends the token counts it holds for the subagent, one line per model it ran on, as running totals: each report replaces the one before it. The gateway prices those tokens twice, at the models named and at the model the subagent would have started on without the recommendation, and keeps both amounts as an estimate. No content is sent, nothing is charged and no usage row is written.  Authentication modes: - Master key: any decision. - API key: a decision made for the key's own user in the key's workspace.
+
+        :param decision_id: (required)
+        :type decision_id: UUID
+        :param subagent_outcome_report: (required)
+        :type subagent_outcome_report: SubagentOutcomeReport
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._routing_report_subagent_outcome_serialize(
+            decision_id=decision_id,
+            subagent_outcome_report=subagent_outcome_report,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '204': None,
+            '404': "RecommendationRefusal",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _routing_report_subagent_outcome_serialize(
+        self,
+        decision_id,
+        subagent_outcome_report,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if decision_id is not None:
+            _path_params['decision_id'] = decision_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if subagent_outcome_report is not None:
+            _body_params = subagent_outcome_report
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PUT',
+            resource_path='/api/v1/routing/decisions/{decision_id}/outcome',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

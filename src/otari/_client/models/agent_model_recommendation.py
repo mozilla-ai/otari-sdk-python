@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,10 +28,11 @@ class AgentModelRecommendation(BaseModel):
     """
     The model recommended for the subagent.
     """ # noqa: E501
+    decision_id: Optional[UUID] = Field(default=None, description="The gateway's record of this recommendation. Absent where the record could not be kept.")
     model: StrictStr = Field(description="A model alias or id the harness can start the subagent on.")
     probabilities: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = Field(default=None, description="The decision model's probability for each candidate, when it reports them.")
     reason: Optional[StrictStr] = Field(default=None, description="Why, in one short sentence the harness may show.")
-    __properties: ClassVar[List[str]] = ["model", "probabilities", "reason"]
+    __properties: ClassVar[List[str]] = ["decision_id", "model", "probabilities", "reason"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -71,6 +73,11 @@ class AgentModelRecommendation(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if decision_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.decision_id is None and "decision_id" in self.model_fields_set:
+            _dict['decision_id'] = None
+
         # set to None if probabilities (nullable) is None
         # and model_fields_set contains the field
         if self.probabilities is None and "probabilities" in self.model_fields_set:
@@ -93,6 +100,7 @@ class AgentModelRecommendation(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "decision_id": obj.get("decision_id"),
             "model": obj.get("model"),
             "probabilities": obj.get("probabilities"),
             "reason": obj.get("reason")

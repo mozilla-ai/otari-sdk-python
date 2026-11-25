@@ -830,6 +830,9 @@ from otari._client.models.rotate_master_key_response import RotateMasterKeyRespo
 from otari._client.models.sandbox_credential_public import SandboxCredentialPublic
 from otari._client.models.sandbox_credential_request import SandboxCredentialRequest
 from otari._client.models.sandbox_provider import SandboxProvider
+from otari._client.models.savings_amounts import SavingsAmounts
+from otari._client.models.savings_by_agent_type import SavingsByAgentType
+from otari._client.models.savings_by_swap import SavingsBySwap
 from otari._client.models.scoped_budget_response import ScopedBudgetResponse
 from otari._client.models.score_question import ScoreQuestion
 from otari._client.models.search_provider_option_schema import SearchProviderOptionSchema
@@ -865,6 +868,11 @@ from otari._client.models.stop import Stop
 from otari._client.models.stored_country_database_public import StoredCountryDatabasePublic
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema
 from otari._client.models.stored_search_tool_test_request import StoredSearchToolTestRequest
+from otari._client.models.subagent_outcome_report import SubagentOutcomeReport
+from otari._client.models.subagent_savings_point import SubagentSavingsPoint
+from otari._client.models.subagent_savings_public import SubagentSavingsPublic
+from otari._client.models.subagent_savings_totals import SubagentSavingsTotals
+from otari._client.models.subagent_usage_line import SubagentUsageLine
 from otari._client.models.switch_active_organization_request import SwitchActiveOrganizationRequest
 from otari._client.models.system import System
 from otari._client.models.test_service_request import TestServiceRequest

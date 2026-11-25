@@ -20,6 +20,7 @@ from pydantic import Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import List, Optional
 from typing_extensions import Annotated
 from uuid import UUID
+from otari._client.models.subagent_savings_public import SubagentSavingsPublic
 from otari._client.models.usage_count import UsageCount
 from otari._client.models.usage_entry import UsageEntry
 from otari._client.models.usage_grouped_series import UsageGroupedSeries
@@ -2428,6 +2429,360 @@ class OrganizationUsageApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/api/v1/organizations/me/usage/summary',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def organization_usage_read_subagent_savings(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="The grain of `series`.")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> SubagentSavingsPublic:
+        """Read Subagent Savings
+
+        What the subagent router saved, within what the caller's membership lets them see.  Each recommendation records the model the subagent would have started on without it: the model the caller asked for, else the parent's. When the harness reports what the subagent consumed, those tokens are priced at the models it ran on and at that baseline. The saving is the difference, less what the recommendations themselves cost, so it can be negative.  The costs count only the outcomes priced on both sides. `router_cost` counts every recommendation in the window, also one whose subagent was never reported or could not be priced. The figures are estimates unless counted under `measured`. With no dates, the last 30 days.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param bucket: The grain of `series`.
+        :type bucket: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param workspace_id: Only usage recorded in this workspace.
+        :type workspace_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._organization_usage_read_subagent_savings_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            bucket=bucket,
+            user_id=user_id,
+            workspace_id=workspace_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SubagentSavingsPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def organization_usage_read_subagent_savings_with_http_info(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="The grain of `series`.")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[SubagentSavingsPublic]:
+        """Read Subagent Savings
+
+        What the subagent router saved, within what the caller's membership lets them see.  Each recommendation records the model the subagent would have started on without it: the model the caller asked for, else the parent's. When the harness reports what the subagent consumed, those tokens are priced at the models it ran on and at that baseline. The saving is the difference, less what the recommendations themselves cost, so it can be negative.  The costs count only the outcomes priced on both sides. `router_cost` counts every recommendation in the window, also one whose subagent was never reported or could not be priced. The figures are estimates unless counted under `measured`. With no dates, the last 30 days.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param bucket: The grain of `series`.
+        :type bucket: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param workspace_id: Only usage recorded in this workspace.
+        :type workspace_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._organization_usage_read_subagent_savings_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            bucket=bucket,
+            user_id=user_id,
+            workspace_id=workspace_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SubagentSavingsPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def organization_usage_read_subagent_savings_without_preload_content(
+        self,
+        start_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)")] = None,
+        end_date: Annotated[Optional[datetime], Field(description="Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)")] = None,
+        bucket: Annotated[Optional[StrictStr], Field(description="The grain of `series`.")] = None,
+        user_id: Annotated[Optional[Annotated[List[StrictStr], Field(max_length=50)]], Field(description="Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.")] = None,
+        workspace_id: Annotated[Optional[UUID], Field(description="Only usage recorded in this workspace.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Read Subagent Savings
+
+        What the subagent router saved, within what the caller's membership lets them see.  Each recommendation records the model the subagent would have started on without it: the model the caller asked for, else the parent's. When the harness reports what the subagent consumed, those tokens are priced at the models it ran on and at that baseline. The saving is the difference, less what the recommendations themselves cost, so it can be negative.  The costs count only the outcomes priced on both sides. `router_cost` counts every recommendation in the window, also one whose subagent was never reported or could not be priced. The figures are estimates unless counted under `measured`. With no dates, the last 30 days.
+
+        :param start_date: Return logs with timestamp >= start_date (ISO 8601 or Unix epoch seconds)
+        :type start_date: datetime
+        :param end_date: Return logs with timestamp < end_date (ISO 8601 or Unix epoch seconds)
+        :type end_date: datetime
+        :param bucket: The grain of `series`.
+        :type bucket: str
+        :param user_id: Filter to one or more users; repeatable (user_id=a&user_id=b). Several values match any of them. At most 50 per call.
+        :type user_id: List[str]
+        :param workspace_id: Only usage recorded in this workspace.
+        :type workspace_id: UUID
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._organization_usage_read_subagent_savings_serialize(
+            start_date=start_date,
+            end_date=end_date,
+            bucket=bucket,
+            user_id=user_id,
+            workspace_id=workspace_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "SubagentSavingsPublic",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _organization_usage_read_subagent_savings_serialize(
+        self,
+        start_date,
+        end_date,
+        bucket,
+        user_id,
+        workspace_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+            'user_id': 'multi',
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if start_date is not None:
+            if isinstance(start_date, datetime):
+                _query_params.append(
+                    (
+                        'start_date',
+                        start_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('start_date', start_date))
+            
+        if end_date is not None:
+            if isinstance(end_date, datetime):
+                _query_params.append(
+                    (
+                        'end_date',
+                        end_date.strftime(
+                            self.api_client.configuration.datetime_format
+                        )
+                    )
+                )
+            else:
+                _query_params.append(('end_date', end_date))
+            
+        if bucket is not None:
+            
+            _query_params.append(('bucket', bucket))
+            
+        if user_id is not None:
+            
+            _query_params.append(('user_id', user_id))
+            
+        if workspace_id is not None:
+            
+            _query_params.append(('workspace_id', workspace_id))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'XApiKeyAuth', 
+            'ApiKeyAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/organizations/me/subagent-savings',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
