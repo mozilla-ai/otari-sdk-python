@@ -265,6 +265,10 @@ from otari._client.models.end_user_public import EndUserPublic
 from otari._client.models.end_user_put import EndUserPut
 from otari._client.models.end_user_update import EndUserUpdate
 from otari._client.models.end_users_deleted import EndUsersDeleted
+from otari._client.models.endpoint_auth_method import EndpointAuthMethod
+from otari._client.models.endpoint_auth_public import EndpointAuthPublic
+from otari._client.models.endpoint_auth_request import EndpointAuthRequest
+from otari._client.models.endpoint_auth_state import EndpointAuthState
 from otari._client.models.execution_state import ExecutionState
 from otari._client.models.explain_request import ExplainRequest
 from otari._client.models.explain_response import ExplainResponse
@@ -691,6 +695,7 @@ from otari._client.models.org_provider_key_models_public import OrgProviderKeyMo
 from otari._client.models.org_provider_key_public import OrgProviderKeyPublic
 from otari._client.models.org_provider_key_update_request import OrgProviderKeyUpdateRequest
 from otari._client.models.org_provider_keys_public import OrgProviderKeysPublic
+from otari._client.models.org_provider_keys_reencrypt_public import OrgProviderKeysReencryptPublic
 from otari._client.models.org_provider_models_refresh_public import OrgProviderModelsRefreshPublic
 from otari._client.models.org_web_search_key_create_request import OrgWebSearchKeyCreateRequest
 from otari._client.models.org_web_search_key_public import OrgWebSearchKeyPublic

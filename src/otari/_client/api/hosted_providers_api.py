@@ -3197,7 +3197,7 @@ class HostedProvidersApi:
     ) -> HostedProvidersReencryptPublic:
         """Reencrypt Hosted Providers
 
-        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Run after rotating the key, alongside ``POST /api/v1/search-tools/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
+        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Part of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/search-tools/reencrypt`` and ``POST /api/v1/organization-provider-keys/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3260,7 +3260,7 @@ class HostedProvidersApi:
     ) -> ApiResponse[HostedProvidersReencryptPublic]:
         """Reencrypt Hosted Providers
 
-        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Run after rotating the key, alongside ``POST /api/v1/search-tools/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
+        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Part of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/search-tools/reencrypt`` and ``POST /api/v1/organization-provider-keys/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3323,7 +3323,7 @@ class HostedProvidersApi:
     ) -> RESTResponseType:
         """Reencrypt Hosted Providers
 
-        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Run after rotating the key, alongside ``POST /api/v1/search-tools/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
+        Re-encrypt every stored key and set of client arguments with the primary ``OTARI_SECRET_KEY``.  Part of the ``OTARI_SECRET_KEY`` rotation procedure; run it alongside ``POST /api/v1/search-tools/reencrypt`` and ``POST /api/v1/organization-provider-keys/reencrypt``. A provider no configured key reads is left as it is, to be re-entered.
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

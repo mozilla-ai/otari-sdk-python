@@ -21,6 +21,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
+from otari._client.models.endpoint_auth_public import EndpointAuthPublic
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -33,6 +34,8 @@ class OrgProviderKeyPublic(BaseModel):
     archived_at: Optional[datetime] = None
     client_args: Optional[Dict[str, Any]] = None
     created_at: datetime
+    endpoint_auth: Optional[EndpointAuthPublic] = None
+    endpoint_auth_unreadable: Optional[StrictBool] = Field(default=False, description="True where the key stores an endpoint credential this deployment cannot read, so `endpoint_auth` is absent while the key still carries one. Holding one that cannot be read is a third state, distinct from holding none: it is what a client needs to report it and offer to remove it.")
     id: UUID
     is_org_default: StrictBool
     last4: Optional[StrictStr] = None
@@ -43,9 +46,9 @@ class OrgProviderKeyPublic(BaseModel):
     serving_count: StrictInt = Field(description="How many of the offered models have their serving switch on. A key offering models and serving none refuses every request through it until one is switched on.")
     slug: Optional[StrictStr] = Field(default=None, description="What requests name this key by, as in `<slug>:<model>`, for a key with a custom base URL. Absent for a key reached as `<provider>:<model>`.")
     updated_at: Optional[datetime] = None
-    usable: StrictBool = Field(description="False when the stored credential cannot be decrypted on this deployment, so the key supplies nothing at dispatch and the catalog withholds its provider. A row this deployment cannot read is still listed, because deleting or replacing it is what fixes it.")
+    usable: StrictBool = Field(description="False when the key cannot be served as stored, so it supplies nothing at dispatch and the catalog withholds its provider: a credential this deployment cannot decrypt or read, a provider that cannot take a custom base URL, or an endpoint credential the key may not carry. Such a row is still listed, because deleting or replacing it is what fixes it.")
     zero_data_retention: Optional[StrictBool] = False
-    __properties: ClassVar[List[str]] = ["api_base", "archived_at", "client_args", "created_at", "id", "is_org_default", "last4", "name", "offered_count", "organization_id", "provider", "serving_count", "slug", "updated_at", "usable", "zero_data_retention"]
+    __properties: ClassVar[List[str]] = ["api_base", "archived_at", "client_args", "created_at", "endpoint_auth", "endpoint_auth_unreadable", "id", "is_org_default", "last4", "name", "offered_count", "organization_id", "provider", "serving_count", "slug", "updated_at", "usable", "zero_data_retention"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,6 +89,9 @@ class OrgProviderKeyPublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of endpoint_auth
+        if self.endpoint_auth:
+            _dict['endpoint_auth'] = self.endpoint_auth.to_dict()
         # set to None if api_base (nullable) is None
         # and model_fields_set contains the field
         if self.api_base is None and "api_base" in self.model_fields_set:
@@ -100,6 +106,11 @@ class OrgProviderKeyPublic(BaseModel):
         # and model_fields_set contains the field
         if self.client_args is None and "client_args" in self.model_fields_set:
             _dict['client_args'] = None
+
+        # set to None if endpoint_auth (nullable) is None
+        # and model_fields_set contains the field
+        if self.endpoint_auth is None and "endpoint_auth" in self.model_fields_set:
+            _dict['endpoint_auth'] = None
 
         # set to None if last4 (nullable) is None
         # and model_fields_set contains the field
@@ -132,6 +143,8 @@ class OrgProviderKeyPublic(BaseModel):
             "archived_at": obj.get("archived_at"),
             "client_args": obj.get("client_args"),
             "created_at": obj.get("created_at"),
+            "endpoint_auth": EndpointAuthPublic.from_dict(obj["endpoint_auth"]) if obj.get("endpoint_auth") is not None else None,
+            "endpoint_auth_unreadable": obj.get("endpoint_auth_unreadable") if obj.get("endpoint_auth_unreadable") is not None else False,
             "id": obj.get("id"),
             "is_org_default": obj.get("is_org_default"),
             "last4": obj.get("last4"),

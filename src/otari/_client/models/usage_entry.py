@@ -56,6 +56,7 @@ class UsageEntry(BaseModel):
     provider_latency_ms: Optional[StrictInt]
     reasoning_tokens: Optional[StrictInt] = None
     request_group_id: Optional[StrictStr] = None
+    requested_model: Optional[StrictStr] = None
     selection_reason: Optional[StrictStr] = None
     source: StrictStr
     source_label: Optional[StrictStr]
@@ -68,7 +69,7 @@ class UsageEntry(BaseModel):
     ttft_ms: Optional[StrictInt]
     user_alias: Optional[StrictStr] = None
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "data_location", "deployment_paid", "endpoint", "error_message", "id", "latency_ms", "model", "output_tokens_per_second", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "provider_latency_ms", "reasoning_tokens", "request_group_id", "selection_reason", "source", "source_label", "status", "status_code", "stream_cut_by", "tags", "timestamp", "total_tokens", "ttft_ms", "user_alias", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "data_location", "deployment_paid", "endpoint", "error_message", "id", "latency_ms", "model", "output_tokens_per_second", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "provider_latency_ms", "reasoning_tokens", "request_group_id", "requested_model", "selection_reason", "source", "source_label", "status", "status_code", "stream_cut_by", "tags", "timestamp", "total_tokens", "ttft_ms", "user_alias", "user_id"]
 
     @field_validator('stream_cut_by')
     def stream_cut_by_validate_enum(cls, value):
@@ -234,6 +235,11 @@ class UsageEntry(BaseModel):
         if self.request_group_id is None and "request_group_id" in self.model_fields_set:
             _dict['request_group_id'] = None
 
+        # set to None if requested_model (nullable) is None
+        # and model_fields_set contains the field
+        if self.requested_model is None and "requested_model" in self.model_fields_set:
+            _dict['requested_model'] = None
+
         # set to None if selection_reason (nullable) is None
         # and model_fields_set contains the field
         if self.selection_reason is None and "selection_reason" in self.model_fields_set:
@@ -318,6 +324,7 @@ class UsageEntry(BaseModel):
             "provider_latency_ms": obj.get("provider_latency_ms"),
             "reasoning_tokens": obj.get("reasoning_tokens"),
             "request_group_id": obj.get("request_group_id"),
+            "requested_model": obj.get("requested_model"),
             "selection_reason": obj.get("selection_reason"),
             "source": obj.get("source"),
             "source_label": obj.get("source_label"),
