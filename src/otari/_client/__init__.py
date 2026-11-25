@@ -919,6 +919,9 @@ __all__ = [
     "SandboxCredentialPublic",
     "SandboxCredentialRequest",
     "SandboxProvider",
+    "SavingsAmounts",
+    "SavingsByAgentType",
+    "SavingsBySwap",
     "ScopedBudgetResponse",
     "ScoreQuestion",
     "SearchProviderOptionSchema",
@@ -954,6 +957,11 @@ __all__ = [
     "StoredCountryDatabasePublic",
     "StoredSearchToolSchema",
     "StoredSearchToolTestRequest",
+    "SubagentOutcomeReport",
+    "SubagentSavingsPoint",
+    "SubagentSavingsPublic",
+    "SubagentSavingsTotals",
+    "SubagentUsageLine",
     "SwitchActiveOrganizationRequest",
     "System",
     "TestServiceRequest",
@@ -1987,6 +1995,9 @@ from otari._client.models.rotate_master_key_response import RotateMasterKeyRespo
 from otari._client.models.sandbox_credential_public import SandboxCredentialPublic as SandboxCredentialPublic
 from otari._client.models.sandbox_credential_request import SandboxCredentialRequest as SandboxCredentialRequest
 from otari._client.models.sandbox_provider import SandboxProvider as SandboxProvider
+from otari._client.models.savings_amounts import SavingsAmounts as SavingsAmounts
+from otari._client.models.savings_by_agent_type import SavingsByAgentType as SavingsByAgentType
+from otari._client.models.savings_by_swap import SavingsBySwap as SavingsBySwap
 from otari._client.models.scoped_budget_response import ScopedBudgetResponse as ScopedBudgetResponse
 from otari._client.models.score_question import ScoreQuestion as ScoreQuestion
 from otari._client.models.search_provider_option_schema import SearchProviderOptionSchema as SearchProviderOptionSchema
@@ -2022,6 +2033,11 @@ from otari._client.models.stop import Stop as Stop
 from otari._client.models.stored_country_database_public import StoredCountryDatabasePublic as StoredCountryDatabasePublic
 from otari._client.models.stored_search_tool_schema import StoredSearchToolSchema as StoredSearchToolSchema
 from otari._client.models.stored_search_tool_test_request import StoredSearchToolTestRequest as StoredSearchToolTestRequest
+from otari._client.models.subagent_outcome_report import SubagentOutcomeReport as SubagentOutcomeReport
+from otari._client.models.subagent_savings_point import SubagentSavingsPoint as SubagentSavingsPoint
+from otari._client.models.subagent_savings_public import SubagentSavingsPublic as SubagentSavingsPublic
+from otari._client.models.subagent_savings_totals import SubagentSavingsTotals as SubagentSavingsTotals
+from otari._client.models.subagent_usage_line import SubagentUsageLine as SubagentUsageLine
 from otari._client.models.switch_active_organization_request import SwitchActiveOrganizationRequest as SwitchActiveOrganizationRequest
 from otari._client.models.system import System as System
 from otari._client.models.test_service_request import TestServiceRequest as TestServiceRequest
