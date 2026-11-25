@@ -33,6 +33,7 @@ from otari.errors import (
     ModelNotFoundError,
     OtariError,
     RateLimitError,
+    RedirectError,
     UnsupportedCapabilityError,
     UpstreamProviderError,
 )
@@ -88,6 +89,7 @@ __all__ = [
     "OtariResponse",
     "OtariStream",
     "RateLimitError",
+    "RedirectError",
     "RerankResponse",
     "TranscriptionResult",
     "UnsupportedCapabilityError",

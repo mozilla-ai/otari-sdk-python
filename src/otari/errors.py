@@ -86,6 +86,36 @@ class RateLimitError(OtariError):
         self.retry_after = retry_after
 
 
+class RedirectError(OtariError):
+    """Raised when the gateway answers with a redirect.
+
+    The SDK never follows one, because the request carries credentials and a
+    redirect may name another host.
+
+    Attributes:
+        location: Value of the ``Location`` header, when the gateway sent one.
+    """
+
+    default_message = "The gateway answered with a redirect"
+
+    def __init__(
+        self,
+        message: str | None = None,
+        *,
+        status_code: int | None = None,
+        original_error: Exception | None = None,
+        provider_name: str | None = None,
+        location: str | None = None,
+    ) -> None:
+        super().__init__(
+            message,
+            status_code=status_code,
+            original_error=original_error,
+            provider_name=provider_name,
+        )
+        self.location = location
+
+
 class UpstreamProviderError(OtariError):
     """Raised when the upstream provider is unreachable or errors (HTTP 502)."""
 
