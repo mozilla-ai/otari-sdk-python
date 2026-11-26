@@ -22,6 +22,8 @@ from otari._client.models.app_authorization_request import AppAuthorizationReque
 from otari._client.models.app_authorization_response import AppAuthorizationResponse
 from otari._client.models.app_details import AppDetails
 from otari._client.models.app_token_response import AppTokenResponse
+from otari._client.models.client_registration_request import ClientRegistrationRequest
+from otari._client.models.client_registration_response import ClientRegistrationResponse
 from otari._client.models.workspaces_public import WorkspacesPublic
 
 from otari._client.api_client import ApiClient, RequestSerialized
@@ -1294,10 +1296,11 @@ class OauthAppsApi:
     def oauth_apps_exchange(
         self,
         client_id: Annotated[str, Field(min_length=1, strict=True, max_length=128)],
-        code: Annotated[str, Field(min_length=43, strict=True, max_length=128)],
-        code_verifier: Annotated[str, Field(strict=True)],
         grant_type: StrictStr,
-        redirect_uri: Annotated[str, Field(strict=True, max_length=2048)],
+        code: Optional[Annotated[str, Field(min_length=43, strict=True, max_length=128)]] = None,
+        code_verifier: Optional[Annotated[str, Field(strict=True)]] = None,
+        redirect_uri: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = None,
+        refresh_token: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1313,18 +1316,20 @@ class OauthAppsApi:
     ) -> AppTokenResponse:
         """Exchange
 
-        Exchange a form-encoded single-use authorization code and S256 verifier for a revocable API key.
+        Exchange a form-encoded single-use authorization code and S256 verifier for a revocable credential.  A registered or open app is given an API key. A client that registered itself is given a read-only access token good for an hour through the MCP server, and a refresh token that renews it here (``grant_type=refresh_token``) until the sign-in the person approved ends.
 
         :param client_id: (required)
         :type client_id: str
-        :param code: (required)
-        :type code: str
-        :param code_verifier: (required)
-        :type code_verifier: str
         :param grant_type: (required)
         :type grant_type: str
-        :param redirect_uri: (required)
+        :param code:
+        :type code: str
+        :param code_verifier:
+        :type code_verifier: str
+        :param redirect_uri:
         :type redirect_uri: str
+        :param refresh_token:
+        :type refresh_token: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1349,10 +1354,11 @@ class OauthAppsApi:
 
         _param = self._oauth_apps_exchange_serialize(
             client_id=client_id,
+            grant_type=grant_type,
             code=code,
             code_verifier=code_verifier,
-            grant_type=grant_type,
             redirect_uri=redirect_uri,
+            refresh_token=refresh_token,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1379,10 +1385,11 @@ class OauthAppsApi:
     def oauth_apps_exchange_with_http_info(
         self,
         client_id: Annotated[str, Field(min_length=1, strict=True, max_length=128)],
-        code: Annotated[str, Field(min_length=43, strict=True, max_length=128)],
-        code_verifier: Annotated[str, Field(strict=True)],
         grant_type: StrictStr,
-        redirect_uri: Annotated[str, Field(strict=True, max_length=2048)],
+        code: Optional[Annotated[str, Field(min_length=43, strict=True, max_length=128)]] = None,
+        code_verifier: Optional[Annotated[str, Field(strict=True)]] = None,
+        redirect_uri: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = None,
+        refresh_token: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1398,18 +1405,20 @@ class OauthAppsApi:
     ) -> ApiResponse[AppTokenResponse]:
         """Exchange
 
-        Exchange a form-encoded single-use authorization code and S256 verifier for a revocable API key.
+        Exchange a form-encoded single-use authorization code and S256 verifier for a revocable credential.  A registered or open app is given an API key. A client that registered itself is given a read-only access token good for an hour through the MCP server, and a refresh token that renews it here (``grant_type=refresh_token``) until the sign-in the person approved ends.
 
         :param client_id: (required)
         :type client_id: str
-        :param code: (required)
-        :type code: str
-        :param code_verifier: (required)
-        :type code_verifier: str
         :param grant_type: (required)
         :type grant_type: str
-        :param redirect_uri: (required)
+        :param code:
+        :type code: str
+        :param code_verifier:
+        :type code_verifier: str
+        :param redirect_uri:
         :type redirect_uri: str
+        :param refresh_token:
+        :type refresh_token: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1434,10 +1443,11 @@ class OauthAppsApi:
 
         _param = self._oauth_apps_exchange_serialize(
             client_id=client_id,
+            grant_type=grant_type,
             code=code,
             code_verifier=code_verifier,
-            grant_type=grant_type,
             redirect_uri=redirect_uri,
+            refresh_token=refresh_token,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1464,10 +1474,11 @@ class OauthAppsApi:
     def oauth_apps_exchange_without_preload_content(
         self,
         client_id: Annotated[str, Field(min_length=1, strict=True, max_length=128)],
-        code: Annotated[str, Field(min_length=43, strict=True, max_length=128)],
-        code_verifier: Annotated[str, Field(strict=True)],
         grant_type: StrictStr,
-        redirect_uri: Annotated[str, Field(strict=True, max_length=2048)],
+        code: Optional[Annotated[str, Field(min_length=43, strict=True, max_length=128)]] = None,
+        code_verifier: Optional[Annotated[str, Field(strict=True)]] = None,
+        redirect_uri: Optional[Annotated[str, Field(strict=True, max_length=2048)]] = None,
+        refresh_token: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1483,18 +1494,20 @@ class OauthAppsApi:
     ) -> RESTResponseType:
         """Exchange
 
-        Exchange a form-encoded single-use authorization code and S256 verifier for a revocable API key.
+        Exchange a form-encoded single-use authorization code and S256 verifier for a revocable credential.  A registered or open app is given an API key. A client that registered itself is given a read-only access token good for an hour through the MCP server, and a refresh token that renews it here (``grant_type=refresh_token``) until the sign-in the person approved ends.
 
         :param client_id: (required)
         :type client_id: str
-        :param code: (required)
-        :type code: str
-        :param code_verifier: (required)
-        :type code_verifier: str
         :param grant_type: (required)
         :type grant_type: str
-        :param redirect_uri: (required)
+        :param code:
+        :type code: str
+        :param code_verifier:
+        :type code_verifier: str
+        :param redirect_uri:
         :type redirect_uri: str
+        :param refresh_token:
+        :type refresh_token: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1519,10 +1532,11 @@ class OauthAppsApi:
 
         _param = self._oauth_apps_exchange_serialize(
             client_id=client_id,
+            grant_type=grant_type,
             code=code,
             code_verifier=code_verifier,
-            grant_type=grant_type,
             redirect_uri=redirect_uri,
+            refresh_token=refresh_token,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1544,10 +1558,11 @@ class OauthAppsApi:
     def _oauth_apps_exchange_serialize(
         self,
         client_id,
+        grant_type,
         code,
         code_verifier,
-        grant_type,
         redirect_uri,
+        refresh_token,
         _request_auth,
         _content_type,
         _headers,
@@ -1582,6 +1597,8 @@ class OauthAppsApi:
             _form_params.append(('grant_type', grant_type))
         if redirect_uri is not None:
             _form_params.append(('redirect_uri', redirect_uri))
+        if refresh_token is not None:
+            _form_params.append(('refresh_token', refresh_token))
         # process the body parameter
 
 
@@ -1614,6 +1631,282 @@ class OauthAppsApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/api/v1/oauth/apps/token',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def oauth_apps_register_client(
+        self,
+        client_registration_request: ClientRegistrationRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ClientRegistrationResponse:
+        """Register Client
+
+        Register a public OAuth client that names itself (RFC 7591), as an MCP client does on first connect.  What it is approved for redeems only to the approving person's read-only access token, and the consent screen names it as unverified. Served where the MCP server is on.
+
+        :param client_registration_request: (required)
+        :type client_registration_request: ClientRegistrationRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._oauth_apps_register_client_serialize(
+            client_registration_request=client_registration_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '201': "ClientRegistrationResponse",
+            '400': "OAuthErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def oauth_apps_register_client_with_http_info(
+        self,
+        client_registration_request: ClientRegistrationRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ClientRegistrationResponse]:
+        """Register Client
+
+        Register a public OAuth client that names itself (RFC 7591), as an MCP client does on first connect.  What it is approved for redeems only to the approving person's read-only access token, and the consent screen names it as unverified. Served where the MCP server is on.
+
+        :param client_registration_request: (required)
+        :type client_registration_request: ClientRegistrationRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._oauth_apps_register_client_serialize(
+            client_registration_request=client_registration_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '201': "ClientRegistrationResponse",
+            '400': "OAuthErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def oauth_apps_register_client_without_preload_content(
+        self,
+        client_registration_request: ClientRegistrationRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Register Client
+
+        Register a public OAuth client that names itself (RFC 7591), as an MCP client does on first connect.  What it is approved for redeems only to the approving person's read-only access token, and the consent screen names it as unverified. Served where the MCP server is on.
+
+        :param client_registration_request: (required)
+        :type client_registration_request: ClientRegistrationRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._oauth_apps_register_client_serialize(
+            client_registration_request=client_registration_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '201': "ClientRegistrationResponse",
+            '400': "OAuthErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _oauth_apps_register_client_serialize(
+        self,
+        client_registration_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if client_registration_request is not None:
+            _body_params = client_registration_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/api/v1/oauth/apps/register',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

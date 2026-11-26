@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -25,13 +25,15 @@ from pydantic_core import to_jsonable_python
 
 class AppTokenResponse(BaseModel):
     """
-    A minted app key, as RFC 6749 section 5.1 shapes it.
+    A minted app key or access token, as RFC 6749 section 5.1 shapes it.
     """ # noqa: E501
     access_token: StrictStr
+    expires_in: Optional[StrictInt] = Field(default=None, description="Seconds until an access token expires, where it does.")
     manage_url: StrictStr = Field(description="The absolute URL of the page where the person sees this key, and revokes it.")
-    scope: StrictStr = Field(description="The scopes the key holds, space delimited. Fewer than the registration names where the person approved it before an operator narrowed it.")
+    refresh_token: Optional[StrictStr] = Field(default=None, description="Renews an MCP client's access token at this endpoint, and is replaced on each use. Using one a second time ends the sign-in.")
+    scope: Optional[StrictStr] = Field(default=None, description="The scopes the key holds, space delimited. Fewer than the registration names where the person approved it before an operator narrowed it. Absent for an access token.")
     token_type: Optional[StrictStr] = 'Bearer'
-    __properties: ClassVar[List[str]] = ["access_token", "manage_url", "scope", "token_type"]
+    __properties: ClassVar[List[str]] = ["access_token", "expires_in", "manage_url", "refresh_token", "scope", "token_type"]
 
     @field_validator('token_type')
     def token_type_validate_enum(cls, value):
@@ -82,6 +84,21 @@ class AppTokenResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if expires_in (nullable) is None
+        # and model_fields_set contains the field
+        if self.expires_in is None and "expires_in" in self.model_fields_set:
+            _dict['expires_in'] = None
+
+        # set to None if refresh_token (nullable) is None
+        # and model_fields_set contains the field
+        if self.refresh_token is None and "refresh_token" in self.model_fields_set:
+            _dict['refresh_token'] = None
+
+        # set to None if scope (nullable) is None
+        # and model_fields_set contains the field
+        if self.scope is None and "scope" in self.model_fields_set:
+            _dict['scope'] = None
+
         return _dict
 
     @classmethod
@@ -95,7 +112,9 @@ class AppTokenResponse(BaseModel):
 
         _obj = cls.model_validate({
             "access_token": obj.get("access_token"),
+            "expires_in": obj.get("expires_in"),
             "manage_url": obj.get("manage_url"),
+            "refresh_token": obj.get("refresh_token"),
             "scope": obj.get("scope"),
             "token_type": obj.get("token_type") if obj.get("token_type") is not None else 'Bearer'
         })

@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.key_scope import KeyScope
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,13 +28,24 @@ class AppDetails(BaseModel):
     """
     What the consent screen shows about an app before a person approves it.
     """ # noqa: E501
+    credential: Optional[StrictStr] = Field(default='api_key', description="What the app is given: an API key billed to a workspace the person picks, or, for a client that registered itself such as an MCP client, the person's own read-only access token.")
     issuer: StrictStr
     name: StrictStr
     redirect_uri: StrictStr
     scopes: List[KeyScope] = Field(description="The scopes each key this app is issued will hold, from its registration.")
     spend_limits: StrictBool = Field(description="Whether a spending limit the person sets binds the key. It does not where the deployment has turned budget enforcement off, so the consent screen does not offer one.")
     verified: StrictBool = Field(description="Whether the operator registered this app. An unregistered app is named after its site, which nothing has checked beyond its callback being on it.")
-    __properties: ClassVar[List[str]] = ["issuer", "name", "redirect_uri", "scopes", "spend_limits", "verified"]
+    __properties: ClassVar[List[str]] = ["credential", "issuer", "name", "redirect_uri", "scopes", "spend_limits", "verified"]
+
+    @field_validator('credential')
+    def credential_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['api_key', 'access_token']):
+            raise ValueError("must be one of enum values ('api_key', 'access_token')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,6 +98,7 @@ class AppDetails(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "credential": obj.get("credential") if obj.get("credential") is not None else 'api_key',
             "issuer": obj.get("issuer"),
             "name": obj.get("name"),
             "redirect_uri": obj.get("redirect_uri"),
