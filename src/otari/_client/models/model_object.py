@@ -33,16 +33,19 @@ class ModelObject(BaseModel):
     context_window: Optional[StrictInt] = None
     created: StrictInt
     deployment_managed: Optional[StrictBool] = False
+    description: Optional[StrictStr] = None
     id: StrictStr
+    knowledge_cutoff: Optional[StrictStr] = None
     max_output_tokens: Optional[StrictInt] = None
     name: Optional[StrictStr] = None
     object: Optional[StrictStr] = 'model'
     owned_by: StrictStr
     pricing: Optional[ModelPricingInfo] = None
     pricing_source: Optional[StrictStr] = 'none'
+    release_date: Optional[StrictStr] = None
     supported_parameters: Optional[List[StrictStr]] = None
     type: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["architecture", "context_window", "created", "deployment_managed", "id", "max_output_tokens", "name", "object", "owned_by", "pricing", "pricing_source", "supported_parameters", "type"]
+    __properties: ClassVar[List[str]] = ["architecture", "context_window", "created", "deployment_managed", "description", "id", "knowledge_cutoff", "max_output_tokens", "name", "object", "owned_by", "pricing", "pricing_source", "release_date", "supported_parameters", "type"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -109,6 +112,16 @@ class ModelObject(BaseModel):
         if self.context_window is None and "context_window" in self.model_fields_set:
             _dict['context_window'] = None
 
+        # set to None if description (nullable) is None
+        # and model_fields_set contains the field
+        if self.description is None and "description" in self.model_fields_set:
+            _dict['description'] = None
+
+        # set to None if knowledge_cutoff (nullable) is None
+        # and model_fields_set contains the field
+        if self.knowledge_cutoff is None and "knowledge_cutoff" in self.model_fields_set:
+            _dict['knowledge_cutoff'] = None
+
         # set to None if max_output_tokens (nullable) is None
         # and model_fields_set contains the field
         if self.max_output_tokens is None and "max_output_tokens" in self.model_fields_set:
@@ -123,6 +136,11 @@ class ModelObject(BaseModel):
         # and model_fields_set contains the field
         if self.pricing is None and "pricing" in self.model_fields_set:
             _dict['pricing'] = None
+
+        # set to None if release_date (nullable) is None
+        # and model_fields_set contains the field
+        if self.release_date is None and "release_date" in self.model_fields_set:
+            _dict['release_date'] = None
 
         # set to None if supported_parameters (nullable) is None
         # and model_fields_set contains the field
@@ -150,13 +168,16 @@ class ModelObject(BaseModel):
             "context_window": obj.get("context_window"),
             "created": obj.get("created"),
             "deployment_managed": obj.get("deployment_managed") if obj.get("deployment_managed") is not None else False,
+            "description": obj.get("description"),
             "id": obj.get("id"),
+            "knowledge_cutoff": obj.get("knowledge_cutoff"),
             "max_output_tokens": obj.get("max_output_tokens"),
             "name": obj.get("name"),
             "object": obj.get("object") if obj.get("object") is not None else 'model',
             "owned_by": obj.get("owned_by"),
             "pricing": ModelPricingInfo.from_dict(obj["pricing"]) if obj.get("pricing") is not None else None,
             "pricing_source": obj.get("pricing_source") if obj.get("pricing_source") is not None else 'none',
+            "release_date": obj.get("release_date"),
             "supported_parameters": obj.get("supported_parameters"),
             "type": obj.get("type")
         })

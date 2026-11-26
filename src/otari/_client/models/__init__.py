@@ -17,6 +17,10 @@ from otari._client.models.accept_invitation_request import AcceptInvitationReque
 from otari._client.models.accept_invitation_result_public import AcceptInvitationResultPublic
 from otari._client.models.accepted_membership_public import AcceptedMembershipPublic
 from otari._client.models.accepted_snapshot_response import AcceptedSnapshotResponse
+from otari._client.models.access_token_create import AccessTokenCreate
+from otari._client.models.access_token_created import AccessTokenCreated
+from otari._client.models.access_token_public import AccessTokenPublic
+from otari._client.models.access_tokens_public import AccessTokensPublic
 from otari._client.models.activation_api_key_public import ActivationApiKeyPublic
 from otari._client.models.activation_attempt_public import ActivationAttemptPublic
 from otari._client.models.activation_issued_key_public import ActivationIssuedKeyPublic
@@ -179,6 +183,8 @@ from otari._client.models.chat_message_input import ChatMessageInput
 from otari._client.models.check_failure import CheckFailure
 from otari._client.models.check_verdict_request import CheckVerdictRequest
 from otari._client.models.choice_question import ChoiceQuestion
+from otari._client.models.client_registration_request import ClientRegistrationRequest
+from otari._client.models.client_registration_response import ClientRegistrationResponse
 from otari._client.models.client_tool_results import ClientToolResults
 from otari._client.models.code_execute_request import CodeExecuteRequest
 from otari._client.models.code_execute_response import CodeExecuteResponse

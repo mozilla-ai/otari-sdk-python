@@ -106,6 +106,10 @@ __all__ = [
     "AcceptInvitationResultPublic",
     "AcceptedMembershipPublic",
     "AcceptedSnapshotResponse",
+    "AccessTokenCreate",
+    "AccessTokenCreated",
+    "AccessTokenPublic",
+    "AccessTokensPublic",
     "ActivationApiKeyPublic",
     "ActivationAttemptPublic",
     "ActivationIssuedKeyPublic",
@@ -268,6 +272,8 @@ __all__ = [
     "CheckFailure",
     "CheckVerdictRequest",
     "ChoiceQuestion",
+    "ClientRegistrationRequest",
+    "ClientRegistrationResponse",
     "ClientToolResults",
     "CodeExecuteRequest",
     "CodeExecuteResponse",
@@ -1183,6 +1189,10 @@ from otari._client.models.accept_invitation_request import AcceptInvitationReque
 from otari._client.models.accept_invitation_result_public import AcceptInvitationResultPublic as AcceptInvitationResultPublic
 from otari._client.models.accepted_membership_public import AcceptedMembershipPublic as AcceptedMembershipPublic
 from otari._client.models.accepted_snapshot_response import AcceptedSnapshotResponse as AcceptedSnapshotResponse
+from otari._client.models.access_token_create import AccessTokenCreate as AccessTokenCreate
+from otari._client.models.access_token_created import AccessTokenCreated as AccessTokenCreated
+from otari._client.models.access_token_public import AccessTokenPublic as AccessTokenPublic
+from otari._client.models.access_tokens_public import AccessTokensPublic as AccessTokensPublic
 from otari._client.models.activation_api_key_public import ActivationApiKeyPublic as ActivationApiKeyPublic
 from otari._client.models.activation_attempt_public import ActivationAttemptPublic as ActivationAttemptPublic
 from otari._client.models.activation_issued_key_public import ActivationIssuedKeyPublic as ActivationIssuedKeyPublic
@@ -1345,6 +1355,8 @@ from otari._client.models.chat_message_input import ChatMessageInput as ChatMess
 from otari._client.models.check_failure import CheckFailure as CheckFailure
 from otari._client.models.check_verdict_request import CheckVerdictRequest as CheckVerdictRequest
 from otari._client.models.choice_question import ChoiceQuestion as ChoiceQuestion
+from otari._client.models.client_registration_request import ClientRegistrationRequest as ClientRegistrationRequest
+from otari._client.models.client_registration_response import ClientRegistrationResponse as ClientRegistrationResponse
 from otari._client.models.client_tool_results import ClientToolResults as ClientToolResults
 from otari._client.models.code_execute_request import CodeExecuteRequest as CodeExecuteRequest
 from otari._client.models.code_execute_response import CodeExecuteResponse as CodeExecuteResponse

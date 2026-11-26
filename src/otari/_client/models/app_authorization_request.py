@@ -36,12 +36,13 @@ class AppAuthorizationRequest(BaseModel):
     code_challenge_method: StrictStr
     expiration: Optional[StrictStr] = Field(default='never', description="How long the key lives once it is issued.")
     limit: Optional[Limit] = None
+    organization_id: Optional[UUID] = Field(default=None, description="The organization an access token reads: the one the consent screen showed. Required when the app is given an access token, and refused unless the person is acting in it.")
     redirect_uri: Annotated[str, Field(strict=True, max_length=2048)]
     response_type: Optional[StrictStr] = 'code'
     scopes: List[KeyScope] = Field(description="The scopes the consent screen showed. The key holds these and what the registration still names, so one added since the screen was drawn is left out and one removed since takes effect.")
     state: Annotated[str, Field(min_length=16, strict=True, max_length=256)]
-    workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["client_id", "code_challenge", "code_challenge_method", "expiration", "limit", "redirect_uri", "response_type", "scopes", "state", "workspace_id"]
+    workspace_id: Optional[UUID] = Field(default=None, description="The workspace the key bills. Required unless the app is given an access token.")
+    __properties: ClassVar[List[str]] = ["client_id", "code_challenge", "code_challenge_method", "expiration", "limit", "organization_id", "redirect_uri", "response_type", "scopes", "state", "workspace_id"]
 
     @field_validator('code_challenge')
     def code_challenge_validate_regular_expression(cls, value):
@@ -137,6 +138,16 @@ class AppAuthorizationRequest(BaseModel):
         if self.limit is None and "limit" in self.model_fields_set:
             _dict['limit'] = None
 
+        # set to None if organization_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.organization_id is None and "organization_id" in self.model_fields_set:
+            _dict['organization_id'] = None
+
+        # set to None if workspace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
+            _dict['workspace_id'] = None
+
         return _dict
 
     @classmethod
@@ -154,6 +165,7 @@ class AppAuthorizationRequest(BaseModel):
             "code_challenge_method": obj.get("code_challenge_method"),
             "expiration": obj.get("expiration") if obj.get("expiration") is not None else 'never',
             "limit": Limit.from_dict(obj["limit"]) if obj.get("limit") is not None else None,
+            "organization_id": obj.get("organization_id"),
             "redirect_uri": obj.get("redirect_uri"),
             "response_type": obj.get("response_type") if obj.get("response_type") is not None else 'code',
             "scopes": obj.get("scopes"),
