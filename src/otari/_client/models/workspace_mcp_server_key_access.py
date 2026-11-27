@@ -33,10 +33,11 @@ class WorkspaceMcpServerKeyAccess(BaseModel):
     enabled: StrictBool
     grant_id: Optional[UUID]
     name: StrictStr
+    organization_tools: Optional[List[StrictStr]] = Field(default=None, description="On an organization's server, its limit for this workspace, which caps every rule; null sets none")
     read_tools: Optional[List[StrictStr]] = Field(default=None, description="The server's tools labeled read, which '@read' in tools stands for")
     server_id: UUID
     tools: List[StrictStr] = Field(description="The deciding rule's tool patterns; [] means the key cannot reach the server")
-    __properties: ClassVar[List[str]] = ["allowed_tools", "decided_by", "enabled", "grant_id", "name", "read_tools", "server_id", "tools"]
+    __properties: ClassVar[List[str]] = ["allowed_tools", "decided_by", "enabled", "grant_id", "name", "organization_tools", "read_tools", "server_id", "tools"]
 
     @field_validator('decided_by')
     def decided_by_validate_enum(cls, value):
@@ -94,6 +95,11 @@ class WorkspaceMcpServerKeyAccess(BaseModel):
         if self.grant_id is None and "grant_id" in self.model_fields_set:
             _dict['grant_id'] = None
 
+        # set to None if organization_tools (nullable) is None
+        # and model_fields_set contains the field
+        if self.organization_tools is None and "organization_tools" in self.model_fields_set:
+            _dict['organization_tools'] = None
+
         return _dict
 
     @classmethod
@@ -111,6 +117,7 @@ class WorkspaceMcpServerKeyAccess(BaseModel):
             "enabled": obj.get("enabled"),
             "grant_id": obj.get("grant_id"),
             "name": obj.get("name"),
+            "organization_tools": obj.get("organization_tools"),
             "read_tools": obj.get("read_tools"),
             "server_id": obj.get("server_id"),
             "tools": obj.get("tools")

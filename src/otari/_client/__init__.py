@@ -741,6 +741,7 @@ __all__ = [
     "McpServerRequestsDeclined",
     "McpServerRequestsPublic",
     "McpServerSummary",
+    "McpServerWorkspaceSettings",
     "McpServersResponse",
     "McpSharedAccountPublic",
     "McpToolDefinition",
@@ -818,6 +819,9 @@ __all__ = [
     "OrganizationGuardrailTestResult",
     "OrganizationGuardrailUpdate",
     "OrganizationGuardrailsPublic",
+    "OrganizationMcpServerLimit",
+    "OrganizationMcpServerWorkspace",
+    "OrganizationMcpServerWorkspaces",
     "OrganizationMembershipContextPublic",
     "OrganizationModelPricingCreate",
     "OrganizationModelPricingPublic",
@@ -1069,6 +1073,7 @@ __all__ = [
     "WorkspaceMcpServerLogosPublic",
     "WorkspaceMcpServerMyTools",
     "WorkspaceMcpServerPublic",
+    "WorkspaceMcpServerSettingsUpdate",
     "WorkspaceMcpServerUpdate",
     "WorkspaceMcpServersPublic",
     "WorkspaceMemberBudgetPoliciesPublic",
@@ -1824,6 +1829,7 @@ from otari._client.models.mcp_server_requesters_public import McpServerRequester
 from otari._client.models.mcp_server_requests_declined import McpServerRequestsDeclined as McpServerRequestsDeclined
 from otari._client.models.mcp_server_requests_public import McpServerRequestsPublic as McpServerRequestsPublic
 from otari._client.models.mcp_server_summary import McpServerSummary as McpServerSummary
+from otari._client.models.mcp_server_workspace_settings import McpServerWorkspaceSettings as McpServerWorkspaceSettings
 from otari._client.models.mcp_servers_response import McpServersResponse as McpServersResponse
 from otari._client.models.mcp_shared_account_public import McpSharedAccountPublic as McpSharedAccountPublic
 from otari._client.models.mcp_tool_definition import McpToolDefinition as McpToolDefinition
@@ -1901,6 +1907,9 @@ from otari._client.models.organization_guardrail_test import OrganizationGuardra
 from otari._client.models.organization_guardrail_test_result import OrganizationGuardrailTestResult as OrganizationGuardrailTestResult
 from otari._client.models.organization_guardrail_update import OrganizationGuardrailUpdate as OrganizationGuardrailUpdate
 from otari._client.models.organization_guardrails_public import OrganizationGuardrailsPublic as OrganizationGuardrailsPublic
+from otari._client.models.organization_mcp_server_limit import OrganizationMcpServerLimit as OrganizationMcpServerLimit
+from otari._client.models.organization_mcp_server_workspace import OrganizationMcpServerWorkspace as OrganizationMcpServerWorkspace
+from otari._client.models.organization_mcp_server_workspaces import OrganizationMcpServerWorkspaces as OrganizationMcpServerWorkspaces
 from otari._client.models.organization_membership_context_public import OrganizationMembershipContextPublic as OrganizationMembershipContextPublic
 from otari._client.models.organization_model_pricing_create import OrganizationModelPricingCreate as OrganizationModelPricingCreate
 from otari._client.models.organization_model_pricing_public import OrganizationModelPricingPublic as OrganizationModelPricingPublic
@@ -2152,6 +2161,7 @@ from otari._client.models.workspace_mcp_server_logo_public import WorkspaceMcpSe
 from otari._client.models.workspace_mcp_server_logos_public import WorkspaceMcpServerLogosPublic as WorkspaceMcpServerLogosPublic
 from otari._client.models.workspace_mcp_server_my_tools import WorkspaceMcpServerMyTools as WorkspaceMcpServerMyTools
 from otari._client.models.workspace_mcp_server_public import WorkspaceMcpServerPublic as WorkspaceMcpServerPublic
+from otari._client.models.workspace_mcp_server_settings_update import WorkspaceMcpServerSettingsUpdate as WorkspaceMcpServerSettingsUpdate
 from otari._client.models.workspace_mcp_server_update import WorkspaceMcpServerUpdate as WorkspaceMcpServerUpdate
 from otari._client.models.workspace_mcp_servers_public import WorkspaceMcpServersPublic as WorkspaceMcpServersPublic
 from otari._client.models.workspace_member_budget_policies_public import WorkspaceMemberBudgetPoliciesPublic as WorkspaceMemberBudgetPoliciesPublic
