@@ -29,7 +29,7 @@ class WorkspaceMcpServerAccessCheck(BaseModel):
     Whether one key may call one tool on a server, and which rule says so.
     """ # noqa: E501
     allowed: StrictBool
-    decided_by: StrictStr = Field(description="The key's own grant, its owner's, the server's everyone_tools, or the server itself (disabled, or its allowed_tools leaves the tool out)")
+    decided_by: StrictStr = Field(description="The key's own grant, its owner's, the server's everyone_tools, the server itself (disabled, or its allowed_tools leaves the tool out), or on an organization's server the organization's limit for the workspace")
     grant_id: Optional[UUID] = Field(description="The deciding grant, when a grant decided")
     tools: List[StrictStr] = Field(description="The deciding rule's tool patterns; the server's allowed_tools when it decided")
     __properties: ClassVar[List[str]] = ["allowed", "decided_by", "grant_id", "tools"]
@@ -37,8 +37,8 @@ class WorkspaceMcpServerAccessCheck(BaseModel):
     @field_validator('decided_by')
     def decided_by_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['key', 'user', 'everyone', 'server']):
-            raise ValueError("must be one of enum values ('key', 'user', 'everyone', 'server')")
+        if value not in set(['key', 'user', 'everyone', 'server', 'organization']):
+            raise ValueError("must be one of enum values ('key', 'user', 'everyone', 'server', 'organization')")
         return value
 
     model_config = ConfigDict(

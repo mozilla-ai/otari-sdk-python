@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, Strict
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from otari._client.models.mcp_credential_mode import McpCredentialMode
+from otari._client.models.mcp_server_workspace_settings import McpServerWorkspaceSettings
 from otari._client.models.mcp_shared_account_public import McpSharedAccountPublic
 from otari._client.models.workspace_mcp_server_health import WorkspaceMcpServerHealth
 from typing import Optional, Set
@@ -43,17 +44,19 @@ class WorkspaceMcpServerPublic(BaseModel):
     has_token: StrictBool
     health: Optional[WorkspaceMcpServerHealth] = Field(description="What the gateway last learned by talking to the server, from a check or from a real request; null until either has happened")
     id: UUID
+    in_workspace: Optional[McpServerWorkspaceSettings] = Field(default=None, description="On an organization's server read through a workspace: that workspace's own settings on it, and the organization's limit there. The fields above are the organization's definition")
     name: StrictStr
     needs_setup: Optional[StrictBool] = Field(default=False, description="A shared server with no token and no shared account, whose server asked for a credential when last reached. Requests skip it, as they skip a disabled server, until it has one")
     oauth_client_id: Optional[StrictStr] = Field(description="The OAuth client ID a manager supplied for sign-ins; null when Otari registers itself")
     purpose_hint: Optional[StrictStr]
     read_tools: List[StrictStr] = Field(description="The tool names '@read' stands for: a manager's labels, or until one edits them the tools the server marked readOnlyHint when its tools were first listed. A later listing never adds to them")
     read_tools_from_server: StrictBool = Field(description="True while no manager has edited read_tools, so they are the readOnlyHint of the server's first listing")
+    scope: StrictStr = Field(description="Who owns the server: one workspace, or its organization")
     shared_account: Optional[McpSharedAccountPublic] = Field(default=None, description="On a shared server: the account a manager signed in to for everyone, which every call carries in place of a token; null when it has none")
     updated_at: StrictStr
     url: StrictStr
-    workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["allowed_tools", "attach_by_default", "caller_access", "connected_users", "created_at", "credential_mode", "enabled", "everyone_tools", "has_oauth_client_secret", "has_token", "health", "id", "name", "needs_setup", "oauth_client_id", "purpose_hint", "read_tools", "read_tools_from_server", "shared_account", "updated_at", "url", "workspace_id"]
+    workspace_id: Optional[UUID] = Field(description="The workspace that owns the server; null for an organization's")
+    __properties: ClassVar[List[str]] = ["allowed_tools", "attach_by_default", "caller_access", "connected_users", "created_at", "credential_mode", "enabled", "everyone_tools", "has_oauth_client_secret", "has_token", "health", "id", "in_workspace", "name", "needs_setup", "oauth_client_id", "purpose_hint", "read_tools", "read_tools_from_server", "scope", "shared_account", "updated_at", "url", "workspace_id"]
 
     @field_validator('caller_access')
     def caller_access_validate_enum(cls, value):
@@ -63,6 +66,13 @@ class WorkspaceMcpServerPublic(BaseModel):
 
         if value not in set(['all', 'read', 'some', 'none']):
             raise ValueError("must be one of enum values ('all', 'read', 'some', 'none')")
+        return value
+
+    @field_validator('scope')
+    def scope_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['workspace', 'organization']):
+            raise ValueError("must be one of enum values ('workspace', 'organization')")
         return value
 
     model_config = ConfigDict(
@@ -107,6 +117,9 @@ class WorkspaceMcpServerPublic(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of health
         if self.health:
             _dict['health'] = self.health.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of in_workspace
+        if self.in_workspace:
+            _dict['in_workspace'] = self.in_workspace.to_dict()
         # override the default output from pydantic by calling `to_dict()` of shared_account
         if self.shared_account:
             _dict['shared_account'] = self.shared_account.to_dict()
@@ -130,6 +143,11 @@ class WorkspaceMcpServerPublic(BaseModel):
         if self.health is None and "health" in self.model_fields_set:
             _dict['health'] = None
 
+        # set to None if in_workspace (nullable) is None
+        # and model_fields_set contains the field
+        if self.in_workspace is None and "in_workspace" in self.model_fields_set:
+            _dict['in_workspace'] = None
+
         # set to None if oauth_client_id (nullable) is None
         # and model_fields_set contains the field
         if self.oauth_client_id is None and "oauth_client_id" in self.model_fields_set:
@@ -144,6 +162,11 @@ class WorkspaceMcpServerPublic(BaseModel):
         # and model_fields_set contains the field
         if self.shared_account is None and "shared_account" in self.model_fields_set:
             _dict['shared_account'] = None
+
+        # set to None if workspace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
+            _dict['workspace_id'] = None
 
         return _dict
 
@@ -169,12 +192,14 @@ class WorkspaceMcpServerPublic(BaseModel):
             "has_token": obj.get("has_token"),
             "health": WorkspaceMcpServerHealth.from_dict(obj["health"]) if obj.get("health") is not None else None,
             "id": obj.get("id"),
+            "in_workspace": McpServerWorkspaceSettings.from_dict(obj["in_workspace"]) if obj.get("in_workspace") is not None else None,
             "name": obj.get("name"),
             "needs_setup": obj.get("needs_setup") if obj.get("needs_setup") is not None else False,
             "oauth_client_id": obj.get("oauth_client_id"),
             "purpose_hint": obj.get("purpose_hint"),
             "read_tools": obj.get("read_tools"),
             "read_tools_from_server": obj.get("read_tools_from_server"),
+            "scope": obj.get("scope"),
             "shared_account": McpSharedAccountPublic.from_dict(obj["shared_account"]) if obj.get("shared_account") is not None else None,
             "updated_at": obj.get("updated_at"),
             "url": obj.get("url"),

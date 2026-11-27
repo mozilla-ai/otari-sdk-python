@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from typing import Optional, Set
@@ -32,9 +32,20 @@ class McpConnectionCompleted(BaseModel):
     return_to: Optional[StrictStr] = Field(description="The dashboard path the sign-in was started with, if any")
     server_id: UUID
     server_name: StrictStr
+    server_scope: Optional[StrictStr] = Field(default='workspace', description="Whose the server is: one workspace's own, or its organization's, which a member signs in to from a workspace that reaches it")
     shared: Optional[StrictBool] = Field(default=False, description="The sign-in was a manager's for everyone: it is now the shared server's account")
-    workspace_id: UUID
-    __properties: ClassVar[List[str]] = ["checked", "return_to", "server_id", "server_name", "shared", "workspace_id"]
+    workspace_id: Optional[UUID] = Field(description="The workspace the sign-in started from; null for an owner's sign-in to an organization's server")
+    __properties: ClassVar[List[str]] = ["checked", "return_to", "server_id", "server_name", "server_scope", "shared", "workspace_id"]
+
+    @field_validator('server_scope')
+    def server_scope_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['workspace', 'organization']):
+            raise ValueError("must be one of enum values ('workspace', 'organization')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -80,6 +91,11 @@ class McpConnectionCompleted(BaseModel):
         if self.return_to is None and "return_to" in self.model_fields_set:
             _dict['return_to'] = None
 
+        # set to None if workspace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.workspace_id is None and "workspace_id" in self.model_fields_set:
+            _dict['workspace_id'] = None
+
         return _dict
 
     @classmethod
@@ -96,6 +112,7 @@ class McpConnectionCompleted(BaseModel):
             "return_to": obj.get("return_to"),
             "server_id": obj.get("server_id"),
             "server_name": obj.get("server_name"),
+            "server_scope": obj.get("server_scope") if obj.get("server_scope") is not None else 'workspace',
             "shared": obj.get("shared") if obj.get("shared") is not None else False,
             "workspace_id": obj.get("workspace_id")
         })
