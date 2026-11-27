@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from otari._client.models.check_failure import CheckFailure
+from otari._client.models.workspace_mcp_server_last_failure import WorkspaceMcpServerLastFailure
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,19 +32,20 @@ class WorkspaceMcpServerHealth(BaseModel):
     checked_at: StrictStr
     error: Optional[CheckFailure] = Field(default=None, description="Why the check failed; null when healthy")
     http_status: Optional[StrictInt] = Field(default=None, description="The HTTP status the server refused with, if any")
+    last_failure: Optional[WorkspaceMcpServerLastFailure] = Field(default=None, description="The most recent contact that got no answer, however long ago; null if none is known")
     missing_allowed_tools: Optional[List[StrictStr]] = Field(default=None, description="Allow-listed names the server did not offer")
     read_only_hinted_tools: Optional[List[StrictStr]] = Field(default=None, description="Those of tools the server annotates readOnlyHint in this listing: untrusted, and never what '@read' stands for after the server's first listing")
-    status: StrictStr
+    status: StrictStr = Field(description="failing: the last contact got no answer. degraded: the last contact got one, but another failed within the last 60 minutes. healthy: neither")
     tool_count: Optional[StrictInt] = Field(default=None, description="Live tools the allow-list admits; null when the check failed, or when the server answered a request that did not list its tools and no listing is on record")
     tool_descriptions: Optional[Dict[str, StrictStr]] = Field(default=None, description="The first line of each offered tool's own description, where it has one: untrusted text the server wrote, for a person to read")
     tools: Optional[List[StrictStr]] = Field(default=None, description="Every tool name the server offers, allowed or not, up to 200; empty on a failure")
-    __properties: ClassVar[List[str]] = ["checked_at", "error", "http_status", "missing_allowed_tools", "read_only_hinted_tools", "status", "tool_count", "tool_descriptions", "tools"]
+    __properties: ClassVar[List[str]] = ["checked_at", "error", "http_status", "last_failure", "missing_allowed_tools", "read_only_hinted_tools", "status", "tool_count", "tool_descriptions", "tools"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['healthy', 'failing']):
-            raise ValueError("must be one of enum values ('healthy', 'failing')")
+        if value not in set(['healthy', 'degraded', 'failing']):
+            raise ValueError("must be one of enum values ('healthy', 'degraded', 'failing')")
         return value
 
     model_config = ConfigDict(
@@ -85,6 +87,9 @@ class WorkspaceMcpServerHealth(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of last_failure
+        if self.last_failure:
+            _dict['last_failure'] = self.last_failure.to_dict()
         # set to None if error (nullable) is None
         # and model_fields_set contains the field
         if self.error is None and "error" in self.model_fields_set:
@@ -94,6 +99,11 @@ class WorkspaceMcpServerHealth(BaseModel):
         # and model_fields_set contains the field
         if self.http_status is None and "http_status" in self.model_fields_set:
             _dict['http_status'] = None
+
+        # set to None if last_failure (nullable) is None
+        # and model_fields_set contains the field
+        if self.last_failure is None and "last_failure" in self.model_fields_set:
+            _dict['last_failure'] = None
 
         # set to None if tool_count (nullable) is None
         # and model_fields_set contains the field
@@ -115,6 +125,7 @@ class WorkspaceMcpServerHealth(BaseModel):
             "checked_at": obj.get("checked_at"),
             "error": obj.get("error"),
             "http_status": obj.get("http_status"),
+            "last_failure": WorkspaceMcpServerLastFailure.from_dict(obj["last_failure"]) if obj.get("last_failure") is not None else None,
             "missing_allowed_tools": obj.get("missing_allowed_tools"),
             "read_only_hinted_tools": obj.get("read_only_hinted_tools"),
             "status": obj.get("status"),

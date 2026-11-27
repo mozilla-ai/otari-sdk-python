@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,9 +27,10 @@ class BulkInvitationFailurePublic(BaseModel):
     """
     An address the bulk invite could not invite, and why.
     """ # noqa: E501
+    code: Optional[StrictStr] = None
     detail: StrictStr
     email: StrictStr
-    __properties: ClassVar[List[str]] = ["detail", "email"]
+    __properties: ClassVar[List[str]] = ["code", "detail", "email"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -70,6 +71,11 @@ class BulkInvitationFailurePublic(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if code (nullable) is None
+        # and model_fields_set contains the field
+        if self.code is None and "code" in self.model_fields_set:
+            _dict['code'] = None
+
         return _dict
 
     @classmethod
@@ -82,6 +88,7 @@ class BulkInvitationFailurePublic(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "code": obj.get("code"),
             "detail": obj.get("detail"),
             "email": obj.get("email")
         })

@@ -20,14 +20,13 @@ from typing_extensions import Self
 
 class MailReadiness(str, Enum):
     """
-    How far an email carrying a link back to this deployment gets.  The members are exclusive and cover every deployment. ``none`` means no message is sent at all. ``sends_only`` means a message is sent and no link the recipient can open reaches them. ``delivers`` means the recipient's mailbox receives it.
+    Whether this deployment is configured to put a link into somebody's inbox.  The members are exclusive and cover every deployment. ``none`` means no message is sent at all. ``delivers`` means a message is sent to the address it names, which is what the configuration permits rather than what a mail server went on to do with it. Whether a send succeeds is :meth:`Mailer.send`'s answer, once.  NOTE: An operator confirms a real end-to-end delivery through the mail test surface. This value never stands for a send that has been tried.
     """
 
     """
     allowed enum values
     """
     NONE = 'none'
-    SENDS_ONLY = 'sends_only'
     DELIVERS = 'delivers'
 
     @classmethod

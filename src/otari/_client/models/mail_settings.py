@@ -32,8 +32,8 @@ class MailSettings(BaseModel):
     from_name: StrictStr = Field(description="The 'From' display name on outgoing mail.")
     missing: List[StrictStr] = Field(description="Settings that must be set before mail works, in config order. Empty exactly when 'ready' is true, so the dashboard can name what to configure rather than only reporting that mail is off.")
     public_base_url: Optional[StrictStr] = Field(description="This deployment's own externally-reachable URL, which mail needs before it can send. The links themselves are built from ui_base_url, or from this when that is unset.")
-    ready: StrictBool = Field(description="Whether a message carrying a link back to this deployment can be sent, which is what every message the control plane sends needs. True for a transport that delivers to nobody. The 'mail' field on /api/v1/bootstrap tells those apart.")
-    transport: StrictStr = Field(description="The transport a send would use: 'smtp', 'console' (logged, not delivered), or 'none'.")
+    ready: StrictBool = Field(description="Whether an email carrying a link back to this deployment reaches its recipient, which is what every message the control plane sends needs.")
+    transport: StrictStr = Field(description="The transport a send would use: 'smtp' or 'none'.")
     __properties: ClassVar[List[str]] = ["enabled", "from_email", "from_name", "missing", "public_base_url", "ready", "transport"]
 
     model_config = ConfigDict(
