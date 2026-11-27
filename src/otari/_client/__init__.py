@@ -1069,6 +1069,7 @@ __all__ = [
     "WorkspaceMcpServerGrantsCreate",
     "WorkspaceMcpServerHealth",
     "WorkspaceMcpServerKeyAccess",
+    "WorkspaceMcpServerLastFailure",
     "WorkspaceMcpServerLogoPublic",
     "WorkspaceMcpServerLogosPublic",
     "WorkspaceMcpServerMyTools",
@@ -2157,6 +2158,7 @@ from otari._client.models.workspace_mcp_server_grant_update import WorkspaceMcpS
 from otari._client.models.workspace_mcp_server_grants_create import WorkspaceMcpServerGrantsCreate as WorkspaceMcpServerGrantsCreate
 from otari._client.models.workspace_mcp_server_health import WorkspaceMcpServerHealth as WorkspaceMcpServerHealth
 from otari._client.models.workspace_mcp_server_key_access import WorkspaceMcpServerKeyAccess as WorkspaceMcpServerKeyAccess
+from otari._client.models.workspace_mcp_server_last_failure import WorkspaceMcpServerLastFailure as WorkspaceMcpServerLastFailure
 from otari._client.models.workspace_mcp_server_logo_public import WorkspaceMcpServerLogoPublic as WorkspaceMcpServerLogoPublic
 from otari._client.models.workspace_mcp_server_logos_public import WorkspaceMcpServerLogosPublic as WorkspaceMcpServerLogosPublic
 from otari._client.models.workspace_mcp_server_my_tools import WorkspaceMcpServerMyTools as WorkspaceMcpServerMyTools
