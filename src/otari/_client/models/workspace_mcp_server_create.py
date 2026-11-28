@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from uuid import UUID
 from otari._client.models.mcp_credential_mode import McpCredentialMode
 from typing import Optional, Set
 from typing_extensions import Self
@@ -35,13 +36,14 @@ class WorkspaceMcpServerCreate(BaseModel):
     credential_mode: Optional[McpCredentialMode] = Field(default=None, description="Whose credential a call carries: 'shared' sends one credential for every caller, authorization_token or the account a manager signs in to for everyone once the server is stored; 'per_user' sends the calling user's own token, which each user gets by signing in to the server, and takes no authorization_token")
     enabled: Optional[StrictBool] = Field(default=True, description="Whether a request naming this server actually reaches it")
     everyone_tools: Optional[List[StrictStr]] = Field(default=None, description="What every key of the workspace may call on this server: tool names, '*' for every tool, or 'prefix*', or '@read' for read_tools; [] denies everyone. A grant for a key or its owner overrides it")
+    fold_server_ids: Optional[Annotated[List[UUID], Field(max_length=50)]] = Field(default=None, description="On an organization's server: workspaces' own servers at the same URL to fold into it. Each one's rules become its workspace's settings on the new server, its id keeps working there, and it is deleted. A personal sign-in is kept where the new server is personal at its very URL and can renew it: the sign-in holds a refresh token and was made through the new server's client. The rest end")
     name: Annotated[str, Field(min_length=1, strict=True, max_length=128)] = Field(description="Label for the server, unique within the workspace")
     oauth_client_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=512)]] = Field(default=None, description="For a server whose authorization server does not register clients on its own: the OAuth client ID a sign-in goes through. Omit it to let Otari register itself")
     oauth_client_secret: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=8192)]] = Field(default=None, description="The secret of oauth_client_id, when it has one. Encrypted at rest, never returned")
     purpose_hint: Optional[Annotated[str, Field(strict=True, max_length=2000)]] = Field(default=None, description="Hint prepended to the system message to help the model choose")
     read_tools: Optional[List[StrictStr]] = Field(default=None, description="The tool names a manager labeled read, which '@read' in an access rule stands for. Omit it, or send null, and the labels follow the tools the server itself marks readOnlyHint")
     url: Annotated[str, Field(min_length=1, strict=True, max_length=2048)] = Field(description="Streamable HTTP MCP endpoint")
-    __properties: ClassVar[List[str]] = ["allowed_tools", "attach_by_default", "authorization_token", "credential_mode", "enabled", "everyone_tools", "name", "oauth_client_id", "oauth_client_secret", "purpose_hint", "read_tools", "url"]
+    __properties: ClassVar[List[str]] = ["allowed_tools", "attach_by_default", "authorization_token", "credential_mode", "enabled", "everyone_tools", "fold_server_ids", "name", "oauth_client_id", "oauth_client_secret", "purpose_hint", "read_tools", "url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -130,6 +132,7 @@ class WorkspaceMcpServerCreate(BaseModel):
             "credential_mode": obj.get("credential_mode"),
             "enabled": obj.get("enabled") if obj.get("enabled") is not None else True,
             "everyone_tools": obj.get("everyone_tools"),
+            "fold_server_ids": obj.get("fold_server_ids"),
             "name": obj.get("name"),
             "oauth_client_id": obj.get("oauth_client_id"),
             "oauth_client_secret": obj.get("oauth_client_secret"),
