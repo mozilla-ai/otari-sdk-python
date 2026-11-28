@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from otari._client.models.billing_meters import BillingMeters
+from otari._client.models.routing_plan_record import RoutingPlanRecord
 from otari._client.models.usage_entry_pricing_breakdown_inner import UsageEntryPricingBreakdownInner
 from typing import Optional, Set
 from typing_extensions import Self
@@ -57,6 +58,7 @@ class UsageEntry(BaseModel):
     reasoning_tokens: Optional[StrictInt] = None
     request_group_id: Optional[StrictStr] = None
     requested_model: Optional[StrictStr] = None
+    routing_plan: Optional[RoutingPlanRecord] = None
     selection_reason: Optional[StrictStr] = None
     source: StrictStr
     source_label: Optional[StrictStr]
@@ -69,7 +71,7 @@ class UsageEntry(BaseModel):
     ttft_ms: Optional[StrictInt]
     user_alias: Optional[StrictStr] = None
     user_id: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "data_location", "deployment_paid", "endpoint", "error_message", "id", "latency_ms", "model", "output_tokens_per_second", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "provider_latency_ms", "reasoning_tokens", "request_group_id", "requested_model", "selection_reason", "source", "source_label", "status", "status_code", "stream_cut_by", "tags", "timestamp", "total_tokens", "ttft_ms", "user_alias", "user_id"]
+    __properties: ClassVar[List[str]] = ["api_key_id", "api_key_name", "attempt_count", "attempt_position", "billing_meters", "bulk_editable", "cache_read_tokens", "cache_write_1h_tokens", "cache_write_tokens", "completion_tokens", "cost", "counts_toward_budget", "data_location", "deployment_paid", "endpoint", "error_message", "id", "latency_ms", "model", "output_tokens_per_second", "policy_name", "pricing_breakdown", "prompt_tokens", "provider", "provider_latency_ms", "reasoning_tokens", "request_group_id", "requested_model", "routing_plan", "selection_reason", "source", "source_label", "status", "status_code", "stream_cut_by", "tags", "timestamp", "total_tokens", "ttft_ms", "user_alias", "user_id"]
 
     @field_validator('stream_cut_by')
     def stream_cut_by_validate_enum(cls, value):
@@ -130,6 +132,9 @@ class UsageEntry(BaseModel):
                 if _item_pricing_breakdown:
                     _items.append(_item_pricing_breakdown.to_dict())
             _dict['pricing_breakdown'] = _items
+        # override the default output from pydantic by calling `to_dict()` of routing_plan
+        if self.routing_plan:
+            _dict['routing_plan'] = self.routing_plan.to_dict()
         # set to None if api_key_id (nullable) is None
         # and model_fields_set contains the field
         if self.api_key_id is None and "api_key_id" in self.model_fields_set:
@@ -240,6 +245,11 @@ class UsageEntry(BaseModel):
         if self.requested_model is None and "requested_model" in self.model_fields_set:
             _dict['requested_model'] = None
 
+        # set to None if routing_plan (nullable) is None
+        # and model_fields_set contains the field
+        if self.routing_plan is None and "routing_plan" in self.model_fields_set:
+            _dict['routing_plan'] = None
+
         # set to None if selection_reason (nullable) is None
         # and model_fields_set contains the field
         if self.selection_reason is None and "selection_reason" in self.model_fields_set:
@@ -325,6 +335,7 @@ class UsageEntry(BaseModel):
             "reasoning_tokens": obj.get("reasoning_tokens"),
             "request_group_id": obj.get("request_group_id"),
             "requested_model": obj.get("requested_model"),
+            "routing_plan": RoutingPlanRecord.from_dict(obj["routing_plan"]) if obj.get("routing_plan") is not None else None,
             "selection_reason": obj.get("selection_reason"),
             "source": obj.get("source"),
             "source_label": obj.get("source_label"),

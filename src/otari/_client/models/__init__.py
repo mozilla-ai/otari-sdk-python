@@ -257,6 +257,7 @@ from otari._client.models.disabled_reason import DisabledReason
 from otari._client.models.discoverable_model import DiscoverableModel
 from otari._client.models.discoverable_models_response import DiscoverableModelsResponse
 from otari._client.models.discoverable_provider import DiscoverableProvider
+from otari._client.models.dropped_candidate_record import DroppedCandidateRecord
 from otari._client.models.dropped_response import DroppedResponse
 from otari._client.models.emb_embedding import EMBEmbedding
 from otari._client.models.emb_usage import EMBUsage
@@ -641,7 +642,11 @@ from otari._client.models.mcp_execute_request import McpExecuteRequest
 from otari._client.models.mcp_server_config import McpServerConfig
 from otari._client.models.mcp_server_connection_public import McpServerConnectionPublic
 from otari._client.models.mcp_server_connections_public import McpServerConnectionsPublic
+from otari._client.models.mcp_server_fold_candidate import McpServerFoldCandidate
+from otari._client.models.mcp_server_fold_candidates import McpServerFoldCandidates
+from otari._client.models.mcp_server_fold_lookup import McpServerFoldLookup
 from otari._client.models.mcp_server_left_out import McpServerLeftOut
+from otari._client.models.mcp_server_promote import McpServerPromote
 from otari._client.models.mcp_server_request_create import McpServerRequestCreate
 from otari._client.models.mcp_server_request_decline import McpServerRequestDecline
 from otari._client.models.mcp_server_request_group_public import McpServerRequestGroupPublic
@@ -838,6 +843,7 @@ from otari._client.models.responses_request import ResponsesRequest
 from otari._client.models.resulttype import Resulttype
 from otari._client.models.rotate_master_key_request import RotateMasterKeyRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse
+from otari._client.models.routing_plan_record import RoutingPlanRecord
 from otari._client.models.sandbox_credential_public import SandboxCredentialPublic
 from otari._client.models.sandbox_credential_request import SandboxCredentialRequest
 from otari._client.models.sandbox_provider import SandboxProvider

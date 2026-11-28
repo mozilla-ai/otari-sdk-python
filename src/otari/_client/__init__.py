@@ -346,6 +346,7 @@ __all__ = [
     "DiscoverableModel",
     "DiscoverableModelsResponse",
     "DiscoverableProvider",
+    "DroppedCandidateRecord",
     "DroppedResponse",
     "EMBEmbedding",
     "EMBUsage",
@@ -730,7 +731,11 @@ __all__ = [
     "McpServerConfig",
     "McpServerConnectionPublic",
     "McpServerConnectionsPublic",
+    "McpServerFoldCandidate",
+    "McpServerFoldCandidates",
+    "McpServerFoldLookup",
     "McpServerLeftOut",
+    "McpServerPromote",
     "McpServerRequestCreate",
     "McpServerRequestDecline",
     "McpServerRequestGroupPublic",
@@ -927,6 +932,7 @@ __all__ = [
     "Resulttype",
     "RotateMasterKeyRequest",
     "RotateMasterKeyResponse",
+    "RoutingPlanRecord",
     "SandboxCredentialPublic",
     "SandboxCredentialRequest",
     "SandboxProvider",
@@ -1435,6 +1441,7 @@ from otari._client.models.disabled_reason import DisabledReason as DisabledReaso
 from otari._client.models.discoverable_model import DiscoverableModel as DiscoverableModel
 from otari._client.models.discoverable_models_response import DiscoverableModelsResponse as DiscoverableModelsResponse
 from otari._client.models.discoverable_provider import DiscoverableProvider as DiscoverableProvider
+from otari._client.models.dropped_candidate_record import DroppedCandidateRecord as DroppedCandidateRecord
 from otari._client.models.dropped_response import DroppedResponse as DroppedResponse
 from otari._client.models.emb_embedding import EMBEmbedding as EMBEmbedding
 from otari._client.models.emb_usage import EMBUsage as EMBUsage
@@ -1819,7 +1826,11 @@ from otari._client.models.mcp_execute_request import McpExecuteRequest as McpExe
 from otari._client.models.mcp_server_config import McpServerConfig as McpServerConfig
 from otari._client.models.mcp_server_connection_public import McpServerConnectionPublic as McpServerConnectionPublic
 from otari._client.models.mcp_server_connections_public import McpServerConnectionsPublic as McpServerConnectionsPublic
+from otari._client.models.mcp_server_fold_candidate import McpServerFoldCandidate as McpServerFoldCandidate
+from otari._client.models.mcp_server_fold_candidates import McpServerFoldCandidates as McpServerFoldCandidates
+from otari._client.models.mcp_server_fold_lookup import McpServerFoldLookup as McpServerFoldLookup
 from otari._client.models.mcp_server_left_out import McpServerLeftOut as McpServerLeftOut
+from otari._client.models.mcp_server_promote import McpServerPromote as McpServerPromote
 from otari._client.models.mcp_server_request_create import McpServerRequestCreate as McpServerRequestCreate
 from otari._client.models.mcp_server_request_decline import McpServerRequestDecline as McpServerRequestDecline
 from otari._client.models.mcp_server_request_group_public import McpServerRequestGroupPublic as McpServerRequestGroupPublic
@@ -2016,6 +2027,7 @@ from otari._client.models.responses_request import ResponsesRequest as Responses
 from otari._client.models.resulttype import Resulttype as Resulttype
 from otari._client.models.rotate_master_key_request import RotateMasterKeyRequest as RotateMasterKeyRequest
 from otari._client.models.rotate_master_key_response import RotateMasterKeyResponse as RotateMasterKeyResponse
+from otari._client.models.routing_plan_record import RoutingPlanRecord as RoutingPlanRecord
 from otari._client.models.sandbox_credential_public import SandboxCredentialPublic as SandboxCredentialPublic
 from otari._client.models.sandbox_credential_request import SandboxCredentialRequest as SandboxCredentialRequest
 from otari._client.models.sandbox_provider import SandboxProvider as SandboxProvider
